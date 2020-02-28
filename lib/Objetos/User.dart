@@ -1,0 +1,483 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'Cartao.dart';
+import 'Documento.dart';
+import 'Endereco.dart';
+
+class User {
+  String id;
+  String nome;
+  DateTime data_nascimento;
+  String celular;
+  String cpf;
+  bool isGroupAdm;
+  String email;
+  String responsavel;
+  String senha;
+  String user_responsavel;
+  int strike;
+  String identidade;
+  String identidade_expedidor;
+  DateTime identidade_data_expedicao;
+  int permissao;
+  DateTime created_at;
+  DateTime updated_at;
+  DateTime deleted_at;
+  List<Cartao> cartoes;
+  bool antecedentes;
+  DateTime antecendete_verificados_em;
+  String remember_token;
+  String genero;
+  bool isPrestador;
+  bool isEmailVerified;
+  bool isEmpresario;
+  String prestador;
+  String tipo;
+  bool isAdm;
+  String foto;
+  bool isAlowed;
+  Endereco endereco;
+  bool isAniversario;
+ String grupo;
+ List<Documento> documentos;
+
+  var example = {
+    "id": "124",
+    "nome": "Renato Bosa",
+    "data_nascimento": "1992-04-15 00:00:00",
+    "celular": "(42) 9 9931-9375",
+    "cpf": "083.668.949-67",
+    "email": "vergil009@hotmail.com",
+    "senha": "cf7fb946251d266391dece237e4e1155",
+    "strike": "0",
+    "identidade": "1123123123",
+    "identidade_expedidor": "PR",
+    "identidade_data_expedicao": "1992-04-15 00:00:00",
+    "permissao": null,
+    "created_at": null,
+    "updated_at": null,
+    "deleted_at": null,
+    "remember_token": null,
+    "enderecos": [
+      {
+        "id": "16",
+        "id_user": "124",
+        "cidade": "Castro",
+        "cep": "84178-470",
+        "bairro": "Cantagalo",
+        "endereco": "Rua Pedro Canha Salgado",
+        "numero": "87",
+        "complemento": "",
+        "lat": "-24.8153262",
+        "lng": "-50.0001578",
+        "created_at": "2019-01-28 14:53:50",
+        "updated_at": "2019-01-28 14:53:50",
+        "deleted_at": null
+      }
+    ],
+    "cartoes": [
+      {
+        "id": "1",
+        "id_user": "124",
+        "expiration_month": "10",
+        "expiration_year": "2022",
+        "number": "5292 0500 1263 9481",
+        "cvc": "827",
+        "hash": "  ",
+        "R": "198",
+        "G": "40",
+        "B": "40",
+        "created_at": "2019-01-28 17:33:06",
+        "updated_at": "2019-01-28 17:33:06",
+        "deleted_at": null,
+        "owner_name": "Renato Bosa"
+      }
+    ]
+  };
+
+  User.Empty() {
+    strike = 0;
+    permissao = 0;
+  }
+
+  User(
+      {this.id,
+      this.nome,
+      this.data_nascimento,
+      this.celular,
+      this.cpf,
+      this.email,
+      this.senha,
+      this.strike,
+      this.identidade,
+      this.identidade_expedidor,
+      this.identidade_data_expedicao,
+      this.permissao,
+      this.created_at,
+      this.updated_at,
+      this.deleted_at,
+        this.cartoes,
+        this.responsavel,
+      this.remember_token,
+      this.tipo,
+        this.isEmpresario,
+        this.antecedentes,
+      this.isPrestador,
+      this.genero,
+      this.prestador,
+      this.isAlowed,
+      this.isAdm,
+      this.isGroupAdm,
+        this.user_responsavel,
+        this.grupo,
+      this.endereco,
+        this.documentos,
+      this.foto}) {
+    if (this.data_nascimento != null) {
+      DateTime hoje = DateTime.now();
+      isAniversario = hoje.day == this.data_nascimento.day &&
+          hoje.month == this.data_nascimento.month;
+    }
+  }
+
+  User.fromJson(j) {
+    this.id = j['id'] == null ? null : j['id'];
+    this.nome = j['nome'] == null ? null : j['nome'];
+    this.isEmpresario = j['isEmpresario'] == null? false: j['isEmpresario'];
+    this.data_nascimento = j['data_nascimento'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(j['data_nascimento']);
+    this.user_responsavel = j['user_responsavel'] == null? null: j['user_responsavel'];
+    this.celular = j['celular'] == null ? null : j['celular'];
+    this.cpf = j['cpf'] == null ? null : j['cpf'];
+    this.email = j['email'] == null ? null : j['email'];
+    this.senha = j['senha'] == null ? null : j['senha'];
+    this.strike = j['strike'] == null ? null : j['strike'];
+    this.antecendete_verificados_em = j['antecendete_verificados_em'] == null
+                      ? null
+                      : DateTime.fromMillisecondsSinceEpoch(j['antecendete_verificados_em']);
+    this.identidade = j['identidade'] == null ? null : j['identidade'];
+    this.responsavel = j['responsavel'] == null? null: j['responsavel'];
+    this.antecedentes = j['antecedentes'] == null? null:j['antecedentes'];
+    this.documentos = j['documentos'] == null ? null : getDocumentos(json.decode(j['documentos']));
+    this.cartoes =
+    /*(j['cartoes'] as List) != null
+        ? (j['cartoes'] as List).map((i) => Cartao.fromJson(i)).toList()
+        : */
+    null;
+    this.identidade_expedidor =
+        j['identidade_expedidor'] == null ? null : j['identidade_expedidor'];
+    this.identidade_data_expedicao = j['identidade_data_expedicao'] == null
+        ? null
+        : DateTime.parse(j['identidade_data_expedicao']);
+    this.permissao = j['permissao'] == null ? null : j['permissao'];
+    this.created_at = j['created_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(j['created_at']);
+    this.updated_at = j['updated_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(j['updated_at']);
+    this.deleted_at = j['deleted_at'] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(j['deleted_at']);
+    this.remember_token =
+        j['remember_token'] == null ? null : j['remember_token'];
+    this.isAdm = j['isAdm'] == null ? false : j['isAdm'];
+    this.isEmailVerified =
+        j['isEmailVerified'] == null ? null : j['isEmailVerified'];
+    this.tipo = j['tipo'] == null ? null : j['tipo'];
+    this.genero = j['genero'] == null ? null : j['genero'];
+    this.isPrestador = j['isPrestador'] == null ? null : j['isPrestador'];
+    this.prestador = j['prestador'] == null ? null : j['prestador'];
+    this.isAlowed = j['isAlowed'] == null ? null : j['isAlowed'];
+    this.endereco =
+        j['endereco'] == null ? null : Endereco.fromJson(j['endereco']);
+    this.foto = j['foto'] == null ? null : j['foto'];
+    this.grupo = j['grupo'] == null? '':j['grupo'];
+    if (data_nascimento != null) {
+      DateTime hoje = DateTime.now();
+      isAniversario = hoje.day == this.data_nascimento.day &&
+          hoje.month == this.data_nascimento.month;
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['id'] = this.id;
+    data['nome'] = this.nome;
+    data['data_nascimento'] = this.data_nascimento != null
+        ? this.data_nascimento.millisecondsSinceEpoch
+        : null;
+    data['celular'] = this.celular;
+    data['user_responsavel'] = this.user_responsavel == null? null: this.user_responsavel;
+    data['cpf'] = this.cpf;
+    data['isEmpresario'] = this.isEmpresario == null? false: this.isEmpresario;
+    data['email'] = this.email;
+    data['antecedentes'] = this.antecedentes;
+    data['senha'] = this.senha;
+    data['permissao'] = this.permissao;
+    data['grupo'] = this.grupo == null? '': this.grupo;
+    data['antecendete_verificados_em'] =
+    this.antecendete_verificados_em != null ? this.antecendete_verificados_em.millisecondsSinceEpoch : null;
+    data['created_at'] =
+        this.created_at != null ? this.created_at.millisecondsSinceEpoch : null;
+    data['updated_at'] =
+        this.updated_at != null ? this.updated_at.millisecondsSinceEpoch : null;
+    data['deleted_at'] =
+        this.deleted_at != null ? this.deleted_at.millisecondsSinceEpoch : null;
+    data['remember_token'] = this.remember_token;
+    data['isEmailVerified'] = this.isEmailVerified;
+    data['responsavel'] = this.responsavel;
+    data['tipo'] = this.tipo;
+    data['genero'] = this.genero;
+    data['documentos'] = this.documentos == null? null : json.encode(this.documentos);
+    data['isPrestador'] = this.isPrestador;
+    data['prestador'] = this.prestador;
+    data['foto'] = this.foto;
+    data['cartoes'] = this.cartoes != null
+                      ? this.cartoes.map((i) => i.toJson()).toList()
+                      : null;
+    data['isAlowed'] = this.isAlowed;
+    data['isAdm'] = this.isAdm == null ? false : this.isAdm;
+    data['endereco'] = this.endereco == null ? null : this.endereco.toJson();
+
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'User{id: $id,isPrestador: $isPrestador genero: $genero, nome: $nome, data_nascimento: $data_nascimento, celular: $celular, cpf: $cpf, email: $email, senha: $senha, strike: $strike, identidade: $identidade, identidade_expedidor: $identidade_expedidor, identidade_data_expedicao: $identidade_data_expedicao, permissao: $permissao, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, remember_token: $remember_token, isEmailVerified: $isEmailVerified, tipo: $tipo, foto: $foto}';
+  }
+
+  void Contatar(context) {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return CupertinoAlertDialog(
+          title: Text('Conversar por'),
+          actions: <Widget>[
+            CupertinoButton(
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    MdiIcons.whatsapp,
+                    color: corPrimaria,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text('WhatsApp'),
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              onPressed: () {
+                whatsAppOpen(this
+                    .celular
+                    .replaceAll('(', '')
+                    .replaceAll(')', '')
+                    .replaceAll('-', '')
+                    .replaceAll(' ', ''));
+                Navigator.of(dialogContext).pop(); // Dismiss alert
+              },
+            ),
+            CupertinoButton(
+              child: Row(children: <Widget>[
+                Icon(
+                  MdiIcons.cellphone,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Telefone',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ], mainAxisAlignment: MainAxisAlignment.center),
+              onPressed: () {
+                launch(
+                    "tel://${this.celular.replaceAll('(', '').replaceAll(')', '').replaceAll('-', '').replaceAll(' ', '')}");
+                Navigator.of(dialogContext).pop(); // Dismiss alert
+              },
+            ),
+            CupertinoButton(
+              child: Row(children: <Widget>[
+                Icon(
+                  MdiIcons.cancel,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ], mainAxisAlignment: MainAxisAlignment.center),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Dismiss alert
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void whatsAppOpen(telefone) async {
+    //print('ENTROU AQUI');
+    var whatsappUrl = "whatsapp://send?phone=55${telefone}&text=Ola";
+    if (await canLaunch(whatsappUrl)) {
+      await launch(whatsappUrl, forceSafariVC: false, forceWebView: false);
+    } else {
+      throw 'Could not launch $whatsappUrl';
+    }
+  }
+
+  MailTo() async {
+    var url = 'mailto:${this.email}?subject=&body=';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
+  static getDocumentos(decoded) {
+    print('AQUI DECODED ${decoded}');
+    List<Documento> talentos = new List();
+    if (decoded == null) {
+      return null;
+    }
+    for (var i in decoded) {
+      talentos.add(Documento.fromJson(i));
+    }
+    return talentos;
+  }
+}
+
+UserWidget(User user, context) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        CircleAvatar(
+          backgroundImage: user.foto != null
+              ? CachedNetworkImageProvider(user.foto)
+              : AssetImage('assets/images/customer.jpg'),
+          minRadius: 25,
+          maxRadius: 50,
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              user.nome.length > 15
+                  ? user.nome.substring(0, 15) + '...'
+                  : user.nome,
+              style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+            Row(
+              children: <Widget>[
+                Icon(
+                  user.genero == 'Masculino'
+                      ? MdiIcons.genderMale
+                      : MdiIcons.genderFemale,
+                  color: user.genero == 'Masculino'
+                      ? Colors.blueAccent
+                      : Colors.pink,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(user.genero),
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.calendar_today,
+                  color: Colors.amber,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  '${(((DateTime.now().difference(user.data_nascimento).inDays) / 365)-1).toStringAsFixed(0)} Anos',
+                  style: TextStyle(),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            GestureDetector(
+              onTap: () {
+                user.Contatar(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.phone,
+                    color: corPrimaria,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    '${user.celular}',
+                    style: TextStyle(),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            GestureDetector(
+              onTap: () {
+                user.MailTo();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.email,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    user.email,
+                    style: TextStyle(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}

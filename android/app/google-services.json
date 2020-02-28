@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "833154723346",
+    "firebase_url": "https://avanticar-34239.firebaseio.com",
+    "project_id": "avanticar-34239",
+    "storage_bucket": "avanticar-34239.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833154723346:android:ec4788d0894308c7b9f2cb",
+        "android_client_info": {
+          "package_name": "br.com.avanti.divulcars"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1TP3_Egip9wBhskTz2_tNT8sS6enrDNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

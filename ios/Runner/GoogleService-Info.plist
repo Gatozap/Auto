@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>623468197680-1r719v3451iimn9r8tj09uvhpvjhe060.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.623468197680-1r719v3451iimn9r8tj09uvhpvjhe060</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>623468197680-nnrtliq5fogfucn663942n5a3c6a73l5.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC5YeA2DyC6j1d4bZRRF3K8Fgxd9RzSozg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>623468197680</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.view.autooh</string>
+	<key>PROJECT_ID</key>
+	<string>novo-boca-a-boca</string>
+	<key>STORAGE_BUCKET</key>
+	<string>novo-boca-a-boca.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:623468197680:ios:09eca9f9d4cca36b</string>
+	<key>DATABASE_URL</key>
+	<string>https://novo-boca-a-boca.firebaseio.com</string>
+</dict>
+</plist>
