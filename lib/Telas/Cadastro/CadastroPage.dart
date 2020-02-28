@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bocaboca/Helpers/Bancos.dart';
 import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Helpers/Rekonizer.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
@@ -23,7 +22,6 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:googleapis/vision/v1.dart' as vision;
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -71,9 +69,7 @@ class _CadastroState extends State<Cadastro> {
   void initState() {
     _dropDownMenuItemsTipoConta = _getDropDownMenuItemsTipoConta();
     selectTipo = _dropDownMenuItemsTipoConta[0].value;
-
     super.initState();
-
   }
 
   CadastroController cc = new CadastroController();
@@ -84,7 +80,6 @@ class _CadastroState extends State<Cadastro> {
   var controller = new MaskedTextController(mask: '000', text: '1');
   Endereco ue;
   bool isPrestador;
-  Banco bancoSelecionado;
   Prestador prestador;
   bool isCadastrarPressed = false;
   var controllercpf =
@@ -337,7 +332,6 @@ class _CadastroState extends State<Cadastro> {
   FocusNode myFocusNode;
   @override
   Widget build(BuildContext context) {
-
     int duracao = 300;
     return Scaffold(
         body: StreamBuilder<bool>(
@@ -775,114 +769,105 @@ class _CadastroState extends State<Cadastro> {
                               bottom: 5,
                               left: 10,
                             ),
-                            SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(height: 45),
-                                  hText('Insira os dados de sua conta Bancaria',
-                                      context),
-                                  sb,
-                                  sb,
-                                  Padding(
-                                    padding: ei,
-                                    child: TypeAheadField(
-                                      textFieldConfiguration: TextFieldConfiguration(
-                                          controller: controllerConta_bancaria,
-                                          style: TextStyle(color: Colors.black),
-                                          decoration: DefaultInputDecoration(
-                                            context,
-                                              icon: MdiIcons.bank,
-                                              labelText: 'Banco',
-                                              hintText: 'Caixa Economica Federal')),
-                                      suggestionsCallback: (pattern) async {
-                                        return await Banco.getSuggestions(pattern);
-                                      },
-                                      itemBuilder: (context, suggestion) {
-                                        return ListTile(
-                                          title: Text(suggestion.nome),
-                                        );
-                                      },
-                                      onSuggestionSelected: (Banco suggestion) {
-                                        bancoSelecionado = suggestion;
-                                        controllerConta_bancaria.text = suggestion.nome;
-                                      },
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 45),
+                                hText('Insira os dados de sua conta Bancaria',
+                                    context),
+                                sb,
+                                sb,
+                                new Padding(
+                                  padding: ei,
+                                  child: TextFormField(
+                                    controller:
+                                    controllerConta_bancaria,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'É necessário preencher sua Conta Bancaria';
+                                      }
+                                    },
+                                    decoration:
+                                    DefaultInputDecoration(
+                                      context,
+                                      icon: MdiIcons.creditCard,
+                                      hintText: 'Banco do Brasil',
+                                      labelText:
+                                      'Seu Banco',
                                     ),
+                                    autovalidate: true,
                                   ),
-                                  new Padding(
-                                    padding: ei,
-                                    child: TextFormField(
-                                      keyboardType:
-                                      TextInputType.number,
-                                      controller:
-                                      controllerAgencia,
-                                      validator: (value) {
-                                        if (value.isEmpty) { if(isCadastrarPressed) {
-                                          return 'É necessário preencher Agencia';
-                                        }
-                                        }
-                                      },
-                                      decoration:
-                                      DefaultInputDecoration(
-                                        context,
-                                        icon: MdiIcons.creditCard,
-                                        hintText: '05699-6',
-                                        labelText:
-                                        'Número da Agência com dígito',
-                                      ),
-                                      autovalidate: true,
+                                ),
+                                new Padding(
+                                  padding: ei,
+                                  child: TextFormField(
+                                    keyboardType:
+                                    TextInputType.number,
+                                    controller:
+                                    controllerAgencia,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'É necessário preencher Agencia';
+                                      }
+                                    },
+                                    decoration:
+                                    DefaultInputDecoration(
+                                      context,
+                                      icon: MdiIcons.creditCard,
+                                      hintText: '36.365-63',
+                                      labelText:
+                                      'Número da Agência com dígito',
                                     ),
+                                    autovalidate: true,
                                   ),
-                                  SizedBox(height: 20),
-                                  new Padding(
-                                    padding: ei,
-                                    child: TextFormField(
-                                      keyboardType:
-                                      TextInputType.number,
-                                      controller:
-                                      controllerNumero_conta,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                    if(isCadastrarPressed) {
-                      return 'É necessário preencher Conta Bancaria';
-                    }
-                                        }
-                                      },
-                                      decoration:
-                                      DefaultInputDecoration(
-                                        context,
-                                        icon: MdiIcons.creditCard,
-                                        hintText: '36.365-63',
-                                        labelText: 'Número da conta',
+                                ),
+                                SizedBox(height: 20),
+                                new Padding(
+                                  padding: ei,
+                                  child: TextFormField(
+                                    keyboardType:
+                                    TextInputType.number,
+                                    controller:
+                                    controllerNumero_conta,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'É necessário preencher Conta Bancaria';
+                                      }
+                                    },
+                                    decoration:
+                                    DefaultInputDecoration(
+                                      context,
+                                      icon: MdiIcons.creditCard,
+                                      hintText: '05699-6',
+                                      labelText: 'Número da conta',
 
-                                      ),
-                                      autovalidate: true,
                                     ),
+                                    autovalidate: true,
                                   ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      hText('Tipo de conta: ', context,
-                                          color: corPrimaria, size: 40),
-                                      sb,
-                                      DropdownButton(
-                                        style: TextStyle(
-                                            color: corPrimaria,
-                                            fontSize: ScreenUtil.getInstance()
-                                                .setSp(40),
-                                            fontWeight: FontWeight.bold),
-                                        icon: Icon(Icons.arrow_drop_down,
-                                            color: corPrimaria),
-                                        value: selectTipo,
-                                        items: _dropDownMenuItemsTipoConta,
-                                        onChanged: onChangeDropDownItens,
-                                      ),
-                                    ],
-                                  ),
-
-                                ],
-                              ),
+                                ),
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    hText('Tipo de conta: ', context,
+                                        color: corPrimaria, size: 40),
+                                    sb,
+                                    DropdownButton(
+                                      style: TextStyle(
+                                          color: corPrimaria,
+                                          fontSize: ScreenUtil.getInstance()
+                                              .setSp(40),
+                                          fontWeight: FontWeight.bold),
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: corPrimaria),
+                                      value: selectTipo,
+                                      items: _dropDownMenuItemsTipoConta,
+                                      onChanged: onChangeDropDownItens,
+                                    ),
+                                  ],
+                                ),
+                        
+                              ],
                             ),
                           ],
                         );
@@ -919,9 +904,7 @@ class _CadastroState extends State<Cadastro> {
                                                         controllerTipocarro,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                    if(isCadastrarPressed) {
-                      return 'É necessário preencher o tipo de carro';
-                    }
+                                                        return 'É necessário preencher o tipo de carro';
                                                       }
                                                     },
                                                     decoration:
@@ -942,9 +925,7 @@ class _CadastroState extends State<Cadastro> {
                                                     controller: controllerCor,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                    if(isCadastrarPressed) {
-                      return 'É necessário preencher a cor do veículo';
-                    }
+                                                        return 'É necessário preencher a cor do veículo';
                                                       }
                                                     },
                                                     decoration:
@@ -964,9 +945,7 @@ class _CadastroState extends State<Cadastro> {
                                                     controller: controllerPlaca,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                    if(isCadastrarPressed) {
-                      return 'É necessário preencher a Placa do carro';
-                    }
+                                                        return 'É necessário preencher a Placa do carro';
                                                       }
                                                     },
                                                     decoration:
@@ -989,9 +968,7 @@ class _CadastroState extends State<Cadastro> {
                                                     controller: controllerAno,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                    if(isCadastrarPressed) {
-                      return 'É necessário preencher o ano do vínculo';
-                    }
+                                                        return 'É necessário preencher o ano do vínculo';
                                                       }
                                                     },
                                                     decoration:
@@ -1020,9 +997,8 @@ class _CadastroState extends State<Cadastro> {
                                                         controller: controllerKmsmin,
                                                         validator: (value) {
                                                           if (value.isEmpty) {
-                    if(isCadastrarPressed) {
-                      return 'É necessário preencher a quantia de Kms rodados';
-                    }              }
+                                                            return 'É necessário preencher a quantia de Kms rodados';
+                                                          }
                                                         },
                                                         decoration:
                                                             DefaultInputDecoration(
@@ -1041,9 +1017,7 @@ class _CadastroState extends State<Cadastro> {
                                                         controller: controllerKmsmax,
                                                         validator: (value) {
                                                           if (value.isEmpty) {
-                                                            if(isCadastrarPressed) {
-                                                              return 'É necessário preencher a quantia de Kms rodados';
-                                                            }
+                                                            return 'É necessário preencher a quantia de Kms rodados';
                                                           }
                                                         },
                                                         decoration:
@@ -1078,7 +1052,7 @@ class _CadastroState extends State<Cadastro> {
                                                             cc.user = Helper.localUser;
                                                             cc.inUser.add(cc.user);
 
-                                                          } ),sb,sb,sb
+                                                          } ),
                                                       ],
                                                     );
                                                   }
@@ -1193,42 +1167,28 @@ class _CadastroState extends State<Cadastro> {
                                                         ),
                                                       );
                                                     }),
-                                                child: Stack(
-                    children: <Widget>[
-
-                      Container(
-
-
-                                                    child: CircleAvatar(
-
-                                                        radius: (((getAltura(
-                                                                        context) +
-                                                                    getLargura(
-                                                                        context)) /
-                                                                2) *
-                                                            .2),
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        child:
-                                                            Helper.localUser.foto !=
-                                                                    null
-                                                                ? Image(
-                                                                    image: CachedNetworkImageProvider(
-                                                                        Helper
-                                                                            .localUser
-                                                                            .foto),
-                                                                  )
-                                                                : Container(
-                                                              decoration: BoxDecoration(
-                                                                  image: DecorationImage(
-                                                                      image: CachedNetworkImageProvider(
-                                                                          'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                                    ),
-                                                              ),
-                                                              child:Center(child: Container(decoration:BoxDecoration(borderRadius: BorderRadius.circular(60),color: Color.fromARGB(140,255,255,255)),child: Icon(Icons.add,color:corPrimaria,size:44))),
-                                                                ), ),
-                                                  ),
-                                                ]),
+                                                child: CircleAvatar(
+                                                    radius: (((getAltura(
+                                                                    context) +
+                                                                getLargura(
+                                                                    context)) /
+                                                            2) *
+                                                        .2),
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    child:
+                                                        Helper.localUser.foto !=
+                                                                null
+                                                            ? Image(
+                                                                image: CachedNetworkImageProvider(
+                                                                    Helper
+                                                                        .localUser
+                                                                        .foto),
+                                                              )
+                                                            : Image(
+                                                                image: CachedNetworkImageProvider(
+                                                                    'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                              )),
                                               ),
                                             ],
                                           ),
@@ -1525,8 +1485,6 @@ class _CadastroState extends State<Cadastro> {
     dToast('Salvando Foto!');
   }
 
-
-
   Widget fotoDocumento(String foto, {isValid = false, largura = null}) {
     largura = largura == null ? getLargura(context) * .3 : largura;
     if (isValid) {
@@ -1549,6 +1507,4 @@ class _CadastroState extends State<Cadastro> {
         child: Image(
             image: CachedNetworkImageProvider(foto), fit: BoxFit.fitHeight));
   }
-
-
 }
