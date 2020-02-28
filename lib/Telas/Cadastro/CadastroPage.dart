@@ -730,7 +730,6 @@ class _CadastroState extends State<Cadastro> {
                           ],
                         );
                       case 1:
-
                         return Stack(
                           children: <Widget>[
                             Positioned(
@@ -780,20 +779,17 @@ class _CadastroState extends State<Cadastro> {
                                 new Padding(
                                   padding: ei,
                                   child: TextFormField(
-                                    controller:
-                                    controllerConta_bancaria,
+                                    controller: controllerConta_bancaria,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'É necessário preencher sua Conta Bancaria';
                                       }
                                     },
-                                    decoration:
-                                    DefaultInputDecoration(
+                                    decoration: DefaultInputDecoration(
                                       context,
                                       icon: MdiIcons.creditCard,
                                       hintText: 'Banco do Brasil',
-                                      labelText:
-                                      'Seu Banco',
+                                      labelText: 'Seu Banco',
                                     ),
                                     autovalidate: true,
                                   ),
@@ -801,22 +797,18 @@ class _CadastroState extends State<Cadastro> {
                                 new Padding(
                                   padding: ei,
                                   child: TextFormField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller:
-                                    controllerAgencia,
+                                    keyboardType: TextInputType.number,
+                                    controller: controllerAgencia,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'É necessário preencher Agencia';
                                       }
                                     },
-                                    decoration:
-                                    DefaultInputDecoration(
+                                    decoration: DefaultInputDecoration(
                                       context,
                                       icon: MdiIcons.creditCard,
                                       hintText: '36.365-63',
-                                      labelText:
-                                      'Número da Agência com dígito',
+                                      labelText: 'Número da Agência com dígito',
                                     ),
                                     autovalidate: true,
                                   ),
@@ -825,22 +817,18 @@ class _CadastroState extends State<Cadastro> {
                                 new Padding(
                                   padding: ei,
                                   child: TextFormField(
-                                    keyboardType:
-                                    TextInputType.number,
-                                    controller:
-                                    controllerNumero_conta,
+                                    keyboardType: TextInputType.number,
+                                    controller: controllerNumero_conta,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'É necessário preencher Conta Bancaria';
                                       }
                                     },
-                                    decoration:
-                                    DefaultInputDecoration(
+                                    decoration: DefaultInputDecoration(
                                       context,
                                       icon: MdiIcons.creditCard,
                                       hintText: '05699-6',
                                       labelText: 'Número da conta',
-
                                     ),
                                     autovalidate: true,
                                   ),
@@ -866,7 +854,6 @@ class _CadastroState extends State<Cadastro> {
                                     ),
                                   ],
                                 ),
-                        
                               ],
                             ),
                           ],
@@ -991,10 +978,11 @@ class _CadastroState extends State<Cadastro> {
                                                     Padding(
                                                       padding: ei,
                                                       child: TextFormField(
-
                                                         keyboardType:
-                                                            TextInputType.number,
-                                                        controller: controllerKmsmin,
+                                                            TextInputType
+                                                                .number,
+                                                        controller:
+                                                            controllerKmsmin,
                                                         validator: (value) {
                                                           if (value.isEmpty) {
                                                             return 'É necessário preencher a quantia de Kms rodados';
@@ -1003,9 +991,11 @@ class _CadastroState extends State<Cadastro> {
                                                         decoration:
                                                             DefaultInputDecoration(
                                                           context,
-                                                          icon: MdiIcons.runFast,
+                                                          icon:
+                                                              MdiIcons.runFast,
                                                           hintText: '400',
-                                                          labelText: 'Km Mínimo',
+                                                          labelText:
+                                                              'Km Mínimo',
                                                         ),
                                                       ),
                                                     ),
@@ -1013,50 +1003,71 @@ class _CadastroState extends State<Cadastro> {
                                                       padding: ei,
                                                       child: TextFormField(
                                                         keyboardType:
-                                                        TextInputType.number,
-                                                        controller: controllerKmsmax,
+                                                            TextInputType
+                                                                .number,
+                                                        controller:
+                                                            controllerKmsmax,
                                                         validator: (value) {
                                                           if (value.isEmpty) {
                                                             return 'É necessário preencher a quantia de Kms rodados';
                                                           }
                                                         },
                                                         decoration:
-                                                        DefaultInputDecoration(
+                                                            DefaultInputDecoration(
                                                           context,
-                                                          icon: MdiIcons.runFast,
+                                                          icon:
+                                                              MdiIcons.runFast,
                                                           hintText: '1500',
-                                                          labelText: 'Km Máximo',
+                                                          labelText:
+                                                              'Km Máximo',
                                                         ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-
-                                                Padding(padding: ei,
-                                                child: StreamBuilder(
-                                                  stream: cc.outUser,
-                                                  builder: (context, snapshot) {
-                                                    return Column(
-                                                      children: <Widget>[
-                                                        defaultCheckBox(
-                                                            Helper.localUser.atende_fds, 'Atende Final de Semana', context, () {
-                                                          Helper.localUser.atende_fds = !Helper.localUser.atende_fds;
-                                                          cc.user = Helper.localUser;
-                                                          cc.inUser.add(cc.user);
-
-                                                        }),
-                                                          sb,
-                                                          defaultCheckBox(
-                                                              Helper.localUser.atende_festa, 'Atende em Festas', context, () {
-                                                            Helper.localUser.atende_festa = !Helper.localUser.atende_festa;
-                                                            cc.user = Helper.localUser;
-                                                            cc.inUser.add(cc.user);
-
-                                                          } ),
-                                                      ],
-                                                    );
-                                                  }
-                                                ),)
+                                                Padding(
+                                                  padding: ei,
+                                                  child: StreamBuilder(
+                                                      stream: cc.outUser,
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        return Column(
+                                                          children: <Widget>[
+                                                            defaultCheckBox(
+                                                                Helper.localUser
+                                                                    .atende_fds,
+                                                                'Atende Final de Semana',
+                                                                context, () {
+                                                              Helper.localUser
+                                                                      .atende_fds =
+                                                                  !Helper
+                                                                      .localUser
+                                                                      .atende_fds;
+                                                              cc.user = Helper
+                                                                  .localUser;
+                                                              cc.inUser
+                                                                  .add(cc.user);
+                                                            }),
+                                                            sb,
+                                                            defaultCheckBox(
+                                                                Helper.localUser
+                                                                    .atende_festa,
+                                                                'Atende em Festas',
+                                                                context, () {
+                                                              Helper.localUser
+                                                                      .atende_festa =
+                                                                  !Helper
+                                                                      .localUser
+                                                                      .atende_festa;
+                                                              cc.user = Helper
+                                                                  .localUser;
+                                                              cc.inUser
+                                                                  .add(cc.user);
+                                                            }),
+                                                          ],
+                                                        );
+                                                      }),
+                                                )
                                               ]))))),
                           Positioned(
                             child: MaterialButton(
@@ -1253,59 +1264,58 @@ class _CadastroState extends State<Cadastro> {
                                             }),
                                         sb,
                                         sb,
+                                        MaterialButton(
+                                          color: corPrimaria,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(60)),
+                                          onPressed: () async {
+                                            print(
+                                                'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                                            Helper.localUser.conta_bancaria =
+                                                controllerConta_bancaria.text;
+                                            Helper.localUser.agencia =
+                                                controllerAgencia.text;
+                                            Helper.localUser.numero_conta =
+                                                controllerNumero_conta.text;
 
-                                                 MaterialButton(
-                                                  color: corPrimaria,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              60)),
-                                                  onPressed: () async {
-                                                    print('gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                                    Helper.localUser.conta_bancaria =
-                                                        controllerConta_bancaria.text;
-                                                    Helper.localUser.agencia =
-                                                        controllerAgencia.text;
-                                                    Helper.localUser.numero_conta =
-                                                        controllerNumero_conta.text;
+                                            Helper.localUser.tipo_conta =
+                                                selectTipo;
+                                            Helper.localUser.kmmin = int.parse(
+                                                controllerKmsmin.text);
+                                            Helper.localUser.kmmax = int.parse(
+                                                controllerKmsmax.text);
+                                            userRef
+                                                .document(Helper.localUser.id)
+                                                .updateData(
+                                                    Helper.localUser.toJson())
+                                                .then((v) {
+                                              dToast(
+                                                  'Banco salvo com sucesso !');
+                                              sc.next(animation: true);
+                                            });
+                                            List<Carro> carros = new List();
+                                            Carro c = new Carro(
+                                              created_at: DateTime.now(),
+                                              updated_at: DateTime.now(),
+                                              cor: controllerCor.text,
+                                              ano:
+                                                  int.parse(controllerAno.text),
+                                              placa: controllerPlaca.text,
+                                              dono: Helper.localUser.id,
+                                              modelo: controllerTipocarro.text,
+                                            );
+                                            carros.add(c);
+                                            User u = new User(carros: carros);
 
-                                                    Helper.localUser.tipo_conta = selectTipo;
-                                                    Helper.localUser.kmmin = int.parse(controllerKmsmin.text);
-                                                    Helper.localUser.kmmax = int.parse(controllerKmsmax.text);
-                                                    userRef
-                                                        .document(Helper.localUser.id)
-                                                        .updateData(Helper.localUser.toJson())
-                                                        .then((v) {
-                                                      dToast('Banco salvo com sucesso !');
-                                                      sc.next(animation: true);
-                                                    });
-                                                    List<Carro> carros = new List();
-                                                    Carro c = new Carro(
-
-                                                           created_at: DateTime.now(),
-                                                      updated_at: DateTime.now(),
-                                                      cor: controllerCor.text,
-                                                      ano: int.parse(
-                                                          controllerAno.text),
-                                                      placa: controllerPlaca.text,
-                                                      dono: Helper.localUser.id,
-                                                      modelo: controllerTipocarro
-                                                          .text,
-                                                    );
-                                                    carros.add(c);
-                                                    User u = new User(carros: carros);
-
-                                                    cc.CriarCarros(carros: c);
-                                                    cc.atualizarDados(
-                                                        sc, context,  1);
-                                                  },
-                                                  child: Text(
-                                                    'Concluir Cadastro',
-                                                    style: estiloTextoBotao,
-                                                  ),
-                                                ),
-
-
+                                            cc.CriarCarros(carros: c);
+                                            cc.atualizarDados(sc, context, 1);
+                                          },
+                                          child: Text(
+                                            'Concluir Cadastro',
+                                            style: estiloTextoBotao,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   )),

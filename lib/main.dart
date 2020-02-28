@@ -22,6 +22,7 @@ import 'package:bocaboca/Telas/Login/LoginEmail/LoginEmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'BlocCentral/Racing/navigation_controller.dart';
+import 'Helpers/Bairros.dart';
 import 'Helpers/Cielo/src/Environment.dart';
 import 'Helpers/Cielo/src/Merchant.dart';
 import 'Helpers/Cielo/src/cielo_ecommerce.dart';
@@ -29,6 +30,7 @@ import 'Helpers/Helper.dart';
 import 'Helpers/NotificacoesHelper.dart';
 import 'Helpers/References.dart';
 import 'Objetos/Notificacao.dart';
+import 'Objetos/Zona.dart';
 import 'Telas/Cadastro/CadastroPage.dart';
 import 'Telas/Compartilhados/WaitScreen.dart';
 import 'Telas/Intro/IntroPage.dart';
@@ -134,6 +136,7 @@ class _MyAppState extends State<MyApp> {
         isIntroOpen = true;
       });
     });
+
     //TODO COMENTAR ESSAS 2 LINHAS
     /*for (Assinatura a in assinaturas) {
       assinaturasRef.document(a.id).setData(a.toJson());

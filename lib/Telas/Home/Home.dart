@@ -1,3 +1,6 @@
+import 'package:bocaboca/Helpers/Bairros.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Zona.dart';
 import 'package:bocaboca/Telas/Intro/IntroPage.dart';
 import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoGeneralController.dart';
 import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoList/ProdutoListItem.dart';
