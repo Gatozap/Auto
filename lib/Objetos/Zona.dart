@@ -1,19 +1,23 @@
-class Zona{
-  String bairro;
+import 'dart:convert';
 
-  Zona({this.bairro});
+class Zona{
+  List bairros;
+  String nome;
+
+  Zona({this.bairros,this.nome});
 
   @override
   String toString() {
-    return 'Zona{bairro: $bairro}';
+    return 'Zona{bairro: $bairros}';
   }
 
-  Zona.fromJson(Map<String, dynamic> json)
-      : bairro = json['bairro'];
+  Zona.fromJson( j)
+      : bairros = json.decode(j['bairro']), nome =j['nome'];
 
   Map<String, dynamic> toJson() =>
       {
-        'bairro': bairro,
+        'bairro': json.encode(bairros),
+        'nome':nome,
       };
 
 
