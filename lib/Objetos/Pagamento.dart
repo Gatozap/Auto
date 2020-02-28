@@ -1,15 +1,15 @@
 import 'dart:ui';
 
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Telas/Marketplace/Pedidos/PedidoPage.dart';
-import 'package:autooh/Telas/Perfil/PerfilVistoPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Telas/Marketplace/Pedidos/PedidoPage.dart';
+import 'package:bocaboca/Telas/Perfil/PerfilVistoPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Telas/Marketplace/Pedidos/PedidoPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Telas/Marketplace/Pedidos/PedidoPage.dart';
 
 import 'Cartao.dart';
 import 'Pacote.dart';

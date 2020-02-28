@@ -1,6 +1,6 @@
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Marketplace/GoogleMaps/GoogleMapsPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Marketplace/GoogleMaps/GoogleMapsPage.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

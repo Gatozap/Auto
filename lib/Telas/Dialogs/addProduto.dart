@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:autooh/Helpers/CircleIconButton.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/PhotoScroller.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Produto.dart';
-import 'package:autooh/Objetos/ProdutoPedido.dart';
-import 'package:autooh/Telas/Marketplace/Produto/ProdutoGeneralController.dart';
+import 'package:bocaboca/Helpers/CircleIconButton.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/PhotoScroller.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Produto.dart';
+import 'package:bocaboca/Objetos/ProdutoPedido.dart';
+import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoGeneralController.dart';
 
 import '../../main.dart';
 import 'addProdutoController.dart';

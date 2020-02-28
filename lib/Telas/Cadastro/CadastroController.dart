@@ -1,16 +1,17 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:autooh/Objetos/Documento.dart';
-import 'package:autooh/Telas/Grupo/Chat/ChatScreen/ChatController.dart';
-import 'package:autooh/Telas/Home/Home.dart';
+import 'package:bocaboca/Objetos/Carro.dart';
+import 'package:bocaboca/Objetos/Documento.dart';
+import 'package:bocaboca/Telas/Grupo/Chat/ChatScreen/ChatController.dart';
+import 'package:bocaboca/Telas/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_swiper/src/swiper_controller.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Objetos/Prestador.dart';
-import 'package:autooh/Objetos/Endereco.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Cadastro/Estabelecimento/CadastrarEstabelecimentoPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Prestador.dart';
+import 'package:bocaboca/Objetos/Endereco.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Cadastro/Estabelecimento/CadastrarEstabelecimentoPage.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CadastroController extends BlocBase {
@@ -22,10 +23,24 @@ class CadastroController extends BlocBase {
   Stream<bool> get outIsMale => controllerIsMale.stream;
   Sink<bool> get inIsMale => controllerIsMale.sink;
 
+  BehaviorSubject<bool> controllerIsAtendeFds = BehaviorSubject<bool>();
+  Stream<bool> get outIsAtendefds => controllerIsAtendeFds.stream;
+  Sink<bool> get inIsAtendefds => controllerIsAtendeFds.sink;
+
+  BehaviorSubject<bool> controllerIsAtendeFesta = BehaviorSubject<bool>();
+  Stream<bool> get outIsAtendeFest => controllerIsAtendeFesta.stream;
+  Sink<bool> get inIsAtendeFest => controllerIsAtendeFesta.sink;
+
+
   BehaviorSubject<String> controllerCodigo = BehaviorSubject<String>();
   Stream<String> get outCodigo => controllerCodigo.stream;
   Sink<String> get inCodigo => controllerCodigo.sink;
   String codigo;
+
+  BehaviorSubject<User> controllerUser = BehaviorSubject<User>();
+  Stream<User> get outUser => controllerUser.stream;
+  Sink<User> get inUser => controllerUser.sink;
+  User user;
 
   BehaviorSubject<String> controllerCPF = BehaviorSubject<String>();
   Stream<String> get outCPF => controllerCPF.stream;
@@ -42,10 +57,32 @@ class CadastroController extends BlocBase {
   Sink<String> get inDatanascimento => controllerDatanascimento.sink;
   String datanascimento;
 
+  BehaviorSubject<String> controllerContabancaria = BehaviorSubject<String>();
+  Stream<String> get outContaBancaria => controllerContabancaria.stream;
+  Sink<String> get inContaBancaria => controllerContabancaria.sink;
+  String conta_bancaria;
+
+
+  BehaviorSubject<String> controllerAgencia = BehaviorSubject<String>();
+  Stream<String> get outAgencia => controllerAgencia.stream;
+  Sink<String> get inAgencia => controllerAgencia.sink;
+  String agencia;
+
+
+  BehaviorSubject<String> controllerNumeroConta = BehaviorSubject<String>();
+  Stream<String> get outNumeroConta => controllerNumeroConta.stream;
+  Sink<String> get inNumeroConta => controllerNumeroConta.sink;
+  String numero_conta;
+
   BehaviorSubject<Documento> controllerDocumento  = BehaviorSubject<Documento>();
   Stream<Documento> get outDocumento => controllerDocumento.stream;
   Sink<Documento> get inDocumento => controllerDocumento.sink;
   Documento documento;
+
+  BehaviorSubject<Carro> controllerCarro  = BehaviorSubject<Carro>();
+  Stream<Carro> get outCarro => controllerCarro.stream;
+  Sink<Carro> get inCarro => controllerCarro.sink;
+  Carro carro;
 
   CadastroController() {
     inIsPrestadorSelected.add(false);
@@ -67,6 +104,11 @@ class CadastroController extends BlocBase {
     controllerCodigo.close();
     controllerIsMale.close();
     controllerCPF.close();
+    controllerContabancaria.close();
+    controllerAgencia.close();
+    controllerNumeroConta.close();
+    controllerCarro.close();
+
   }
 
   Validar(int i, SwiperController sc, BuildContext context) async {
@@ -100,7 +142,7 @@ class CadastroController extends BlocBase {
   }
 
   void atualizarDados(SwiperController sc, BuildContext context,
-      Endereco endereco, int behaviour) {
+   int behaviour) {
     outIsPrestadorSelected.first.then((isPrestador) {
       outIsMale.first.then((isMale) async {
         if (isPrestador != null || isMale || null) {
@@ -115,11 +157,25 @@ class CadastroController extends BlocBase {
             return;
           }
           Helper.localUser.isPrestador = isPrestador;
-          Helper.localUser.genero = isMale ? 'Masculino' : 'Feminino';
+
           Helper.localUser.celular = telefone;
           Helper.localUser.prestador = codigo;
           Helper.localUser.cpf = CPF;
-          Helper.localUser.endereco = endereco;
+
+
+
+          if(carro != null){
+            if(Helper.localUser.carros == null){
+              Helper.localUser.carros = new List<Carro>();
+            }
+            carro.created_at = DateTime.now();
+            carro.updated_at = DateTime.now();
+
+
+            Helper.localUser.carros.add(carro);
+
+          }
+
           if(documento != null){
             if(Helper.localUser.documentos ==null){
               Helper.localUser.documentos = new List<Documento>();
@@ -132,6 +188,9 @@ class CadastroController extends BlocBase {
             }
             Helper.localUser.documentos.add(documento);
           }
+
+
+
           Helper.localUser.data_nascimento = DateTime.utc(
               int.parse(datanascimento.split('/')[2]),
               int.parse(datanascimento.split('/')[1]),
@@ -149,7 +208,7 @@ class CadastroController extends BlocBase {
               print(
                   'AQUI IDADE DEMONIO ${Helper.localUser.data_nascimento.year - DateTime.now().year}');
               dToastTop(
-                  'Infelizmente você não tem a idade minima(12) para participar do autooh =/');
+                  'Infelizmente você não tem a idade minima(12) para participar do bocaboca =/');
               return;
             }
             if (DateTime.now().year - Helper.localUser.data_nascimento.year >
@@ -174,21 +233,16 @@ class CadastroController extends BlocBase {
                           .updateData(Helper.localUser.toJson());
 
                       print('CHEGOU AQUI BEHAVIOR ${behaviour}');
-                      if (behaviour == 0) {
-                        print(Helper.localUser.endereco);
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => CadastrarEstabelecimentoPage(
-                                estabelecimento: codigo)));
-                      }
+
 
                       if (behaviour == 1) {
-                        print('ESTROU AQUI DEMONIO');
+
                         print(Helper.localUser.endereco);
                         Prestador c = new Prestador(
                           updated_at: DateTime.now(),
                           created_at: DateTime.now(),
                           telefone: telefone,
-                          endereco: endereco,
+
                           isHerbalife: true,
                           usuario: Helper.localUser.id,
                           nome: Helper.localUser.nome,
@@ -242,6 +296,49 @@ class CadastroController extends BlocBase {
   void updateCPF(String cpf) {
     CPF = cpf;
     inCPF.add(CPF);
+  }
+  void updateBanco(String banco) {
+    conta_bancaria = banco;
+    inContaBancaria.add(conta_bancaria);
+  }
+
+  void updateNumeroConta(String numero) {
+    numero_conta = numero;
+    inNumeroConta.add(numero_conta);
+  }
+
+  void updateAgencia(String agencias) {
+    agencia = agencias;
+    inAgencia.add(agencia);
+  }
+
+  Future<User> CriarCarros(
+      {Carro carros}) {
+    return carrosRef.add(carros.toJson()).then((v) {
+      carros.id = v.documentID;
+
+      carrosRef.document(carros.id).updateData(carro.toJson());
+      if (Helper.localUser != null) {
+        if (Helper.localUser.carros == null) {
+          Helper.localUser.carros = new List<Carro>();
+        }
+
+        Helper.localUser.carros.add(carros);
+        return userRef
+            .document(Helper.localUser.id)
+            .updateData(Helper.localUser.toJson())
+            .then((v) {
+          dToast('Item Salvo com sucesso!');
+          return Helper.localUser;
+        }).catchError((err) {
+          return null;
+        });
+      } else {
+        return null;
+      }
+    }).catchError((err) {
+      return null;
+    });
   }
 
   Future EnviarPush() {

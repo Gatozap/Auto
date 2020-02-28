@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:autooh/Objetos/News.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Objetos/News.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'BadgerController.dart';
@@ -18,8 +18,8 @@ import 'NewsController.dart';
 
 class NotificacoesHelper {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  String iconPath = 'autooh';
-  String largeIconPath = 'autooh';
+  String iconPath = 'bocaboca';
+  String largeIconPath = 'bocaboca';
 
   /*sendNotification(Map<String, dynamic> body) {
     print('Enviando Push');
@@ -51,7 +51,7 @@ class NotificacoesHelper {
       print(title.length);
       print('AQUI' + json.decode(msg['data']).runtimeType.toString());
       String senderpic = await _downloadAndSaveImage(
-          'http://autooh.com/img/logo/logo.png', 'autooh');
+          'http://bocaboca.com/img/logo/logo.png', 'bocaboca');
       var data = json.decode(msg['data']);
       int behaiviour;
       var sender;
@@ -97,7 +97,7 @@ class NotificacoesHelper {
       print(title.length);
       print('AQUI' + json.decode(msg['data']['data']).runtimeType.toString());
       String senderpic = await _downloadAndSaveImage(
-          'http://autooh.com/img/logo/logo.png', 'autooh');
+          'http://bocaboca.com/img/logo/logo.png', 'bocaboca');
       var data = json.decode(msg['data']['data']);
       int behaiviour;
       var sender;
@@ -218,7 +218,7 @@ class NotificacoesHelper {
 
     var messagingStyle = MessagingStyleInformation(lunchBot,
         groupConversation: true,
-        conversationTitle: 'autooh',
+        conversationTitle: 'bocaboca',
         htmlFormatContent: true,
         htmlFormatTitle: true,
         messages: messages);
@@ -229,7 +229,7 @@ class NotificacoesHelper {
         largeIconBitmapSource: BitmapSource.FilePath,
         importance: Importance(5),
         largeIcon: senderpic,
-        icon: 'autooh',
+        icon: 'bocaboca',
         color: Colors.white,
         style: AndroidNotificationStyle.Messaging,
         styleInformation: messagingStyle);

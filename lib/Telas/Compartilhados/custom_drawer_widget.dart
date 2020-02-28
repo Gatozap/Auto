@@ -1,20 +1,28 @@
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Card/cartoes_page.dart';
-import 'package:autooh/Telas/Marketplace/Pedidos/PedidosPage.dart';
-import 'package:autooh/Telas/Perfil/EditarPerfilPage.dart';
-import 'package:autooh/Telas/Perfil/PerfilController.dart';
-import 'package:autooh/Telas/Perfil/PerfilVistoPage.dart';
+import 'package:bocaboca/Objetos/Campanha.dart';
+import 'package:bocaboca/Objetos/Carro.dart';
+import 'package:bocaboca/Objetos/Corrida.dart';
+import 'package:bocaboca/Objetos/Distancia.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Admin/AdminPage.dart';
+import 'package:bocaboca/Telas/Card/cartoes_page.dart';
+import 'package:bocaboca/Telas/Carro/CadastrarNovoCarroPage.dart';
+import 'package:bocaboca/Telas/Marketplace/Pedidos/PedidosPage.dart';
+import 'package:bocaboca/Telas/Carro/EditarCarroPage.dart';
+import 'package:bocaboca/Telas/Perfil/EditarPerfilPage.dart';
+import 'package:bocaboca/Telas/Carro/ListaCarroPage.dart';
+import 'package:bocaboca/Telas/Perfil/PerfilController.dart';
+import 'package:bocaboca/Telas/Perfil/PerfilVistoPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Telas/Login/Login.dart';
-import 'package:autooh/Telas/Versao/VersaoPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Telas/Login/Login.dart';
+import 'package:bocaboca/Telas/Versao/VersaoPage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CustomDrawerWidget extends StatefulWidget {
@@ -23,7 +31,11 @@ class CustomDrawerWidget extends StatefulWidget {
     return new CustomDrawerWidgetState();
   }
     User user;
-  CustomDrawerWidget({this.user});
+  Carro carro;
+  Campanha campanha;
+  Distancia distancia;
+  Corrida corrida;
+  CustomDrawerWidget({this.user, this.carro, this.campanha, this.corrida, this.distancia});
 
 }
 PerfilController pfcontroller;
@@ -48,11 +60,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            PerfilVistoPage(user: Helper.localUser)));
-                  },
+
                   child: Row(
                     children: <Widget>[
                       CircleAvatar(
@@ -108,92 +116,35 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
-                separator(context),
-                SizedBox(
-                  height: 8,
-                ),
-                Helper.localUser.isPrestador == true
-                    ? hText(
-                    'Você é Prestador de serviços', context,color: Colors.white, size: 45 )
-                    : menuButton(context, 'Desejo me Tornar Prestador',
-                    Icons.assignment_ind, true, () {
-                      showDialog(
-                          context: context,
-                          barrierDismissible: true,
-                          builder: (context) {
 
-                            return AlertDialog(
-                              content: Container(
-                                color: Colors.white,
-                                width: getLargura(context),
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    hText(
-                                      'Deseja tornar Prestador do Autooh? Caso sim não poderá voltar a ser cliente com este perfil',
-                                      context,
-                                    ),
-                                    Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          defaultActionButton('Não', context,
-                                                  () {
-                                                Navigator.of(context).pop();
-                                              },  icon: null),
-                                          defaultActionButton('Sim', context,
-                                                  () {
-                                                widget.user.isPrestador = true;
-                                                pfcontroller
-                                                    .updateUser(widget.user)
-                                                    .then((v) {
-                                                  if (v ==
-                                                      'Atualizado com sucesso!') {
-                                                    dToast(
-                                                        'É necessário você anexar os documentos para a verificação da veracidade.\n Toque no botão Anexar Documentos', timeInSecForIoss: 10);
-                                                  } else {
-                                                    dToast(
-                                                        'Dado atualizados com sucesso!');
-                                                  }
-                                                });
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditarPerfilPage(
-                                                              user: Helper
-                                                                  .localUser,
-                                                            )));
-
-
-                                              }, icon: null)
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    }),
                 menuButton(context, 'Editar Perfil', Icons.person, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => EditarPerfilPage(
                             user: Helper.localUser,
                           )));
                 }),
-                menuButton(context, 'Meus Cartões', MdiIcons.creditCard, true,
-                    () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => CartoesPage()));
+                menuButton(context, 'Editar Meus Carros', Icons.directions_car, true, () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ListaCarroPage(
+                       carro: widget.carro
+                      )));
+                }),
+                menuButton(context, 'Cadastrar Novos Carros', Icons.directions_car, true, () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CadastrarNovoCarroPage(
+                          carro: widget.carro
+                      )));
                 }),
 
-                menuButton(context, 'Meus Pedidos', Icons.shopping_cart, true,
-                    () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => PedidosPage()));
-                }),
+                Helper.localUser.permissao == 10 ?menuButton(context, 'Painel do Administrador', Icons.person, true, () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AdminPage(
+                        user: widget.user, campanha: widget.campanha, carro: widget.carro, corrida: widget.corrida, distancia: widget.distancia,
+                      )));
+                }): Container(),
+
+
+
                 menuButton(context, 'Sair', Icons.exit_to_app, true, () {
                   doLogout(context);
                 }),

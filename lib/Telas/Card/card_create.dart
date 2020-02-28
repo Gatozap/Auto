@@ -4,11 +4,11 @@ import 'package:flare_checkbox/flare_checkbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:autooh/Helpers/Formatter.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/ShortStreamBuilder.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
+import 'package:bocaboca/Helpers/Formatter.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/ShortStreamBuilder.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
 
 import 'card_back.dart';
 import 'card_color.dart';

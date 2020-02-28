@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-import 'package:autooh/Helpers/DiceKeyboard.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Objetos/Sala.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Helpers/DiceKeyboard.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Sala.dart';
+import 'package:bocaboca/Objetos/User.dart';
 
 class DicesWidget {
 

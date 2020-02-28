@@ -1,15 +1,15 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Helpers/ShortStreamBuilder.dart';
-import 'package:autooh/Helpers/Steper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/ProdutoPedido.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Marketplace/PagamentoPage/PagamentoPage.dart';
-import 'package:autooh/Telas/Marketplace/Produto/ProdutoGeneralController.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/ShortStreamBuilder.dart';
+import 'package:bocaboca/Helpers/Steper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/ProdutoPedido.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Marketplace/PagamentoPage/PagamentoPage.dart';
+import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoGeneralController.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 

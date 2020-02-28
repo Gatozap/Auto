@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Instagram.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Instagram.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginController implements BlocBase {

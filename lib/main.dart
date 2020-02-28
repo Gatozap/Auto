@@ -6,20 +6,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Home/Home.dart';
-import 'package:autooh/Telas/Login/Login.dart';
-import 'package:autooh/Telas/Login/LoginEmail/CadastroEmail/cadastroemail.dart';
-import 'package:autooh/Telas/Login/LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
-import 'package:autooh/Telas/Login/LoginEmail/LoginEmail.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Home/Home.dart';
+import 'package:bocaboca/Telas/Login/Login.dart';
+import 'package:bocaboca/Telas/Login/LoginEmail/CadastroEmail/cadastroemail.dart';
+import 'package:bocaboca/Telas/Login/LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
+import 'package:bocaboca/Telas/Login/LoginEmail/LoginEmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'BlocCentral/Racing/navigation_controller.dart';
 import 'Helpers/Cielo/src/Environment.dart';
 import 'Helpers/Cielo/src/Merchant.dart';
 import 'Helpers/Cielo/src/cielo_ecommerce.dart';
@@ -31,8 +33,10 @@ import 'Telas/Cadastro/CadastroPage.dart';
 import 'Telas/Compartilhados/WaitScreen.dart';
 import 'Telas/Intro/IntroPage.dart';
 
+RacingController rc;
+FirebaseDatabase database;
 String notificationUrl =
-    'https://us-central1-autooh.cloudfunctions.net/sendNotification';
+    'https://us-central1-bocaboca.cloudfunctions.net/sendNotification';
 //TODO FAzer CLOUD FUNCTIONS
 
 Future main() async {
@@ -52,19 +56,19 @@ Future main() async {
   //https://developercielo.github.io/Webservice-3.0/#integração-webservice-3.0
   Helper.cielo = cielo;
   final FirebaseApp app = await FirebaseApp.configure(
-    name: 'autooh',
+    name: 'db2',
     options: new FirebaseOptions(
       googleAppID: Platform.isIOS
-          ? '1:623468197680:ios:09eca9f9d4cca36b'
-          : '1:623468197680:android:09eca9f9d4cca36b',
-      gcmSenderID: '623468197680',
-      apiKey: 'AIzaSyDnts2EFi9ERUTeGjjYK0fvKwJ62aDcVTY',
-      projectID: 'novo-boca-a-boca',
-      storageBucket: 'novo-boca-a-boca.appspot.com',
+          ? '1:833154723346:android:ec4788d0894308c7b9f2cb'
+          : '1:833154723346:android:ec4788d0894308c7b9f2cb',
+      gcmSenderID: '833154723346',
+      apiKey: 'AIzaSyC1TP3_Egip9wBhskTz2_tNT8sS6enrDNw',
+      projectID: 'avanticar-34239',
+      storageBucket: 'avanticar-34239.appspot.com',
       clientID: Platform.isIOS
-          ? '623468197680-1r719v3451iimn9r8tj09uvhpvjhe060.apps.googleusercontent.com'
-          : '623468197680-nnrtliq5fogfucn663942n5a3c6a73l5.apps.googleusercontent.com',
-      bundleID: 'com.view.autooh',
+          ? '833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com'
+          : '833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com',
+      bundleID: 'br.com.avanti.divulcars',
     ),
   );
   var firestore = new Firestore(app: app);
@@ -162,7 +166,7 @@ class _MyAppState extends State<MyApp> {
         [SystemUiOverlay.bottom, SystemUiOverlay.top]);
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     var initializationSettingsAndroid =
-        new AndroidInitializationSettings('autooh');
+        new AndroidInitializationSettings('bocaboca');
     var initializationSettingsIOS = new IOSInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
@@ -229,7 +233,7 @@ class _MyAppState extends State<MyApp> {
     Helper.analytics.logAppOpen();
     return MaterialApp(
         navigatorKey: MyApp.navKey,
-        title: 'autooh',
+        title: 'Autooh',
         /*localizationsDelegates: [
           // ... app-specific localization delegate[s] here
           GlobalMaterialLocalizations.delegate,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/CieloController.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Pagamento.dart';
-import 'package:autooh/Telas/Marketplace/Carrinho/CarrinhoDetails/ProdutoPedidoItem.dart';
-import 'package:autooh/Telas/Marketplace/Pacotes/PacoteItem.dart';
+import 'package:bocaboca/Helpers/CieloController.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Pagamento.dart';
+import 'package:bocaboca/Telas/Marketplace/Carrinho/CarrinhoDetails/ProdutoPedidoItem.dart';
+import 'package:bocaboca/Telas/Marketplace/Pacotes/PacoteItem.dart';
 
 class PedidoPage extends StatefulWidget {
   Pagamento p;

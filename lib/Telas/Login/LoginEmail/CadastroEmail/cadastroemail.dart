@@ -1,14 +1,15 @@
-import 'package:autooh/Telas/Cadastro/CadastroPage.dart';
+import 'package:bocaboca/Telas/Cadastro/CadastroController.dart';
+import 'package:bocaboca/Telas/Cadastro/CadastroPage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
-import 'package:autooh/Telas/Login/LoginController.dart';
-import 'package:autooh/Telas/Login/LoginEmail/CadastroEmail/cadastroemailController.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
+import 'package:bocaboca/Telas/Login/LoginController.dart';
+import 'package:bocaboca/Telas/Login/LoginEmail/CadastroEmail/cadastroemailController.dart';
 
 import '../../PoliticaPage.dart';
 import '../../TermosPage.dart';
@@ -55,6 +56,8 @@ class _CadastroEmailState extends State<CadastroEmail> {
   var controllerEndereco = new TextEditingController(text: '');
 
   var controllerBairro = new TextEditingController(text: '');
+
+  CadastroController cc = new CadastroController();
 
   bool isPressed = false;
 
@@ -244,7 +247,7 @@ class _CadastroEmailState extends State<CadastroEmail> {
                         color: Colors.black,
                         width: 1.0,
                         style: BorderStyle.solid)),*/
-                hintText: 'contato@autooh.net',
+                hintText: 'contato@hotmail.net',
                 labelText: 'E-mail',
                 hintStyle: TextStyle(
                     fontSize: 14.0,
@@ -330,6 +333,7 @@ class _CadastroEmailState extends State<CadastroEmail> {
                     fontStyle: FontStyle.italic)),
           ),
         ),*/
+
         new Padding(
           padding: ei,
           child: TextFormField(
@@ -368,6 +372,7 @@ class _CadastroEmailState extends State<CadastroEmail> {
                     fontStyle: FontStyle.italic)),
           ),
         ),
+
         new Padding(
           padding: ei,
           child: TextFormField(

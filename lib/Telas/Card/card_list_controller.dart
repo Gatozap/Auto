@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Objetos/Cartao.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Cartao.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CardListController implements BlocBase {

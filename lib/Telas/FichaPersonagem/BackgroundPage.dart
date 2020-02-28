@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Objetos/Personagem.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
 
 import 'PericiasPage.dart';
 

@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Sala.dart';
-import 'package:autooh/Telas/Grupo/Chat/CriarGrupo/CriarGrupoPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Sala.dart';
+import 'package:bocaboca/Telas/Grupo/Chat/CriarGrupo/CriarGrupoPage.dart';
 import 'list_grupo_controller.dart';
 
 class ListGrupoPage extends StatefulWidget {

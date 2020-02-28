@@ -6,10 +6,10 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Pacote.dart';
-import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Pacote.dart';
+import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:short_stream_builder/short_stream_builder.dart';
 
 import '../../../main.dart';

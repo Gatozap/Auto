@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Objetos/Personagem.dart';
-import 'package:autooh/Telas/Dice/DiceWidget.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
+import 'package:bocaboca/Telas/Dice/DiceWidget.dart';
 
 class TutorialMacroPage extends StatefulWidget {
   Personagem personagem;

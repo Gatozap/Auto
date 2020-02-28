@@ -1,5 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:rxdart/subjects.dart';
 
 class LoginEmailController implements BlocBase {

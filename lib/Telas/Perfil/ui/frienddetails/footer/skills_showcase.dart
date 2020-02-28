@@ -1,12 +1,12 @@
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/ShortStreamBuilder.dart';
-import 'package:autooh/Objetos/Pacote.dart';
-import 'package:autooh/Objetos/Produto.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Marketplace/Pacotes/PacoteItem.dart';
-import 'package:autooh/Telas/Marketplace/Pacotes/PacotesListController.dart';
-import 'package:autooh/Telas/Marketplace/Produto/ProdutoList/ProdutoItem.dart';
-import 'package:autooh/Telas/Marketplace/Produto/ProdutoList/ProdutoListController.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/ShortStreamBuilder.dart';
+import 'package:bocaboca/Objetos/Pacote.dart';
+import 'package:bocaboca/Objetos/Produto.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Marketplace/Pacotes/PacoteItem.dart';
+import 'package:bocaboca/Telas/Marketplace/Pacotes/PacotesListController.dart';
+import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoList/ProdutoItem.dart';
+import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoList/ProdutoListController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 

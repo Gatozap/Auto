@@ -1,8 +1,8 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/ShortStreamBuilder.dart';
-import 'package:autooh/Objetos/Cartao.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/ShortStreamBuilder.dart';
+import 'package:bocaboca/Objetos/Cartao.dart';
 
 import 'card_chip.dart';
 import 'card_color.dart';

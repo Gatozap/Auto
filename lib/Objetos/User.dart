@@ -4,9 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:autooh/Helpers/Styles.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'Carro.dart';
 import 'Cartao.dart';
 import 'Documento.dart';
 import 'Endereco.dart';
@@ -23,6 +24,7 @@ class User {
   String senha;
   String user_responsavel;
   int strike;
+  String saldo;
   String identidade;
   String identidade_expedidor;
   DateTime identidade_data_expedicao;
@@ -46,6 +48,18 @@ class User {
   Endereco endereco;
   bool isAniversario;
  String grupo;
+ String tipo_conta;
+   int kmmin;
+   int kmmax;
+  String conta_bancaria;
+  List<Carro> carros;
+  String telefone;
+   String agencia;
+   String numero_conta;
+  bool isBanido;
+  bool atende_festa;
+  bool atende_fds ;
+
  List<Documento> documentos;
 
   var example = {
@@ -114,8 +128,10 @@ class User {
       this.celular,
       this.cpf,
       this.email,
-      this.senha,
-      this.strike,
+        this.saldo,
+        this.kmmin, this.kmmax,
+      this.senha,this.tipo_conta,
+      this.strike,this.numero_conta,this.agencia,
       this.identidade,
       this.identidade_expedidor,
       this.identidade_data_expedicao,
@@ -139,17 +155,44 @@ class User {
         this.grupo,
       this.endereco,
         this.documentos,
+        this.carros,this.telefone,
+
+this.atende_fds,
+        this.atende_festa,
+        this.conta_bancaria,
+        this.isEmailVerified,
       this.foto}) {
     if (this.data_nascimento != null) {
       DateTime hoje = DateTime.now();
       isAniversario = hoje.day == this.data_nascimento.day &&
           hoje.month == this.data_nascimento.month;
     }
+    if (this.atende_fds == null){
+      this.atende_fds == false;
+    }
+    if (this.atende_festa == null){
+    this.atende_festa == false;
+    }
+
+    
   }
 
   User.fromJson(j) {
     this.id = j['id'] == null ? null : j['id'];
+    this.saldo = j['saldo'] == null ? null : j['id'];
+    this.tipo_conta = j['tipo_conta'] == null ? null : j['tipo_conta'];
+    this.kmmin = j['kmmin'] == null ? null : j['kmmin'];
+    this.kmmax = j['kmmax'] == null ? null : j['kmmax'];
+    this.telefone = j['telefone'] == null ? null : j['telefone'];
+    this.conta_bancaria = j['conta_bancaria'] == null ? null : j['conta_bancaria'];
+    this.atende_fds = j['atende_fds'] == null ? false : j['atende_fds'];
+    this.atende_festa = j['atende_festa'] == null ? false : j['atende_festa'];
+    carros = j['carros'] == null
+        ? null
+        : getCarros(json.decode(j['carros']));
     this.nome = j['nome'] == null ? null : j['nome'];
+    this.agencia = j['agencia'] == null ? null : j['agencia'];
+    this.numero_conta = j['numero_conta'] == null ? null : j['numero_conta'];
     this.isEmpresario = j['isEmpresario'] == null? false: j['isEmpresario'];
     this.data_nascimento = j['data_nascimento'] == null
         ? null
@@ -201,6 +244,7 @@ class User {
         j['endereco'] == null ? null : Endereco.fromJson(j['endereco']);
     this.foto = j['foto'] == null ? null : j['foto'];
     this.grupo = j['grupo'] == null? '':j['grupo'];
+    
     if (data_nascimento != null) {
       DateTime hoje = DateTime.now();
       isAniversario = hoje.day == this.data_nascimento.day &&
@@ -210,9 +254,20 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-
+    data['carros']= json.encode(carros);
     data['id'] = this.id;
+    data['telefone'] = this.telefone;
+    data['tipo_conta'] = this.tipo_conta;
+    data['kmmin'] = this.kmmin;
+    data['kmmax'] = this.kmmax;
+    data['saldo'] = this.saldo;
     data['nome'] = this.nome;
+    data['numero_conta'] = this.numero_conta;
+    data['agencia'] = this.agencia;
+    data['atende_festa'] = this.atende_festa == null? false: this.atende_festa;
+    data['atende_fds'] = this.atende_fds == null? false: this.atende_fds;
+    data['conta_bancaria'] = this.conta_bancaria;
+    data['isEmailVerified'] = this.isEmailVerified;
     data['data_nascimento'] = this.data_nascimento != null
         ? this.data_nascimento.millisecondsSinceEpoch
         : null;
@@ -252,11 +307,22 @@ class User {
     return data;
   }
 
+
   @override
   String toString() {
-    return 'User{id: $id,isPrestador: $isPrestador genero: $genero, nome: $nome, data_nascimento: $data_nascimento, celular: $celular, cpf: $cpf, email: $email, senha: $senha, strike: $strike, identidade: $identidade, identidade_expedidor: $identidade_expedidor, identidade_data_expedicao: $identidade_data_expedicao, permissao: $permissao, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, remember_token: $remember_token, isEmailVerified: $isEmailVerified, tipo: $tipo, foto: $foto}';
+    return 'User{id: $id, nome: $nome, data_nascimento: $data_nascimento, celular: $celular, cpf: $cpf, isGroupAdm: $isGroupAdm, email: $email, responsavel: $responsavel, senha: $senha, user_responsavel: $user_responsavel, strike: $strike, identidade: $identidade, identidade_expedidor: $identidade_expedidor, identidade_data_expedicao: $identidade_data_expedicao, permissao: $permissao, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, cartoes: $cartoes, antecedentes: $antecedentes, antecendete_verificados_em: $antecendete_verificados_em, remember_token: $remember_token, genero: $genero, isPrestador: $isPrestador, isEmailVerified: $isEmailVerified, isEmpresario: $isEmpresario, prestador: $prestador, tipo: $tipo, isAdm: $isAdm, foto: $foto, isAlowed: $isAlowed, endereco: $endereco, isAniversario: $isAniversario, grupo: $grupo, tipo_conta: $tipo_conta, kmmin: $kmmin, kmmax: $kmmax, conta_bancaria: $conta_bancaria, carros: $carros, telefone: $telefone, agencia: $agencia, numero_conta: $numero_conta, isBanido: $isBanido, atende_festa: $atende_festa, atende_fds: $atende_fds, documentos: $documentos, example: $example}';
   }
 
+  static getCarros(decoded) {
+    List<Carro> carros = new List();
+    if (decoded == null) {
+      return null;
+    }
+    for (var i in decoded) {
+      carros.add(Carro.fromJson(i));
+    }
+    return carros;
+  }
   void Contatar(context) {
     showCupertinoDialog<void>(
       context: context,

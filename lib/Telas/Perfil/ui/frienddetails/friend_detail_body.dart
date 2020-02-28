@@ -1,8 +1,8 @@
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Documento.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Perfil/PerfilVistoPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Documento.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Perfil/PerfilVistoPage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -99,7 +99,7 @@ class FriendDetailBody extends StatelessWidget {
           child: new Row(
             children: <Widget>[
               user.isPrestador == true?_createCircleBadge(Icons.store, Colors.white, '${user.nome} É Prestador de serviço'): Container(),
-              user.antecedentes == null?  Container(): user.antecedentes == true? _createCircleBadge(MdiIcons.redhat, Colors.white, 'Possui antecedentes criminais'):_createCircleBadge(MdiIcons.redhat, Colors.white, '${user.nome} verificado pela equipe Autooh') ,
+              user.antecedentes == null?  Container(): user.antecedentes == true? _createCircleBadge(MdiIcons.redhat, Colors.white, 'Possui antecedentes criminais'):_createCircleBadge(MdiIcons.redhat, Colors.white, '${user.nome} verificado pela equipe Boca a Boca') ,
               isValidado?_createCircleBadge(Icons.backup, Colors.white, 'Documentos de ${user.nome} são válidos e autênticos'): Container(),
             ],
           ),

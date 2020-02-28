@@ -1,8 +1,8 @@
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/PhotoScroller.dart';
-import 'package:autooh/Objetos/Documento.dart';
-import 'package:autooh/Objetos/Produto.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/PhotoScroller.dart';
+import 'package:bocaboca/Objetos/Documento.dart';
+import 'package:bocaboca/Objetos/Produto.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.view.autooh"
+    package="br.com.avanti.divulcars"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.camera" />
@@ -20,7 +20,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Autooh"
+        android:label="Boca a Boca"
 
         android:icon="@mipmap/ic_launcher">
         <activity

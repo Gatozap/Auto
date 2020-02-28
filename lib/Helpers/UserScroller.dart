@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'References.dart';

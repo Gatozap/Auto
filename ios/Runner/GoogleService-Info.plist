@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.view.autooh</string>
+	<string>br.com.avanti.divulcars</string>
 	<key>PROJECT_ID</key>
 	<string>novo-boca-a-boca</string>
 	<key>STORAGE_BUCKET</key>

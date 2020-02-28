@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:autooh/Objetos/Cartao.dart';
+import 'package:bocaboca/Objetos/Cartao.dart';
 
 import 'card_chip.dart';
 import 'card_color.dart';

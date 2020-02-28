@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:http/http.dart' as http;
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Objetos/Notificacao.dart';
-import 'package:autooh/Objetos/Pacote.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Notificacao.dart';
+import 'package:bocaboca/Objetos/Pacote.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../main.dart';

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:autooh/Helpers/References.dart';
+import 'package:bocaboca/Helpers/References.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Objetos/Prestador.dart';
-import 'package:autooh/Objetos/Endereco.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Prestador.dart';
+import 'package:bocaboca/Objetos/Endereco.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AddEnderecoController implements BlocBase {

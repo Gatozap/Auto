@@ -9,12 +9,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Personagem.dart';
-import 'package:autooh/Telas/Dice/DiceWidget.dart';
-import 'package:autooh/Telas/Macros/MacroPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
+import 'package:bocaboca/Telas/Dice/DiceWidget.dart';
+import 'package:bocaboca/Telas/Macros/MacroPage.dart';
 
 import 'BackgroundPage.dart';
 

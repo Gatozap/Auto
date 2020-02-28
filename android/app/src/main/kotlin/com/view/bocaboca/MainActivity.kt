@@ -1,4 +1,4 @@
-package com.view.autooh
+package br.com.avanti.divulcars
 
 import android.os.Bundle
 

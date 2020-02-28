@@ -1,11 +1,11 @@
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Pacote.dart';
-import 'package:autooh/Telas/Marketplace/PagamentoPage/PagamentoPacotePage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Pacote.dart';
+import 'package:bocaboca/Telas/Marketplace/PagamentoPage/PagamentoPacotePage.dart';
 
 class PacoteItem extends StatefulWidget {
   Pacote p;

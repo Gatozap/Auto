@@ -20,8 +20,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:autooh/Objetos/Personagem.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
@@ -152,7 +152,7 @@ void whatsAppOpen() async {
   }
 }
 
-Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria}) {
+Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria }) {
 
     return GestureDetector(
       onTap: onTap,
@@ -860,13 +860,7 @@ Widget Loading({
         if (future.data != null) {
           return completed;
         }
-        return Container(
-            width: largura,
-            height: altura,
-            child: new FlareActor("assets/dice20.flr",
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                animation: "Spin20"));
+   
       },
       future: Future.delayed(Duration(seconds: duration)).then((v) {
         return true;

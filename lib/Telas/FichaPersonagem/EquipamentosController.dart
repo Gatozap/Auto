@@ -1,8 +1,8 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Objetos/Equipamento.dart';
-import 'package:autooh/Objetos/Personagem.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Equipamento.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
 import 'package:rxdart/subjects.dart';
 
 class EquipamentosController extends BlocBase {

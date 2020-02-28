@@ -1,5 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:autooh/Objetos/ProdutoPedido.dart';
+import 'package:bocaboca/Objetos/ProdutoPedido.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CarrinhoDetailsController extends BlocBase {

@@ -1,17 +1,18 @@
+import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Equipamento.dart';
-import 'package:autooh/Objetos/Personagem.dart';
-import 'package:autooh/Telas/FichaPersonagem/BackgroundPage.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Equipamento.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
+import 'package:bocaboca/Telas/FichaPersonagem/BackgroundPage.dart';
 
-import 'package:autooh/Telas/FichaPersonagem/EquiparPage.dart';
-import 'package:autooh/Telas/FichaPersonagem/FichaPersonagemPage.dart';
-import 'package:autooh/Telas/FichaPersonagem/PericiasPage.dart';
-import 'package:autooh/Telas/FichaPersonagem/TalentoPage.dart';
+import 'package:bocaboca/Telas/FichaPersonagem/EquiparPage.dart';
+import 'package:bocaboca/Telas/FichaPersonagem/FichaPersonagemPage.dart';
+import 'package:bocaboca/Telas/FichaPersonagem/PericiasPage.dart';
+import 'package:bocaboca/Telas/FichaPersonagem/TalentoPage.dart';
 
 import 'PersonagensController.dart';
 
@@ -51,6 +52,7 @@ class PersonagensListaPageState extends State<PersonagensListaPage> {
           children: <Widget>[
             StreamBuilder<List<Personagem>>(
               builder: (context, AsyncSnapshot<List<Personagem>> snapshot) {
+
                 if (snapshot.data == null) {
                   return Loading(completed: Text('Erro ao Buscar Personagem'));
                 }

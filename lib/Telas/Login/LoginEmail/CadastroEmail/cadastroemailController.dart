@@ -1,8 +1,8 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:autooh/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:rxdart/subjects.dart';
 
 class CadastroEmailController implements BlocBase {

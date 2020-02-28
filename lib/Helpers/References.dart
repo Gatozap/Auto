@@ -8,6 +8,10 @@ CollectionReference gruposRef = Firestore.instance.collection('Grupo').reference
 CollectionReference personagensRef =
     Firestore.instance.collection('Personagens').reference();
 
+
+CollectionReference carrosRef =
+Firestore.instance.collection('Carro').reference();
+
 CollectionReference periciasRef =
     Firestore.instance.collection('Pericias').reference();
 

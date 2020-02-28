@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:autooh/Objetos/News.dart';
+import 'package:bocaboca/Objetos/News.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'Helper.dart';

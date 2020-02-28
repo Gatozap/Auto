@@ -1,6 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Styles.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
 
 import 'card_controller.dart';
 import 'card_front.dart';

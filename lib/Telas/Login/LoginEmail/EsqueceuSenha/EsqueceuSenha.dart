@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
 
 class EsqueceuSenha extends StatelessWidget {
   Color pageColor = corPrimaria;
@@ -47,7 +47,7 @@ class EsqueceuSenha extends StatelessWidget {
                           color: Colors.black,
                           width: 1.0,
                           style: BorderStyle.solid)),
-                  hintText: 'nutrinho@autooh.com',
+                  hintText: 'nutrinho@bocaboca.com',
                   labelText: 'E-mail',
                   hintStyle: TextStyle(
                       fontSize: 14.0,

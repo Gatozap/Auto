@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Objetos/Comentario.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Comentario.dart';
 
 import 'Endereco.dart';
 

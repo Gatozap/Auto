@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.view.autooh"
+        applicationId "br.com.avanti.divulcars"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()

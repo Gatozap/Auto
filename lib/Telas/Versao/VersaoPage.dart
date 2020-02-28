@@ -1,6 +1,6 @@
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:autooh/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:get_version/get_version.dart';
 import 'package:flutter/services.dart';
 
@@ -93,7 +93,7 @@ class _VersaoPageState extends State<VersaoPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: myAppBar('autooh', context, showBack: true),
+      appBar: myAppBar('bocaboca', context, showBack: true),
       body: new SingleChildScrollView(
         child: new ListBody(
           children: <Widget>[

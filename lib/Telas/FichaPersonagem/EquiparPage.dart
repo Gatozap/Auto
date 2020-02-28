@@ -8,17 +8,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:autooh/Helpers/DiceKeyboard.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/ListaEquipamentos.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Equipamento.dart';
-import 'package:autooh/Objetos/Personagem.dart';
-import 'package:autooh/Telas/Personagens/PersonagensController.dart';
+import 'package:bocaboca/Helpers/DiceKeyboard.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/ListaEquipamentos.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Equipamento.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
+import 'package:bocaboca/Telas/Personagens/PersonagensController.dart';
 
 import 'EquipamentosController.dart';
 

@@ -1,6 +1,6 @@
-import 'package:autooh/Objetos/Bonus.dart';
-import 'package:autooh/Objetos/Equipamento.dart';
-import 'package:autooh/Objetos/Personagem.dart';
+import 'package:bocaboca/Objetos/Bonus.dart';
+import 'package:bocaboca/Objetos/Equipamento.dart';
+import 'package:bocaboca/Objetos/Personagem.dart';
 
 Personagem p;
 List<Equipamento> ListaEquipamentos = [

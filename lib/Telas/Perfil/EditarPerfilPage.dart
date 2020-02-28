@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/PhotoScroller.dart';
-import 'package:autooh/Helpers/Rekonizer.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Documento.dart';
-import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Cadastro/CadastroController.dart';
-import 'package:autooh/Telas/Perfil/PerfilController.dart';
-import 'package:autooh/Telas/Perfil/addEndereco.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/PhotoScroller.dart';
+import 'package:bocaboca/Helpers/Rekonizer.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Documento.dart';
+import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Cadastro/CadastroController.dart';
+import 'package:bocaboca/Telas/Perfil/PerfilController.dart';
+import 'package:bocaboca/Telas/Perfil/addEndereco.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -30,8 +30,10 @@ class EditarPerfilPage extends StatefulWidget {
 }
 
 class _EditarPerfilPageState extends State<EditarPerfilPage> {
+  CadastroController cc = new CadastroController();
   var controllerTelefone =
       new MaskedTextController(text: '', mask: '(00) 0 0000-0000');
+  var controllerConta_bancaria = new TextEditingController(text: '');
   var controllerDataNascimento =
       new MaskedTextController(text: '', mask: '00/00/0000');
   var controllerDataExpedicao =
@@ -47,6 +49,11 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
   var controllerNumero = new TextEditingController(text: '');
   var controllerEmail = new TextEditingController(text: '');
   var controllerComplemento = new TextEditingController(text: '');
+  var controllerAgencia = new TextEditingController(text: '');
+  var controllerKmmin = new TextEditingController(text: '');
+  var controllerKmmax = new TextEditingController(text: '');
+
+  var controllerNumero_conta = new TextEditingController(text: '');
   PerfilController perfilController;
 
   bool isPressed = false;
@@ -92,6 +99,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                       controllerNome.text = u.nome;
                       controllerTelefone.text = u.celular;
                       controllerEmail.text = u.email;
+                      controllerConta_bancaria.text = u.conta_bancaria;
+                      controllerAgencia.text = u.agencia;
+                      controllerNumero_conta.text = u.numero_conta;
                       onLoad = false;
                     }
                     return SingleChildScrollView(
@@ -217,61 +227,118 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                       keyboardType: TextInputType.phone))
                             ],
                           ),
-                          TextFieldChange(
-                              'Endereço',
-                              u.endereco == null
-                                  ? ''
-                                  : '${u.endereco.numero} ${u.endereco.endereco}',
-                              () {
-                            print(
-                                'ENVIANDO A PORRA DO ENDEREÇO ${Helper.localUser.endereco.toString()}');
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => AddEndereco(
-                                      Helper.localUser.endereco,
-                                    )));
-                          }, context),
+                         Row(  mainAxisSize: MainAxisSize.max,
+                             mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[hText('Dados da sua conta Bancaria',
+                              context, size: 35)]),sb,
+
+                               Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+
+                                  Expanded(
+                                      child: DefaultField(
+                                          controller: controllerConta_bancaria,
+                                          hint: u.conta_bancaria,
+                                          context: context,
+                                          label: 'Conta Bancaria',
+                                          icon: MdiIcons.bank,
+                                          ))
+                                ],
+                              ),
+
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+
+                              Expanded(
+                                  child: DefaultField(
+                                    controller: controllerAgencia,
+                                    hint: u.agencia,
+                                    context: context,
+                                    label: 'Agência',
+                                    icon: MdiIcons.creditCard,
+                                  ))
+                            ],
+                          ),  Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+
+                              Expanded(
+                                  child: DefaultField(
+                                    controller: controllerNumero_conta,
+                                    hint: u.numero_conta,
+                                    context: context,
+                                    label: 'Número da Conta',
+                                    icon: MdiIcons.creditCard,
+                                  ))
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+
+                              Expanded(
+                                  child: DefaultField(
+                                    keyboardType:
+                                    TextInputType
+                                        .number,
+                                    controller: controllerKmmin,
+                                    hint: '${u.kmmin}',
+                                    context: context,
+                                    label: 'Quilometros percorridos no Mínimo',
+                                    icon: MdiIcons.run,
+                                  ))
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+
+                              Expanded(
+                                  child: DefaultField(
+                                    keyboardType:
+                                    TextInputType
+                                        .number,
+                                    controller: controllerKmmax,
+                                    hint: '${u.kmmax}',
+                                    context: context,
+                                    label: 'Quilometros percorridos Máximo',
+                                    icon: MdiIcons.run,
+                                  ))
+                            ],
+                          ),
+                           sb,
+                          StreamBuilder(
+                            stream: cc.outUser,
+                            builder: (context, snapshot) {
+                              return defaultCheckBox(
+                                  Helper.localUser.atende_fds, 'Atende Final de Semana', context, () {
+                                Helper.localUser.atende_fds = !Helper.localUser.atende_fds;
+                                cc.user = Helper.localUser;
+                                cc.inUser.add(cc.user);
+
+                              });
+                            }
+                          ),
                           sb,
-                          documentosWidget(u.documentos),sb,
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                hText('Anexe seus documentos para maior fidedignidade e segurança, evitando transtornos futuros', context),
-                                Container(
-                                    child:
+                          StreamBuilder(
+                            stream: cc.outUser,
+                            builder: (context, snapshot) {
+                              return defaultCheckBox(
+                                  Helper.localUser.atende_festa, 'Atende em Festas', context, () {
+                                Helper.localUser.atende_festa = !Helper.localUser.atende_festa;
+                                cc.user = Helper.localUser;
+                                cc.inUser.add(cc.user);
 
-                                    Helper.localUser.isPrestador ?defaultActionButton(
-                                        'Anexar Documento', context,
-                                            () async {
-                                              showDialog(context: context, builder: (context){
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(15.0),
-                                                  child: AlertDialog(
-
-                                                    title: hText("Selecione uma opção", context),
-
-                                                    content: SingleChildScrollView(child: ListBody(children: <Widget>[
-                                                      defaultActionButton('Galeria', context, (){
-                                                        getDocumento(u);
-                                                        Navigator.of(context).pop();
-                                                      }, icon: MdiIcons.face),sb,
-
-
-                                                      defaultActionButton('Camera', context, (){
-                                                            getDocumentoCamera(u);
-                                                            Navigator.of(context).pop();
-                                                      }, icon: MdiIcons.camera)
-                                                    ],),),),
-                                                );
-                                              }) ;
-
-                                        }, icon: null): Container()
-                                ),
-                              ],
-                            ),
-                          ),  Container(
+                              } );
+                            }
+                          ),
+                           Container(
 
 
                             child: defaultActionButton('Atualizar', context,
@@ -279,7 +346,12 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                   u.nome = controllerNome.text;
                                   u.celular = controllerTelefone.text;
                                   u.email = controllerEmail.text;
-
+                                  u.numero_conta = controllerNumero_conta.text
+                                  ;
+                                  u.agencia = controllerAgencia.text;
+                                  u.conta_bancaria = controllerConta_bancaria.text;
+                                  u.kmmin = int.parse(controllerKmmin.text);
+                                  u.kmmax = int.parse(controllerKmmax.text);
                                   u.updated_at = DateTime.now();
                                   onLoad = true;
                                   perfilController.updateUser(u).then((v) {

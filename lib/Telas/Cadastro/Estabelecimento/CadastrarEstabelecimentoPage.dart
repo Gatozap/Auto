@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:autooh/Helpers/Bancos.dart';
-import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Prestador.dart';
-import 'package:autooh/Objetos/Endereco.dart';
-import 'package:autooh/Telas/Dialogs/addEnderecoController.dart';
-import 'package:autooh/Telas/Home/Home.dart';
+import 'package:bocaboca/Helpers/Bancos.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Prestador.dart';
+import 'package:bocaboca/Objetos/Endereco.dart';
+import 'package:bocaboca/Telas/Dialogs/addEnderecoController.dart';
+import 'package:bocaboca/Telas/Home/Home.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cpf_cnpj_validator/cnpj_validator.dart';
@@ -338,7 +338,7 @@ class _CadastrarEstabelecimentoPageState
                             DefaultField(
                               icon: Icons.person,
                               enabled: true,
-                              hint: 'Espaço autooh',
+                              hint: 'Espaço bocaboca',
                               label: 'Nome do Espaço',
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -386,7 +386,7 @@ class _CadastrarEstabelecimentoPageState
                             DefaultField(
                               icon: Icons.email,
                               enabled: true,
-                              hint: 'contato@autooh.com',
+                              hint: 'contato@bocaboca.com',
                               label: 'E-mail do Espaço',
                               controller: controllerEmailClinica,
                               keyboardType: TextInputType.emailAddress,

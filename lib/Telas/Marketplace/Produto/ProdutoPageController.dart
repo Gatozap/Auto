@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Objetos/Produto.dart';
-import 'package:autooh/Objetos/User.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Produto.dart';
+import 'package:bocaboca/Objetos/User.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProdutoPageController extends BlocBase {
