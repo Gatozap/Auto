@@ -1,6 +1,13 @@
 import 'dart:io';
 
+import 'package:bocaboca/Helpers/Bairros.dart';
+import 'package:bocaboca/Helpers/DateSelector.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Zona.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:short_stream_builder/short_stream_builder.dart';
 import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Produto.dart';
@@ -16,45 +23,62 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class CriarCampanhaPage extends StatefulWidget {
 
   Campanha campanha;
-  CriarCampanhaPage({this.campanha});
+  Zona zonas;
+  CriarCampanhaPage({this.campanha, this.zonas});
+
 
   @override
   _CriarCampanhaPageState createState() {
     return _CriarCampanhaPageState();
   }
 }
+
+
 CampanhaController campanhaController;
 var controllerEmpresa = new TextEditingController(text: '');
+var controllerCNPJ = new MaskedTextController(text: '', mask: '00.000.000/0000-00');
+var controllerLimite = new TextEditingController(text: '');
 Campanha campanha;
+
+BasicDateTimeField datainiField = BasicDateTimeField(
+    label: 'Data de Início', icon: FontAwesomeIcons.solidCalendarPlus);
+BasicDateTimeField datafimField = BasicDateTimeField(
+    label: 'Data de Fim', icon: FontAwesomeIcons.solidCalendarPlus);
+
 class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
+
+    if (campanhaController == null) {
+      campanhaController = CampanhaController(campanha: widget.campanha);
+    }
+
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+
   }
+
 
   @override
   Widget build(BuildContext context) {
 
     print('aqui é campanha ${widget.campanha}');
-    if (campanhaController == null) {
-      campanhaController = CampanhaController(campanha: widget.campanha);
-    }
+
     // TODO: implement build
     return Scaffold(appBar: myAppBar('Criar Campanha', context, showBack: true),
 
     body:
 
-    Container(child: SingleChildScrollView(child: SSB(
-        isList: false,
+    Container(child: SingleChildScrollView(child: StreamBuilder(
+
       stream: campanhaController.outCampanha,
-        buildfunction: (context, AsyncSnapshot snap) {
+        builder: (context, AsyncSnapshot snap) {
 
                campanha = snap.data;
 
@@ -66,6 +90,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                 height: 200,
                 width: MediaQuery.of(context).size.width,
                 child: Stack(children: <Widget>[
+                  campanha != null?
                   campanha.fotos != null
                       ? campanha.fotos.length != 1
                       ? Swiper(
@@ -102,7 +127,9 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                   )
                       : Container(
                       child: Center(
-                          child:campanha.fotos[0]
+                          child:
+
+                          campanha.fotos[0]
                               .contains('http')
                               ? Image(
                             image:
@@ -113,6 +140,10 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                               : Image.file(
                               File(campanha.fotos[0]))))
                       : Image.asset(
+                    'assets/images/nutrannoLogo.png',
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                  )  : Image.asset(
                     'assets/images/nutrannoLogo.png',
                     height: 200,
                     width: MediaQuery.of(context).size.width,
@@ -143,6 +174,72 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                 keyboardType: TextInputType.text,
                 capitalization: TextCapitalization.words,
                 onSubmited: (s) {}),
+            DefaultField(
+                controller: controllerCNPJ,
+                hint: '00.000.000/0000-00',
+                context: context,
+                label: 'CNPJ',
+                icon: FontAwesomeIcons.atlas,
+                validator: (v) {},
+                keyboardType: TextInputType.number,
+
+                onSubmited: (s) {}),
+              datainiField,
+            datafimField,
+            DefaultField(
+                controller: controllerCNPJ,
+                hint: '100',
+                context: context,
+                label: 'Limite de Carros',
+                icon: FontAwesomeIcons.car,
+                validator: (v) {},
+                keyboardType: TextInputType.number,
+
+                onSubmited: (s) {}),
+                 sb,
+            hText('Zonas: ', context,
+                color: corPrimaria, size: 40),
+            sb,
+
+            FutureBuilder(
+
+              future: _getDropDownMenuItemsCampanha(),
+              builder: (context, snapshot) {
+                return snapshot.data == null? Container():DropdownButton(
+                  style: TextStyle(
+                    
+                      color: corPrimaria,
+                      fontSize: ScreenUtil.getInstance()
+                          .setSp(40),
+                      fontWeight: FontWeight.bold),
+                  icon: Icon(Icons.arrow_drop_down,
+                      color: corPrimaria),
+                  value: snapshot.data[0],
+                  items: snapshot.data == null? []:snapshot.data,
+                  onChanged: (value){
+
+                  },
+                );
+              }
+            ),
+
+            sb,
+
+            Container(child: defaultActionButton('Cadastrar Campanha', context, (){
+                 campanha.empresa = controllerEmpresa.text;
+                 campanha.cnpj = controllerCNPJ.text;
+                 campanha.dataini = datainiField.selectedDate;
+                 campanha.datafim = datafimField.selectedDate;
+                 campanha.limite = int.parse(controllerLimite.text);
+                 campanhasRef.document(campanha.id).updateData(campanha.toJson()).then((v
+                    
+                  ){
+                    dToast('Campanha Cadastrada com sucesso');
+                 });
+
+            }),)
+
+
           ],),),
         );
       }
@@ -199,6 +296,22 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
         ),
       );
     });
+  }
+
+
+
+
+  Future <List<DropdownMenuItem<Zona>>> _getDropDownMenuItemsCampanha() {
+  List<DropdownMenuItem<Zona>> items = List();
+
+  return zonasRef.getDocuments().then((v){
+  for(var d in v.documents){
+  Zona z = Zona.fromJson(d.data);
+  items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
+        print('aqui é a zona ${z}');
+  }
+  return items;
+  });
   }
 
 }

@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bocaboca/Helpers/Bancos.dart';
 import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Helpers/Rekonizer.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:googleapis/vision/v1.dart' as vision;
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -69,6 +71,9 @@ class _CadastroState extends State<Cadastro> {
   void initState() {
     _dropDownMenuItemsTipoConta = _getDropDownMenuItemsTipoConta();
     selectTipo = _dropDownMenuItemsTipoConta[0].value;
+     if(perfilController == null){
+       perfilController == PerfilController(widget.user);
+     }
     super.initState();
   }
 
@@ -81,6 +86,7 @@ class _CadastroState extends State<Cadastro> {
   Endereco ue;
   bool isPrestador;
   Prestador prestador;
+  Banco bancoSelecionado;
   bool isCadastrarPressed = false;
   var controllercpf =
       new MaskedTextController(text: '', mask: '000.000.000-00');
@@ -606,6 +612,7 @@ class _CadastroState extends State<Cadastro> {
                                             builder: (context, snapshot) {
                                               if (snapshot.data != null &&
                                                   controllercpf.text.isEmpty) {
+
                                                 controllercpf.text =
                                                     snapshot.data;
                                               }
@@ -716,7 +723,7 @@ class _CadastroState extends State<Cadastro> {
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             hText(
-                                                'Anexe seus Documentos para verificação de veracidade, contendo primeiro anexo a frente e segundo anexo o verso da sua documentação, em específico seu CPF. ',
+                                                'Anexe seu Documento CPF, para sistema preencher automaticamente o campo, porém você pode preencher manualmente o CPF. ',
                                                 context,
                                                 textaling: TextAlign.justify),
                                           ],
@@ -776,22 +783,29 @@ class _CadastroState extends State<Cadastro> {
                                     context),
                                 sb,
                                 sb,
-                                new Padding(
+                                Padding(
                                   padding: ei,
-                                  child: TextFormField(
-                                    controller: controllerConta_bancaria,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'É necessário preencher sua Conta Bancaria';
-                                      }
+                                  child: TypeAheadField(
+                                    textFieldConfiguration: TextFieldConfiguration(
+                                        controller: controllerConta_bancaria,
+                                        style: TextStyle(color: Colors.black),
+                                        decoration: DefaultInputDecoration(
+                                          context,
+                                            icon: MdiIcons.bank,
+                                            labelText: 'Banco',
+                                            hintText: 'Caixa Economica Federal')),
+                                    suggestionsCallback: (pattern) async {
+                                      return await Banco.getSuggestions(pattern);
                                     },
-                                    decoration: DefaultInputDecoration(
-                                      context,
-                                      icon: MdiIcons.creditCard,
-                                      hintText: 'Banco do Brasil',
-                                      labelText: 'Seu Banco',
-                                    ),
-                                    autovalidate: true,
+                                    itemBuilder: (context, suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion.nome),
+                                      );
+                                    },
+                                    onSuggestionSelected: (Banco suggestion) {
+                                      bancoSelecionado = suggestion;
+                                      controllerConta_bancaria.text = suggestion.nome;
+                                    },
                                   ),
                                 ),
                                 new Padding(
@@ -801,13 +815,15 @@ class _CadastroState extends State<Cadastro> {
                                     controller: controllerAgencia,
                                     validator: (value) {
                                       if (value.isEmpty) {
-                                        return 'É necessário preencher Agencia';
+                                        if(isCadastrarPressed) {
+                                          return 'É necessário preencher Agencia';
+                                        }
                                       }
                                     },
                                     decoration: DefaultInputDecoration(
                                       context,
                                       icon: MdiIcons.creditCard,
-                                      hintText: '36.365-63',
+                                      hintText: '0999-9',
                                       labelText: 'Número da Agência com dígito',
                                     ),
                                     autovalidate: true,
@@ -821,13 +837,15 @@ class _CadastroState extends State<Cadastro> {
                                     controller: controllerNumero_conta,
                                     validator: (value) {
                                       if (value.isEmpty) {
-                                        return 'É necessário preencher Conta Bancaria';
+                    if(isCadastrarPressed) {
+                      return 'É necessário preencher Conta Bancaria';
+                    }
                                       }
                                     },
                                     decoration: DefaultInputDecoration(
                                       context,
                                       icon: MdiIcons.creditCard,
-                                      hintText: '05699-6',
+                                      hintText: '36.356-93',
                                       labelText: 'Número da conta',
                                     ),
                                     autovalidate: true,
@@ -891,7 +909,9 @@ class _CadastroState extends State<Cadastro> {
                                                         controllerTipocarro,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                                                        return 'É necessário preencher o tipo de carro';
+                    if(isCadastrarPressed) {
+                      return 'É necessário preencher o tipo de carro';
+                    }
                                                       }
                                                     },
                                                     decoration:
@@ -912,7 +932,9 @@ class _CadastroState extends State<Cadastro> {
                                                     controller: controllerCor,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                                                        return 'É necessário preencher a cor do veículo';
+                    if(isCadastrarPressed) {
+                      return 'É necessário preencher a cor do veículo';
+                    }
                                                       }
                                                     },
                                                     decoration:
@@ -932,7 +954,9 @@ class _CadastroState extends State<Cadastro> {
                                                     controller: controllerPlaca,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                                                        return 'É necessário preencher a Placa do carro';
+                    if(isCadastrarPressed) {
+                      return 'É necessário preencher a Placa do carro';
+                    }
                                                       }
                                                     },
                                                     decoration:
@@ -955,7 +979,9 @@ class _CadastroState extends State<Cadastro> {
                                                     controller: controllerAno,
                                                     validator: (value) {
                                                       if (value.isEmpty) {
-                                                        return 'É necessário preencher o ano do vínculo';
+                    if(isCadastrarPressed) {
+                      return 'É necessário preencher o ano do vínculo';
+                    }
                                                       }
                                                     },
                                                     decoration:
@@ -985,8 +1011,9 @@ class _CadastroState extends State<Cadastro> {
                                                             controllerKmsmin,
                                                         validator: (value) {
                                                           if (value.isEmpty) {
-                                                            return 'É necessário preencher a quantia de Kms rodados';
-                                                          }
+                    if(isCadastrarPressed) {
+                      return 'É necessário preencher a quantia de Kms rodados';
+                    }}
                                                         },
                                                         decoration:
                                                             DefaultInputDecoration(
@@ -1009,8 +1036,9 @@ class _CadastroState extends State<Cadastro> {
                                                             controllerKmsmax,
                                                         validator: (value) {
                                                           if (value.isEmpty) {
-                                                            return 'É necessário preencher a quantia de Kms rodados';
-                                                          }
+                    if(isCadastrarPressed) {
+                      return 'É necessário preencher a quantia de Kms rodados';
+                    } }
                                                         },
                                                         decoration:
                                                             DefaultInputDecoration(
@@ -1064,6 +1092,7 @@ class _CadastroState extends State<Cadastro> {
                                                               cc.inUser
                                                                   .add(cc.user);
                                                             }),
+                                                            sb,sb,sb,sb,
                                                           ],
                                                         );
                                                       }),

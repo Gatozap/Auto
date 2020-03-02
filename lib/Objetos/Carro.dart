@@ -20,12 +20,15 @@ class Carro{
   DateTime updated_at;
   DateTime deleted_at;
 
+
+
+
   Carro({this.cor, this.modelo, this.marca, this.placa, this.ano, this.dono,
       this.campanhas, this.renavam, this.foto ,this.created_at,this.id,
     this.updated_at,
     this.deleted_at});
 
-
+  Carro.Empty();
   @override
   String toString() {
     return 'Carro{id: $id, cor: $cor, modelo: $modelo, marca: $marca, placa: $placa, ano: $ano, dono: $dono, campanhas: $campanhas, renavam: $renavam, foto: $foto, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';

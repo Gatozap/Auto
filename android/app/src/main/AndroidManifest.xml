@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.BODY_SENSORS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Boca a Boca"
@@ -66,5 +66,7 @@
         <activity android:name="com.apptreesoftware.barcodescan.BarcodeScannerActivity"/>
         <activity android:name="io.github.edufolly.fluttermobilevision.face.FaceCaptureActivity" />
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <service android:name="changjoopark.com.flutter_foreground_plugin.FlutterForegroundService"/>
     </application>
 </manifest>

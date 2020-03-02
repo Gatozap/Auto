@@ -5,6 +5,7 @@ import 'package:bocaboca/Helpers/Helper.dart';
 import 'Carro.dart';
 
 class Campanha{
+  String id;
  String empresa;
   String cnpj;
   DateTime dataini;
@@ -25,17 +26,18 @@ class Campanha{
      this.horaini, this.horafim, this.dias, this.limite, this.fotos,this.created_at,
    this.updated_at,
    this.deleted_at,
-     this.carros});
+     this.carros, this.id});
 
 
  @override
  String toString() {
-   return 'Campanha{empresa: $empresa, cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
+   return 'Campanha{empresa: $empresa, id: $id,cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
  }
 
  factory Campanha.fromJson(j){
    Campanha c = new Campanha(
     empresa: j['empresa'] == null ? null : j["empresa"],
+     id: j['id'] == null ? null : j["id"],
    cnpj: j['cnpj'] == null ? null : j["cnpj"],
    dataini: j['dataini']== null
    ? null
@@ -71,7 +73,7 @@ class Campanha{
  }
  Map<String, dynamic> toJson() {
    return {
-
+     'id': this.id == null ? null : this.id,
 
      'empresa': this.empresa == null ? null : this.empresa,
      'cnpj': this.cnpj == null ? null : this.cnpj,

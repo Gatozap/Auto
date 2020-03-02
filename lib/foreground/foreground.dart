@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Foreground Service Example'),
+          title:  Text('Foreground Service Example'),
         ),
         body: Center(
           child: Column(

@@ -132,7 +132,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                 menuButton(context, 'Cadastrar Novos Carros', Icons.directions_car, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CadastrarNovoCarroPage(
-                          carro: widget.carro
+                          carro: widget.carro,
                       )));
                 }),
 

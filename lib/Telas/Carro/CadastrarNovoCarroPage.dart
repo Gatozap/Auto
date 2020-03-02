@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:bocaboca/Helpers/PhotoScroller.dart';
+import 'package:bocaboca/Helpers/References.dart';
 
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Documento.dart';
@@ -47,7 +48,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
 
 
   CadastroController cc = new CadastroController();
-
+   Carro carro;
   var controllerConta_bancaria = new TextEditingController(text: '');
   var controllerDataNascimento =
   new MaskedTextController(text: '', mask: '00/00/0000');
@@ -88,7 +89,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
       ),
     );
     return Scaffold(
-      appBar: myAppBar('Editar Carro', context),
+      appBar: myAppBar('Cadastrar Carro', context),
       body: Stack(children: <Widget>[
         Align(
             alignment: FractionalOffset.bottomCenter,
@@ -98,176 +99,189 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
               height: getAltura(context),
               padding: EdgeInsets.all(1),
               alignment: Alignment.center,
-              child: Container(
-                height: getAltura(context),
-                child: StreamBuilder<Carro>(
-                  stream: carroController.outCarroSelecionado,
-                  builder: (context, AsyncSnapshot<Carro> snapshot) {
-                    if (snapshot.data == null) {
-                      return Container(child: hText('vazio', context),);
-                    }
-                    Carro c = snapshot.data;
+              child: StreamBuilder(
+                stream: carroController.outCarro,
+                builder: (context, snapshot) {
 
-                    if (onLoad) {
-                      controllerAno.text = c.ano.toString();
-                      controllerCor.text = c.cor;
-                      controllerModelo.text = c.modelo;
-                      controllerPlaca.text = c.placa;
 
-                      onLoad = false;
-                    }
-                    return SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () =>  showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .all(
-                                        15.0),
-                                    child:
-                                    AlertDialog(
-                                      title: hText(
-                                          "Selecione uma opção",
-                                          context),
-                                      content:
-                                      SingleChildScrollView(
+                  return Container(
+                    height: getAltura(context),
+                    child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () =>  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                        const EdgeInsets
+                                            .all(
+                                            15.0),
                                         child:
-                                        ListBody(
-                                          children: <
-                                              Widget>[
-                                            defaultActionButton(
-                                                'Galeria',
-                                                context,
-                                                    () {
-                                                  getImage(c);
-                                                  Navigator.of(context)
-                                                      .pop();
-                                                },
-                                                icon:
-                                                MdiIcons.face),
-                                            sb,
-                                            defaultActionButton(
-                                                'Camera',
-                                                context,
-                                                    () {
-                                                  getImageCamera(c);
-                                                  Navigator.of(context)
-                                                      .pop();
-                                                },
-                                                icon:
-                                                MdiIcons.camera)
-                                          ],
+                                        AlertDialog(
+                                          title: hText(
+                                              "Selecione uma opção",
+                                              context),
+                                          content:
+                                          SingleChildScrollView(
+                                            child:
+                                            ListBody(
+                                              children: <
+                                                  Widget>[
+                                                defaultActionButton(
+                                                    'Galeria',
+                                                    context,
+                                                        () {
+
+                                                      getImage(snapshot.data);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    icon:
+                                                    MdiIcons.face),
+                                                sb,
+                                                defaultActionButton(
+                                                    'Camera',
+                                                    context,
+                                                        () {
+                                                      getImageCamera(snapshot.data);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    icon:
+                                                    MdiIcons.camera)
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
+                                      );
+                                    }),
+                                child: CircleAvatar(
+                                    radius: (((getAltura(context) +
+                                        getLargura(context)) /
+                                        2) *
+                                        .2),
+                                    backgroundColor: Colors.transparent,
+                                    child:
+                                     snapshot.data != null?
+                                     snapshot.data.foto != null
+                                        ? Image(
+                                      image:
+                                      CachedNetworkImageProvider(snapshot.data.foto),
+                                    )
+                                        : Image(
+                                      image: CachedNetworkImageProvider(
+                                          'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                                    )
+                                         : Image(
+                                       image: CachedNetworkImageProvider(
+                                           'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+
+
+                                     ),
+
+                              )),
+                              sb,
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                      child: DefaultField(
+                                        controller: controllerModelo,
+                                        hint: 'Prisma',
+                                        context: context,
+                                        label: 'Modelo',
+                                        icon: Icons.directions_car,
+                                      ))
+                                ],
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                      child: DefaultField(
+                                        controller: controllerCor,
+                                        hint: 'Preto',
+                                        context: context,
+                                        label: 'Cor',
+                                        icon: Icons.color_lens,
+                                      ))
+                                ],
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                      child: DefaultField(
+                                          controller: controllerAno,
+                                          hint: '2000',
+                                          context: context,
+                                          label: 'Ano',
+                                          icon: Icons.assignment,
+                                          keyboardType: TextInputType.number))
+                                ],
+                              ),
+
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+
+                                  Expanded(
+                                      child: DefaultField(
+                                        controller: controllerPlaca,
+                                        hint:'AAA-9999',
+                                        context: context,
+                                        label: 'Placa',
+                                        icon: MdiIcons.carBack,
+                                      ))
+                                ],
+                              ),
+
+                              sb,
+
+                              Container(
+
+
+                                child: defaultActionButton('Cadastrar', context,
+                                        () {
+
+                                  List carros = new List();
+                                  Carro c = new Carro(
+                                    ano: int.parse(controllerAno.text),cor: controllerCor.text ,
+                                    dono: Helper.localUser.id,
+                                    modelo: controllerModelo.text,
+                                    placa:controllerPlaca.text,
+                                    created_at: DateTime.now(),
+                                    updated_at: DateTime.now(),
+
                                   );
-                                }),
-                            child: CircleAvatar(
-                                radius: (((getAltura(context) +
-                                    getLargura(context)) /
-                                    2) *
-                                    .2),
-                                backgroundColor: Colors.transparent,
-                                child: c.foto != null
-                                    ? Image(
-                                  image:
-                                  CachedNetworkImageProvider(c.foto),
-                                )
-                                    : Image(
-                                  image: CachedNetworkImageProvider(
-                                      'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                                )),
-                          ),
-                          sb,
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                    controller: controllerModelo,
-                                    hint: c.modelo,
-                                    context: context,
-                                    label: 'Modelo',
-                                    icon: Icons.directions_car,
-                                  ))
+                                  carros.add(c);
+
+                                      onLoad = true;
+                                      cc.CriarCarros(carros: c).then((v){
+                                        dToast('Carro cadastrado com Sucesso!');
+                                      });
+                                       Helper.localUser.carros = carros;
+                                        userRef.document(Helper.localUser.id).updateData(Helper.localUser.toJson()).then((v){
+
+                                        });
+                                      Navigator.of(context).pop();
+                                    }),
+                              ),
+
+
                             ],
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                    controller: controllerCor,
-                                    hint: c.cor,
-                                    context: context,
-                                    label: 'Cor',
-                                    icon: Icons.color_lens,
-                                  ))
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                      controller: controllerAno,
-                                      hint: '${c.ano}',
-                                      context: context,
-                                      label: 'Ano',
-                                      icon: Icons.assignment,
-                                      keyboardType: TextInputType.number))
-                            ],
-                          ),
+                        ),
 
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-
-                              Expanded(
-                                  child: DefaultField(
-                                    controller: controllerPlaca,
-                                    hint: c.placa,
-                                    context: context,
-                                    label: 'Placa',
-                                    icon: MdiIcons.carBack,
-                                  ))
-                            ],
-                          ),
-
-                          sb,
-
-                          Container(
-
-
-                            child: defaultActionButton('Atualizar', context,
-                                    () {
-                                  c.placa = controllerPlaca.text;
-                                  c.ano = int.parse(controllerAno.text);
-                                  c.modelo = controllerModelo.text;
-                                  c.cor = controllerCor.text;
-                                    if(widget.carro == null) {
-                                      c.updated_at = DateTime.now();
-                                    }
-                                  onLoad = true;
-                                  cc.CriarCarros(carros: c);
-                                }),
-                          ),
-
-
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                  );
+                }
               ),
             ))
       ]),
@@ -292,7 +306,13 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
   ProgressDialog pr;
 
 
-  Future getImageCamera(Carro carro) async {
+  Future getImageCamera(Carro c) async {
+    if(c == null){
+      c = new Carro();
+    }
+
+
+    
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
@@ -308,15 +328,21 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
           color: Colors.transparent,
         ));
     pr.show();
-    carro.foto = await uploadPicture(
+    c.foto = await uploadPicture(
       image.path,
     );
-    carroController.updateCarro(carro);
+    carroController.inCarro.add(c);
     pr.dismiss();
     dToast('Salvando Foto!');
   }
 
-  Future getImage(Carro carro) async {
+  Future getImage(Carro c) async {
+
+    if(c == null){
+      c = new Carro();
+    }
+
+
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
@@ -332,10 +358,10 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
           color: Colors.transparent,
         ));
     pr.show();
-    carro.foto = await uploadPicture(
+   c.foto = await uploadPicture(
       image.path,
     );
-    carroController.updateCarro(carro);
+   carroController.inCarro.add(c);
     pr.dismiss();
     dToast('Salvando Foto!');
   }

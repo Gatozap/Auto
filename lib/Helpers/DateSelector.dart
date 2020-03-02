@@ -162,7 +162,7 @@ class _BasicDateTimeFieldState extends State<BasicDateTimeField> {
           hasBeenPressed = true;
           final date = await showDatePicker(
               context: context,
-              firstDate: DateTime(1900),
+              firstDate: DateTime(2020),
               initialDate: currentValue ?? DateTime.now(),
               lastDate: DateTime(2100));
           if (date != null) {
