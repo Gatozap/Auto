@@ -10,7 +10,7 @@ class Campanha{
   String cnpj;
   DateTime dataini;
   DateTime datafim;
-  String zonas;
+  List zonas;
  DateTime horaini;
  DateTime horafim;
  DateTime dias;

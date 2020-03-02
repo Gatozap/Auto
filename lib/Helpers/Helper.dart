@@ -848,6 +848,17 @@ Widget TextFieldChange(String label, String content, function, context,
   );
 }
 
+String capitalize(String s) {
+  String result = '';
+  var a = s.split(' ');
+  for(var i in a){
+    result+=i[0].toUpperCase() + i.substring(1).toLowerCase()+' ';
+  }
+  print('Resultado = ${result}');
+  return result;
+}
+
+
 Widget Loading({
   int duration = 3,
   Widget completed,
