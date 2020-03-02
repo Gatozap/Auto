@@ -33,6 +33,7 @@ class CriarCampanhaPage extends StatefulWidget {
 
 CampanhaController campanhaController;
 var controllerEmpresa = new TextEditingController(text: '');
+var controllerNome = new TextEditingController(text: '');
 var controllerCNPJ =
     new MaskedTextController(text: '', mask: '00.000.000/0000-00');
 var controllerLimite = new TextEditingController(text: '');
@@ -181,6 +182,16 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   capitalization: TextCapitalization.words,
                                   onSubmited: (s) {}),
                               DefaultField(
+                                  controller: controllerNome,
+                                  hint: 'Campanha seja feliz!',
+                                  context: context,
+                                  label: 'Nome da Campanha',
+                                  icon: FontAwesomeIcons.adn,
+                                  validator: (v) {},
+                                  keyboardType: TextInputType.text,
+                                  capitalization: TextCapitalization.words,
+                                  onSubmited: (s) {}),
+                              DefaultField(
                                   controller: controllerCNPJ,
                                   hint: '00.000.000/0000-00',
                                   context: context,
@@ -192,7 +203,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                               datainiField,
                               datafimField,
                               DefaultField(
-                                  controller: controllerCNPJ,
+                                  controller: controllerLimite,
                                   hint: '100',
                                   context: context,
                                   label: 'Limite de Carros',
@@ -232,7 +243,15 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                     if (c.zonas == null) {
                                       c.zonas = new List();
                                     }
-                                    c.zonas.add(value);
+                                     bool contains = false;
+                                       for(Zona z in c.zonas){
+                                         if(z.nome == value.nome){
+                                           contains = true;
+                                         }
+                                       }
+                                    if(!contains) {
+                                      c.zonas.add(value);
+                                    }
                                     print(
                                         "AQUI QUANTAS ZONAS ${c.zonas.length}");
                                     campanhaController.inCampanha.add(c);
@@ -323,15 +342,16 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                           datainiField.selectedDate;
                                       campanha.datafim =
                                           datafimField.selectedDate;
-                                      campanha.limite =
+                                     campanha.limite =
                                           int.parse(controllerLimite.text);
-                                      campanhasRef
-                                          .document(campanha.id)
-                                          .updateData(campanha.toJson())
-                                          .then((v) {
-                                        dToast(
-                                            'Campanha Cadastrada com sucesso');
-                                      });
+                                           campanha.nome = controllerNome.text;
+                                           campanha.updated_at = DateTime.now();
+                                           campanha.created_at = DateTime.now();
+                                         campanhaController.CriarCampanha(campanha: campanha).then((v){
+                                           Navigator.of(context).pop();
+                                         });
+
+
                                     }),
                                   ),
                                 ],
@@ -402,9 +422,9 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
     for (Zona z in zonas) {
       items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
-      print('aqui é a zona ${z}');
+
     }
-    print('Items ${items.length}');
+
     return items;
   }
 }

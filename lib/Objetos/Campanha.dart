@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Zona.dart';
 
 import 'Carro.dart';
 
@@ -11,6 +12,7 @@ class Campanha{
   DateTime dataini;
   DateTime datafim;
   List zonas;
+  String nome;
  DateTime horaini;
  DateTime horafim;
  DateTime dias;
@@ -23,7 +25,7 @@ class Campanha{
  Campanha.Empty();
 
  Campanha({this.empresa, this.cnpj, this.dataini, this.datafim, this.zonas,
-     this.horaini, this.horafim, this.dias, this.limite, this.fotos,this.created_at,
+     this.horaini,this.nome, this.horafim, this.dias, this.limite, this.fotos,this.created_at,
    this.updated_at,
    this.deleted_at,
      this.carros, this.id});
@@ -31,12 +33,13 @@ class Campanha{
 
  @override
  String toString() {
-   return 'Campanha{empresa: $empresa, id: $id,cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
+   return 'Campanha{empresa: $empresa, nome: $nome,id: $id,cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
  }
 
  factory Campanha.fromJson(j){
    Campanha c = new Campanha(
     empresa: j['empresa'] == null ? null : j["empresa"],
+     nome: j['nome'] == null ? null : j["nome"],
      id: j['id'] == null ? null : j["id"],
    cnpj: j['cnpj'] == null ? null : j["cnpj"],
    dataini: j['dataini']== null
@@ -45,7 +48,9 @@ class Campanha{
    datafim: j['datafim']== null
    ? null
        : DateTime.fromMillisecondsSinceEpoch(j['datafim']),
-   zonas: j['zonas'],
+     zonas: j['zonas'] == null
+         ? null
+         : getZonas(json.decode(j['zonas'])),
    horaini:  j['horaini'] == null
    ? null
        : DateTime.fromMillisecondsSinceEpoch(j['horaini']),
@@ -53,7 +58,7 @@ class Campanha{
    ? null
        : DateTime.fromMillisecondsSinceEpoch(j['horafim']),
    dias: j['dias'] == null ? null : j["dias"],
-   limite:j['limite'] == null ? null : j["limite"],
+   limite:j['limite'] == null ? 5000000 : j["limite"],
    fotos :j['fotos'] == null ? null : Helper().jsonToList(j["fotos"]),
    carros: j['carros'] == null
        ? null
@@ -74,12 +79,12 @@ class Campanha{
  Map<String, dynamic> toJson() {
    return {
      'id': this.id == null ? null : this.id,
-
+     'nome': this.nome == null ? null : this.nome,
      'empresa': this.empresa == null ? null : this.empresa,
      'cnpj': this.cnpj == null ? null : this.cnpj,
      'dataini': this.dataini == null ? null : dataini.millisecondsSinceEpoch,
      'datafim': this.datafim == null ? null : datafim.millisecondsSinceEpoch,
-     'zonas': this.zonas == null ? null : this.zonas,
+     'zonas': this.zonas == null ?null: json.encode(this.zonas),
      'horaini': this.horaini == null ? null : horaini.millisecondsSinceEpoch,
      'horafim': this.horafim == null ? null : horafim.millisecondsSinceEpoch,
      'dias': this.dias == null ? null : dias.millisecondsSinceEpoch,
@@ -89,7 +94,7 @@ class Campanha{
      this.updated_at == null ? null : updated_at.millisecondsSinceEpoch,
      'deleted_at':
      this.deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
-     'limite': this.limite == null ? null : this.limite,
+     'limite': this.limite == null ? 5000000 : this.limite,
      "fotos": this.fotos == null ? null : this.fotos,
      'carros': this.carros == null ?null: json.encode(this.carros),
    };
@@ -105,5 +110,15 @@ class Campanha{
    }
    return carros;
  }
+  static getZonas(decoded) {
+    List<Zona> zonas = new List();
+    if (decoded == null) {
+      return null;
+    }
+    for (var i in decoded) {
+      zonas.add(Zona.fromJson(i));
+    }
+    return zonas;
+  }
 
 }
