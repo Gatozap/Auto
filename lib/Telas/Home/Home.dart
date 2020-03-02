@@ -1,3 +1,4 @@
+import 'package:bocaboca/BlocCentral/Racing/navigation_page.dart';
 import 'package:bocaboca/Helpers/Bairros.dart';
 import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Objetos/Zona.dart';
@@ -5,6 +6,7 @@ import 'package:bocaboca/Telas/Intro/IntroPage.dart';
 import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoGeneralController.dart';
 import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoList/ProdutoListItem.dart';
 import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoList/ProdutoListPage.dart';
+import 'package:bocaboca/foreground/foreground.dart';
 import 'package:bocaboca/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +88,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: CustomDrawerWidget(),
       appBar: myAppBar('Bem vindo ${Helper.localUser.nome}', context),
-
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -106,7 +107,8 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              hText('Saldo Atual', context, color: Colors.black),
+                              hText('Saldo Atual', context,
+                                  color: Colors.black),
                               SizedBox(height: 5),
                               hText('R\$: 0.00', context,
                                   color: corPrimaria,
@@ -128,7 +130,8 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              hText('Km\'s Atuais', context, color: Colors.black),
+                              hText('Km\'s Atuais', context,
+                                  color: Colors.black),
                               SizedBox(height: 5),
                               hText('Km\'s: ${Helper.localUser.kmmax}', context,
                                   color: corPrimaria,
@@ -156,33 +159,41 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: <Widget>[
-
-                    Container(
-
-                      color: Colors.lightBlue[50],
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      
-                      height: getAltura(context) * .2,
-                      width: getLargura(context)*.4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Icon(MdiIcons.compass, size: 55, color: Colors.lightBlue[700]), hText('Iniciar Percurso', context)
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Racing()));
+                      },
+                      child: Container(
+                        color: Colors.lightBlue[50],
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        height: getAltura(context) * .2,
+                        width: getLargura(context) * .4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Icon(MdiIcons.compass,
+                                size: 55, color: Colors.lightBlue[700]),
+                            hText('Iniciar Percurso', context)
+                          ],
+                        ),
                       ),
                     ),
                     Container(
                       color: Colors.lightBlue[50],
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       height: getAltura(context) * .2,
-                      width: getLargura(context)*.4,
+                      width: getLargura(context) * .4,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(MdiIcons.carConvertible, size: 55, color: Colors.lightBlue[700]), hText('Meus Percursos', context)
+                          Icon(MdiIcons.carConvertible,
+                              size: 55, color: Colors.lightBlue[700]),
+                          hText('Meus Percursos', context)
                         ],
                       ),
                     )
@@ -193,32 +204,35 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: <Widget>[
-
                     Container(
                       color: Colors.lightBlue[50],
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       height: getAltura(context) * .2,
-                      width: getLargura(context)*.4,
+                      width: getLargura(context) * .4,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(MdiIcons.charity, size: 55, color: Colors.lightBlue[700]), hText('Anúncios', context)
+                          Icon(MdiIcons.charity,
+                              size: 55, color: Colors.lightBlue[700]),
+                          hText('Anúncios', context)
                         ],
                       ),
                     ),
                     Container(
                       color: Colors.lightBlue[50],
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       height: getAltura(context) * .2,
-                      width: getLargura(context)*.4,
+                      width: getLargura(context) * .4,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(MdiIcons.help, size: 55, color: Colors.lightBlue[700]), hText('Dúvidas', context)
+                          Icon(MdiIcons.help,
+                              size: 55, color: Colors.lightBlue[700]),
+                          hText('Dúvidas', context)
                         ],
                       ),
                     )

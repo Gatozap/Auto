@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-
+import 'package:bocaboca/Objetos/Localizacao.dart';
 
 import 'Distancia.dart';
 
@@ -15,19 +15,31 @@ class Corrida {
   DateTime last_seen;
   String user;
   List<Distancia> distancia;
+  var dist;
   String carro;
   String campanhas;
- String points;
-
+  List points;
 
   @override
   String toString() {
     return 'Corrida{id: $id, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, hora_ini: $hora_ini, hora_fim: $hora_fim, isRunning: $isRunning, last_seen: $last_seen, user: $user, distancia: $distancia, carro: $carro, campanhas: $campanhas, Points: $points}';
   }
 
-  Corrida({this.id, this.hora_ini, this.hora_fim, this.isRunning, this.last_seen,
-      this.user, this.distancia, this.carro, this.campanhas, this.points, this.deleted_at, this.created_at,this.updated_at});
-
+  Corrida(
+      {this.id,
+      this.hora_ini,
+      this.hora_fim,
+      this.isRunning,
+      this.last_seen,
+      this.user,
+      this.dist,
+      this.distancia,
+      this.carro,
+      this.campanhas,
+      this.points,
+      this.deleted_at,
+      this.created_at,
+      this.updated_at});
 
   Corrida.fromJson(j)
       : id = j['id'],
@@ -40,39 +52,58 @@ class Corrida {
         deleted_at = j['deleted_at'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['deleted_at']),
+        dist = j['dist'],
         distancia = j['distancia'] == null
             ? null
             : getDistancia(json.decode(j['distancia'])),
-        hora_ini = j['hora_ini']== null? null: DateTime.fromMillisecondsSinceEpoch(j['hora_ini']),
-        hora_fim = j['hora_fim']== null? null: DateTime.fromMillisecondsSinceEpoch(j['hora_fim']),
-        last_seen = j['last_seen']== null? null: DateTime.fromMillisecondsSinceEpoch(j['last_seen']),
+        hora_ini = j['hora_ini'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(j['hora_ini']),
+        hora_fim = j['hora_fim'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(j['hora_fim']),
+        last_seen = j['last_seen'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(j['last_seen']),
         isRunning = j['isRunning'],
-
         user = j['user'],
-
         carro = j['carro'],
-        campanhas = j['campanhas'],
-        points = j['points'];
+        campanhas = j['campanhas']
+        /*oints = j['points'] == null ? null : getLocalizacoes(j['points'])*/;
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'created_at':
-        created_at == null ? null : created_at.millisecondsSinceEpoch,
+            created_at == null ? null : created_at.millisecondsSinceEpoch,
         'updated_at':
-        updated_at == null ? null : updated_at.millisecondsSinceEpoch,
+            updated_at == null ? null : updated_at.millisecondsSinceEpoch,
         'deleted_at':
-        deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
+            deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
         'hora_ini': hora_ini == null ? null : hora_ini.millisecondsSinceEpoch,
         'hora_fim': hora_fim == null ? null : hora_fim.millisecondsSinceEpoch,
         'isRunning': isRunning,
-        'last_seen': last_seen == null ? null : last_seen.millisecondsSinceEpoch,
+        'dist': dist,
+        'last_seen':
+            last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,
         'distancia': json.encode(distancia),
         'carro': carro,
         'campanhas': campanhas,
-        'points': points,
+        //'points': json.encode(points),
       };
+
+  static getLocalizacoes(decoded) {
+    print('AQUI DECODED LOCALIZAÇÔES ${decoded}');
+    List<Localizacao> localizacoes = new List();
+    Map<dynamic, dynamic> points = decoded;
+    if (decoded == null) {
+      return null;
+    }
+    points.forEach((k, v) {
+      localizacoes.add(Localizacao.fromJson(v));
+    });
+    return localizacoes;
+  }
 
   static getDistancia(decoded) {
     print('AQUI DECODED ${decoded}');

@@ -124,14 +124,6 @@ class _NavigationPageState extends State<NavigationPage> {
                             });
                       });
                 }),
-            /*StreamBuilder<Corrida>(
-                stream: nb.outCorrida,
-                builder: (context, corrida) {
-                  return Container(
-                      child: Text(corrida.data == null
-                          ? ''
-                          : corrida.data.distancia  == 0 ? '' : '${(corrida.data.distancia /1000).toStringAsFixed(2)}Km'));
-                }), */
           ],
         ),
         floatingActionButton: StreamBuilder<Corrida>(
@@ -142,7 +134,7 @@ class _NavigationPageState extends State<NavigationPage> {
                 onPressed: () {
                   print("AQ UI CLICK BOTÂO");
                   if (isRacing.data == null) {
-                   // nb.startFGS();
+                   // nb.startForegroundService();
                   } else {
                     if (isRacing.data.isRunning) {
                       nb.stopFGS();

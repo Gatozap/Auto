@@ -1,18 +1,18 @@
 import 'dart:async';
 
+import 'package:bocaboca/BlocCentral/Racing/NavigationBloc2.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class Racing extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<Racing> {
   bool started = false;
 
   @override
@@ -62,28 +62,19 @@ class _MyAppState extends State<MyApp> {
 //função que inicializa o serviço em primeiro plano
 Future<void> startForegroundService() async {
   StreamSubscription subscription;
+  nb.start();
   // await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 3);
   await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
   await FlutterForegroundPlugin.startForegroundService(
     holdWakeLock: false,
     onStarted: () {
       //quando o serviço é inicializado, ele inicia o geolocator para para a posição atual do user
-      
+
       final geolocator = Geolocator();
 
       subscription = geolocator
-          .getPositionStream()
-          // em vez do Dio().post, coloque aqui a sua requisição pro seu serviço na API
-          .asyncMap((location) => Dio().post(
-                  "https://webhook.site/d756f865-f075-45a2-82fd-eb2e61676890",
-                  data: {
-                    "altitude": location.altitude,
-                    "longitude": location.longitude,
-                    "latitude": location.latitude
-                  }))
-          .listen((response) async {
-        print("${DateTime.now()}");
-        // print(response.statusCode);
+          .getPositionStream().listen((v){
+        nb.startRacing(v);
       });
 // serviço de primeiro plano iniciado
       print("Foreground on Started");
