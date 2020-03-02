@@ -112,7 +112,7 @@ List<Zona> zonas = [
       Bairro(bairro: 'JD. PRIMAVERA'),
       Bairro(bairro: 'RECANTO DO BOSQUE'),
     ],
-    nome: 'REGIÂO NOROESTE',
+    nome: 'REGIÃO NOROESTE',
   ),
   Zona(
     bairros: [
@@ -126,7 +126,7 @@ List<Zona> zonas = [
       Bairro(bairro: 'VILA SANTA HELENA'),
       Bairro(bairro: 'BAIRRO SÃO FRANCISCO'),
     ],
-    nome: 'REGIÂO MENDANHA',
+    nome: 'REGIÃO MENDANHA',
   ),
   Zona(
     bairros: [
@@ -137,7 +137,7 @@ List<Zona> zonas = [
       Bairro(bairro: 'ST. CRIMÉIA OESTE'),
       Bairro(bairro: 'MARECHAL RONDON'),
     ],
-    nome: 'REGIÂO DO MEIA PONTE',
+    nome: 'REGIÃO DO MEIA PONTE',
   ),
   Zona(
     bairros: [
@@ -148,7 +148,7 @@ List<Zona> zonas = [
       Bairro(bairro: 'VILA MONTECELLI'),
       Bairro(bairro: 'SETOR NORTE FERROVIÁRIO'),
     ],
-    nome: 'REGIÂO NORTE',
+    nome: 'REGIÃO NORTE',
   ),
   Zona(
     bairros: [
@@ -161,7 +161,7 @@ List<Zona> zonas = [
       Bairro(bairro: 'RIO FORMOSO'),
       Bairro(bairro: 'ANDREIA CRISTINA'),
     ],
-    nome: 'REGIÂO SUDOESTE',
+    nome: 'REGIÃO SUDOESTE',
   ),
   Zona(
     bairros: [
@@ -176,7 +176,7 @@ List<Zona> zonas = [
       Bairro(bairro: 'SETOR MARISTA'),
       Bairro(bairro: 'PARQUE DAS LARANJEIRAS'),
     ],
-    nome: 'REGIÂO SUL',
+    nome: 'REGIÃO SUL',
   ),
   Zona(
     bairros: [
@@ -191,7 +191,7 @@ List<Zona> zonas = [
       Bairro(bairro: 'VILA CANAÃ'),
       Bairro(bairro: 'BAIRRO GOIÁ I'),
     ],
-    nome: 'REGIÂO OESTE',
+    nome: 'REGIÃO OESTE',
   ),
   Zona(
     bairros: [
@@ -209,6 +209,6 @@ List<Zona> zonas = [
       Bairro(bairro: 'VILA OSVALDO ROSA'),
       Bairro(bairro: 'VILA BANDEIRANTE'),
     ],
-    nome: 'REGIÂO LESTE',
+    nome: 'REGIÃO LESTE',
   ),
 ];
