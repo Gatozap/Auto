@@ -871,7 +871,7 @@ Widget Loading({
         if (future.data != null) {
           return completed;
         }
-   
+       return Container();
       },
       future: Future.delayed(Duration(seconds: duration)).then((v) {
         return true;

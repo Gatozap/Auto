@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:bocaboca/Helpers/PhotoScroller.dart';
 import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:bocaboca/Objetos/Campanha.dart';
 
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Documento.dart';
@@ -14,6 +16,7 @@ import 'package:bocaboca/Telas/Carro/CarroController.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:googleapis/vision/v1.dart' as vision;
@@ -100,7 +103,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
               padding: EdgeInsets.all(1),
               alignment: Alignment.center,
               child: StreamBuilder(
-                stream: carroController.outCarro,
+                stream: carroController.outCarroSelecionado,
                 builder: (context, snapshot) {
 
 
@@ -244,7 +247,105 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                               ),
 
                               sb,
+                              Padding(
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: FutureBuilder(
+                                    future: getDropDownMenuItemsCampanha(),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.data == null){
+                                        return Container();
+                                      }
 
+                                      return DropdownButton(
+                                        hint: Row(
+                                          children: <Widget>[
+                                            Icon(Icons.map, color: corPrimaria),
+                                            sb,
+                                            hText(
+                                              'Selecione Campanha',
+                                              context,
+                                              size: 40,
+                                              color: corPrimaria,
+                                            ),
+                                          ],
+                                        ),
+                                        style: TextStyle(
+                                            color: corPrimaria,
+                                            fontSize:
+                                            ScreenUtil.getInstance().setSp(40),
+                                            fontWeight: FontWeight.bold),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: corPrimaria),
+                                        items: snapshot.data,
+                                        onChanged: (value) {
+                                          Campanha c = value;
+                                          if (c == null) {
+                                            c = Campanha();
+                                          }
+                                          if (c.zonas == null) {
+                                            c.zonas = new List();
+                                          }
+                                          bool contains = false;
+
+                                          if(carro == null){
+                                            carro = new Carro();
+                                          }
+                                          if(carro.campanhas == null){
+                                            carro.campanhas = new List();
+                                          }
+
+                                          carro.campanhas.add(c);
+                                          carroController.inCarroSelecionado.add(carro);
+
+                                        },
+                                      );
+                                    }
+                                ),
+                              ),
+                              carro == null
+                                  ? Container()
+                                  : carro.campanhas == null
+                                  ? Container()
+                                  : carro.campanhas.length > 0
+                                  ? Container(
+                                width: getLargura(context),
+                                height: 100,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount:
+                                  carro.campanhas.length,
+                                  scrollDirection:
+                                  Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    print(
+                                        'MONTANDO CHIP ${carro.campanhas[index]}');
+                                    return Padding(
+                                      padding: const EdgeInsets
+                                          .symmetric(
+                                          horizontal: 8.0),
+                                      child: MaterialButton(
+                                        onLongPress: () {
+
+
+                                        },
+                                        onPressed: () {},
+                                        child: Chip(
+                                          label: hText(
+                                              capitalize(carro.campanhas[index]
+                                                  .nome),
+                                              context,
+                                              color:
+                                              Colors.white),
+                                          backgroundColor:
+                                          corPrimaria,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                                  : Container(),
                               Container(
 
 
@@ -266,12 +367,12 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                       onLoad = true;
                                       cc.CriarCarros(carros: c).then((v){
                                         dToast('Carro cadastrado com Sucesso!');
-                                      });
-                                       Helper.localUser.carros = carros;
+                                        Helper.localUser.carros = carros;
                                         userRef.document(Helper.localUser.id).updateData(Helper.localUser.toJson()).then((v){
-
                                         });
-                                      Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      });
+
                                     }),
                               ),
 
@@ -304,7 +405,30 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
 
 
   ProgressDialog pr;
+  Future <List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
+    List<DropdownMenuItem<Campanha>> items = List();
+    return campanhasRef.where('datafim',isGreaterThan: DateTime.now().millisecondsSinceEpoch).getDocuments().then((v){
+      List campanhas = new List();
+      for(var d in v.documents){
+        campanhas.add(Campanha.fromJson(d.data));
 
+      }
+      for (Campanha z in campanhas) {
+        items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
+
+      }
+      return items;
+    }
+
+    ).catchError((err) {
+      print('aqui erro 1 ${err}');
+      return null;
+    });
+
+
+
+
+  }
 
   Future getImageCamera(Carro c) async {
     if(c == null){
@@ -331,7 +455,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
     c.foto = await uploadPicture(
       image.path,
     );
-    carroController.inCarro.add(c);
+    carroController.inCarroSelecionado.add(c);
     pr.dismiss();
     dToast('Salvando Foto!');
   }
@@ -361,7 +485,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
    c.foto = await uploadPicture(
       image.path,
     );
-   carroController.inCarro.add(c);
+   carroController.inCarroSelecionado.add(c);
     pr.dismiss();
     dToast('Salvando Foto!');
   }
