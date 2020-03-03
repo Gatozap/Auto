@@ -375,20 +375,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       ]),
     );
   }
-   Widget documentosWidget (List<Documento> documentos){
-    List fotos = new List();
-    for(Documento d in documentos){
-      if(d.frente != null){
-        fotos.add(d.frente);
-      }
-      if (d.verso != null) {
-        fotos.add(d.verso);
-
-      }
-
-    }
-            return Hero( tag: fotos[0],child: PhotoScroller(fotos, largura: getLargura(context), altura: 374.0, fractionsize: 1,));
-  }
+ 
 
 
   ProgressDialog pr;

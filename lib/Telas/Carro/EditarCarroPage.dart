@@ -10,6 +10,8 @@ import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Documento.dart';
 import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Objetos/Zona.dart';
+import 'package:bocaboca/Telas/Admin/TelasAdmin/CampanhaController.dart';
 import 'package:bocaboca/Telas/Cadastro/CadastroController.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +74,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
 
   var controllerNumero_conta = new TextEditingController(text: '');
   CarroController carroController;
+  CampanhaController campanhaController;
   CadastroController userController;
   bool isPressed = false;
   bool onLoad = true;
@@ -244,7 +247,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                 if(snapshot.data == null){
                                   return Container();
                                 }
-
+                                 carro = snapshot.data;
                                 return DropdownButton(
                                   hint: Row(
                                     children: <Widget>[
@@ -271,10 +274,19 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                     if (c == null) {
                                       c = Campanha();
                                     }
-                                    if (c.zonas == null) {
-                                      c.zonas = new List();
+                                    if (c.carros == null) {
+                                      c.carros = new List();
                                     }
                                     bool contains = false;
+                                    for(Campanha cc in snapshot.data){
+                                      if(cc.
+                                      nome == value.nome){
+                                        contains = true;
+                                      }
+                                    }
+                                    if(!contains) {
+                                      c.carros.add(value);
+                                    }
 
                                       if(carro == null){
                                         carro = new Carro();
@@ -317,7 +329,25 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
 
 
                                     },
-                                    onPressed: () {},
+                                    onPressed: () {
+
+                    Carro c = snapshot.data;
+                    List<Campanha> campanhaTemp =
+                    new List();
+                    for (Campanha z
+                                    in c.campanhas) {
+                    if (z.nome !=
+                                  c.campanhas[index]
+                        .nome) {
+                    campanhaTemp.add(z);
+                    }
+                    }
+                    c.campanhas = campanhaTemp;
+                    carroController
+                        .inCarroSelecionado
+                        .add(c);
+                    },
+
                                     child: Chip(
                                       label: hText(
                                           capitalize(carro.campanhas[index]

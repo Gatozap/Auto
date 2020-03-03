@@ -25,9 +25,9 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class CadastrarNovoCarroPage extends StatefulWidget {
   User user;
-
+   Campanha campanha;
   Carro carro;
-  CadastrarNovoCarroPage({Key key, this.user, this.carro}) : super(key: key);
+  CadastrarNovoCarroPage({Key key, this.user, this.carro, this.campanha}) : super(key: key);
 
   @override
   _CadastrarNovoCarroPageState createState() => _CadastrarNovoCarroPageState();
@@ -362,6 +362,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                     updated_at: DateTime.now(),
 
                                   );
+
+
                                   carros.add(c);
 
                                       onLoad = true;
@@ -369,6 +371,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                         dToast('Carro cadastrado com Sucesso!');
                                         Helper.localUser.carros = carros;
                                         userRef.document(Helper.localUser.id).updateData(Helper.localUser.toJson()).then((v){
+                                   
                                         });
                                         Navigator.of(context).pop();
                                       });
@@ -388,20 +391,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
       ]),
     );
   }
-  Widget documentosWidget (List<Documento> documentos){
-    List fotos = new List();
-    for(Documento d in documentos){
-      if(d.frente != null){
-        fotos.add(d.frente);
-      }
-      if (d.verso != null) {
-        fotos.add(d.verso);
 
-      }
-
-    }
-    return Hero( tag: fotos[0],child: PhotoScroller(fotos, largura: getLargura(context), altura: 374.0, fractionsize: 1,));
-  }
 
 
   ProgressDialog pr;
