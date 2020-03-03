@@ -360,12 +360,11 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                     placa:controllerPlaca.text,
                                     created_at: DateTime.now(),
                                     updated_at: DateTime.now(),
-
+                                    campanhas: carro.campanhas,
                                   );
 
 
                                   carros.add(c);
-
                                       onLoad = true;
                                       cc.CriarCarros(carros: c).then((v){
                                         dToast('Carro cadastrado com Sucesso!');
@@ -375,15 +374,11 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                         });
                                         Navigator.of(context).pop();
                                       });
-
                                     }),
                               ),
-
-
                             ],
                           ),
                         ),
-
                   );
                 }
               ),
