@@ -31,19 +31,6 @@ class _MyAppState extends State<Racing> {
                   if (started) {
                     await FlutterForegroundPlugin.stopForegroundService();
                   } else {
-                    //OPCIONAL: inicializar foreground service com o seguinte bloco de código:
-                    /*
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await FlutterForegroundPlugin.stopForegroundService();
-     await startForegroundService();
-    });
-    super.initState();
-  }
-
-
-                    */
                     startForegroundService();
                   }
                   setState(() {
@@ -63,7 +50,6 @@ class _MyAppState extends State<Racing> {
 Future<void> startForegroundService() async {
   StreamSubscription subscription;
   nb.start();
-  // await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 3);
   await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
   await FlutterForegroundPlugin.startForegroundService(
     holdWakeLock: false,
