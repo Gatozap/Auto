@@ -15,10 +15,11 @@ class PerfilController extends BlocBase {
 
   PerfilController(User user) {
     u = user;
-    Helper.localUser.data_nascimento =
-        Helper.localUser.data_nascimento.add(Duration(hours: 3));
+    if(Helper.localUser.data_nascimento != null) {
+      Helper.localUser.data_nascimento =
+          Helper.localUser.data_nascimento.add(Duration(hours: 3));
+    }
     if (u != null) {
-
       u.data_nascimento = u.data_nascimento.add(Duration(hours: 3));
       print("data de nascimento AQUI ${u.data_nascimento.toIso8601String()}");
       inUser.add(u);
