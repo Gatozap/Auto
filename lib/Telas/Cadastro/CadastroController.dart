@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Documento.dart';
 import 'package:bocaboca/Telas/Grupo/Chat/ChatScreen/ChatController.dart';
@@ -313,17 +314,56 @@ class CadastroController extends BlocBase {
   }
 
   Future<User> CriarCarros(
-      {Carro carros}) {
-    return carrosRef.add(carros.toJson()).then((v) {
-      carros.id = v.documentID;
+      Carro carro) {
+    carro.created_at = DateTime.now();
+    carro.updated_at = DateTime.now();
+    return carrosRef.add(carro.toJson()).then((v) {
+      carro.id = v.documentID;
 
-      carrosRef.document(carros.id).updateData(carro.toJson());
+      print('campnha aqui : ${carro.campanhas}');
+      carrosRef.document(carro.id).updateData(carro.toJson());
+       
+     
+
+      bool contains = false;
+      for(Campanha c in carro.campanhas){
+        if(c.carros ==null){
+          c.carros = new List();
+
+        }
+
+
+        for(Carro car in c.carros){
+          if(car.id == carro.id){
+             contains = true;
+
+          }
+
+
+        }
+        if(!contains) {
+          c.carros.add(carro);
+
+          print('adicionou essa ${c}');
+          campanhasRef.add(c.toJson()).then((v){
+            print('adicionou essa porra');
+          }).catchError((err) {
+            print('adicionou essa porra ${err}');
+
+          });
+          campanhasRef.document(c.id).updateData(c.toJson()).then((v){
+            print('aqui gravou campanha = ${c } ');
+          });
+        }
+      }
+
+
       if (Helper.localUser != null) {
         if (Helper.localUser.carros == null) {
           Helper.localUser.carros = new List<Carro>();
         }
 
-        Helper.localUser.carros.add(carros);
+        Helper.localUser.carros.add(carro);
         return userRef
             .document(Helper.localUser.id)
             .updateData(Helper.localUser.toJson())

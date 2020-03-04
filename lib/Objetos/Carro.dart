@@ -13,6 +13,7 @@ class Carro{
   int ano;
   String kms;
   String dono;
+  String dono_nome;
   List<Campanha> campanhas;
   String renavam;
   String foto;
@@ -24,19 +25,20 @@ class Carro{
 
 
   Carro({this.cor, this.modelo, this.marca, this.placa, this.ano, this.dono,
-      this.campanhas, this.renavam, this.foto ,this.created_at,this.id,
+      this.campanhas,this.dono_nome, this.renavam, this.foto ,this.created_at,this.id,
     this.updated_at,
     this.deleted_at});
 
   Carro.Empty();
   @override
   String toString() {
-    return 'Carro{id: $id, cor: $cor, modelo: $modelo, marca: $marca, placa: $placa, ano: $ano, dono: $dono, campanhas: $campanhas, renavam: $renavam, foto: $foto, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
+    return 'Carro{id: $id,dono_nome: $dono_nome, cor: $cor, modelo: $modelo, marca: $marca, placa: $placa, ano: $ano, dono: $dono, campanhas: $campanhas, renavam: $renavam, foto: $foto, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
   }
 
   Carro.fromJson(j)
       : cor = j['cor'],
         id = j['id'],
+        dono_nome = j['dono_nome'],
         modelo = j['modelo'],
         marca = j['marca'],
         placa = j['placa'],
@@ -64,6 +66,7 @@ class Carro{
         'modelo': modelo,
         'marca': marca,
         'placa': placa,
+        'dono_nome': dono_nome,
         'created_at':
         created_at == null ? null : created_at.millisecondsSinceEpoch,
         'updated_at':
@@ -72,7 +75,7 @@ class Carro{
         deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
         'ano': ano,
         'dono': dono,
-        'campanhas': json.encode(campanhas),
+        'campanhas': this.campanhas == null ?null: json.encode(this.campanhas),
         'renavam': renavam,
         'foto': foto,
       };

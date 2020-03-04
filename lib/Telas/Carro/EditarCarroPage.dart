@@ -242,51 +242,43 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                             padding:
                             const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
-                              future: getDropDownMenuItemsCampanha(),
-                              builder: (context, snapshot) {
-                                if(snapshot.data == null){
-                                  return Container();
-                                }
-                                 carro = snapshot.data;
-                                return DropdownButton(
-                                  hint: Row(
-                                    children: <Widget>[
-                                      Icon(Icons.map, color: corPrimaria),
-                                      sb,
-                                      hText(
-                                        'Selecione Campanha',
-                                        context,
-                                        size: 40,
+                                future: getDropDownMenuItemsCampanha(),
+                                builder: (context, snapshot) {
+                                  if(snapshot.data == null){
+                                    return Container();
+                                  }
+
+                                  return DropdownButton(
+                                    hint: Row(
+                                      children: <Widget>[
+                                        Icon(Icons.map, color: corPrimaria),
+                                        sb,
+                                        hText(
+                                          'Selecione Campanha',
+                                          context,
+                                          size: 40,
+                                          color: corPrimaria,
+                                        ),
+                                      ],
+                                    ),
+                                    style: TextStyle(
                                         color: corPrimaria,
-                                      ),
-                                    ],
-                                  ),
-                                  style: TextStyle(
-                                      color: corPrimaria,
-                                      fontSize:
-                                      ScreenUtil.getInstance().setSp(40),
-                                      fontWeight: FontWeight.bold),
-                                  icon: Icon(Icons.arrow_drop_down,
-                                      color: corPrimaria),
-                                  items: snapshot.data,
-                                  onChanged: (value) {
-                                    Campanha c = value;
-                                    if (c == null) {
-                                      c = Campanha();
-                                    }
-                                    if (c.carros == null) {
-                                      c.carros = new List();
-                                    }
-                                    bool contains = false;
-                                    for(Campanha cc in snapshot.data){
-                                      if(cc.
-                                      nome == value.nome){
-                                        contains = true;
+                                        fontSize:
+                                        ScreenUtil.getInstance().setSp(40),
+                                        fontWeight: FontWeight.bold),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: corPrimaria),
+                                    items: snapshot.data,
+                                    onChanged: (value) {
+                                      Campanha c = value;
+                                      if (c == null) {
+                                        c = Campanha();
                                       }
-                                    }
-                                    if(!contains) {
-                                      c.carros.add(value);
-                                    }
+                                      if (c.zonas == null) {
+                                        c.zonas = new List();
+                                      }
+                                      bool contains = false;
+
 
                                       if(carro == null){
                                         carro = new Carro();
@@ -294,16 +286,27 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                       if(carro.campanhas == null){
                                         carro.campanhas = new List();
                                       }
+                                      if(carro.campanhas != null) {
 
-                                     carro.campanhas.add(c);
-                                    carroController.inCarroSelecionado.add(carro);
-                                    
-                                  },
-                                );
-                              }
+                                        for (Campanha cc in carro
+                                            .campanhas) {
+                                          if (cc.nome == value.nome) {
+                                            contains = true;
+                                          }
+                                        }
+                                      }
+                                      if(!contains) {
+                                        carro.campanhas.add(c);
+                                      }
+
+                                      carroController.inCarroSelecionado.add(carro);
+
+                                    },
+                                  );
+                                }
                             ),
                           ),
-                         carro == null
+                          carro == null
                               ? Container()
                               : carro.campanhas == null
                               ? Container()
@@ -331,23 +334,22 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                     },
                                     onPressed: () {
 
-                    Carro c = snapshot.data;
-                    List<Campanha> campanhaTemp =
-                    new List();
-                    for (Campanha z
-                                    in c.campanhas) {
-                    if (z.nome !=
-                                  c.campanhas[index]
-                        .nome) {
-                    campanhaTemp.add(z);
-                    }
-                    }
-                    c.campanhas = campanhaTemp;
-                    carroController
-                        .inCarroSelecionado
-                        .add(c);
-                    },
+                                     /* List<Zona> zonasTemp =
+                                      new List();
+                                      for (Campanha cc in carro
+                                          .campanhas) {
+                                        if (cc.nome !=
+                                            c.zonas[index]
+                                                .nome) {
+                                          zonasTemp.add(z);
+                                        }
+                                      }
+                                      c.zonas = zonasTemp;
+                                      campanhaController
+                                          .inCampanha
+                                          .add(c);*/
 
+                                    },
                                     child: Chip(
                                       label: hText(
                                           capitalize(carro.campanhas[index]
@@ -385,14 +387,13 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                 onLoad = true;
                                 if (widget.carro != null) {
                                 carroController.updateCarro(carro).then((v) {
-                                  if (v == 'Atualizado com sucesso!') {
+
                                     dToast('Dados atualizados com sucesso!');
-                                  } else {
-                                    dToast('Dados atualizados com sucesso!');
-                                  }
+                                    Navigator.of(context).pop();
+
                                 });
                               }else {
-                                  List<Carro> carros = new List();
+
                                   Carro c = new Carro(
 
                                     created_at: DateTime.now(),
@@ -404,11 +405,17 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                     dono: Helper.localUser.id,
                                     modelo: controllerModelo
                                         .text,
+                                    campanhas: carro == null?null: carro.campanhas,
                                   );
-                                  carros.add(c);
 
 
-                                  cc.CriarCarros(carros: c);
+
+                                  cc.CriarCarros(c).then((v){
+                                    dToast('Carro Editado com Sucesso!');
+
+
+                                    Navigator.of(context).pop();
+                                  });
                                 }
                             }),
                           ),
@@ -423,49 +430,25 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
     );
   }
 
-  Widget documentosWidget(List<Documento> documentos) {
-    List fotos = new List();
-    for (Documento d in documentos) {
-      if (d.frente != null) {
-        fotos.add(d.frente);
-      }
-      if (d.verso != null) {
-        fotos.add(d.verso);
-      }
-    }
-    return Hero(
-        tag: fotos[0],
-        child: PhotoScroller(
-          fotos,
-          largura: getLargura(context),
-          altura: 374.0,
-          fractionsize: 1,
-        ));
-  }
+
 
   Future <List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();
-         return campanhasRef.where('datafim',isGreaterThan: DateTime.now().millisecondsSinceEpoch).getDocuments().then((v){
-           List campanhas = new List();
-           for(var d in v.documents){
-             campanhas.add(Campanha.fromJson(d.data));
+    return campanhasRef.where('datafim',isGreaterThan: DateTime.now().millisecondsSinceEpoch).getDocuments().then((v){
+      List campanhas = new List();
+      for(var d in v.documents){
+        campanhas.add(Campanha.fromJson(d.data));
+      }
+      for (Campanha z in campanhas) {
+        items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
 
-           }
-           for (Campanha z in campanhas) {
-             items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
-
-           }
-           return items;
-         }
-
-         ).catchError((err) {
-           print('aqui erro 1 ${err}');
-           return null;
-         });
-         
-
-
-
+      }
+      return items;
+    }
+    ).catchError((err) {
+      print('aqui erro 1 ${err}');
+      return null;
+    });
   }
   ProgressDialog pr;
 

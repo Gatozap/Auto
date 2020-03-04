@@ -25,16 +25,16 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class CadastrarNovoCarroPage extends StatefulWidget {
   User user;
-   Campanha campanha;
+  Campanha campanha;
   Carro carro;
-  CadastrarNovoCarroPage({Key key, this.user, this.carro, this.campanha}) : super(key: key);
+  CadastrarNovoCarroPage({Key key, this.user, this.carro, this.campanha})
+      : super(key: key);
 
   @override
   _CadastrarNovoCarroPageState createState() => _CadastrarNovoCarroPageState();
 }
 
 class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
-
   @override
   void initState() {
     super.initState();
@@ -45,18 +45,16 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
     if (userController == null) {
       userController = CadastroController();
     }
-
   }
 
-
-
   CadastroController cc = new CadastroController();
-   Carro carro;
+  Carro carro;
+  Campanha campanha;
   var controllerConta_bancaria = new TextEditingController(text: '');
   var controllerDataNascimento =
-  new MaskedTextController(text: '', mask: '00/00/0000');
+      new MaskedTextController(text: '', mask: '00/00/0000');
   var controllerDataExpedicao =
-  new MaskedTextController(text: '', mask: '00/00/0000');
+      new MaskedTextController(text: '', mask: '00/00/0000');
   var controllerSenha = new TextEditingController(text: '');
   EdgeInsets ei = EdgeInsets.fromLTRB(10.0, 3.0, 15.0, 3.0);
   var controllerCEP = new MaskedTextController(text: '', mask: '00000-000');
@@ -80,7 +78,6 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
 
   @override
   Widget build(BuildContext context) {
-
     var linearGradient = const BoxDecoration(
       gradient: const LinearGradient(
         begin: FractionalOffset.centerRight,
@@ -103,58 +100,37 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
               padding: EdgeInsets.all(1),
               alignment: Alignment.center,
               child: StreamBuilder(
-                stream: carroController.outCarroSelecionado,
-                builder: (context, snapshot) {
-
-
-                  return Container(
-                    height: getAltura(context),
-                    child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () =>  showDialog(
+                  stream: carroController.outCarroSelecionado,
+                  builder: (context, snapshot) {
+                    return Container(
+                      height: getAltura(context),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            GestureDetector(
+                                onTap: () => showDialog(
                                     context: context,
                                     builder: (context) {
                                       return Padding(
-                                        padding:
-                                        const EdgeInsets
-                                            .all(
-                                            15.0),
-                                        child:
-                                        AlertDialog(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: AlertDialog(
                                           title: hText(
-                                              "Selecione uma opção",
-                                              context),
-                                          content:
-                                          SingleChildScrollView(
-                                            child:
-                                            ListBody(
-                                              children: <
-                                                  Widget>[
+                                              "Selecione uma opção", context),
+                                          content: SingleChildScrollView(
+                                            child: ListBody(
+                                              children: <Widget>[
                                                 defaultActionButton(
-                                                    'Galeria',
-                                                    context,
-                                                        () {
-
-                                                      getImage(snapshot.data);
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    icon:
-                                                    MdiIcons.face),
+                                                    'Galeria', context, () {
+                                                  getImage(snapshot.data);
+                                                  Navigator.of(context).pop();
+                                                }, icon: MdiIcons.face),
                                                 sb,
                                                 defaultActionButton(
-                                                    'Camera',
-                                                    context,
-                                                        () {
-                                                      getImageCamera(snapshot.data);
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    icon:
-                                                    MdiIcons.camera)
+                                                    'Camera', context, () {
+                                                  getImageCamera(snapshot.data);
+                                                  Navigator.of(context).pop();
+                                                }, icon: MdiIcons.camera)
                                               ],
                                             ),
                                           ),
@@ -162,266 +138,246 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                       );
                                     }),
                                 child: CircleAvatar(
-                                    radius: (((getAltura(context) +
-                                        getLargura(context)) /
-                                        2) *
-                                        .2),
-                                    backgroundColor: Colors.transparent,
-                                    child:
-                                     snapshot.data != null?
-                                     snapshot.data.foto != null
-                                        ? Image(
-                                      image:
-                                      CachedNetworkImageProvider(snapshot.data.foto),
-                                    )
-                                        : Image(
-                                      image: CachedNetworkImageProvider(
-                                          'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                                    )
-                                         : Image(
-                                       image: CachedNetworkImageProvider(
-                                           'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-
-
-                                     ),
-
-                              )),
-                              sb,
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                      child: DefaultField(
-                                        controller: controllerModelo,
-                                        hint: 'Prisma',
-                                        context: context,
-                                        label: 'Modelo',
-                                        icon: Icons.directions_car,
-                                      ))
-                                ],
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                      child: DefaultField(
-                                        controller: controllerCor,
-                                        hint: 'Preto',
-                                        context: context,
-                                        label: 'Cor',
-                                        icon: Icons.color_lens,
-                                      ))
-                                ],
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                      child: DefaultField(
-                                          controller: controllerAno,
-                                          hint: '2000',
-                                          context: context,
-                                          label: 'Ano',
-                                          icon: Icons.assignment,
-                                          keyboardType: TextInputType.number))
-                                ],
-                              ),
-
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-
-                                  Expanded(
-                                      child: DefaultField(
-                                        controller: controllerPlaca,
-                                        hint:'AAA-9999',
-                                        context: context,
-                                        label: 'Placa',
-                                        icon: MdiIcons.carBack,
-                                      ))
-                                ],
-                              ),
-
-                              sb,
-                              Padding(
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: FutureBuilder(
-                                    future: getDropDownMenuItemsCampanha(),
-                                    builder: (context, snapshot) {
-                                      if(snapshot.data == null){
-                                        return Container();
-                                      }
-
-                                      return DropdownButton(
-                                        hint: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.map, color: corPrimaria),
-                                            sb,
-                                            hText(
-                                              'Selecione Campanha',
-                                              context,
-                                              size: 40,
-                                              color: corPrimaria,
-                                            ),
-                                          ],
+                                  radius: (((getAltura(context) +
+                                              getLargura(context)) /
+                                          2) *
+                                      .2),
+                                  backgroundColor: Colors.transparent,
+                                  child: snapshot.data != null
+                                      ? snapshot.data.foto != null
+                                          ? Image(
+                                              image: CachedNetworkImageProvider(
+                                                  snapshot.data.foto),
+                                            )
+                                          : Image(
+                                              image: CachedNetworkImageProvider(
+                                                  'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                                            )
+                                      : Image(
+                                          image: CachedNetworkImageProvider(
+                                              'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
                                         ),
-                                        style: TextStyle(
-                                            color: corPrimaria,
-                                            fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                            fontWeight: FontWeight.bold),
-                                        icon: Icon(Icons.arrow_drop_down,
-                                            color: corPrimaria),
-                                        items: snapshot.data,
-                                        onChanged: (value) {
-                                          Campanha c = value;
-                                          if (c == null) {
-                                            c = Campanha();
-                                          }
-                                          if (c.zonas == null) {
-                                            c.zonas = new List();
-                                          }
-                                          bool contains = false;
-
-                                          if(carro == null){
-                                            carro = new Carro();
-                                          }
-                                          if(carro.campanhas == null){
-                                            carro.campanhas = new List();
-                                          }
-
-                                          carro.campanhas.add(c);
-                                          carroController.inCarroSelecionado.add(carro);
-
-                                        },
-                                      );
+                                )),
+                            sb,
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                    child: DefaultField(
+                                  controller: controllerModelo,
+                                  hint: 'Prisma',
+                                  context: context,
+                                  label: 'Modelo',
+                                  icon: Icons.directions_car,
+                                ))
+                              ],
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                    child: DefaultField(
+                                  controller: controllerCor,
+                                  hint: 'Preto',
+                                  context: context,
+                                  label: 'Cor',
+                                  icon: Icons.color_lens,
+                                ))
+                              ],
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                    child: DefaultField(
+                                        controller: controllerAno,
+                                        hint: '2000',
+                                        context: context,
+                                        label: 'Ano',
+                                        icon: Icons.assignment,
+                                        keyboardType: TextInputType.number))
+                              ],
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                    child: DefaultField(
+                                  controller: controllerPlaca,
+                                  hint: 'AAA-9999',
+                                  context: context,
+                                  label: 'Placa',
+                                  icon: MdiIcons.carBack,
+                                ))
+                              ],
+                            ),
+                            sb,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: FutureBuilder(
+                                  future: getDropDownMenuItemsCampanha(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data == null) {
+                                      return Container();
                                     }
-                                ),
-                              ),
-                              carro == null
-                                  ? Container()
-                                  : carro.campanhas == null
-                                  ? Container()
-                                  : carro.campanhas.length > 0
-                                  ? Container(
-                                width: getLargura(context),
-                                height: 100,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount:
-                                  carro.campanhas.length,
-                                  scrollDirection:
-                                  Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    print(
-                                        'MONTANDO CHIP ${carro.campanhas[index]}');
-                                    return Padding(
-                                      padding: const EdgeInsets
-                                          .symmetric(
-                                          horizontal: 8.0),
-                                      child: MaterialButton(
-                                        onLongPress: () {
 
-
-                                        },
-                                        onPressed: () {},
-                                        child: Chip(
-                                          label: hText(
-                                              capitalize(carro.campanhas[index]
-                                                  .nome),
-                                              context,
-                                              color:
-                                              Colors.white),
-                                          backgroundColor:
-                                          corPrimaria,
-                                        ),
+                                    return DropdownButton(
+                                      hint: Row(
+                                        children: <Widget>[
+                                          Icon(Icons.map, color: corPrimaria),
+                                          sb,
+                                          hText(
+                                            'Selecione Campanha',
+                                            context,
+                                            size: 40,
+                                            color: corPrimaria,
+                                          ),
+                                        ],
                                       ),
+                                      style: TextStyle(
+                                          color: corPrimaria,
+                                          fontSize: ScreenUtil.getInstance()
+                                              .setSp(40),
+                                          fontWeight: FontWeight.bold),
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: corPrimaria),
+                                      items: snapshot.data,
+                                      onChanged: (value) {
+                                        Campanha c = value;
+                                        if (c == null) {
+                                          c = Campanha();
+                                        }
+                                        if (c.zonas == null) {
+                                          c.zonas = new List();
+                                        }
+                                        bool contains = false;
+
+                                        if (carro == null) {
+                                          carro = new Carro();
+                                        }
+                                        if (carro.campanhas == null) {
+                                          carro.campanhas = new List();
+                                        }
+                                        if (carro.campanhas != null) {
+                                          for (Campanha cc in carro.campanhas) {
+                                            if (cc.nome == value.nome) {
+                                              contains = true;
+                                            }
+                                          }
+                                        }
+                                        if (!contains) {
+                                          carro.campanhas.add(c);
+                                        }
+
+                                        carroController.inCarroSelecionado
+                                            .add(carro);
+                                      },
                                     );
-                                  },
-                                ),
-                              )
-                                  : Container(),
-                              Container(
+                                  }),
+                            ),
+                            carro == null
+                                ? Container()
+                                : carro.campanhas == null
+                                    ? Container()
+                                    : carro.campanhas.length > 0
+                                        ? Container(
+                                            width: getLargura(context),
+                                            height: 100,
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: carro.campanhas.length,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) {
+                                                print(
+                                                    'MONTANDO CHIP ${carro.campanhas[index]}');
+                                                return Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: MaterialButton(
+                                                    onLongPress: () {},
+                                                    onPressed: () {},
+                                                    child: Chip(
+                                                      label: hText(
+                                                          capitalize(carro
+                                                              .campanhas[index]
+                                                              .nome),
+                                                          context,
+                                                          color: Colors.white),
+                                                      backgroundColor:
+                                                          corPrimaria,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          )
+                                        : Container(),
+                            Container(
+                              child:
+                                  defaultActionButton('Cadastrar', context, () {
+                                Carro c = new Carro(
+                                  ano: int.parse(controllerAno.text),
+                                  cor: controllerCor.text,
+                                  dono: Helper.localUser.id,
+                                  modelo: controllerModelo.text,
+                                  placa: controllerPlaca.text,
+                                  created_at: DateTime.now(),
+                                  updated_at: DateTime.now(),
+                                  campanhas:
+                                      carro == null ? null : carro.campanhas,
+                                );
 
+                                onLoad = true;
 
-                                child: defaultActionButton('Cadastrar', context,
-                                        () {
+                                cc.CriarCarros(c).then((v) {
+                                  dToast('Carro cadastrado com Sucesso!');
 
-                                  List carros = new List();
-                                  Carro c = new Carro(
-                                    ano: int.parse(controllerAno.text),cor: controllerCor.text ,
-                                    dono: Helper.localUser.id,
-                                    modelo: controllerModelo.text,
-                                    placa:controllerPlaca.text,
-                                    created_at: DateTime.now(),
-                                    updated_at: DateTime.now(),
-                                    campanhas: carro.campanhas,
-                                  );
-
-
-                                  carros.add(c);
-                                      onLoad = true;
-                                      cc.CriarCarros(carros: c).then((v){
-                                        dToast('Carro cadastrado com Sucesso!');
-                                        Helper.localUser.carros = carros;
-                                        userRef.document(Helper.localUser.id).updateData(Helper.localUser.toJson()).then((v){
-                                   
-                                        });
-                                        Navigator.of(context).pop();
-                                      });
-                                    }),
-                              ),
-                            ],
-                          ),
+                                  Navigator.of(context).pop();
+                                });
+                              }),
+                            ),
+                          ],
                         ),
-                  );
-                }
-              ),
+                      ),
+                    );
+                  }),
             ))
       ]),
     );
   }
 
-
-
   ProgressDialog pr;
-  Future <List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
+  Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();
-    return campanhasRef.where('datafim',isGreaterThan: DateTime.now().millisecondsSinceEpoch).getDocuments().then((v){
+    return campanhasRef
+        .where('datafim', isGreaterThan: DateTime.now().millisecondsSinceEpoch)
+        .getDocuments()
+        .then((v) {
       List campanhas = new List();
-      for(var d in v.documents){
+      for (var d in v.documents) {
         campanhas.add(Campanha.fromJson(d.data));
-
       }
       for (Campanha z in campanhas) {
         items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
-
       }
       return items;
-    }
-
-    ).catchError((err) {
+    }).catchError((err) {
       print('aqui erro 1 ${err}');
       return null;
     });
-
-
-
-
   }
 
   Future getImageCamera(Carro c) async {
-    if(c == null){
+    if (c == null) {
       c = new Carro();
     }
 
-
-    
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
@@ -446,11 +402,9 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
   }
 
   Future getImage(Carro c) async {
-
-    if(c == null){
+    if (c == null) {
       c = new Carro();
     }
-
 
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     pr = new ProgressDialog(context,
@@ -467,10 +421,10 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
           color: Colors.transparent,
         ));
     pr.show();
-   c.foto = await uploadPicture(
+    c.foto = await uploadPicture(
       image.path,
     );
-   carroController.inCarroSelecionado.add(c);
+    carroController.inCarroSelecionado.add(c);
     pr.dismiss();
     dToast('Salvando Foto!');
   }

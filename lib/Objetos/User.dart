@@ -254,7 +254,7 @@ this.atende_fds,
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['carros']= json.encode(carros);
+    data['carros']= this.carros == null ?null: json.encode(this.carros);
     data['id'] = this.id;
     data['telefone'] = this.telefone;
     data['tipo_conta'] = this.tipo_conta;

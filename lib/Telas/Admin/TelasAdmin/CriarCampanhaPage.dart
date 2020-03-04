@@ -382,11 +382,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                 defaultActionButton('Camera', context, () {
                   ImagePicker.pickImage(
                     source: ImageSource.camera,
-                  ).timeout(Duration(seconds: 30)).then((image) {
+                  ).timeout(Duration(seconds: 30)).then((image) async {
                     print('AQUI FOTO ${image}');
                     if (image != null) {
                       if (image.path != null) {
-                        e.fotos.add(image.path);
+                        e.fotos.add(await uploadPicture(
+                          image.path,
+                        ));
                         campanhaController.inCampanha.add(e);
                         dToast('Salvando Foto!');
                       }
@@ -398,11 +400,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                 defaultActionButton('Galeria', context, () {
                   ImagePicker.pickImage(
                     source: ImageSource.gallery,
-                  ).timeout(Duration(seconds: 30)).then((image) {
+                  ).timeout(Duration(seconds: 30)).then((image) async {
                     print('AQUI FOTO ${image}');
                     if (image != null) {
                       if (image.path != null) {
-                        e.fotos.add(image.path);
+                        e.fotos.add(await uploadPicture(
+                          image.path,
+                        ));
                         campanhaController.inCampanha.add(e);
                         dToast('Salvando Foto!');
                       }

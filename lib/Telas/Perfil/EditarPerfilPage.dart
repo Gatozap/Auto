@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bocaboca/Helpers/Bancos.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:bocaboca/Helpers/PhotoScroller.dart';
 import 'package:bocaboca/Helpers/Rekonizer.dart';
@@ -15,11 +16,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:googleapis/vision/v1.dart' as vision;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import 'PerfilVistoPage.dart';
 
 class EditarPerfilPage extends StatefulWidget {
   User user;
@@ -30,7 +34,18 @@ class EditarPerfilPage extends StatefulWidget {
 }
 
 class _EditarPerfilPageState extends State<EditarPerfilPage> {
+
+  @override
+  void initState() {
+
+    if(perfilController == null){
+      perfilController == PerfilController(widget.user
+      );
+    }
+    super.initState();
+  }
   CadastroController cc = new CadastroController();
+  Banco bancoSelecionado;
   var controllerTelefone =
       new MaskedTextController(text: '', mask: '(00) 0 0000-0000');
   var controllerConta_bancaria = new TextEditingController(text: '');
@@ -102,6 +117,8 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                       controllerConta_bancaria.text = u.conta_bancaria;
                       controllerAgencia.text = u.agencia;
                       controllerNumero_conta.text = u.numero_conta;
+                      controllerKmmin.text = u.kmmin.toString();
+                      controllerKmmax.text = u.kmmax.toString();
                       onLoad = false;
                     }
                     return SingleChildScrollView(
@@ -231,21 +248,31 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                              mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[hText('Dados da sua conta Bancaria',
                               context, size: 35)]),sb,
 
-                               Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-
-                                  Expanded(
-                                      child: DefaultField(
-                                          controller: controllerConta_bancaria,
-                                          hint: u.conta_bancaria,
-                                          context: context,
-                                          label: 'Conta Bancaria',
-                                          icon: MdiIcons.bank,
-                                          ))
-                                ],
-                              ),
+                          Padding(
+                            padding: ei,
+                            child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                  controller: controllerConta_bancaria,
+                                  style: TextStyle(color: Colors.black),
+                                  decoration: DefaultInputDecoration(
+                                      context,
+                                      icon: MdiIcons.bank,
+                                      labelText: 'Banco',
+                                      hintText: 'Caixa Economica Federal')),
+                              suggestionsCallback: (pattern) async {
+                                return await Banco.getSuggestions(pattern);
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion.nome),
+                                );
+                              },
+                              onSuggestionSelected: (Banco suggestion) {
+                                bancoSelecionado = suggestion;
+                                controllerConta_bancaria.text = suggestion.nome;
+                              },
+                            ),
+                          ),
 
                           Row(
                             mainAxisSize: MainAxisSize.max,

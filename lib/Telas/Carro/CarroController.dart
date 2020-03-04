@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -71,7 +72,34 @@ class CarroController extends BlocBase {
       return carrosRef.document(carro.id).updateData(carro.toJson()).then((v) {
         inCarroSelecionado.add(carro);
 
-     
+        bool contains = false;
+        for(Campanha c in carro.campanhas){
+          if(c.carros ==null){
+            c.carros = new List();
+
+          }
+
+
+          for(Carro car in c.carros){
+            if(car.id == carro.id){
+              contains = true;
+
+            }
+
+
+          }
+          if(!contains) {
+            c.carros.add(carro);
+            print('aqui gravou campanha = ${c } ');
+
+
+            campanhasRef.document(c.id).updateData(c.toJson()).catchError((err) {
+              print('Erro do catch = ${err}');
+              return null;
+
+            });
+          }
+        }
 
           return userRef
               .document(Helper.localUser.id)
@@ -96,7 +124,7 @@ class CarroController extends BlocBase {
 
   @override
   void dispose() {
-
+        carroSelecionadoController.close();
 
     userController.close();
     carrosController.close();

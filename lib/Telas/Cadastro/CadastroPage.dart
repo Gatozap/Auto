@@ -1337,7 +1337,7 @@ class _CadastroState extends State<Cadastro> {
                                             carros.add(c);
                                             User u = new User(carros: carros);
 
-                                            cc.CriarCarros(carros: c);
+                                            cc.CriarCarros(c);
                                             cc.atualizarDados(sc, context, 1);
                                           },
                                           child: Text(

@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Objetos/User.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:rxdart/rxdart.dart';
 
@@ -12,6 +13,22 @@ class PerfilController extends BlocBase {
 
   Sink<User> get inUser => userController.sink;
   User u;
+
+  BehaviorSubject<List<User>> usersController = BehaviorSubject<List<User>>();
+  Stream<List<User>> get outUsers => usersController.stream;
+  Sink<List<User>> get inUsers => usersController.sink;
+  List<User> users;
+  List<User> usersmain;
+
+
+
+
+  BehaviorSubject<User> userSelecionadoController =
+  BehaviorSubject<User>();
+  Stream<User> get outUserSelecionado => userSelecionadoController.stream;
+  Sink<User> get inUserSelecionado => userSelecionadoController.sink;
+  User userSelecionado;
+
 
   PerfilController(User user) {
     u = user;
@@ -31,6 +48,32 @@ class PerfilController extends BlocBase {
         inUser.add(u);
       });
     }
+    userSelecionado = user;
+    inUserSelecionado.add(userSelecionado);
+    userRef
+        .where("id")
+        .snapshots()
+        .listen((QuerySnapshot snap) {
+      users = new List();
+
+      if (snap.documents.length > 0) {
+        for (DocumentSnapshot ds in snap.documents) {
+
+          User p = User.fromJson(ds.data);
+          p.id = ds.documentID;
+          users.add(p);
+        }
+        users.sort(
+                (User a, User b) => a.id.compareTo(b.id));
+        usersmain = users;
+        inUsers.add(users);
+      } else {
+        inUsers.add(users);
+      }
+    }).onError((err) {
+      print('Erro: ${err.toString()}');
+    });
+
   }
 
   Future<String> updateUser(User user) async {
