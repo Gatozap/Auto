@@ -192,12 +192,3 @@ Future<String> startForegroundService() async {
 void globalForegroundService() async {
   debugPrint("service");
 }
-
-/*
-
-// adicionar as seguintes dependências ao pubspec
-  geolocator: ^5.3.0
-  dio: any
-  flutter_foreground_plugin: any
-
-*/
