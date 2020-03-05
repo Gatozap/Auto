@@ -82,8 +82,8 @@ class _CadastroState extends State<Cadastro> {
     if (cc == null) {
       cc == CadastroController();
     }
-    if(carroController == null){
-      carroController == CarroController(carro: widget.carro);
+    if (carroController == null) {
+      carroController = CarroController(carro: widget.carro);
     }
   }
 
@@ -333,7 +333,6 @@ class _CadastroState extends State<Cadastro> {
             cc.inDocumento.add(cc.documento);
             break;
         }
-
       } else {
         cc.documento.isValid = true;
         cc.inDocumento.add(cc.documento);
@@ -364,670 +363,6 @@ class _CadastroState extends State<Cadastro> {
                     print('Pagina $index');
                     switch (index) {
                       case 0:
-                        var CPF = MaskedTextController(
-                            text: cc.CPF, mask: '000.000.000-00');
-                        return Stack(
-                          children: <Widget>[
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != null
-                                      ? index < 4 - 1
-                                          ? () {
-                                              sc.next(animation: true);
-                                            }
-                                          : null
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              right: 10,
-                            ),
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != 0
-                                      ? () {
-                                          sc.previous(animation: true);
-                                        }
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              left: 10,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(28.0),
-                              child: SingleChildScrollView(
-                                child: Center(
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        .84,
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          sb,
-                                          sb,
-                                          Text(
-                                            'Insira seu CPF',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          StreamBuilder<Documento>(
-                                              stream: cc.outDocumento,
-                                              builder: (context, snapshot) {
-                                                if (snapshot.data == null) {
-                                                  return Container();
-                                                }
-                                                if (snapshot.data.isValid) {
-                                                  return Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: <Widget>[
-                                                            Container(
-                                                              child: Column(
-                                                                children: <
-                                                                    Widget>[
-                                                                  snapshot.data
-                                                                              .verso !=
-                                                                          null
-                                                                      ? hText(
-                                                                          'Frente',
-                                                                          context)
-                                                                      : Container(),
-                                                                  snapshot.data
-                                                                              .frente ==
-                                                                          null
-                                                                      ? Container(
-                                                                          width: snapshot.data.verso != null
-                                                                              ? getLargura(context) *
-                                                                                  .3
-                                                                              : getLargura(context) *
-                                                                                  .6,
-                                                                          height: getAltura(context) *
-                                                                              .2,
-                                                                          color:
-                                                                              Colors.grey[300])
-                                                                      : fotoDocumento(
-                                                                          snapshot
-                                                                              .data
-                                                                              .frente,
-                                                                          isValid: snapshot
-                                                                              .data
-                                                                              .isValid,
-                                                                          largura: snapshot.data.verso != null
-                                                                              ? getLargura(context) * .3
-                                                                              : getLargura(context) * .6,
-                                                                        ),
-                                                                  defaultActionButton(
-                                                                      'Refazer',
-                                                                      context,
-                                                                      () {
-                                                                    cc.documento
-                                                                            .frente =
-                                                                        null;
-                                                                    cc.inDocumento
-                                                                        .add(cc
-                                                                            .documento);
-                                                                  },
-                                                                      icon:
-                                                                          null),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            sb,
-                                                            snapshot.data
-                                                                        .verso !=
-                                                                    null
-                                                                ? Container(
-                                                                    child:
-                                                                        Column(
-                                                                      children: <
-                                                                          Widget>[
-                                                                        hText(
-                                                                            'Verso',
-                                                                            context),
-                                                                        snapshot.data.verso ==
-                                                                                null
-                                                                            ? Container(
-                                                                                width: getLargura(context) * .3,
-                                                                                height: getAltura(context) * .2,
-                                                                                color: Colors.grey[300])
-                                                                            : fotoDocumento(snapshot.data.verso, isValid: snapshot.data.isValid),
-                                                                        defaultActionButton(
-                                                                            'Refazer',
-                                                                            context,
-                                                                            () {
-                                                                          cc.documento.verso =
-                                                                              null;
-                                                                          cc.inDocumento
-                                                                              .add(cc.documento);
-                                                                        }, icon: null),
-                                                                      ],
-                                                                    ),
-                                                                  )
-                                                                : Container(),
-                                                          ],
-                                                        )
-                                                      ]);
-                                                }
-                                                return Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Container(
-                                                          child: Column(
-                                                            children: <Widget>[
-                                                              hText('Frente',
-                                                                  context),
-                                                              snapshot.data.frente ==
-                                                                      null
-                                                                  ? Container(
-                                                                      width:
-                                                                          getLargura(context) *
-                                                                              .3,
-                                                                      height:
-                                                                          getAltura(context) *
-                                                                              .2,
-                                                                      color: Colors
-                                                                              .grey[
-                                                                          300])
-                                                                  : fotoDocumento(
-                                                                      snapshot
-                                                                          .data
-                                                                          .frente),
-                                                              defaultActionButton(
-                                                                  'Refazer',
-                                                                  context, () {
-                                                                cc.documento
-                                                                        .frente =
-                                                                    null;
-                                                                cc.inDocumento
-                                                                    .add(cc
-                                                                        .documento);
-                                                              }, icon: null),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        sb,
-                                                        Container(
-                                                          child: Column(
-                                                            children: <Widget>[
-                                                              hText('Verso',
-                                                                  context),
-                                                              snapshot.data.verso ==
-                                                                      null
-                                                                  ? Container(
-                                                                      width:
-                                                                          getLargura(context) *
-                                                                              .3,
-                                                                      height:
-                                                                          getAltura(context) *
-                                                                              .2,
-                                                                      color: Colors
-                                                                              .grey[
-                                                                          300])
-                                                                  : fotoDocumento(
-                                                                      snapshot
-                                                                          .data
-                                                                          .verso),
-                                                              defaultActionButton(
-                                                                  'Refazer',
-                                                                  context, () {
-                                                                cc.documento
-                                                                        .verso =
-                                                                    null;
-                                                                cc.inDocumento
-                                                                    .add(cc
-                                                                        .documento);
-                                                              }, icon: null),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ],
-                                                );
-                                              }),
-                                          StreamBuilder<String>(
-                                              stream: cc.outCPF,
-                                              builder: (context, snapshot) {
-                                                if (snapshot.data != null &&
-                                                    controllercpf
-                                                        .text.isEmpty) {
-                                                  controllercpf.text =
-                                                      snapshot.data;
-                                                }
-                                                return StreamBuilder<bool>(
-                                                    stream: cc
-                                                        .outIsPrestadorSelected,
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (snapshot.data ==
-                                                          null) {
-                                                        return Container();
-                                                      }
-
-                                                      if (!snapshot.data) {
-                                                        return TextField(
-                                                            onChanged: (value) {
-                                                              cc.updateCPF(
-                                                                  value);
-                                                            },
-                                                            decoration: InputDecoration(
-                                                                labelText:
-                                                                    'CPF/CNPJ',
-                                                                hintText:
-                                                                    '000.000.000-00',
-                                                                icon: Icon(Icons
-                                                                    .perm_identity)),
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                            onSubmitted: (tel) {
-                                                              cc.updateCPF(tel);
-                                                            },
-                                                            controller: CPF);
-                                                      } else {
-                                                        return Container();
-                                                      }
-                                                    });
-                                              }),
-                                          sb,
-                                          Container(child: hText('Locais para inserir anúncios no carro', context),),sb,sb,
-                                          Row(
-                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              StreamBuilder(
-                                                stream: carroController.outCarroSelecionado,
-                                                builder: (context, snapshot) {
-                                                 
-
-                                                  if(carro == null){
-                                                    carro = new Carro();
-                                                  }
-
-                                                  if(snapshot.data == null){
-
-                                                    return Container(child: hText('Error', context));
-
-                                                  }
-
-
-                                                  return Container(
-
-                                                    height: getAltura(context) * .15,
-                                                    width: getLargura(context) * .30,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: CachedNetworkImageProvider(
-                                                              'https://lh3.googleusercontent.com/proxy/4OjiXW8uK7yahvVE1TfEGN61fQLq23oDb3DI5kTjpH8-kAFmiLBD_r3iC69PdJj4qigq-hS0cK0YY6_Dhfrsab1hWH5iOf5FUfVNefhLZqsQA3VUa7TiW4qPRIOmR7dJTVMP2sHoxg'),
-                                                          fit: BoxFit.cover),
-                                                      border:   Border.all(
-                                                              color: Colors.black,
-                                                              width: 3),
-
-
-                                                      borderRadius:
-                                                          BorderRadius.circular(0),
-                                                    ),
-                                                  );
-                                                }
-                                              ),
-
-
-                                              Container(
-
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(left:8.0, top: 30.0),
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding:
-                                                            const EdgeInsets.symmetric(horizontal: 8.0),
-                                                            child: FutureBuilder(
-                                                                future: getDropDownMenuItemsCampanha(),
-                                                                builder: (context, snapshot) {
-                                                                  if (snapshot.data == null) {
-                                                                    return Container();
-                                                                  }
-
-                                                                  return DropdownButton(
-                                                                    hint: Row(
-                                                                      children: <Widget>[
-                                                                        Icon(Icons.map, color: corPrimaria),
-                                                                        sb,
-                                                                        hText(
-                                                                          'Campanha',
-                                                                          context,
-                                                                          size: 40,
-                                                                          color: corPrimaria,
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    style: TextStyle(
-                                                                        color: corPrimaria,
-                                                                        fontSize: ScreenUtil.getInstance()
-                                                                            .setSp(40),
-                                                                        fontWeight: FontWeight.bold),
-                                                                    icon: Icon(Icons.arrow_drop_down,
-                                                                        color: corPrimaria),
-                                                                    items: snapshot.data,
-                                                                    onChanged: (value) {
-                                                                      Campanha c = value;
-                                                                      if (c == null) {
-                                                                        c = Campanha();
-                                                                      }
-
-
-
-                                                                      if (carro == null) {
-                                                                        carro = new Carro();
-                                                                      }
-
-
-                                                                        carro.anuncio_bancos = value;
-
-
-                                                                       carroController.inCarroSelecionado
-                                                                          .add(carro);
-                                                                    },
-                                                                  );
-                                                                }),
-                                                          ),
-                                                          /*defaultCheckBox(
-
-                                                              carro.anuncio_bancos,
-                                                              'Bancos',
-                                                              context, () {
-                                                            carro.anuncio_bancos =
-                                                            !carro.anuncio_bancos;
-                                                            cc.carro = carro;
-                                                            cc.inCarro
-                                                                .add(cc.carro);
-                                                          }, size: 15),*/
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                             
-                                            ],
-                                          ),sb,
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-
-                                                      height: getAltura(context) * .15,
-                                                      width: getLargura(context) * .30,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: CachedNetworkImageProvider(
-                                                                'https://images.vexels.com/media/users/3/145855/isolated/preview/6fadc35864ee653cc66c342104573c53-silhueta-de-vista-lateral-de-carro-inteligente-by-vexels.png'),
-                                                            fit: BoxFit.cover),
-                                                        border:  carro.anuncio_laterais == null? Border.all(
-                                                            color: Colors.black,
-                                                            width: 3): Border.all(
-                                                            color: Colors.green,
-                                                            width: 3),
-
-
-                                                        borderRadius:
-                                                        BorderRadius.circular(0),
-                                                      ),
-                                                    ),
-
-
-                                              StreamBuilder(
-                                                  stream: cc.outCarro,
-                                                  builder: (context, snapshot) {
-                                                    carro = snapshot.data;
-                                                    if(carro == null){
-                                                      carro = new Carro();
-                                                    }
-                                                    if(snapshot.data == null){
-                                                      return Container(child: hText('null', context));
-                                                    }
-
-
-                                                    return Container(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left:8.0, top: 30.0),
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: <Widget>[
-
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                              )
-                                            ],
-                                          ),sb,
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-                                            Container(
-
-                                                      height: getAltura(context) * .15,
-                                                      width: getLargura(context) * .30,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: CachedNetworkImageProvider(
-                                                                'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
-                                                            fit: BoxFit.cover),
-                                                        border:  carro.anuncio_traseira_completa == null? Border.all(
-                                                            color: Colors.black,
-                                                            width: 3): Border.all(
-                                                            color: Colors.green,
-                                                            width: 3),
-
-
-                                                        borderRadius:
-                                                        BorderRadius.circular(0),
-                                                      ),
-                                                    ),
-
-
-                                              StreamBuilder(
-                                                  stream: cc.outCarro,
-                                                  builder: (context, snapshot) {
-                                                    carro = snapshot.data;
-                                                    
-                                                    if(snapshot.data == null){
-                                                      return Container(child: hText('null', context));
-                                                    }
-
-
-                                                    return Container(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left:8.0, top: 30.0),
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: <Widget>[
-
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                              )
-                                            ],
-                                          ),sb,
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-                                            Container(
-
-                                                      height: getAltura(context) * .15,
-                                                      width: getLargura(context) * .30,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: CachedNetworkImageProvider(
-                                                                'https://http2.mlstatic.com/D_NQ_NP_994301-MLB20314839735_062015-O.jpg'),
-                                                            fit: BoxFit.cover),
-                                                        border:  carro.anuncio_vidro_traseiro == null? Border.all(
-                                                            color: Colors.black,
-                                                            width: 3): Border.all(
-                                                            color: Colors.green,
-                                                            width: 3),
-
-
-                                                        borderRadius:
-                                                        BorderRadius.circular(0),
-                                                      ),
-                                                    ),
-
-                                              StreamBuilder(
-                                                  stream: cc.outCarro,
-                                                  builder: (context, snapshot) {
-                                                    carro = snapshot.data;
-                                                    if(snapshot.data == null){
-                                                      return Container(child: hText('null', context));
-                                                    }
-
-
-                                                    return Container(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left:8.0, top: 30.0),
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: <Widget>[
-
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                              )
-                                            ],
-                                          ),sb,
-
-                                          /* Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              StreamBuilder<bool>(
-                                                  stream:
-                                                      cc.outIsPrestadorSelected,
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot.data == null) {
-                                                      return Container();
-                                                    }
-
-                                                    if (!snapshot.data) {
-                                                      return defaultActionButton(
-                                                          'Anexar Documento',
-                                                          context, () async {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        15.0),
-                                                                child:
-                                                                    AlertDialog(
-                                                                  title: hText(
-                                                                      "Selecione uma opção",
-                                                                      context),
-                                                                  content:
-                                                                      SingleChildScrollView(
-                                                                    child:
-                                                                        ListBody(
-                                                                      children: <
-                                                                          Widget>[
-                                                                        defaultActionButton(
-                                                                            'Galeria',
-                                                                            context,
-                                                                            () {
-                                                                          getDocumento();
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                            icon:
-                                                                                MdiIcons.face),
-                                                                        sb,
-                                                                        defaultActionButton(
-                                                                            'Camera',
-                                                                            context,
-                                                                            () {
-                                                                          getDocumentoCamera();
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                            icon:
-                                                                                MdiIcons.camera)
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            });
-                                                      }, icon: null);
-                                                    } else {
-                                                      return Container();
-                                                    }
-                                                  }),
-                                            ],
-                                          ),*/
-                                          /*Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              hText(
-                                                  'Anexe seu Documento CPF, para sistema preencher automaticamente o campo, porém você pode preencher manualmente o CPF. ',
-                                                  context,
-                                                  textaling: TextAlign.justify),
-                                            ],
-                                          )*/
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      case 1:
                         return Stack(
                           children: <Widget>[
                             Positioned(
@@ -1174,7 +509,7 @@ class _CadastroState extends State<Cadastro> {
                           ],
                         );
 
-                      case 2:
+                      case 1:
                         return Stack(children: <Widget>[
                           Padding(
                               padding: const EdgeInsets.all(24.0),
@@ -1438,6 +773,7 @@ class _CadastroState extends State<Cadastro> {
                           ),
                         ]);
                       case 3:
+                        var CPF = TextEditingController(text: cc.CPF);
                         var telefone = MaskedTextController(
                             text: cc.telefone, mask: '(00) 0 0000-0000');
                         var dataNascimento = MaskedTextController(
@@ -1446,7 +782,8 @@ class _CadastroState extends State<Cadastro> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(28.0),
-                              child: Container(
+                              child: SingleChildScrollView(
+                                child: Container(
                                   height:
                                       MediaQuery.of(context).size.height * .84,
                                   child: SingleChildScrollView(
@@ -1595,63 +932,677 @@ class _CadastroState extends State<Cadastro> {
                                             }),
                                         sb,
                                         sb,
-                                        MaterialButton(
-                                          color: corPrimaria,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(60)),
-                                          onPressed: () async {
-                                            print(
-                                                'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                            Helper.localUser.conta_bancaria =
-                                                controllerConta_bancaria.text;
-                                            Helper.localUser.agencia =
-                                                controllerAgencia.text;
-                                            Helper.localUser.numero_conta =
-                                                controllerNumero_conta.text;
+                                        StreamBuilder<Documento>(
+                                            stream: cc.outDocumento,
+                                            builder: (context, snapshot) {
+                                              if (snapshot.data == null) {
+                                                return Container();
+                                              }
+                                              if (snapshot.data.isValid) {
+                                                return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          Container(
+                                                            child: Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                snapshot.data
+                                                                            .verso !=
+                                                                        null
+                                                                    ? hText(
+                                                                        'Frente',
+                                                                        context)
+                                                                    : Container(),
+                                                                snapshot.data
+                                                                            .frente ==
+                                                                        null
+                                                                    ? Container(
+                                                                        width: snapshot.data.verso !=
+                                                                                null
+                                                                            ? getLargura(context) *
+                                                                                .3
+                                                                            : getLargura(context) *
+                                                                                .6,
+                                                                        height:
+                                                                            getAltura(context) *
+                                                                                .2,
+                                                                        color: Colors
+                                                                            .grey[300])
+                                                                    : fotoDocumento(
+                                                                        snapshot
+                                                                            .data
+                                                                            .frente,
+                                                                        isValid: snapshot
+                                                                            .data
+                                                                            .isValid,
+                                                                        largura: snapshot.data.verso != null
+                                                                            ? getLargura(context) *
+                                                                                .3
+                                                                            : getLargura(context) *
+                                                                                .6,
+                                                                      ),
+                                                                defaultActionButton(
+                                                                    'Refazer',
+                                                                    context,
+                                                                    () {
+                                                                  cc.documento
+                                                                          .frente =
+                                                                      null;
+                                                                  cc.inDocumento
+                                                                      .add(cc
+                                                                          .documento);
+                                                                }, icon: null),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          sb,
+                                                          snapshot.data.verso !=
+                                                                  null
+                                                              ? Container(
+                                                                  child: Column(
+                                                                    children: <
+                                                                        Widget>[
+                                                                      hText(
+                                                                          'Verso',
+                                                                          context),
+                                                                      snapshot.data.verso ==
+                                                                              null
+                                                                          ? Container(
+                                                                              width: getLargura(context) *
+                                                                                  .3,
+                                                                              height: getAltura(context) *
+                                                                                  .2,
+                                                                              color: Colors.grey[
+                                                                                  300])
+                                                                          : fotoDocumento(
+                                                                              snapshot.data.verso,
+                                                                              isValid: snapshot.data.isValid),
+                                                                      defaultActionButton(
+                                                                          'Refazer',
+                                                                          context,
+                                                                          () {
+                                                                        cc.documento.verso =
+                                                                            null;
+                                                                        cc.inDocumento
+                                                                            .add(cc.documento);
+                                                                      },
+                                                                          icon:
+                                                                              null),
+                                                                      MaterialButton(
+                                                                        color:
+                                                                            corPrimaria,
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(60)),
+                                                                        onPressed:
+                                                                            () async {
+                                                                          print(
+                                                                              'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                                                                          Helper
+                                                                              .localUser
+                                                                              .conta_bancaria = controllerConta_bancaria.text;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .agencia = controllerAgencia.text;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .numero_conta = controllerNumero_conta.text;
 
-                                            Helper.localUser.tipo_conta =
-                                                selectTipo;
-                                            Helper.localUser.kmmin = int.parse(
-                                                controllerKmsmin.text);
-                                            Helper.localUser.kmmax = int.parse(
-                                                controllerKmsmax.text);
-                                            userRef
-                                                .document(Helper.localUser.id)
-                                                .updateData(
-                                                    Helper.localUser.toJson())
-                                                .then((v) {
-                                              dToast(
-                                                  'Banco salvo com sucesso !');
-                                              sc.next(animation: true);
-                                            });
-                                            List<Carro> carros = new List();
-                                            Carro c = new Carro(
-                                              created_at: DateTime.now(),
-                                              dono_nome: Helper.localUser.nome,
-                                              updated_at: DateTime.now(),
-                                              cor: controllerCor.text,
-                                              ano:
-                                                  int.parse(controllerAno.text),
-                                              placa: controllerPlaca.text,
-                                              dono: Helper.localUser.id,
-                                              modelo: controllerTipocarro.text,
-                                              
-                                            );
-                                            carros.add(c);
-                                            User u = new User(carros: carros);
+                                                                          Helper
+                                                                              .localUser
+                                                                              .tipo_conta = selectTipo;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .kmmin = int.parse(controllerKmsmin.text);
+                                                                          Helper
+                                                                              .localUser
+                                                                              .kmmax = int.parse(controllerKmsmax.text);
+                                                                          userRef
+                                                                              .document(Helper.localUser.id)
+                                                                              .updateData(Helper.localUser.toJson())
+                                                                              .then((v) {
+                                                                            dToast('Banco salvo com sucesso !');
+                                                                            sc.next(animation: true);
+                                                                          });
+                                                                          List<Carro>
+                                                                              carros =
+                                                                              new List();
+                                                                          Carro
+                                                                              c =
+                                                                              new Carro(
+                                                                            created_at:
+                                                                                DateTime.now(),
+                                                                            dono_nome:
+                                                                                Helper.localUser.nome,
+                                                                            updated_at:
+                                                                                DateTime.now(),
+                                                                            cor:
+                                                                                controllerCor.text,
+                                                                            ano:
+                                                                                int.parse(controllerAno.text),
+                                                                            placa:
+                                                                                controllerPlaca.text,
+                                                                            dono:
+                                                                                Helper.localUser.id,
+                                                                            modelo:
+                                                                                controllerTipocarro.text,
+                                                                          );
+                                                                          carros
+                                                                              .add(c);
+                                                                          User
+                                                                              u =
+                                                                              new User(carros: carros);
 
-                                            cc.CriarCarros(c);
-                                            cc.atualizarDados(sc, context, 1);
-                                          },
-                                          child: Text(
-                                            'Concluir Cadastro',
-                                            style: estiloTextoBotao,
-                                          ),
+                                                                          cc.CriarCarros(
+                                                                              c);
+                                                                          cc.atualizarDados(
+                                                                              sc,
+                                                                              context,
+                                                                              1);
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          'Concluir Cadastro',
+                                                                          style:
+                                                                              estiloTextoBotao,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              : Container(),
+                                                        ],
+                                                      )
+                                                    ]);
+                                              }
+                                              return Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  hText('Foto do seu Perfil',
+                                                      context),
+                                                  Container(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        GestureDetector(
+                                                          onTap: () =>
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .all(
+                                                                          15.0),
+                                                                      child:
+                                                                          AlertDialog(
+                                                                        title: hText(
+                                                                            "Selecione uma opção",
+                                                                            context),
+                                                                        content:
+                                                                            SingleChildScrollView(
+                                                                          child:
+                                                                              ListBody(
+                                                                            children: <Widget>[
+                                                                              defaultActionButton('Galeria', context, () {
+                                                                                getImage();
+                                                                                Navigator.of(context).pop();
+                                                                              }, icon: MdiIcons.face),
+                                                                              sb,
+                                                                              defaultActionButton('Camera', context, () {
+                                                                                getImageCamera();
+                                                                                Navigator.of(context).pop();
+                                                                              }, icon: MdiIcons.camera)
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  }),
+                                                          child: CircleAvatar(
+                                                              radius: (((getAltura(
+                                                                              context) +
+                                                                          getLargura(
+                                                                              context)) /
+                                                                      2) *
+                                                                  .2),
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              child: Helper
+                                                                          .localUser
+                                                                          .foto !=
+                                                                      null
+                                                                  ? Image(
+                                                                      image: CachedNetworkImageProvider(Helper
+                                                                          .localUser
+                                                                          .foto),
+                                                                    )
+                                                                  : Image(
+                                                                      image: CachedNetworkImageProvider(
+                                                                          'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                                    )),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  sb,
+                                                  StreamBuilder<String>(
+                                                      stream: cc.outTelefone,
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        return TextField(
+                                                            onChanged: (value) {
+                                                              cc.updateTelefone(
+                                                                  value);
+                                                            },
+                                                            decoration: InputDecoration(
+                                                                labelText:
+                                                                    'Telefone',
+                                                                hintText:
+                                                                    '(11) 9 9999-9999 (Oom WhatsApp)',
+                                                                icon: Icon(Icons
+                                                                    .phone_iphone)),
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            onSubmitted: (tel) {
+                                                              cc.updateTelefone(
+                                                                  tel);
+                                                              Future.delayed(Duration(
+                                                                      milliseconds:
+                                                                          duracao))
+                                                                  .then((v) {
+                                                                sc.next(
+                                                                    animation:
+                                                                        true);
+                                                              });
+                                                            },
+                                                            controller:
+                                                                telefone);
+                                                      }),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  StreamBuilder<String>(
+                                                      stream:
+                                                          cc.outDatanascimento,
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        return TextField(
+                                                            onChanged: (value) {
+                                                              cc.updateDataNascimento(
+                                                                  value);
+                                                            },
+                                                            decoration: InputDecoration(
+                                                                labelText:
+                                                                    'Data de Nascimento',
+                                                                hintText:
+                                                                    '29/01/1990',
+                                                                icon: Icon(Icons
+                                                                    .date_range)),
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            onSubmitted:
+                                                                (data) {
+                                                              cc.updateDataNascimento(
+                                                                  data);
+                                                              Future.delayed(Duration(
+                                                                      milliseconds:
+                                                                          duracao))
+                                                                  .then((v) {
+                                                                sc.next(
+                                                                    animation:
+                                                                        true);
+                                                              });
+                                                            },
+                                                            controller:
+                                                                dataNascimento);
+                                                      }),
+                                                  sb,
+                                                  sb,
+                                                  MaterialButton(
+                                                    color: corPrimaria,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        60)),
+                                                    onPressed: () async {
+                                                      print(
+                                                          'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                                                      Helper.localUser
+                                                              .conta_bancaria =
+                                                          controllerConta_bancaria
+                                                              .text;
+                                                      Helper.localUser.agencia =
+                                                          controllerAgencia
+                                                              .text;
+                                                      Helper.localUser
+                                                              .numero_conta =
+                                                          controllerNumero_conta
+                                                              .text;
+
+                                                      Helper.localUser
+                                                              .tipo_conta =
+                                                          selectTipo;
+                                                      Helper.localUser.kmmin =
+                                                          int.parse(
+                                                              controllerKmsmin
+                                                                  .text);
+                                                      Helper.localUser.kmmax =
+                                                          int.parse(
+                                                              controllerKmsmax
+                                                                  .text);
+                                                      userRef
+                                                          .document(Helper
+                                                              .localUser.id)
+                                                          .updateData(Helper
+                                                              .localUser
+                                                              .toJson())
+                                                          .then((v) {
+                                                        dToast(
+                                                            'Banco salvo com sucesso !');
+                                                        sc.next(
+                                                            animation: true);
+                                                      });
+                                                      List<Carro> carros =
+                                                          new List();
+                                                      Carro c = new Carro(
+                                                        created_at:
+                                                            DateTime.now(),
+                                                        dono_nome: Helper
+                                                            .localUser.nome,
+                                                        updated_at:
+                                                            DateTime.now(),
+                                                        cor: controllerCor.text,
+                                                        ano: int.parse(
+                                                            controllerAno.text),
+                                                        placa: controllerPlaca
+                                                            .text,
+                                                        dono:
+                                                            Helper.localUser.id,
+                                                        modelo:
+                                                            controllerTipocarro
+                                                                .text,
+                                                      );
+                                                      carros.add(c);
+                                                      User u = new User(
+                                                          carros: carros);
+
+                                                      cc.CriarCarros(c);
+                                                      cc.atualizarDados(
+                                                          sc, context, 1);
+                                                    },
+                                                    child: Text(
+                                                      'Concluir Cadastro',
+                                                      style: estiloTextoBotao,
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        child: Column(
+                                                          children: <Widget>[
+                                                            hText('Frente',
+                                                                context),
+                                                            snapshot.data
+                                                                        .frente ==
+                                                                    null
+                                                                ? Container(
+                                                                    width: getLargura(
+                                                                            context) *
+                                                                        .3,
+                                                                    height:
+                                                                        getAltura(context) *
+                                                                            .2,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        300])
+                                                                : fotoDocumento(
+                                                                    snapshot
+                                                                        .data
+                                                                        .frente),
+                                                            defaultActionButton(
+                                                                'Refazer',
+                                                                context, () {
+                                                              cc.documento
+                                                                      .frente =
+                                                                  null;
+                                                              cc.inDocumento.add(
+                                                                  cc.documento);
+                                                            }, icon: null),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      sb,
+                                                      Container(
+                                                        child: Column(
+                                                          children: <Widget>[
+                                                            hText('Verso',
+                                                                context),
+                                                            snapshot.data
+                                                                        .verso ==
+                                                                    null
+                                                                ? Container(
+                                                                    width: getLargura(
+                                                                            context) *
+                                                                        .3,
+                                                                    height:
+                                                                        getAltura(context) *
+                                                                            .2,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        300])
+                                                                : fotoDocumento(
+                                                                    snapshot
+                                                                        .data
+                                                                        .verso),
+                                                            defaultActionButton(
+                                                                'Refazer',
+                                                                context, () {
+                                                              cc.documento
+                                                                  .verso = null;
+                                                              cc.inDocumento.add(
+                                                                  cc.documento);
+                                                            }, icon: null),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                        StreamBuilder<String>(
+                                            stream: cc.outCPF,
+                                            builder: (context, snapshot) {
+                                              if (snapshot.data != null &&
+                                                  controllercpf.text.isEmpty) {
+                                                controllercpf.text =
+                                                    snapshot.data;
+                                              }
+                                              return TextField(
+                                                  onChanged: (value) {
+                                                    cc.updateCPF(value);
+                                                  },
+                                                  decoration: InputDecoration(
+                                                      labelText: 'CPF/CNPJ',
+                                                      hintText:
+                                                          '000.000.000-00',
+                                                      icon: Icon(
+                                                          Icons.perm_identity)),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  onSubmitted: (tel) {
+                                                    cc.updateCPF(tel);
+                                                  },
+                                                  controller: CPF);
+                                            }),
+                                        sb,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            StreamBuilder<bool>(
+                                                stream:
+                                                    cc.outIsPrestadorSelected,
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.data == null) {
+                                                    return Container();
+                                                  }
+                                                  if (snapshot.data) {
+                                                    return defaultActionButton(
+                                                        'Concluir', context,
+                                                        () async {
+                                                      bool isCPF =
+                                                          CPFValidator.isValid(
+                                                              CPF.text);
+                                                      bool isCNPJ =
+                                                          CNPJValidator.isValid(
+                                                              CPF.text);
+                                                      if (!isCPF && !isCNPJ) {
+                                                        dToast(
+                                                            'CPF ou CNPJ Invalido');
+                                                        return;
+                                                      }
+                                                      Endereco e = await aec
+                                                          .BuscarLatLng(
+                                                              await aec
+                                                                  .outEndereco
+                                                                  .first);
+                                                      e.numero =
+                                                          controllerNumero.text;
+                                                      cc.atualizarDados(
+                                                          sc, context, 3);
+                                                    }, icon: null);
+                                                  } else {
+                                                    return MaterialButton(
+                                                      color: corPrimaria,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          60)),
+                                                      onPressed: () async {
+                                                        Endereco e = await aec
+                                                            .BuscarLatLng(
+                                                                await aec
+                                                                    .outEndereco
+                                                                    .first);
+                                                        e.numero =
+                                                            controllerNumero
+                                                                .text;
+                                                        cc.atualizarDados(
+                                                            sc, context, 3);
+                                                      },
+                                                      child: Text(
+                                                        'Concluir Cadastro',
+                                                        style: estiloTextoBotao,
+                                                      ),
+                                                    );
+                                                  }
+                                                }),
+                                          ],
                                         ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            StreamBuilder<bool>(
+                                                stream:
+                                                    cc.outIsPrestadorSelected,
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.data == null) {
+                                                    return Container();
+                                                  }
+
+                                                  if (snapshot.data) {
+                                                    return hText(
+                                                        'Anexe seus Documentos para verificação de veracidade, contendo primeiro anexo a frente e segundo anexo o verso da sua documentação, em específico seu CPF. ',
+                                                        context,
+                                                        textaling:
+                                                            TextAlign.justify);
+                                                  } else {
+                                                    return Container();
+                                                  }
+                                                }),
+                                          ],
+                                        )
                                       ],
                                     ),
-                                  )),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              child: MaterialButton(
+                                  child: Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                  ),
+                                  color: corPrimaria,
+                                  onPressed: index != 0
+                                      ? () {
+                                          sc.previous(animation: true);
+                                        }
+                                      : null,
+                                  shape: new CircleBorder(
+                                      side: BorderSide(color: corPrimaria))),
+                              bottom: 5,
+                              left: 10,
+                            ),
+                          ],
+                        );
+
+                        break;
+
+                      case 2:
+                        return Stack(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(28.0),
+                              child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .84,
+                                  child: SingleChildScrollView(
+                                      child: seletorAnunciosCarro())),
+                            ),
+                            Positioned(
+                              child: MaterialButton(
+                                  child: Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                  ),
+                                  color: corPrimaria,
+                                  onPressed: index != null
+                                      ? index < 5 - 1
+                                          ? () {
+                                              sc.next(animation: true);
+                                            }
+                                          : null
+                                      : null,
+                                  shape: new CircleBorder(
+                                      side: BorderSide(color: corPrimaria))),
+                              bottom: 5,
+                              right: 10,
                             ),
                             Positioned(
                               child: MaterialButton(
@@ -1704,37 +1655,11 @@ class _CadastroState extends State<Cadastro> {
                                 }),
                           ],
                         );
-
-                      case 4:
-                        var CPF = TextEditingController(text: cc.CPF);
-                        return Stack(
-                          children: <Widget>[
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != 0
-                                      ? () {
-                                          sc.previous(animation: true);
-                                        }
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              left: 10,
-                            ),
-                          ],
-                        );
-
-                        break;
                       default:
                         return Container();
                     }
                   },
-                  itemCount: isPrestador.data == true ? 5 : 4,
+                  itemCount: 4,
                   loop: false,
                   scrollDirection: Axis.horizontal,
                   controller: sc,
@@ -1761,6 +1686,7 @@ class _CadastroState extends State<Cadastro> {
               }
             }));
   }
+
   Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();
     return campanhasRef
@@ -1780,6 +1706,7 @@ class _CadastroState extends State<Cadastro> {
       return null;
     });
   }
+
   Future scan() async {
     print('INICIOU SCAN');
     try {
@@ -1844,6 +1771,352 @@ class _CadastroState extends State<Cadastro> {
     perfilController.updateUser(Helper.localUser);
     pr.dismiss();
     dToast('Salvando Foto!');
+  }
+
+  Widget seletorAnunciosCarro() {
+    return StreamBuilder(
+      stream: carroController.outCarroSelecionado,
+      builder: (context, car) {
+        Carro carro = car.data;
+        if (car.data == null) {
+          carro = new Carro();
+        }
+        return Column(
+          children: <Widget>[
+            Container(
+              child: hText(
+                  'Escolha as campanhas e suas respectivas posições', context),
+            ),
+            sb,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: getAltura(context) * .15,
+                  width: getLargura(context) * .30,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            'https://lh3.googleusercontent.com/proxy/4OjiXW8uK7yahvVE1TfEGN61fQLq23oDb3DI5kTjpH8-kAFmiLBD_r3iC69PdJj4qigq-hS0cK0YY6_Dhfrsab1hWH5iOf5FUfVNefhLZqsQA3VUa7TiW4qPRIOmR7dJTVMP2sHoxg'),
+                        fit: BoxFit.cover),
+                    border: Border.all(color: Colors.black, width: 3),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: FutureBuilder(
+                              future: getDropDownMenuItemsCampanha(),
+                              builder: (context, snapshot) {
+                                if (snapshot.data == null) {
+                                  return Container();
+                                }
+                                if (carro == null) {
+                                  carro = new Carro();
+                                }
+
+                                return DropdownButton(
+                                  hint: Row(
+                                    children: <Widget>[
+                                      sb,
+                                      hText(
+                                        carro.anuncio_bancos == null
+                                            ? 'Anuncios nos bancos'
+                                            : carro.anuncio_bancos.nome,
+                                        context,
+                                        size: 40,
+                                        color: corPrimaria,
+                                      ),
+                                    ],
+                                  ),
+                                  style: TextStyle(
+                                      color: corPrimaria,
+                                      fontSize:
+                                          ScreenUtil.getInstance().setSp(40),
+                                      fontWeight: FontWeight.bold),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: corPrimaria),
+                                  items: snapshot.data,
+                                  onChanged: (value) {
+                                    Campanha c = value;
+                                    if (c == null) {
+                                      c = Campanha();
+                                    }
+
+                                    if (carro == null) {
+                                      carro = new Carro();
+                                    }
+
+                                    carro.anuncio_bancos = value;
+
+                                    carroController.inCarroSelecionado
+                                        .add(carro);
+                                  },
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: getAltura(context) * .15,
+                  width: getLargura(context) * .30,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            'https://lh3.googleusercontent.com/proxy/4OjiXW8uK7yahvVE1TfEGN61fQLq23oDb3DI5kTjpH8-kAFmiLBD_r3iC69PdJj4qigq-hS0cK0YY6_Dhfrsab1hWH5iOf5FUfVNefhLZqsQA3VUa7TiW4qPRIOmR7dJTVMP2sHoxg'),
+                        fit: BoxFit.cover),
+                    border: Border.all(color: Colors.black, width: 3),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: FutureBuilder(
+                              future: getDropDownMenuItemsCampanha(),
+                              builder: (context, snapshot) {
+                                if (snapshot.data == null) {
+                                  return Container();
+                                }
+                                if (carro == null) {
+                                  carro = new Carro();
+                                }
+
+                                return DropdownButton(
+                                  hint: Row(
+                                    children: <Widget>[
+                                      sb,
+                                      hText(
+                                        carro.anuncio_laterais == null
+                                            ? 'Anuncios nas laterais'
+                                            : carro.anuncio_laterais.nome,
+                                        context,
+                                        size: 40,
+                                        color: corPrimaria,
+                                      ),
+                                    ],
+                                  ),
+                                  style: TextStyle(
+                                      color: corPrimaria,
+                                      fontSize:
+                                          ScreenUtil.getInstance().setSp(40),
+                                      fontWeight: FontWeight.bold),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: corPrimaria),
+                                  items: snapshot.data,
+                                  onChanged: (value) {
+                                    Campanha c = value;
+                                    if (c == null) {
+                                      c = Campanha();
+                                    }
+
+                                    if (carro == null) {
+                                      carro = new Carro();
+                                    }
+
+                                    carro.anuncio_laterais = value;
+
+                                    carroController.inCarroSelecionado
+                                        .add(carro);
+                                  },
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: getAltura(context) * .15,
+                  width: getLargura(context) * .30,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            'https://lh3.googleusercontent.com/proxy/4OjiXW8uK7yahvVE1TfEGN61fQLq23oDb3DI5kTjpH8-kAFmiLBD_r3iC69PdJj4qigq-hS0cK0YY6_Dhfrsab1hWH5iOf5FUfVNefhLZqsQA3VUa7TiW4qPRIOmR7dJTVMP2sHoxg'),
+                        fit: BoxFit.cover),
+                    border: Border.all(color: Colors.black, width: 3),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: FutureBuilder(
+                              future: getDropDownMenuItemsCampanha(),
+                              builder: (context, snapshot) {
+                                if (snapshot.data == null) {
+                                  return Container();
+                                }
+                                if (carro == null) {
+                                  carro = new Carro();
+                                }
+
+                                return DropdownButton(
+                                  hint: Row(
+                                    children: <Widget>[
+                                      sb,
+                                      hText(
+                                        carro.anuncio_traseira_completa == null
+                                            ? 'Anuncios na Traseira'
+                                            : carro
+                                                .anuncio_traseira_completa.nome,
+                                        context,
+                                        size: 40,
+                                        color: corPrimaria,
+                                      ),
+                                    ],
+                                  ),
+                                  style: TextStyle(
+                                      color: corPrimaria,
+                                      fontSize:
+                                          ScreenUtil.getInstance().setSp(40),
+                                      fontWeight: FontWeight.bold),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: corPrimaria),
+                                  items: snapshot.data,
+                                  onChanged: (value) {
+                                    Campanha c = value;
+                                    if (c == null) {
+                                      c = Campanha();
+                                    }
+
+                                    if (carro == null) {
+                                      carro = new Carro();
+                                    }
+
+                                    carro.anuncio_traseira_completa = value;
+
+                                    carroController.inCarroSelecionado
+                                        .add(carro);
+                                  },
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: getAltura(context) * .15,
+                  width: getLargura(context) * .30,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            'https://lh3.googleusercontent.com/proxy/4OjiXW8uK7yahvVE1TfEGN61fQLq23oDb3DI5kTjpH8-kAFmiLBD_r3iC69PdJj4qigq-hS0cK0YY6_Dhfrsab1hWH5iOf5FUfVNefhLZqsQA3VUa7TiW4qPRIOmR7dJTVMP2sHoxg'),
+                        fit: BoxFit.cover),
+                    border: Border.all(color: Colors.black, width: 3),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: FutureBuilder(
+                              future: getDropDownMenuItemsCampanha(),
+                              builder: (context, snapshot) {
+                                if (snapshot.data == null) {
+                                  return Container();
+                                }
+                                if (carro == null) {
+                                  carro = new Carro();
+                                }
+
+                                return DropdownButton(
+                                  hint: Row(
+                                    children: <Widget>[
+                                      sb,
+                                      hText(
+                                        carro.anuncio_vidro_traseiro == null
+                                            ? 'Anuncios no Vidro Traseiro'
+                                            : carro.anuncio_vidro_traseiro.nome,
+                                        context,
+                                        size: 40,
+                                        color: corPrimaria,
+                                      ),
+                                    ],
+                                  ),
+                                  style: TextStyle(
+                                      color: corPrimaria,
+                                      fontSize:
+                                          ScreenUtil.getInstance().setSp(40),
+                                      fontWeight: FontWeight.bold),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: corPrimaria),
+                                  items: snapshot.data,
+                                  onChanged: (value) {
+                                    Campanha c = value;
+                                    if (c == null) {
+                                      c = Campanha();
+                                    }
+
+                                    if (carro == null) {
+                                      carro = new Carro();
+                                    }
+
+                                    carro.anuncio_vidro_traseiro = value;
+
+                                    carroController.inCarroSelecionado
+                                        .add(carro);
+                                  },
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget fotoDocumento(String foto, {isValid = false, largura = null}) {

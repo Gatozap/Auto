@@ -155,10 +155,7 @@ Future<String> startForegroundService() async {
   await FlutterForegroundPlugin.startForegroundService(
     holdWakeLock: false,
     onStarted: () {
-      //quando o serviço é inicializado, ele inicia o geolocator para para a posição atual do user
-
       final geolocator = Geolocator();
-
       subscription = geolocator.getPositionStream().listen((v) {
         Localizacao l = Localizacao(
             latitude: v.latitude,
@@ -166,7 +163,6 @@ Future<String> startForegroundService() async {
             timestamp: v.timestamp,
             altitude: v.altitude);
         mapController.position = l;
-
         mapController.inPosition.add(l);
         mapController.updateMarker();
         nb.startRacing(v);
@@ -187,8 +183,6 @@ Future<String> startForegroundService() async {
   return nb.start();
 }
 
-//função em primeiro plano chamada quando o serviço é inicializado
-// ESSA FUNÇÃO DEVE ESTAR AQUI
 void globalForegroundService() async {
   debugPrint("service");
 }
