@@ -152,7 +152,7 @@ void whatsAppOpen() async {
   }
 }
 
-Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria }) {
+Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria,size }) {
 
     return GestureDetector(
       onTap: onTap,

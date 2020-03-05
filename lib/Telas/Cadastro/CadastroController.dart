@@ -32,6 +32,9 @@ class CadastroController extends BlocBase {
   Stream<bool> get outIsAtendeFest => controllerIsAtendeFesta.stream;
   Sink<bool> get inIsAtendeFest => controllerIsAtendeFesta.sink;
 
+  BehaviorSubject<bool> controllerBanco = BehaviorSubject<bool>();
+  Stream<bool> get outBanco => controllerBanco.stream;
+  Sink<bool> get inBanco => controllerBanco.sink;
 
   BehaviorSubject<String> controllerCodigo = BehaviorSubject<String>();
   Stream<String> get outCodigo => controllerCodigo.stream;
@@ -85,7 +88,12 @@ class CadastroController extends BlocBase {
   Sink<Carro> get inCarro => controllerCarro.sink;
   Carro carro;
 
-  CadastroController() {
+  CadastroController({this.carro}) {
+    if(carro == null){
+      carro = new Carro(anuncio_vidro_traseiro: false, anuncio_traseira_completa: false,anuncio_laterais: false, anuncio_bancos: false);
+      
+    }
+    inCarro.add(carro);
     inIsPrestadorSelected.add(false);
     inIsMale.add(false);
     telefone = '';
@@ -109,7 +117,7 @@ class CadastroController extends BlocBase {
     controllerAgencia.close();
     controllerNumeroConta.close();
     controllerCarro.close();
-
+    controllerBanco.close();
   }
 
   Validar(int i, SwiperController sc, BuildContext context) async {
@@ -126,6 +134,8 @@ class CadastroController extends BlocBase {
         break;
     }
   }
+
+
 
   void updateCodigo(String barcode) {
     codigo = barcode;
