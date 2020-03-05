@@ -108,7 +108,7 @@ dependencies:
   random_string: ^1.1.0
   qrcode_reader: ^0.4.4
   bezier_chart: ^1.0.14
-  google_maps_flutter: ^0.5.21+6
+  google_maps_flutter: 0.5.24+1
   in_app_purchase: ^0.2.1+4
   flutter_inapp_purchase: ^2.0.0+8
   flutter_app_badger: ^1.1.1

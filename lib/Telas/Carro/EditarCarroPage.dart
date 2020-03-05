@@ -396,6 +396,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
 
                                   Carro c = new Carro(
 
+                                    dono_nome: Helper.localUser.nome,
                                     created_at: DateTime.now(),
                                     updated_at: DateTime.now(),
                                     cor: controllerCor.text,

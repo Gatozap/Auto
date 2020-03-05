@@ -1326,6 +1326,7 @@ class _CadastroState extends State<Cadastro> {
                                             List<Carro> carros = new List();
                                             Carro c = new Carro(
                                               created_at: DateTime.now(),
+                                              dono_nome: Helper.localUser.nome,
                                               updated_at: DateTime.now(),
                                               cor: controllerCor.text,
                                               ano:
