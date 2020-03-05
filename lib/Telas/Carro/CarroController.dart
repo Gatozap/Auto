@@ -10,16 +10,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CarroController extends BlocBase {
-
-
   BehaviorSubject<User> userController = new BehaviorSubject<User>();
 
   Stream<User> get outUser => userController.stream;
 
   Sink<User> get inUser => userController.sink;
 
-
-  BehaviorSubject<List<Carro>> carrosController = BehaviorSubject<List<Carro>>();
+  BehaviorSubject<List<Carro>> carrosController =
+      BehaviorSubject<List<Carro>>();
   Stream<List<Carro>> get outCarros => carrosController.stream;
   Sink<List<Carro>> get inCarros => carrosController.sink;
   List<Carro> carros;
@@ -28,12 +26,10 @@ class CarroController extends BlocBase {
   Carro c;
   User u;
 
-  BehaviorSubject<Carro> carroSelecionadoController =
-  BehaviorSubject<Carro>();
+  BehaviorSubject<Carro> carroSelecionadoController = BehaviorSubject<Carro>();
   Stream<Carro> get outCarroSelecionado => carroSelecionadoController.stream;
   Sink<Carro> get inCarroSelecionado => carroSelecionadoController.sink;
   Carro carroSelecionado;
-
 
   CarroController({Carro carro}) {
     carroSelecionado = carro;
@@ -46,13 +42,11 @@ class CarroController extends BlocBase {
 
       if (snap.documents.length > 0) {
         for (DocumentSnapshot ds in snap.documents) {
-
           Carro p = Carro.fromJson(ds.data);
           p.id = ds.documentID;
           carros.add(p);
         }
-        carros.sort(
-                (Carro a, Carro b) => a.placa.compareTo(b.placa));
+        carros.sort((Carro a, Carro b) => a.placa.compareTo(b.placa));
         carrosmain = carros;
         inCarros.add(carros);
       } else {
@@ -63,68 +57,62 @@ class CarroController extends BlocBase {
     });
   }
 
-
-  Future<String> updateCarro(Carro carro) async {
-
-
-
+  updateCarro(Carro carro) async {
     if (carro != null) {
-      return carrosRef.document(carro.id).updateData(carro.toJson()).then((v) {
+      carrosRef.document(carro.id).updateData(carro.toJson()).then((v) {
         inCarroSelecionado.add(carro);
 
-        bool contains = false;
-        for(Campanha c in carro.campanhas){
-          if(c.carros ==null){
-            c.carros = new List();
 
-          }
-
-
-          for(Carro car in c.carros){
-            if(car.id == carro.id){
-              contains = true;
-
+        print('Tamanho da Lista ${carro.campanhas.length}');
+        for (Campanha c in carro.campanhas) {
+          try {
+            bool contains = false;
+            if (c.carros == null) {
+              c.carros = new List();
             }
 
-
-          }
-          if(!contains) {
-            c.carros.add(carro);
-            print('aqui gravou campanha = ${c } ');
-
-
-            campanhasRef.document(c.id).updateData(c.toJson()).catchError((err) {
-              print('Erro do catch = ${err}');
-              return null;
-
-            });
+            for (Carro car in c.carros) {
+              if (car.id == carro.id) {
+                contains = true;
+              }
+            }
+            if (!contains) {
+              c.carros.add(carro);
+              print('aqui gravou campanha = ${c} ');
+                print('Tentando Atualizar Campanha ${c.id}');
+                campanhasRef
+                    .document(c.id)
+                    .updateData(c.toJson())
+                    .catchError((err) {
+                  print('Erro do catch = ${err}');
+                });
+            }
+          }catch(err){
+            print('Erro: ${err.toString()}');
           }
         }
 
-          return userRef
-              .document(Helper.localUser.id)
-              .updateData(Helper.localUser.toJson())
-              .then((v) {
-            
-            dToast('Item Atualizado com sucesso!');
-    
-          });
+        userRef
+            .document(Helper.localUser.id)
+            .updateData(Helper.localUser.toJson())
+            .then((v) {
+          dToast('Item Atualizado com sucesso!');
+        });
 
         return 'Atualizado com sucesso!';
       }).catchError((err) {
         print('Error: ${err}');
-        return 'Error: ${err}';
       });
     } else {
-      return Future.delayed(Duration(seconds: 1)).then((v) {
-        return 'Erro: Carro Nulo';
+      Future.delayed(Duration(seconds: 1)).then((v) {
+        print('Erro: Carro Nulo');
       });
     }
   }
 
   @override
   void dispose() {
-        carroSelecionadoController.close();
+    carroSelecionadoController.close();
 
     userController.close();
     carrosController.close();

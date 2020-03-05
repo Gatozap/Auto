@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Boca a Boca"
+        android:label="Autooh"
 
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -9,6 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 //import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationBloc extends BlocBase {
   //final navigatorRepository = NavigatorRepository();
@@ -36,7 +37,7 @@ class NavigationBloc extends BlocBase {
   @override
   void dispose() {}
 
-  Future<void> start({String id}) async {
+  Future<String> start({String id}) async {
     if (id == null) {
       corrida = Corrida(
           id: idcorrida,
@@ -74,7 +75,9 @@ class NavigationBloc extends BlocBase {
       points = new List();
       Map<dynamic, dynamic> pts = v.snapshot.value;
       pts.forEach((k, v) {
-        points.add(Localizacao.fromJson(v));
+        if(v != null) {
+          points.add(Localizacao.fromJson(v));
+        }
       });
       points.sort((var a, var b) {
         return a.timestamp.compareTo(b.timestamp);
@@ -84,6 +87,10 @@ class NavigationBloc extends BlocBase {
     corridaRef.update(corrida.toJson());
     // pointsRef.push().set(location.toJson());
     inCorrida.add(corrida);
+    SharedPreferences.getInstance().then((v){
+      v.setString('corrida', corrida.id);
+    });
+    return corrida.id;
   }
 
   void check() {
@@ -91,53 +98,59 @@ class NavigationBloc extends BlocBase {
   }
 
   Future<bool> startRacing(location) async {
-    if (corrida.isRunning) {
-      bool hasMoved = false;
-      Localizacao loc = Localizacao(
-          latitude: location.latitude,
-          longitude: location.longitude,
-          altitude: location.altitude,
-          accuracy: location.accuracy,
-          timestamp: DateTime.now());
-      if(points == null){
-        points = new List();
-      }
-      corrida.last_seen = DateTime.now();
-      double dist = 0;
-
-      Localizacao lastPoint;
-      for (var p in points) {
-        if (lastPoint != null) {
-          dist += await Geolocator().distanceBetween(
-            p.latitude,
-            p.longitude,
-            loc.latitude,
-            loc.longitude,
-            );
+    if (corrida != null) {
+      if (corrida.isRunning) {
+        bool hasMoved = false;
+        Localizacao loc = Localizacao(
+            latitude: location.latitude,
+            longitude: location.longitude,
+            altitude: location.altitude,
+            accuracy: location.accuracy,
+            timestamp: DateTime.now());
+        if (points == null) {
+          points = new List();
         }
-        lastPoint = p;
-      }
-      if(points != null) {
-        if(points.length != 0) {
-          Localizacao p = points.last;
-          if (p.latitude != loc.latitude || p.longitude != loc.longitude) {
-            print(' AQUI LALALA  ${p.latitude} ${ loc.latitude}  ${p.longitude}  ${loc.longitude}');
+        corrida.last_seen = DateTime.now();
+        double dist = 0;
+
+        Localizacao lastPoint;
+        points.sort((var a, var b) {
+          return a.timestamp.compareTo(b.timestamp);
+        });
+        for (var p in points) {
+          if (lastPoint != null) {
+            dist += await Geolocator().distanceBetween(
+              p.latitude,
+              p.longitude,
+              lastPoint.latitude,
+              lastPoint.longitude,
+              );
+          }
+          lastPoint = p;
+        }
+        if (points != null) {
+          if (points.length != 0) {
+            Localizacao p = points.last;
+            if (p.latitude != loc.latitude || p.longitude != loc.longitude) {
+              print(' AQUI LALALA  ${p.latitude} ${ loc.latitude}  ${p
+                  .longitude}  ${loc.longitude}');
+              hasMoved = true;
+            }
+          } else {
             hasMoved = true;
           }
-        }else{
-          hasMoved = true;
+        } else {
+          //hasMoved= true;
         }
-      }else{
-        //hasMoved= true;
+        print('HAS MOVED ${hasMoved}');
+        if (hasMoved) {
+          corrida.dist = dist;
+          corridaRef.update(corrida.toJson());
+          points.add(loc);
+          pointsRef.push().set(loc.toJson());
+        }
+        return true;
       }
-      print('HAS MOVED ${hasMoved}');
-      if(hasMoved) {
-        corrida.dist = dist;
-        corridaRef.update(corrida.toJson());
-        points.add(loc);
-        pointsRef.push().set(loc.toJson());
-      }
-      return true;
     }
   }
 
@@ -183,6 +196,9 @@ class NavigationBloc extends BlocBase {
     corridaRef = null;
     pointsRef = null;
     corrida.isRunning = false;
+    SharedPreferences.getInstance().then((v){
+      v.setString('corrida', '');
+    });
     inCorrida.add(corrida);
     print('AQUI FIM STOP ${corrida}');
   }

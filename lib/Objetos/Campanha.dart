@@ -96,7 +96,7 @@ class Campanha{
      this.deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
      'limite': this.limite == null ? 5000000 : this.limite,
      "fotos": this.fotos == null ? null : this.fotos,
-     'carros': this.carros == null ?null: json.encode(this.carros),
+     'carros': this.carros == null ?null: json.encode(EncodeCarros(this.carros)),
    };
  }
 
@@ -119,6 +119,16 @@ class Campanha{
       zonas.add(Zona.fromJson(i));
     }
     return zonas;
+  }
+
+  EncodeCarros(List<Carro> carros) {
+   print('CHAMOU AQUI ${carros}');
+   List encoded = new List();
+   for(Carro c in carros){
+     print(c.toJsonSemCampanha());
+     encoded.add(c.toJsonSemCampanha());
+   }
+   return encoded;
   }
 
 }

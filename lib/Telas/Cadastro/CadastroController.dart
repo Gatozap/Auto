@@ -332,38 +332,38 @@ class CadastroController extends BlocBase {
 
       print('campnha aqui : ${carro.campanhas}');
       carrosRef.document(carro.id).updateData(carro.toJson());
-       
-     
-
-      bool contains = false;
-      for(Campanha c in carro.campanhas){
-        if(c.carros ==null){
-          c.carros = new List();
-
-        }
 
 
-        for(Carro car in c.carros){
-          if(car.id == carro.id){
-             contains = true;
 
+
+      print('Tamanho da Lista ${carro.campanhas.length}');
+      for (Campanha c in carro.campanhas) {
+        try {
+          bool contains = false;
+          if (c.carros == null) {
+            c.carros = new List();
           }
 
+          for (Carro car in c.carros) {
+            if (car.id == carro.id) {
+              contains = true;
+            }
+          }
+          if (!contains) {
+            c.carros.add(carro);
+            print('aqui gravou campanha = ${c} ');
 
-        }
-        if(!contains) {
-          c.carros.add(carro);
 
-          print('adicionou essa ${c}');
-          campanhasRef.add(c.toJson()).then((v){
-            print('adicionou essa porra');
-          }).catchError((err) {
-            print('adicionou essa porra ${err}');
-
-          });
-          campanhasRef.document(c.id).updateData(c.toJson()).then((v){
-            print('aqui gravou campanha = ${c } ');
-          });
+              print('Tentando Atualizar Campanha ${c.id}');
+              campanhasRef
+                  .document(c.id)
+                  .updateData(c.toJson())
+                  .catchError((err) {
+                print('Erro do catch = ${err}');
+              });
+          }
+        }catch(err){
+          print('Erro: ${err.toString()}');
         }
       }
 

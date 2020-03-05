@@ -79,6 +79,25 @@ class Carro{
         'renavam': renavam,
         'foto': foto,
       };
+  Map<String, dynamic> toJsonSemCampanha() =>
+      {
+        'cor': cor,
+        'id': id,
+        'modelo': modelo,
+        'marca': marca,
+        'placa': placa,
+        'dono_nome': dono_nome,
+        'created_at':
+        created_at == null ? null : created_at.millisecondsSinceEpoch,
+        'updated_at':
+        updated_at == null ? null : updated_at.millisecondsSinceEpoch,
+        'deleted_at':
+        deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
+        'ano': ano,
+        'dono': dono,
+        'renavam': renavam,
+        'foto': foto,
+      };
   static getCampanhas(decoded) {
     List<Campanha> campanhas = new List();
     if (decoded == null) {
