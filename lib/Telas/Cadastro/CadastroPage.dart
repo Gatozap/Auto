@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:bocaboca/Helpers/Bancos.dart';
 import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Helpers/Rekonizer.dart';
+import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Documento.dart';
 import 'package:bocaboca/Objetos/User.dart';
@@ -73,6 +74,8 @@ class _CadastroState extends State<Cadastro> {
   void initState() {
     _dropDownMenuItemsTipoConta = _getDropDownMenuItemsTipoConta();
     selectTipo = _dropDownMenuItemsTipoConta[0].value;
+
+    super.initState();
     if (perfilController == null) {
       perfilController == PerfilController(widget.user);
     }
@@ -80,14 +83,14 @@ class _CadastroState extends State<Cadastro> {
       cc == CadastroController();
     }
     if(carroController == null){
-      carroController == CarroController();
+      carroController == CarroController(carro: widget.carro);
     }
-    super.initState();
   }
 
   CadastroController cc = new CadastroController();
   SwiperController sc = new SwiperController();
   String barcode = "";
+  Carro carro;
   var codigo = TextEditingController();
   PerfilController perfilController;
   CarroController carroController;
@@ -330,7 +333,7 @@ class _CadastroState extends State<Cadastro> {
             cc.inDocumento.add(cc.documento);
             break;
         }
-        ;
+
       } else {
         cc.documento.isValid = true;
         cc.inDocumento.add(cc.documento);
@@ -663,11 +666,21 @@ class _CadastroState extends State<Cadastro> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: <Widget>[
                                               StreamBuilder(
-                                                stream: cc.outCarro,
+                                                stream: carroController.outCarroSelecionado,
                                                 builder: (context, snapshot) {
-                                                  if(snapshot.data == null){
-                                                    return Container(child: hText('null', context));
+                                                 
+
+                                                  if(carro == null){
+                                                    carro = new Carro();
                                                   }
+
+                                                  if(snapshot.data == null){
+
+                                                    return Container(child: hText('Error', context));
+
+                                                  }
+
+
                                                   return Container(
 
                                                     height: getAltura(context) * .15,
@@ -677,11 +690,9 @@ class _CadastroState extends State<Cadastro> {
                                                           image: CachedNetworkImageProvider(
                                                               'https://lh3.googleusercontent.com/proxy/4OjiXW8uK7yahvVE1TfEGN61fQLq23oDb3DI5kTjpH8-kAFmiLBD_r3iC69PdJj4qigq-hS0cK0YY6_Dhfrsab1hWH5iOf5FUfVNefhLZqsQA3VUa7TiW4qPRIOmR7dJTVMP2sHoxg'),
                                                           fit: BoxFit.cover),
-                                                      border:  snapshot.data.anuncio_bancos == false? Border.all(
+                                                      border:   Border.all(
                                                               color: Colors.black,
-                                                              width: 3): Border.all(
-                    color: Colors.green,
-                    width: 3),
+                                                              width: 3),
 
 
                                                       borderRadius:
@@ -692,52 +703,90 @@ class _CadastroState extends State<Cadastro> {
                                               ),
 
 
-                                              StreamBuilder(
-                                                stream: cc.outCarro,
-                                                builder: (context, snapshot) {
+                                              Container(
 
-                                                 if(snapshot.data == null){
-                                                   return Container(child: hText('null', context));
-                                                 }
-
-
-                                                  return Container(
                                                     child: Padding(
                                                       padding: const EdgeInsets.only(left:8.0, top: 30.0),
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
-                                                          defaultCheckBox(
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets.symmetric(horizontal: 8.0),
+                                                            child: FutureBuilder(
+                                                                future: getDropDownMenuItemsCampanha(),
+                                                                builder: (context, snapshot) {
+                                                                  if (snapshot.data == null) {
+                                                                    return Container();
+                                                                  }
 
-                                                              widget.carro.anuncio_bancos,
+                                                                  return DropdownButton(
+                                                                    hint: Row(
+                                                                      children: <Widget>[
+                                                                        Icon(Icons.map, color: corPrimaria),
+                                                                        sb,
+                                                                        hText(
+                                                                          'Campanha',
+                                                                          context,
+                                                                          size: 40,
+                                                                          color: corPrimaria,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    style: TextStyle(
+                                                                        color: corPrimaria,
+                                                                        fontSize: ScreenUtil.getInstance()
+                                                                            .setSp(40),
+                                                                        fontWeight: FontWeight.bold),
+                                                                    icon: Icon(Icons.arrow_drop_down,
+                                                                        color: corPrimaria),
+                                                                    items: snapshot.data,
+                                                                    onChanged: (value) {
+                                                                      Campanha c = value;
+                                                                      if (c == null) {
+                                                                        c = Campanha();
+                                                                      }
+
+
+
+                                                                      if (carro == null) {
+                                                                        carro = new Carro();
+                                                                      }
+
+
+                                                                        carro.anuncio_bancos = value;
+
+
+                                                                       carroController.inCarroSelecionado
+                                                                          .add(carro);
+                                                                    },
+                                                                  );
+                                                                }),
+                                                          ),
+                                                          /*defaultCheckBox(
+
+                                                              carro.anuncio_bancos,
                                                               'Bancos',
                                                               context, () {
-                                                            widget.carro.anuncio_bancos =
-                                                            !widget.carro.anuncio_bancos;
-                                                            cc.carro = widget.carro;
+                                                            carro.anuncio_bancos =
+                                                            !carro.anuncio_bancos;
+                                                            cc.carro = carro;
                                                             cc.inCarro
                                                                 .add(cc.carro);
-                                                          }, size: 15),
+                                                          }, size: 15),*/
                                                         ],
                                                       ),
                                                     ),
-                                                  );
-                                                }
-                                              )
+                                                  ),
+                                             
                                             ],
                                           ),sb,
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: <Widget>[
-                                              StreamBuilder(
-                                                  stream: cc.outCarro,
-                                                  builder: (context, snapshot) {
-                                                    if(snapshot.data == null){
-                                                      return Container(child: hText('null', context));
-                                                    }
-                                                    return Container(
+                                              Container(
 
                                                       height: getAltura(context) * .15,
                                                       width: getLargura(context) * .30,
@@ -746,7 +795,7 @@ class _CadastroState extends State<Cadastro> {
                                                             image: CachedNetworkImageProvider(
                                                                 'https://images.vexels.com/media/users/3/145855/isolated/preview/6fadc35864ee653cc66c342104573c53-silhueta-de-vista-lateral-de-carro-inteligente-by-vexels.png'),
                                                             fit: BoxFit.cover),
-                                                        border:  snapshot.data.anuncio_laterais == false? Border.all(
+                                                        border:  carro.anuncio_laterais == null? Border.all(
                                                             color: Colors.black,
                                                             width: 3): Border.all(
                                                             color: Colors.green,
@@ -756,15 +805,16 @@ class _CadastroState extends State<Cadastro> {
                                                         borderRadius:
                                                         BorderRadius.circular(0),
                                                       ),
-                                                    );
-                                                  }
-                                              ),
+                                                    ),
 
 
                                               StreamBuilder(
                                                   stream: cc.outCarro,
                                                   builder: (context, snapshot) {
-
+                                                    carro = snapshot.data;
+                                                    if(carro == null){
+                                                      carro = new Carro();
+                                                    }
                                                     if(snapshot.data == null){
                                                       return Container(child: hText('null', context));
                                                     }
@@ -777,17 +827,7 @@ class _CadastroState extends State<Cadastro> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: <Widget>[
-                                                            defaultCheckBox(
 
-                                                                widget.carro.anuncio_laterais,
-                                                                'Laterais',
-                                                                context, () {
-                                                              widget.carro.anuncio_laterais =
-                                                              !widget.carro.anuncio_laterais;
-                                                              cc.carro = widget.carro;
-                                                              cc.inCarro
-                                                                  .add(cc.carro);
-                                                            }, size: 15),
                                                           ],
                                                         ),
                                                       ),
@@ -800,13 +840,7 @@ class _CadastroState extends State<Cadastro> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: <Widget>[
-                                              StreamBuilder(
-                                                  stream: cc.outCarro,
-                                                  builder: (context, snapshot) {
-                                                    if(snapshot.data == null){
-                                                      return Container(child: hText('null', context));
-                                                    }
-                                                    return Container(
+                                            Container(
 
                                                       height: getAltura(context) * .15,
                                                       width: getLargura(context) * .30,
@@ -815,7 +849,7 @@ class _CadastroState extends State<Cadastro> {
                                                             image: CachedNetworkImageProvider(
                                                                 'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
                                                             fit: BoxFit.cover),
-                                                        border:  snapshot.data.anuncio_traseira_completa == false? Border.all(
+                                                        border:  carro.anuncio_traseira_completa == null? Border.all(
                                                             color: Colors.black,
                                                             width: 3): Border.all(
                                                             color: Colors.green,
@@ -825,15 +859,14 @@ class _CadastroState extends State<Cadastro> {
                                                         borderRadius:
                                                         BorderRadius.circular(0),
                                                       ),
-                                                    );
-                                                  }
-                                              ),
+                                                    ),
 
 
                                               StreamBuilder(
                                                   stream: cc.outCarro,
                                                   builder: (context, snapshot) {
-
+                                                    carro = snapshot.data;
+                                                    
                                                     if(snapshot.data == null){
                                                       return Container(child: hText('null', context));
                                                     }
@@ -846,17 +879,7 @@ class _CadastroState extends State<Cadastro> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: <Widget>[
-                                                            defaultCheckBox(
 
-                                                                widget.carro.anuncio_traseira_completa,
-                                                                'Lataria Traseira',
-                                                                context, () {
-                                                              widget.carro.anuncio_traseira_completa =
-                                                              !widget.carro.anuncio_traseira_completa;
-                                                              cc.carro = widget.carro;
-                                                              cc.inCarro
-                                                                  .add(cc.carro);
-                                                            }, size: 15),
                                                           ],
                                                         ),
                                                       ),
@@ -869,13 +892,7 @@ class _CadastroState extends State<Cadastro> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: <Widget>[
-                                              StreamBuilder(
-                                                  stream: cc.outCarro,
-                                                  builder: (context, snapshot) {
-                                                    if(snapshot.data == null){
-                                                      return Container(child: hText('null', context));
-                                                    }
-                                                    return Container(
+                                            Container(
 
                                                       height: getAltura(context) * .15,
                                                       width: getLargura(context) * .30,
@@ -884,7 +901,7 @@ class _CadastroState extends State<Cadastro> {
                                                             image: CachedNetworkImageProvider(
                                                                 'https://http2.mlstatic.com/D_NQ_NP_994301-MLB20314839735_062015-O.jpg'),
                                                             fit: BoxFit.cover),
-                                                        border:  snapshot.data.anuncio_vidro_traseiro == false? Border.all(
+                                                        border:  carro.anuncio_vidro_traseiro == null? Border.all(
                                                             color: Colors.black,
                                                             width: 3): Border.all(
                                                             color: Colors.green,
@@ -894,15 +911,12 @@ class _CadastroState extends State<Cadastro> {
                                                         borderRadius:
                                                         BorderRadius.circular(0),
                                                       ),
-                                                    );
-                                                  }
-                                              ),
-
+                                                    ),
 
                                               StreamBuilder(
                                                   stream: cc.outCarro,
                                                   builder: (context, snapshot) {
-
+                                                    carro = snapshot.data;
                                                     if(snapshot.data == null){
                                                       return Container(child: hText('null', context));
                                                     }
@@ -915,17 +929,7 @@ class _CadastroState extends State<Cadastro> {
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: <Widget>[
-                                                            defaultCheckBox(
 
-                                                                widget.carro.anuncio_vidro_traseiro,
-                                                                'Bancos',
-                                                                context, () {
-                                                              widget.carro.anuncio_vidro_traseiro =
-                                                              !widget.carro.anuncio_vidro_traseiro;
-                                                              cc.carro = widget.carro;
-                                                              cc.inCarro
-                                                                  .add(cc.carro);
-                                                            }, size: 15),
                                                           ],
                                                         ),
                                                       ),
@@ -1632,7 +1636,7 @@ class _CadastroState extends State<Cadastro> {
                                               placa: controllerPlaca.text,
                                               dono: Helper.localUser.id,
                                               modelo: controllerTipocarro.text,
-
+                                              
                                             );
                                             carros.add(c);
                                             User u = new User(carros: carros);
@@ -1757,7 +1761,25 @@ class _CadastroState extends State<Cadastro> {
               }
             }));
   }
-
+  Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
+    List<DropdownMenuItem<Campanha>> items = List();
+    return campanhasRef
+        .where('datafim', isGreaterThan: DateTime.now().millisecondsSinceEpoch)
+        .getDocuments()
+        .then((v) {
+      List campanhas = new List();
+      for (var d in v.documents) {
+        campanhas.add(Campanha.fromJson(d.data));
+      }
+      for (Campanha z in campanhas) {
+        items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
+      }
+      return items;
+    }).catchError((err) {
+      print('aqui erro 1 ${err}');
+      return null;
+    });
+  }
   Future scan() async {
     print('INICIOU SCAN');
     try {

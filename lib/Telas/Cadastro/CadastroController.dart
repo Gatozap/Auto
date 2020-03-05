@@ -89,11 +89,7 @@ class CadastroController extends BlocBase {
   Carro carro;
 
   CadastroController({this.carro}) {
-    if(carro == null){
-      carro = new Carro(anuncio_vidro_traseiro: false, anuncio_traseira_completa: false,anuncio_laterais: false, anuncio_bancos: false);
-      
-    }
-    inCarro.add(carro);
+
     inIsPrestadorSelected.add(false);
     inIsMale.add(false);
     telefone = '';

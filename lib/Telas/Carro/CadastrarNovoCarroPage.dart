@@ -346,8 +346,10 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                         ),
                       ),
                     );
-                  }),
-            ))
+                  }
+                  ),
+            )
+        )
       ]),
     );
   }

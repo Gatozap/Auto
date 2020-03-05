@@ -10,11 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CarroController extends BlocBase {
-  BehaviorSubject<User> userController = new BehaviorSubject<User>();
 
-  Stream<User> get outUser => userController.stream;
-
-  Sink<User> get inUser => userController.sink;
 
   BehaviorSubject<List<Carro>> carrosController =
       BehaviorSubject<List<Carro>>();
@@ -24,7 +20,7 @@ class CarroController extends BlocBase {
   List<Carro> carrosmain;
 
   Carro c;
-  User u;
+
 
   BehaviorSubject<Carro> carroSelecionadoController = BehaviorSubject<Carro>();
   Stream<Carro> get outCarroSelecionado => carroSelecionadoController.stream;
@@ -32,6 +28,7 @@ class CarroController extends BlocBase {
   Carro carroSelecionado;
 
   CarroController({Carro carro}) {
+
     carroSelecionado = carro;
     inCarroSelecionado.add(carroSelecionado);
     carrosRef
@@ -114,7 +111,7 @@ class CarroController extends BlocBase {
   void dispose() {
     carroSelecionadoController.close();
 
-    userController.close();
+
     carrosController.close();
     // TODO: implement dispose
   }
