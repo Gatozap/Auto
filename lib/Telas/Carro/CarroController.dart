@@ -53,6 +53,74 @@ class CarroController extends BlocBase {
       print('Erro: ${err.toString()}');
     });
   }
+  Future<User> CriarCarros(
+      Carro carro) {
+    carro.created_at = DateTime.now();
+    carro.updated_at = DateTime.now();
+    return carrosRef.add(carro.toJson()).then((v) {
+      carro.id = v.documentID;
+
+      print('campnha aqui : ${carro.campanhas}');
+      carrosRef.document(carro.id).updateData(carro.toJson());
+
+
+
+
+      print('Tamanho da Lista ${carro.campanhas.length}');
+      for (Campanha c in carro.campanhas) {
+        try {
+          bool contains = false;
+          if (c.carros == null) {
+            c.carros = new List();
+          }
+
+          for (Carro car in c.carros) {
+            if (car.id == carro.id) {
+              contains = true;
+            }
+          }
+          if (!contains) {
+            c.carros.add(carro);
+            print('aqui gravou campanha = ${c} ');
+
+
+            print('Tentando Atualizar Campanha ${c.id}');
+            campanhasRef
+                .document(c.id)
+                .updateData(c.toJson())
+                .catchError((err) {
+              print('Erro do catch = ${err}');
+            });
+          }
+        }catch(err){
+          print('Erro: ${err.toString()}');
+        }
+      }
+
+
+      if (Helper.localUser != null) {
+        if (Helper.localUser.carros == null) {
+          Helper.localUser.carros = new List<Carro>();
+        }
+
+        Helper.localUser.carros.add(carro);
+        return userRef
+            .document(Helper.localUser.id)
+            .updateData(Helper.localUser.toJson())
+            .then((v) {
+          dToast('Item Salvo com sucesso!');
+          return Helper.localUser;
+        }).catchError((err) {
+          return null;
+        });
+      } else {
+        return null;
+      }
+    }).catchError((err) {
+      return null;
+    });
+  }
+
 
   updateCarro(Carro carro) async {
     if (carro != null) {

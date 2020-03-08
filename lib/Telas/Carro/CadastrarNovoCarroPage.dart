@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bocaboca/Helpers/Bairros.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:bocaboca/Helpers/PhotoScroller.dart';
 import 'package:bocaboca/Helpers/References.dart';
@@ -10,6 +11,7 @@ import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Documento.dart';
 import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Objetos/Zona.dart';
 import 'package:bocaboca/Telas/Cadastro/CadastroController.dart';
 import 'package:bocaboca/Telas/Carro/CarroController.dart';
 
@@ -45,6 +47,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
     if (userController == null) {
       userController = CadastroController();
     }
+ 
   }
 
   CadastroController cc = new CadastroController();
@@ -318,9 +321,11 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                             ),
                                           )
                                         : Container(),
+                            seletorAnunciosCarro(),
                             Container(
                               child:
                                   defaultActionButton('Cadastrar', context, () {
+                                    List<Carro> carros = new List();
                                 Carro c = new Carro(
                                   ano: int.parse(controllerAno.text),
                                   cor: controllerCor.text,
@@ -331,11 +336,16 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                   updated_at: DateTime.now(),
                                   campanhas:
                                       carro == null ? null : carro.campanhas,
+                                  anuncio_bancos: carro == null? null : carro.anuncio_bancos,
+                                  anuncio_vidro_traseiro: carro == null? null : carro.anuncio_vidro_traseiro,
+                                  anuncio_traseira_completa: carro == null? null : carro.anuncio_traseira_completa,
+                                  anuncio_laterais: carro == null? null : carro.anuncio_laterais,
                                 );
-
+                                 carros.add(c);
+                                 Helper.localUser.carros = carros;
                                 onLoad = true;
 
-                                cc.CriarCarros(c).then((v) {
+                                carroController.CriarCarros(c).then((v) {
                                   dToast('Carro cadastrado com Sucesso!');
 
                                   Navigator.of(context).pop();
@@ -353,7 +363,362 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
       ]),
     );
   }
+  Widget seletorAnunciosCarro() {
+    return StreamBuilder(
+      stream: carroController.outCarroSelecionado,
+      builder: (context, car) {
+        Carro carro = car.data;
+        if (car.data == null) {
+          carro = new Carro();
+        }
+        return Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: hText(
+                    'Escolha as campanhas e suas respectivas posições', context, textaling: TextAlign.center),
+              ),
+              sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://http2.mlstatic.com/capa-banco-carro-D_NQ_NP_625021-MLB20699986131_052016-F.jpg'),
+                          fit: BoxFit.cover),
+                      border: carro.anuncio_bancos == null
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: FutureBuilder(
+                                future: getDropDownMenuItemsCampanha(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.data == null) {
+                                    return Container();
+                                  }
+                                  if (carro == null) {
+                                    carro = new Carro();
+                                  }
 
+                                  return DropdownButton(
+                                    hint: Row(
+                                      children: <Widget>[
+                                        sb,
+                                        hText(
+                                          carro.anuncio_bancos == null
+                                              ? 'Anuncios nos bancos'
+                                              : carro.anuncio_bancos.nome,
+                                          context,
+                                          size: 40,
+                                          color: corPrimaria,
+                                        ),
+                                      ],
+                                    ),
+                                    style: TextStyle(
+                                        color: corPrimaria,
+                                        fontSize:
+                                        ScreenUtil.getInstance().setSp(40),
+                                        fontWeight: FontWeight.bold),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: corPrimaria),
+                                    items: snapshot.data,
+                                    onChanged: (value) {
+                                      Campanha c = value;
+                                      if (c == null) {
+                                        c = Campanha();
+                                      }
+
+                                      if (carro == null) {
+                                        carro = new Carro();
+                                      }
+
+                                      carro.anuncio_bancos = value;
+
+                                      carroController.inCarroSelecionado
+                                          .add(carro);
+                                    },
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://images.vexels.com/media/users/3/145586/isolated/preview/8f11dbfb5ce1e294f79a0f9aea6b36bf-silhueta-de-vista-lateral-de-carro-de-cidade-by-vexels.png'),
+                          fit: BoxFit.cover),
+                      border: carro.anuncio_laterais == null
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: FutureBuilder(
+                                future: getDropDownMenuItemsCampanha(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.data == null) {
+                                    return Container();
+                                  }
+                                  if (carro == null) {
+                                    carro = new Carro();
+                                  }
+
+                                  return DropdownButton(
+                                    hint: Row(
+                                      children: <Widget>[
+                                        sb,
+                                        hText(
+                                          carro.anuncio_laterais == null
+                                              ? 'Anuncios nas laterais'
+                                              : carro.anuncio_laterais.nome,
+                                          context,
+                                          size: 40,
+                                          color: corPrimaria,
+                                        ),
+                                      ],
+                                    ),
+                                    style: TextStyle(
+                                        color: corPrimaria,
+                                        fontSize:
+                                        ScreenUtil.getInstance().setSp(40),
+                                        fontWeight: FontWeight.bold),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: corPrimaria),
+                                    items: snapshot.data,
+                                    onChanged: (value) {
+                                      Campanha c = value;
+                                      if (c == null) {
+                                        c = Campanha();
+                                      }
+
+                                      if (carro == null) {
+                                        carro = new Carro();
+                                      }
+
+                                      carro.anuncio_laterais = value;
+
+                                      carroController.inCarroSelecionado
+                                          .add(carro);
+                                    },
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
+                          fit: BoxFit.cover),
+                      border: carro.anuncio_traseira_completa == null
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: FutureBuilder(
+                                future: getDropDownMenuItemsCampanha(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.data == null) {
+                                    return Container();
+                                  }
+                                  if (carro == null) {
+                                    carro = new Carro();
+                                  }
+
+                                  return DropdownButton(
+                                    hint: Row(
+                                      children: <Widget>[
+                                        sb,
+                                        hText(
+                                          carro.anuncio_traseira_completa == null
+                                              ? 'Anuncios na Traseira'
+                                              : carro
+                                              .anuncio_traseira_completa.nome,
+                                          context,
+                                          size: 40,
+                                          color: corPrimaria,
+                                        ),
+                                      ],
+                                    ),
+                                    style: TextStyle(
+                                        color: corPrimaria,
+                                        fontSize:
+                                        ScreenUtil.getInstance().setSp(40),
+                                        fontWeight: FontWeight.bold),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: corPrimaria),
+                                    items: snapshot.data,
+                                    onChanged: (value) {
+                                      Campanha c = value;
+                                      if (c == null) {
+                                        c = Campanha();
+                                      }
+
+                                      if (carro == null) {
+                                        carro = new Carro();
+                                      }
+
+                                      carro.anuncio_traseira_completa = value;
+
+                                      carroController.inCarroSelecionado
+                                          .add(carro);
+                                    },
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://lh3.googleusercontent.com/proxy/e6MtotEzLXKCXlLTrlcXb8fF_SHWFkBjXnOGA4BAunHB_eDmns-MDEdLHihluBKfP75oA-khquXAuKYMMnDvHpNWVTBjEbuux9-z-dCApKuIx4gXca8LuajyK3Ax51ZQFhc47GC2WhkK7rRb'),
+                          fit: BoxFit.cover),
+                      border: carro.anuncio_vidro_traseiro == null
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: FutureBuilder(
+                                future: getDropDownMenuItemsCampanha(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.data == null) {
+                                    return Container();
+                                  }
+                                  if (carro == null) {
+                                    carro = new Carro();
+                                  }
+
+                                  return DropdownButton(
+                                    hint: Row(
+                                      children: <Widget>[
+                                        sb,
+                                        hText(
+                                          carro.anuncio_vidro_traseiro == null
+                                              ? 'Vidro Traseiro'
+                                              : carro.anuncio_vidro_traseiro.nome,
+                                          context,
+                                          size: 40,
+                                          color: corPrimaria,
+                                        ),
+                                      ],
+                                    ),
+                                    style: TextStyle(
+                                        color: corPrimaria,
+                                        fontSize:
+                                        ScreenUtil.getInstance().setSp(40),
+                                        fontWeight: FontWeight.bold),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: corPrimaria),
+                                    items: snapshot.data,
+                                    onChanged: (value) {
+                                      Campanha c = value;
+                                      if (c == null) {
+                                        c = Campanha();
+                                      }
+
+                                      if (carro == null) {
+                                        carro = new Carro();
+                                      }
+
+                                      carro.anuncio_vidro_traseiro = value;
+
+                                      carroController.inCarroSelecionado
+                                          .add(carro);
+                                    },
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
   ProgressDialog pr;
   Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();
