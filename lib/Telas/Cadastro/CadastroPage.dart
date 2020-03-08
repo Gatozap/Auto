@@ -351,13 +351,13 @@ class _CadastroState extends State<Cadastro> {
   Widget build(BuildContext context) {
     int duracao = 300;
     return Scaffold(
-        body: StreamBuilder<bool>(
-            stream: cc.outIsPrestadorSelected,
+        body: StreamBuilder(
+            stream: carroController.outCarroSelecionado,
             builder: (context, isPrestador) {
               if (isPrestador == null) {
                 return Container();
               }
-              if (isPrestador.hasData) {
+
                 return Swiper(
                   itemBuilder: (BuildContext context, int index) {
                     print('Pagina $index');
@@ -772,7 +772,7 @@ class _CadastroState extends State<Cadastro> {
                             right: 10,
                           ),
                         ]);
-                      case 3:
+                      case 2:
                         var CPF = MaskedTextController(
                             text: cc.CPF, mask: '000.000.000-00');
                         var telefone = MaskedTextController(
@@ -1036,82 +1036,6 @@ class _CadastroState extends State<Cadastro> {
                                                                       },
                                                                           icon:
                                                                               null),
-                                                                      MaterialButton(
-                                                                        color:
-                                                                            corPrimaria,
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(60)),
-                                                                        onPressed:
-                                                                            () async {
-                                                                          print(
-                                                                              'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                                                          Helper
-                                                                              .localUser
-                                                                              .conta_bancaria = controllerConta_bancaria.text;
-                                                                          Helper
-                                                                              .localUser
-                                                                              .agencia = controllerAgencia.text;
-                                                                          Helper
-                                                                              .localUser
-                                                                              .numero_conta = controllerNumero_conta.text;
-
-                                                                          Helper
-                                                                              .localUser
-                                                                              .tipo_conta = selectTipo;
-                                                                          Helper
-                                                                              .localUser
-                                                                              .kmmin = int.parse(controllerKmsmin.text);
-                                                                          Helper
-                                                                              .localUser
-                                                                              .kmmax = int.parse(controllerKmsmax.text);
-                                                                          userRef
-                                                                              .document(Helper.localUser.id)
-                                                                              .updateData(Helper.localUser.toJson())
-                                                                              .then((v) {
-                                                                            dToast('Banco salvo com sucesso !');
-                                                                            sc.next(animation: true);
-                                                                          });
-                                                                          List<Carro>
-                                                                              carros =
-                                                                              new List();
-                                                                          Carro
-                                                                              c =
-                                                                              new Carro(
-                                                                            created_at:
-                                                                                DateTime.now(),
-                                                                            dono_nome:
-                                                                                Helper.localUser.nome,
-                                                                            updated_at:
-                                                                                DateTime.now(),
-                                                                            cor:
-                                                                                controllerCor.text,
-                                                                            ano:
-                                                                                int.parse(controllerAno.text),
-                                                                            placa:
-                                                                                controllerPlaca.text,
-                                                                            dono:
-                                                                                Helper.localUser.id,
-                                                                            modelo:
-                                                                                controllerTipocarro.text,
-                                                                          );
-                                                                          carros
-                                                                              .add(c);
-
-                                                                          carroController.CriarCarros(
-                                                                              c);
-                                                                          cc.atualizarDados(
-                                                                              sc,
-                                                                              context,
-                                                                              1);
-                                                                        },
-                                                                        child:
-                                                                            Text(
-                                                                          'Concluir 3',
-                                                                          style:
-                                                                              estiloTextoBotao,
-                                                                        ),
-                                                                      ),
                                                                     ],
                                                                   ),
                                                                 )
@@ -1271,86 +1195,6 @@ class _CadastroState extends State<Cadastro> {
                                                       }),
                                                   sb,
                                                   sb,
-                                                  MaterialButton(
-                                                    color: corPrimaria,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        60)),
-                                                    onPressed: () async {
-                                                      print(
-                                                          'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                                      Helper.localUser
-                                                              .conta_bancaria =
-                                                          controllerConta_bancaria
-                                                              .text;
-                                                      Helper.localUser.agencia =
-                                                          controllerAgencia
-                                                              .text;
-                                                      Helper.localUser
-                                                              .numero_conta =
-                                                          controllerNumero_conta
-                                                              .text;
-
-                                                      Helper.localUser
-                                                              .tipo_conta =
-                                                          selectTipo;
-                                                      Helper.localUser.kmmin =
-                                                          int.parse(
-                                                              controllerKmsmin
-                                                                  .text);
-                                                      Helper.localUser.kmmax =
-                                                          int.parse(
-                                                              controllerKmsmax
-                                                                  .text);
-                                                      userRef
-                                                          .document(Helper
-                                                              .localUser.id)
-                                                          .updateData(Helper
-                                                              .localUser
-                                                              .toJson())
-                                                          .then((v) {
-                                                        dToast(
-                                                            'Banco salvo com sucesso !');
-                                                        sc.next(
-                                                            animation: true);
-                                                      });
-                                                      List<Carro> carros =
-                                                          new List();
-                                                      Carro c = new Carro(
-                                                        created_at:
-                                                            DateTime.now(),
-                                                        dono_nome: Helper
-                                                            .localUser.nome,
-                                                        updated_at:
-                                                            DateTime.now(),
-                                                        cor: controllerCor.text,
-                                                        ano: int.parse(
-                                                            controllerAno.text),
-                                                        placa: controllerPlaca
-                                                            .text,
-                                                        dono:
-                                                            Helper.localUser.id,
-                                                        modelo:
-                                                            controllerTipocarro
-                                                                .text,
-                                                      );
-                                                      carros.add(c);
-                                                      User u = new User(
-                                                          carros: carros);
-
-                                                      carroController
-                                                          .CriarCarros(c);
-                                                      cc.atualizarDados(
-                                                          sc, context, 1);
-                                                    },
-                                                    child: Text(
-                                                      'Concluir 3',
-                                                      style: estiloTextoBotao,
-                                                    ),
-                                                  ),
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -1454,116 +1298,7 @@ class _CadastroState extends State<Cadastro> {
                                                   },
                                                   controller: CPF);
                                             }),
-                                        sb,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            StreamBuilder(
-                                                stream:
-                                                    carroController.outCarroSelecionado,
-                                                builder: (context, car) {
-                                                  Carro carro = car.data;
-                                                  if (car.data == null) {
-                                                    carro = new Carro();
-                                                  }
-                                                  if (car.data == null) {
-                                                    return Container();
-                                                  }
 
-                                                    return MaterialButton(
-                                                      color: corPrimaria,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          60)),
-                                                      onPressed: () async {
-                                                       
-                                                        List<Carro> carros =
-                                                            new List();
-                                                        Carro ccc = new Carro(
-                                                          created_at:
-                                                              DateTime.now(),
-                                                          dono_nome: Helper
-                                                              .localUser.nome,
-                                                          updated_at:
-                                                              DateTime.now(),
-                                                          cor: controllerCor
-                                                              .text,
-                                                          ano: int.parse(
-                                                              controllerAno
-                                                                  .text),
-                                                          placa: controllerPlaca
-                                                              .text,
-                                                          dono: Helper
-                                                              .localUser.id,
-                                                          modelo:
-                                                              controllerTipocarro
-                                                                  .text,
-                                                          anuncio_bancos: carro == null? null : carro.anuncio_bancos,
-                                                          anuncio_vidro_traseiro: carro == null? null : carro.anuncio_vidro_traseiro,
-                                                          anuncio_traseira_completa: carro == null? null : carro.anuncio_traseira_completa,
-                                                          anuncio_laterais: carro == null? null : carro.anuncio_laterais,
-                                                        );
-                                                        carros.add(ccc);
-
-                                                        Helper.localUser
-                                                            .carros = carros;
-                                                        print(
-                                                            'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                                        Helper.localUser
-                                                                .conta_bancaria =
-                                                            controllerConta_bancaria
-                                                                .text;
-                                                        Helper.localUser
-                                                                .agencia =
-                                                            controllerAgencia
-                                                                .text;
-                                                        Helper.localUser
-                                                                .numero_conta =
-                                                            controllerNumero_conta
-                                                                .text;
-
-                                                        Helper.localUser
-                                                                .tipo_conta =
-                                                            selectTipo;
-                                                        Helper.localUser.kmmin =
-                                                            int.parse(
-                                                                controllerKmsmin
-                                                                    .text);
-                                                        Helper.localUser.kmmax =
-                                                            int.parse(
-                                                                controllerKmsmax
-                                                                    .text);
-                                                        userRef
-                                                            .document(Helper
-                                                                .localUser.id)
-                                                            .updateData(Helper
-                                                                .localUser
-                                                                .toJson())
-                                                            .then((v) {
-                                                          dToast(
-                                                              'Banco salvo com sucesso !');
-                                                          sc.next(
-                                                              animation: true);
-                                                        });
-                                                        carroController
-                                                            .CriarCarros(ccc);
-                                                        cc.atualizarDados(
-                                                            sc, context, 1);
-                                                      },
-                                                      child: Text(
-                                                        'Concluir Cadastro',
-                                                        style: estiloTextoBotao,
-                                                      ),
-                                                    );
-
-                                                }
-                                                ),
-                                          ],
-                                        ),
                                         Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -1597,6 +1332,25 @@ class _CadastroState extends State<Cadastro> {
                             Positioned(
                               child: MaterialButton(
                                   child: Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                  ),
+                                  color: corPrimaria,
+                                  onPressed: index != null
+                                      ? index < 5 - 1
+                                      ? () {
+                                    sc.next(animation: true);
+                                  }
+                                      : null
+                                      : null,
+                                  shape: new CircleBorder(
+                                      side: BorderSide(color: corPrimaria))),
+                              bottom: 5,
+                              right: 10,
+                            ),
+                            Positioned(
+                              child: MaterialButton(
+                                  child: Icon(
                                     Icons.arrow_back,
                                     color: Colors.white,
                                   ),
@@ -1616,7 +1370,7 @@ class _CadastroState extends State<Cadastro> {
 
                         break;
 
-                      case 2:
+                      case 3:
                         return Stack(
                           children: <Widget>[
                             Padding(
@@ -1625,32 +1379,9 @@ class _CadastroState extends State<Cadastro> {
                                   height:
                                       MediaQuery.of(context).size.height * .84,
                                   child: SingleChildScrollView(
-                                      child:
-
-                                      seletorAnunciosCarro()
-
-                                  )),
-
+                                      child: seletorAnunciosCarro())),
                             ),
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != null
-                                      ? index < 5 - 1
-                                          ? () {
-                                              sc.next(animation: true);
-                                            }
-                                          : null
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              right: 10,
-                            ),
+                         
                             Positioned(
                               child: MaterialButton(
                                   child: Icon(
@@ -1722,17 +1453,8 @@ class _CadastroState extends State<Cadastro> {
                         activeFontSize: 26,
                       )),
                 );
-              } else {
-                cc.inIsPrestadorSelected.add(false);
-                return Center(
-                  child: SpinKitCircle(
-                    color: corPrimaria,
-                    size: 80,
-                  ),
-                );
-              }
-            }
-            ));
+
+            }));
   }
 
   Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
@@ -1835,7 +1557,8 @@ class _CadastroState extends State<Cadastro> {
             children: <Widget>[
               Container(
                 child: hText(
-                    'Escolha as campanhas e suas respectivas posições', context, textaling: TextAlign.center),
+                    'Escolha as campanhas e suas respectivas posições', context,
+                    textaling: TextAlign.center),
               ),
               sb,
               Row(
@@ -1864,7 +1587,8 @@ class _CadastroState extends State<Cadastro> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -1908,7 +1632,7 @@ class _CadastroState extends State<Cadastro> {
                                       }
 
                                       carro.anuncio_bancos = value;
-
+                                         print('aqui anuncio bancos 22 ${value}');
                                       carroController.inCarroSelecionado
                                           .add(carro);
                                     },
@@ -1920,7 +1644,8 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -1947,7 +1672,8 @@ class _CadastroState extends State<Cadastro> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -1990,7 +1716,6 @@ class _CadastroState extends State<Cadastro> {
                                         carro = new Carro();
                                       }
 
-
                                       carro.anuncio_laterais = value;
 
                                       carroController.inCarroSelecionado
@@ -2004,7 +1729,8 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -2031,7 +1757,8 @@ class _CadastroState extends State<Cadastro> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -2047,10 +1774,11 @@ class _CadastroState extends State<Cadastro> {
                                       children: <Widget>[
                                         sb,
                                         hText(
-                                          carro.anuncio_traseira_completa == null
+                                          carro.anuncio_traseira_completa ==
+                                                  null
                                               ? 'Anuncios na Traseira'
-                                              : carro
-                                                  .anuncio_traseira_completa.nome,
+                                              : carro.anuncio_traseira_completa
+                                                  .nome,
                                           context,
                                           size: 40,
                                           color: corPrimaria,
@@ -2088,7 +1816,8 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -2115,7 +1844,8 @@ class _CadastroState extends State<Cadastro> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -2133,7 +1863,8 @@ class _CadastroState extends State<Cadastro> {
                                         hText(
                                           carro.anuncio_vidro_traseiro == null
                                               ? 'Vidro Traseiro'
-                                              : carro.anuncio_vidro_traseiro.nome,
+                                              : carro
+                                                  .anuncio_vidro_traseiro.nome,
                                           context,
                                           size: 40,
                                           color: corPrimaria,
@@ -2171,9 +1902,116 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ),
                 ],
+              ), sb,       Row(
+                mainAxisAlignment:
+                MainAxisAlignment.center,
+                children: <Widget>[
+                  MaterialButton(
+                    color: corPrimaria,
+                    shape:
+                    RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius
+                            .circular(
+                            60)),
+                    onPressed: () async {
+                      List<Carro> carros =
+                      new List();
+                      Carro ccc = new Carro(
+                        created_at:
+                        DateTime.now(),
+                        dono_nome: Helper
+                            .localUser.nome,
+                        updated_at:
+                        DateTime.now(),
+                        cor: controllerCor.text,
+                        ano: int.parse(
+                            controllerAno.text),
+                        placa: controllerPlaca
+                            .text,
+                        dono:
+                        Helper.localUser.id,
+                        modelo:
+                        controllerTipocarro
+                            .text,
+                        anuncio_bancos: carro ==
+                            null
+                            ? null
+                            : carro
+                            .anuncio_bancos,
+                        anuncio_vidro_traseiro:
+                        carro == null
+                            ? null
+                            : carro
+                            .anuncio_vidro_traseiro,
+                        anuncio_traseira_completa:
+                        carro == null
+                            ? null
+                            : carro
+                            .anuncio_traseira_completa,
+                        anuncio_laterais: carro ==
+                            null
+                            ? null
+                            : carro
+                            .anuncio_laterais,
+                      );
+                      carros.add(ccc);
+
+                      Helper.localUser.carros =
+                          carros;
+                      print(
+                          'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                      Helper.localUser
+                          .conta_bancaria =
+                          controllerConta_bancaria
+                              .text;
+                      Helper.localUser.agencia =
+                          controllerAgencia
+                              .text;
+                      Helper.localUser
+                          .numero_conta =
+                          controllerNumero_conta
+                              .text;
+
+                      Helper.localUser
+                          .tipo_conta =
+                          selectTipo;
+                      Helper.localUser.kmmin =
+                          int.parse(
+                              controllerKmsmin
+                                  .text);
+                      Helper.localUser.kmmax =
+                          int.parse(
+                              controllerKmsmax
+                                  .text);
+                      userRef
+                          .document(Helper
+                          .localUser.id)
+                          .updateData(Helper
+                          .localUser
+                          .toJson())
+                          .then((v) {
+                        dToast(
+                            'Banco salvo com sucesso !');
+                        sc.next(
+                            animation: true);
+                      });
+                      carroController
+                          .CriarCarros(ccc);
+                      cc.atualizarDados(
+                          sc, context, 1);
+                    },
+                    child: Text(
+                      'Concluir Cadastro',
+                      style: estiloTextoBotao,
+                    ),
+                  ),
+
+                ],
               ),
             ],
           ),
+
         );
       },
     );
