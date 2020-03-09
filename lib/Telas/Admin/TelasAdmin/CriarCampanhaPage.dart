@@ -31,24 +31,18 @@ class CriarCampanhaPage extends StatefulWidget {
   }
 }
 
-
-
-
-
 class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
   CampanhaController campanhaController;
   var controllerEmpresa = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
   var controllerCNPJ =
-  new MaskedTextController(text: '', mask: '00.000.000/0000-00');
+      new MaskedTextController(text: '', mask: '00.000.000/0000-00');
   var controllerLimite = new TextEditingController(text: '');
   Campanha campanha;
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-
-      campanhaController = CampanhaController(campanha: widget.campanha);
-
+    campanhaController = CampanhaController(campanha: widget.campanha);
 
     super.initState();
   }
@@ -57,6 +51,8 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
   void dispose() {
     super.dispose();
   }
+  DateTime dataini;
+  DateTime datafim;
 
   @override
   Widget build(BuildContext context) {
@@ -66,23 +62,37 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
         label: 'Data de Fim', icon: FontAwesomeIcons.solidCalendarPlus);
     print('aqui é campanha ${widget.campanha}');
 
-    if(widget.campanha != null){
+    if (widget.campanha != null) {
       controllerEmpresa.text = widget.campanha.empresa;
       controllerNome.text = widget.campanha.nome;
       controllerCNPJ.text = widget.campanha.cnpj;
-      datainiField = BasicDateTimeField(
-          label: 'Data de Início', icon: FontAwesomeIcons.solidCalendarPlus, startingdate: '${widget.campanha.dataini.day.toString().length==1?'0'+ widget.campanha.dataini.day.toString():widget.campanha.dataini.day}/${widget.campanha.dataini.month.toString().length==1?'0'+ widget.campanha.dataini.month.toString():widget.campanha.dataini.month}/${widget.campanha.dataini.year}');
-
+      if (widget.campanha.dataini != null) {
+        dataini = widget.campanha.dataini;
+        datainiField = BasicDateTimeField(
+            label: 'Data de Início',
+            icon: FontAwesomeIcons.solidCalendarPlus,
+            startingdate:
+                '${widget.campanha.dataini.day.toString().length == 1 ? '0' + widget.campanha.dataini.day.toString() : widget.campanha.dataini.day}/${widget.campanha.dataini.month.toString().length == 1 ? '0' + widget.campanha.dataini.month.toString() : widget.campanha.dataini.month}/${widget.campanha.dataini.year} ${widget.campanha.dataini.hour.toString().length == 1?'0'+widget.campanha.dataini.hour.toString():widget.campanha.dataini.hour.toString() }:${widget.campanha.dataini.minute.toString().length == 1?'0'+widget.campanha.dataini.minute.toString():widget.campanha.dataini.minute.toString() }');
+      }
       controllerLimite.text = widget.campanha.limite.toString();
-      datafimField = BasicDateTimeField(
-          label: 'Data de Fim', icon: FontAwesomeIcons.solidCalendarPlus, startingdate: '${widget.campanha.datafim.day.toString().length==1?'0'+ widget.campanha.datafim.day.toString():widget.campanha.datafim.day}/${widget.campanha.datafim.month.toString().length==1?'0'+ widget.campanha.datafim.month.toString():widget.campanha.datafim.month}/${widget.campanha.datafim.year}');
+      if (widget.campanha.datafim != null) {
+        datafim = widget.campanha.datafim;
+        datafimField = BasicDateTimeField(
+            label: 'Data de Fim',
+            icon: FontAwesomeIcons.solidCalendarPlus,
+            startingdate:
+            '${widget.campanha.datafim.day.toString().length == 1 ? '0' + widget.campanha.datafim.day.toString() : widget.campanha.datafim.day}/${widget.campanha.datafim.month.toString().length == 1 ? '0' + widget.campanha.datafim.month.toString() : widget.campanha.datafim.month}/${widget.campanha.datafim.year} ${widget.campanha.datafim.hour.toString().length == 1?'0'+widget.campanha.datafim.hour.toString():widget.campanha.datafim.hour.toString() }:${widget.campanha.datafim.minute.toString().length == 1?'0'+widget.campanha.datafim.minute.toString():widget.campanha.datafim.minute.toString() }');
+      }
       campanha = widget.campanha;
       campanhaController.inCampanha.add(campanha);
     }
 
     // TODO: implement build
     return Scaffold(
-        appBar: myAppBar(widget.campanha == null? 'Criar Campanha':'Editar Campanha', context, showBack: true),
+        appBar: myAppBar(
+            widget.campanha == null ? 'Criar Campanha' : 'Editar Campanha',
+            context,
+            showBack: true),
         body: Container(
             child: SingleChildScrollView(
                 child: StreamBuilder(
@@ -259,13 +269,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                     if (c.zonas == null) {
                                       c.zonas = new List();
                                     }
-                                     bool contains = false;
-                                       for(Zona z in c.zonas){
-                                         if(z.nome == value.nome){
-                                           contains = true;
-                                         }
-                                       }
-                                    if(!contains) {
+                                    bool contains = false;
+                                    for (Zona z in c.zonas) {
+                                      if (z.nome == value.nome) {
+                                        contains = true;
+                                      }
+                                    }
+                                    if (!contains) {
                                       c.zonas.add(value);
                                     }
                                     print(
@@ -329,7 +339,9 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                                       },
                                                       child: Chip(
                                                         label: hText(
-                                                            capitalize(campanha.zonas[index].nome),
+                                                            capitalize(campanha
+                                                                .zonas[index]
+                                                                .nome),
                                                             context,
                                                             color:
                                                                 Colors.white),
@@ -348,10 +360,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                 children: <Widget>[
                                   Container(
                                     child: defaultActionButton(
-                                        widget.campanha == null?'Cadastrar Campanha':'Editar Campanha', context, () {
-                                          if(campanha == null){
-                                            campanha = new Campanha();
-                                          }
+                                        widget.campanha == null
+                                            ? 'Cadastrar Campanha'
+                                            : 'Editar Campanha',
+                                        context, () {
+                                      if (campanha == null) {
+                                        campanha = new Campanha();
+                                      }
                                       campanha.empresa = controllerEmpresa.text;
                                       campanha.cnpj = controllerCNPJ.text;
 
@@ -359,44 +374,48 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                           datainiField.selectedDate;
                                       campanha.datafim =
                                           datafimField.selectedDate;
-                                     campanha.limite =
+                                      campanha.limite =
                                           int.parse(controllerLimite.text);
-                                           campanha.nome = controllerNome.text;
-                                           campanha.updated_at = DateTime.now();
-                                           if(widget.campanha == null) {
-                                             campanha.created_at =
-                                                 DateTime.now();
-                                           }
+                                      campanha.nome = controllerNome.text;
+                                      campanha.updated_at = DateTime.now();
+                                      if (widget.campanha == null) {
+                                        campanha.created_at = DateTime.now();
+                                      }
 
-                                            if(widget.campanha != null){
+                                      if (widget.campanha != null) {
+                                        print(
+                                            'data INI SELECTED ${datainiField.selectedDate}');
+                                        if(campanha.dataini == null){
+                                          campanha.dataini = dataini;
+                                        }
+                                        if(campanha.datafim == null){
+                                          campanha.datafim = datafim;
+                                        }
+                                        print(
+                                            'aqui a data ini ${campanha.dataini}');
+                                        print(
+                                            'aqui a data fim ${campanha.datafim}');
+                                        campanhaController.EditarCampanha(
+                                                campanha)
+                                            .then((v) {
+                                          dToast(
+                                              'Campanha editada com sucesso!');
+                                          Navigator.of(context).pop();
+                                        });
+                                      } else {
+                                        campanhaController.CriarCampanha(
+                                                campanha: campanha)
+                                            .then((v) {
+                                          dToast(
+                                              'Campanha criada com sucesso!');
+                                          Navigator.of(context).pop();
 
-                                              campanha.dataini =
-                                                  datainiField.selectedDate == null? widget.campanha.dataini:  datainiField.selectedDate;
-                                              campanha.datafim =
-                                                  datafimField.selectedDate == null? widget.campanha.datafim:  datafimField.selectedDate;
-                                              print('aqui a data ini ${widget.campanha.dataini}');
-                                              print('aqui a data fim ${widget.campanha.datafim}');
-                                              campanhaController.EditarCampanha(campanha).then((v){
-                                                dToast('Campanha editada com sucesso!');
-                                                Navigator.of(context).pop();
+                                          dToast(
+                                              'Erro ao Criar Campanha! ${v.toString()}');
 
-                                              });
-                                            } else {
-                                              campanhaController.CriarCampanha(
-                                                  campanha: campanha).then((v) {
-
-                                                  dToast(
-                                                      'Campanha criada com sucesso!');
-                                                  Navigator.of(context).pop();
-
-                                                  dToast(
-                                                      'Erro ao Criar Campanha! ${v
-                                                          .toString()}');
-
-                                                Navigator.of(context).pop();
-                                              });
-                                            }
-
+                                          Navigator.of(context).pop();
+                                        });
+                                      }
                                     }),
                                   ),
                                 ],
@@ -471,7 +490,6 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
     for (Zona z in zonas) {
       items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
-
     }
 
     return items;

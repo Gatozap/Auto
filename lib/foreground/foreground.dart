@@ -113,6 +113,7 @@ class _MyAppState extends State<Racing> {
                           });
                     });
               }),
+          
           StreamBuilder<Corrida>(
               stream: mapController.outCorrida,
               builder: (context, corrida) {
