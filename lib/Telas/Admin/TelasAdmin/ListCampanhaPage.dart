@@ -1,6 +1,8 @@
 import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Admin/TelasAdmin/CriarCampanhaPage.dart';
+import 'package:bocaboca/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
 import 'package:bocaboca/Telas/Carro/EditarCarroPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,33 +19,34 @@ import 'package:bocaboca/Telas/FichaPersonagem/FichaPersonagemPage.dart';
 import 'package:bocaboca/Telas/FichaPersonagem/PericiasPage.dart';
 import 'package:bocaboca/Telas/FichaPersonagem/TalentoPage.dart';
 
+import 'ListCampanhaController.dart';
 import 'ListaCarroController.dart';
 import 'VisualizarCarroPage.dart';
 
 
 
 
-class ListaCarroUserPage extends StatefulWidget {
+class ListaCampanhaPage extends StatefulWidget {
   Carro carro;
   User user;
   Campanha campanha;
-  ListaCarroUserPage({
+  ListaCampanhaPage({
     Key key,this.carro, this.user, this.campanha
   }) : super(key: key);
 
   @override
-  ListaCarroUserPageState createState() {
-    return ListaCarroUserPageState();
+  ListaCampanhaPageState createState() {
+    return ListaCampanhaPageState();
   }
 }
 
-class ListaCarroUserPageState extends State<ListaCarroUserPage> {
-  ListaCarroController pc;
+class ListaCampanhaPageState extends State<ListaCampanhaPage> {
+  ListaCampanhaController pc;
   @override
   void initState() {
     super.initState();
     if (pc == null) {
-      pc = new ListaCarroController();
+      pc = new ListaCampanhaController(campanha: widget.campanha);
     }
   }
 
@@ -56,35 +59,34 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: myAppBar('Lista de Carros', context),
+      appBar: myAppBar('Filtro por Campanha', context),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            StreamBuilder<List<Carro>>(
-              builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
+            StreamBuilder<List<Campanha>>(
+              builder: (context, AsyncSnapshot<List<Campanha>> snapshot) {
 
                 if (snapshot.data == null) {
-                  return Loading(completed: Text('Erro ao Buscar Carros'));
+                  return Loading(completed: Text('Erro ao Buscar Campanhas'));
                 }
                 if (snapshot.data.length == 0) {
                   return Loading(
-                      completed: Text('Nenhum Carro encontrado'));
+                      completed: Text('Nenhuma Campanha encontrado'));
                 }
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      Carro p = snapshot.data[index];
+                      Campanha p = snapshot.data[index];
 
-                             return CarroListItem(p);
-
+                      return CampanhaListItem( p);
                     },
                     itemCount: snapshot.data.length,
                   ),
                 );
               },
-              stream: pc.outCarros,
+              stream: pc.outCampanhas,
             )
           ],
         ),
@@ -92,12 +94,12 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
     );
   }
 
-  Widget CarroListItem(Carro p, {User pp}) {
+  Widget CampanhaListItem(Campanha p, {User pp}) {
     return GestureDetector(
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => VisualizarCarroPage(
-                carro: p, user: pp,
+            builder: (context) => CriarCampanhaPage(
+              campanha: p
             )));
       },
       child: Card(
@@ -108,12 +110,12 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
             CircleAvatar(
                 radius: (((getAltura(context) + getLargura(context)) / 2) * .1),
                 backgroundColor: Colors.transparent,
-                child: p.foto != null
+                child: p.fotos != null
                     ? Image(
-                  image: CachedNetworkImageProvider(p.foto),
+                  image: CachedNetworkImageProvider(p.fotos[0]),
                 )
                     : Image(
-                  image: CachedNetworkImageProvider('https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                  image: AssetImage('assets/autooh.png'),
                 )),
             Container(
               width: getLargura(context) * .4,
@@ -122,19 +124,17 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    child: hText('${p.modelo}', context,
+                    child: hText('${p.nome}', context,
                         size: 44, weight: FontWeight.bold),
                   ),
-                  hText('Placa: ${p.placa}', context, size: 44),
+                  hText('Empresa: ${p.empresa}', context, size: 44),
                   hText(
-                    'Cor: ${p.cor}',
+                    'CNPJ: ${p.cnpj}',
                     context,
                     size: 44,
 
                   ),
-                  hText('Ano: ${p.ano}', context,
-                      size: 44, color: Colors.blueAccent),
-                  sb
+
                 ],
               ),
             ),

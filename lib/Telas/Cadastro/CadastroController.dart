@@ -244,7 +244,7 @@ class CadastroController extends BlocBase {
 
                       if (behaviour == 1) {
 
-                        print(Helper.localUser.endereco);
+
                         Prestador c = new Prestador(
                           updated_at: DateTime.now(),
                           created_at: DateTime.now(),

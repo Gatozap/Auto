@@ -2,13 +2,16 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
 import 'package:bocaboca/Helpers/References.dart';
+import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ListaCarroController extends BlocBase {
+import 'ListCampanhaController.dart';
 
+class ListaCarroController extends BlocBase {
+  ListaCampanhaController listc;
   BehaviorSubject<List<Carro>> carrosController = BehaviorSubject<List<Carro>>();
   Stream<List<Carro>> get outCarros => carrosController.stream;
   Sink<List<Carro>> get inCarros => carrosController.sink;
@@ -25,11 +28,14 @@ class ListaCarroController extends BlocBase {
   Carro carroSelecionado;
 
 
-  ListaCarroController({Carro carro}) {
+  ListaCarroController({Carro carro, Campanha campanha}) {
+    if(listc == null){
+      listc = new ListaCampanhaController();
+    }
     carroSelecionado = carro;
     inCarroSelecionado.add(carroSelecionado);
     carrosRef
-        .where("id")
+        .where("campanhas", arrayContains:  listc.campanhas)
         .snapshots()
         .listen((QuerySnapshot snap) {
       carros = new List();

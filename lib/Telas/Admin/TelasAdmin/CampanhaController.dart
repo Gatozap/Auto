@@ -12,9 +12,34 @@ class CampanhaController extends BlocBase {
   Campanha campanha;
 
   CampanhaController({this.campanha});
+  Future EditarCampanha(Campanha campanha) async {
+
+    if (campanha.fotos != null) {
+      if (campanha.fotos.length != 0) {
+        for (int i = 0; i < campanha.fotos.length; i++) {
+          if (!campanha.fotos[i].contains('http')) {
+            String fotoUrl = await Helper().uploadPicture(campanha.fotos[i]);
+            if (fotoUrl != null) {
+              campanha.fotos[i] = fotoUrl;
+            }
+          }
+        }
+      }
+    }
+      return campanhasRef.document(campanha.id).updateData(campanha.toJson()).then((d) {
+        print('editado com sucesso');
+
+        return campanha;
+      }).catchError((err) {
+        print('Error: ${err}');
+        return err;
+      });
 
 
- Future CriarCampanha({Campanha campanha}){
+  }
+
+
+  Future CriarCampanha({Campanha campanha}){
         return campanhasRef.add(campanha.toJson()).then((v){
           campanha.id = v.documentID;
 

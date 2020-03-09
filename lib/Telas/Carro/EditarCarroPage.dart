@@ -124,7 +124,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                       );
                     }
                     carro = snapshot.data;
-
+                      
                     if (onLoad) {
                       controllerAno.text = carro.ano.toString();
                       controllerCor.text = carro.cor;
@@ -368,6 +368,8 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                             ),
                           )
                               : Container(),
+                           
+
                            seletorAnunciosCarro(),
                           Container(
                             child: defaultActionButton(
@@ -795,6 +797,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
 
 
   Future <List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
+
     List<DropdownMenuItem<Campanha>> items = List();
     return campanhasRef.where('datafim',isGreaterThan: DateTime.now().millisecondsSinceEpoch).getDocuments().then((v){
       List campanhas = new List();

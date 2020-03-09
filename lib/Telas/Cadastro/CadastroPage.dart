@@ -95,7 +95,7 @@ class _CadastroState extends State<Cadastro> {
   PerfilController perfilController;
   CarroController carroController;
   var controller = new MaskedTextController(mask: '000', text: '1');
-  Endereco ue;
+
   bool isPrestador;
   Prestador prestador;
   Banco bancoSelecionado;
@@ -121,12 +121,6 @@ class _CadastroState extends State<Cadastro> {
   var controllerNumero_conta = new TextEditingController(text: '');
   var controllerAgencia = new TextEditingController(text: '');
 
-  var controllerCidade = new TextEditingController(text: '');
-  var controllerEstado = new TextEditingController(text: '');
-  var controllerEndereco = new TextEditingController(text: '');
-  var controllerBairro = new TextEditingController(text: '');
-  var controllerNumero = new TextEditingController(text: '');
-  var controllerComplemento = new TextEditingController(text: '');
 
   ProgressDialog pr;
   Future getDocumentoCamera() async {
@@ -1828,7 +1822,7 @@ class _CadastroState extends State<Cadastro> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              'https://lh3.googleusercontent.com/proxy/e6MtotEzLXKCXlLTrlcXb8fF_SHWFkBjXnOGA4BAunHB_eDmns-MDEdLHihluBKfP75oA-khquXAuKYMMnDvHpNWVTBjEbuux9-z-dCApKuIx4gXca8LuajyK3Ax51ZQFhc47GC2WhkK7rRb'),
+                              'https://cdn.awsli.com.br/600x450/101/101735/produto/17082999/e2e49a6455.jpg'),
                           fit: BoxFit.cover),
                       border: carro.anuncio_vidro_traseiro == null
                           ? Border.all(color: Colors.black, width: 3)

@@ -1,6 +1,6 @@
 class Bairro{
   String bairro;
-  int pessoa_km_rodado;
+  double pessoa_km_rodado;
   int pessoa_hora_parado;
   Bairro({this.bairro, this.pessoa_hora_parado, this.pessoa_km_rodado});
 

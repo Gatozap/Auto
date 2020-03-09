@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'TelasAdmin/CriarCampanhaPage.dart';
+import 'TelasAdmin/ListCampanhaPage.dart';
 
 class AdminPage extends StatefulWidget {
   User user;
@@ -55,7 +56,7 @@ class _AdminPageState extends State<AdminPage> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => CriarCampanhaPage(campanha: widget.campanha,)));
+                  MaterialPageRoute(builder: (context) => CriarCampanhaPage()));
             },
             child: Container(
               color: Colors.lightBlue[50],
@@ -99,7 +100,7 @@ class _AdminPageState extends State<AdminPage> {
         Row(children: <Widget>[   GestureDetector(
           onTap: () {
             Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ListaCarroUserPage(carro: widget.carro, user: widget.user,)));
+                MaterialPageRoute(builder: (context) => ListaCarroUserPage(carro: widget.carro, user: widget.user,campanha: widget.campanha,)));
           },
           child: Container(
             color: Colors.lightBlue[50],
@@ -115,7 +116,29 @@ class _AdminPageState extends State<AdminPage> {
               ],
             ),
           ),
-        ),],)
+        ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ListaCampanhaPage(campanha: widget.campanha,carro: widget.carro, user: widget.user)));
+            },
+            child: Container(
+              color: Colors.lightBlue[50],
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+
+              height: getAltura(context) * .2,
+              width: getLargura(context)*.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(MdiIcons.appleSafari, size: 55, color: Colors.lightBlue[700]), hText('Editar Campanha', context)
+                ],
+              ),
+            ),
+          ),
+
+        ],)
       ]),
 
       ),
