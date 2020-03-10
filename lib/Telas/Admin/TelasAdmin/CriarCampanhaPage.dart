@@ -40,6 +40,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
   var controllerLimite = new TextEditingController(text: '');
   Campanha campanha;
   final _formKey = GlobalKey<FormState>();
+  bool isCadastrarPressed = false;
   @override
   void initState() {
     campanhaController = CampanhaController(campanha: widget.campanha);
@@ -60,12 +61,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
         label: 'Data de Início', icon: FontAwesomeIcons.solidCalendarPlus);
     BasicDateTimeField datafimField = BasicDateTimeField(
         label: 'Data de Fim', icon: FontAwesomeIcons.solidCalendarPlus);
-    print('aqui é campanha ${widget.campanha}');
+
 
     if (widget.campanha != null) {
       controllerEmpresa.text = widget.campanha.empresa;
       controllerNome.text = widget.campanha.nome;
       controllerCNPJ.text = widget.campanha.cnpj;
+      controllerLimite.text = widget.campanha.limite.toString();
       if (widget.campanha.dataini != null) {
         dataini = widget.campanha.dataini;
         datainiField = BasicDateTimeField(
@@ -74,7 +76,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
             startingdate:
                 '${widget.campanha.dataini.day.toString().length == 1 ? '0' + widget.campanha.dataini.day.toString() : widget.campanha.dataini.day}/${widget.campanha.dataini.month.toString().length == 1 ? '0' + widget.campanha.dataini.month.toString() : widget.campanha.dataini.month}/${widget.campanha.dataini.year} ${widget.campanha.dataini.hour.toString().length == 1?'0'+widget.campanha.dataini.hour.toString():widget.campanha.dataini.hour.toString() }:${widget.campanha.dataini.minute.toString().length == 1?'0'+widget.campanha.dataini.minute.toString():widget.campanha.dataini.minute.toString() }');
       }
-      controllerLimite.text = widget.campanha.limite.toString();
+
       if (widget.campanha.datafim != null) {
         datafim = widget.campanha.datafim;
         datafimField = BasicDateTimeField(
@@ -203,7 +205,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   context: context,
                                   label: 'Nome Empresa',
                                   icon: FontAwesomeIcons.adn,
-                                  validator: (v) {},
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher o Nome da Empresa';
+                                      }
+                                    }
+                                  },
                                   keyboardType: TextInputType.text,
                                   capitalization: TextCapitalization.words,
                                   onSubmited: (s) {}),
@@ -213,7 +221,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   context: context,
                                   label: 'Nome da Campanha',
                                   icon: FontAwesomeIcons.adn,
-                                  validator: (v) {},
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher Nome da Campanha';
+                                      }
+                                    }
+                                  },
                                   keyboardType: TextInputType.text,
                                   capitalization: TextCapitalization.words,
                                   onSubmited: (s) {}),
@@ -223,7 +237,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   context: context,
                                   label: 'CNPJ',
                                   icon: FontAwesomeIcons.atlas,
-                                  validator: (v) {},
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher o CNPJ';
+                                      }
+                                    }
+                                  },
                                   keyboardType: TextInputType.number,
                                   onSubmited: (s) {}),
                               datainiField,
@@ -234,7 +254,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   context: context,
                                   label: 'Limite de Carros',
                                   icon: FontAwesomeIcons.car,
-                                  validator: (v) {},
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher o Limite';
+                                      }
+                                    }
+                                  },
                                   keyboardType: TextInputType.number,
                                   onSubmited: (s) {}),
                               Padding(
@@ -278,9 +304,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                     if (!contains) {
                                       c.zonas.add(value);
                                     }
-                                    print(
-                                        "AQUI QUANTAS ZONAS ${c.zonas.length}");
-                                    campanhaController.inCampanha.add(c);
+
                                   },
                                 ),
                               ),
@@ -299,8 +323,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 itemBuilder: (context, index) {
-                                                  print(
-                                                      'MONTANDO CHIP ${snap.data.zonas[index]}');
+
                                                   return Padding(
                                                     padding: const EdgeInsets
                                                             .symmetric(
@@ -375,7 +398,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       campanha.datafim =
                                           datafimField.selectedDate;
                                       campanha.limite =
-                                          int.parse(controllerLimite.text);
+                                          controllerLimite.text == null? 200000: int.parse(controllerLimite.text);
                                       campanha.nome = controllerNome.text;
                                       campanha.updated_at = DateTime.now();
                                       if (widget.campanha == null) {
@@ -383,18 +406,14 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       }
 
                                       if (widget.campanha != null) {
-                                        print(
-                                            'data INI SELECTED ${datainiField.selectedDate}');
+
                                         if(campanha.dataini == null){
                                           campanha.dataini = dataini;
                                         }
                                         if(campanha.datafim == null){
                                           campanha.datafim = datafim;
                                         }
-                                        print(
-                                            'aqui a data ini ${campanha.dataini}');
-                                        print(
-                                            'aqui a data fim ${campanha.datafim}');
+
                                         campanhaController.EditarCampanha(
                                                 campanha)
                                             .then((v) {
@@ -447,7 +466,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                   ImagePicker.pickImage(
                     source: ImageSource.camera,
                   ).timeout(Duration(seconds: 30)).then((image) async {
-                    print('AQUI FOTO ${image}');
+
                     if (image != null) {
                       if (image.path != null) {
                         e.fotos.add(await uploadPicture(
@@ -465,7 +484,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                   ImagePicker.pickImage(
                     source: ImageSource.gallery,
                   ).timeout(Duration(seconds: 30)).then((image) async {
-                    print('AQUI FOTO ${image}');
+
                     if (image != null) {
                       if (image.path != null) {
                         e.fotos.add(await uploadPicture(
@@ -475,14 +494,18 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                         dToast('Salvando Foto!');
                       }
                     }
-                  }).catchError((err) {
+                  }
+                  ).catchError((err) {
                     print('ERRO NO IMAGE PICKER ${err.toString()}');
-                  });
+                  }
+                  );
                 }, icon: Icons.photo),
               ],
             ),
           );
-        });
+        }
+        );
+
   }
 
   List<DropdownMenuItem<Zona>> getDropDownMenuItemsCampanha() {

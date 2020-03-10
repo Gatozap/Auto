@@ -83,13 +83,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.carro != null) {
-      controllerAno.text = widget.carro.ano.toString();
-      controllerCor.text = widget.carro.cor;
-      controllerModelo.text = widget.carro.modelo;
-      controllerPlaca.text = widget.carro.placa;
-      carro = widget.carro;
-    }
+
 
     var linearGradient = const BoxDecoration(
       gradient: const LinearGradient(
@@ -352,7 +346,8 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                           .add(c);*/
 
                                     },
-                                    child: Chip(
+                                    child:
+                                    Chip(
                                       label: hText(
                                           capitalize(carro.campanhas[index]
                                               .nome),
@@ -382,6 +377,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                 carro.ano = int.parse(controllerAno.text);
                                 carro.modelo = controllerModelo.text;
                                 carro.cor = controllerCor.text;
+                                carro.dono_nome = Helper.localUser.nome;
                                 carro.anuncio_laterais = carro == null? null : carro.anuncio_laterais;
                                 carro.anuncio_bancos = carro == null? null : carro.anuncio_bancos;
                                 carro.anuncio_traseira_completa = carro == null? null : carro.anuncio_traseira_completa;
@@ -715,7 +711,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              'https://lh3.googleusercontent.com/proxy/e6MtotEzLXKCXlLTrlcXb8fF_SHWFkBjXnOGA4BAunHB_eDmns-MDEdLHihluBKfP75oA-khquXAuKYMMnDvHpNWVTBjEbuux9-z-dCApKuIx4gXca8LuajyK3Ax51ZQFhc47GC2WhkK7rRb'),
+                              'https://lh3.googleusercontent.com/proxy/hjG4FSqIYkUVW6YQTtLeh3E5aXt2AyEjB62_TxhN3aJnpzI5bD4sEW6h8Pc1aQhA3ggGapOi3tQ6OIj3RGXRd-AsA37X8ok-z-GJzT0lZsJUx2vLQ3zxX3tP35GCrqeZErq0v9l37-ridvwEZjw'),
                           fit: BoxFit.cover),
                       border: carro.anuncio_vidro_traseiro == null
                           ? Border.all(color: Colors.black, width: 3)

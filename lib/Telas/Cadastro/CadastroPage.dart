@@ -1551,7 +1551,7 @@ class _CadastroState extends State<Cadastro> {
             children: <Widget>[
               Container(
                 child: hText(
-                    'Escolha as campanhas e suas respectivas posições', context,
+                    'Áreas que você quer disponibilizar para os anúncios', context,
                     textaling: TextAlign.center),
               ),
               sb,
@@ -1822,7 +1822,7 @@ class _CadastroState extends State<Cadastro> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              'https://cdn.awsli.com.br/600x450/101/101735/produto/17082999/e2e49a6455.jpg'),
+                              'https://lh3.googleusercontent.com/proxy/hjG4FSqIYkUVW6YQTtLeh3E5aXt2AyEjB62_TxhN3aJnpzI5bD4sEW6h8Pc1aQhA3ggGapOi3tQ6OIj3RGXRd-AsA37X8ok-z-GJzT0lZsJUx2vLQ3zxX3tP35GCrqeZErq0v9l37-ridvwEZjw'),
                           fit: BoxFit.cover),
                       border: carro.anuncio_vidro_traseiro == null
                           ? Border.all(color: Colors.black, width: 3)

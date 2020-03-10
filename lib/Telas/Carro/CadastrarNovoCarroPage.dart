@@ -266,6 +266,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                         if (carro.campanhas == null) {
                                           carro.campanhas = new List();
                                         }
+
+
                                         if (carro.campanhas != null) {
                                           for (Campanha cc in carro.campanhas) {
                                             if (cc.nome == value.nome) {
@@ -330,6 +332,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                   ano: int.parse(controllerAno.text),
                                   cor: controllerCor.text,
                                   dono: Helper.localUser.id,
+                                  dono_nome: Helper.localUser.nome,
                                   modelo: controllerModelo.text,
                                   placa: controllerPlaca.text,
                                   created_at: DateTime.now(),
@@ -640,7 +643,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              'https://lh3.googleusercontent.com/proxy/e6MtotEzLXKCXlLTrlcXb8fF_SHWFkBjXnOGA4BAunHB_eDmns-MDEdLHihluBKfP75oA-khquXAuKYMMnDvHpNWVTBjEbuux9-z-dCApKuIx4gXca8LuajyK3Ax51ZQFhc47GC2WhkK7rRb'),
+                              'https://lh3.googleusercontent.com/proxy/hjG4FSqIYkUVW6YQTtLeh3E5aXt2AyEjB62_TxhN3aJnpzI5bD4sEW6h8Pc1aQhA3ggGapOi3tQ6OIj3RGXRd-AsA37X8ok-z-GJzT0lZsJUx2vLQ3zxX3tP35GCrqeZErq0v9l37-ridvwEZjw'),
                           fit: BoxFit.cover),
                       border: carro.anuncio_vidro_traseiro == null
                           ? Border.all(color: Colors.black, width: 3)
@@ -727,11 +730,17 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
         .getDocuments()
         .then((v) {
       List campanhas = new List();
+
       for (var d in v.documents) {
-        campanhas.add(Campanha.fromJson(d.data));
+
+              campanhas.add(Campanha.fromJson(d.data));
+
       }
       for (Campanha z in campanhas) {
-        items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
+
+               items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
+
+
       }
       return items;
     }).catchError((err) {

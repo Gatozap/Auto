@@ -1,3 +1,4 @@
+import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/User.dart';
@@ -76,8 +77,8 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       Carro p = snapshot.data[index];
-
-                             return CarroListItem(p);
+                              
+                                 return CarroListItem(p);
 
                     },
                     itemCount: snapshot.data.length,
@@ -100,47 +101,50 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                 carro: p, user: pp,
             )));
       },
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            CircleAvatar(
-                radius: (((getAltura(context) + getLargura(context)) / 2) * .1),
-                backgroundColor: Colors.transparent,
-                child: p.foto != null
-                    ? Image(
-                  image: CachedNetworkImageProvider(p.foto),
-                )
-                    : Image(
-                  image: CachedNetworkImageProvider('https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                )),
-            Container(
-              width: getLargura(context) * .4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    child: hText('${p.modelo}', context,
-                        size: 44, weight: FontWeight.bold),
-                  ),
-                  hText('Placa: ${p.placa}', context, size: 44),
-                  hText(
-                    'Cor: ${p.cor}',
-                    context,
-                    size: 44,
+      child: Stack(
+        children:<Widget>[ Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          color: Colors.white,
+          child: Row(
+            children: <Widget>[
+              CircleAvatar(
+                  radius: (((getAltura(context) + getLargura(context)) / 2) * .1),
+                  backgroundColor: Colors.transparent,
+                  child: p.foto != null
+                      ? Image(
+                    image: CachedNetworkImageProvider(p.foto),
+                  )
+                      : Image(
+                    image: CachedNetworkImageProvider('https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                  )),
+              Container(
+                width: getLargura(context) * .4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      child: hText('${p.modelo}', context,
+                          size: 44, weight: FontWeight.bold),
+                    ),
+                    hText('Placa: ${p.placa}', context, size: 44),
+                    hText(
+                      'Cor: ${p.cor}',
+                      context,
+                      size: 44,
 
-                  ),
-                  hText('Ano: ${p.ano}', context,
-                      size: 44, color: Colors.blueAccent),
-                  sb
-                ],
+                    ),
+                    hText('Ano: ${p.ano}', context,
+                        size: 44, color: Colors.blueAccent),
+
+                  ],
+                ),
+
               ),
-            ),
 
-          ],
-        ),
+            ],
+          ),
+        ),]
       ),
     );
   }

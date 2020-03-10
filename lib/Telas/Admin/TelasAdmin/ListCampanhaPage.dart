@@ -1,3 +1,4 @@
+import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/User.dart';
@@ -74,15 +75,27 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                   return Loading(
                       completed: Text('Nenhuma Campanha encontrado'));
                 }
+
+               /* List<Campanha> campanhasItens = new List();
+                for (Campanha p in snapshot.data) {
+                  if(p.deleted_at == null) {
+                    campanhasItens.add(p);
+                  }
+                }*/
+
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (BuildContext context, index) {
                       Campanha p = snapshot.data[index];
 
-                      return CampanhaListItem( p);
+
+
+
+                           return CampanhaListItem(p);
+
                     },
-                    itemCount: snapshot.data.length,
+                    itemCount:snapshot.data.length,
                   ),
                 );
               },
@@ -138,7 +151,53 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                 ],
               ),
             ),
+            /*IconButton(onPressed: (){
+              showDialog(
 
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+
+                      title: hText(
+                          "Deseja deletar esta Campanha?",
+                          context),
+                      content:
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <
+                            Widget>[
+                          defaultActionButton(
+                            'Não',
+                            context,
+                                () {
+
+                              Navigator.of(context)
+                                  .pop();
+                            },
+                          ),
+
+                          defaultActionButton(
+                            'Sim',
+                            context,
+                                () {
+                              p.deleted_at = DateTime.now();
+
+
+                              campanhasRef.document(p.id).updateData(p.toJson()).then((v){
+                                dToast('Campanha deletada com sucesso!');
+
+                                Navigator.of(context)
+                                    .pop();
+                              });
+                              Navigator.of(context)
+                                  .pop();
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  });
+            }, icon: Icon(Icons.block),color: Colors.red, ), */
           ],
         ),
       ),

@@ -384,6 +384,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                   perfilController.updateUser(u).then((v) {
                                     if (v == 'Atualizado com sucesso!') {
                                       dToast('Dados atualizados com sucesso!');
+                                      Navigator.of(context).pop();
                                     } else {
                                       dToast('Dados atualizados com sucesso!');
                                     }
