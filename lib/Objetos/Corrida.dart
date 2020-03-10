@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:bocaboca/Objetos/Localizacao.dart';
 
+import 'Campanha.dart';
+import 'Carro.dart';
 import 'Distancia.dart';
 
 class Corrida {
@@ -16,13 +18,12 @@ class Corrida {
   String user;
   List<Distancia> distancia;
   var dist;
-  String carro;
-  String campanhas;
+  Carro carro;
   List points;
 
   @override
   String toString() {
-    return 'Corrida{id: $id, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, hora_ini: $hora_ini, hora_fim: $hora_fim, isRunning: $isRunning, last_seen: $last_seen, user: $user, distancia: $distancia, carro: $carro, campanhas: $campanhas, Points: $points}';
+    return 'Corrida{id: $id, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, hora_ini: $hora_ini, hora_fim: $hora_fim, isRunning: $isRunning, last_seen: $last_seen, user: $user, distancia: $distancia, carro: $carro, Points: $points}';
   }
 
   Corrida(
@@ -35,7 +36,6 @@ class Corrida {
       this.dist,
       this.distancia,
       this.carro,
-      this.campanhas,
       this.points,
       this.deleted_at,
       this.created_at,
@@ -67,8 +67,7 @@ class Corrida {
             : DateTime.fromMillisecondsSinceEpoch(j['last_seen']),
         isRunning = j['isRunning'],
         user = j['user'],
-        carro = j['carro'],
-        campanhas = j['campanhas']
+        carro = j['carro'] == null? null: Carro.fromJson(j['carro'])
         /*oints = j['points'] == null ? null : getLocalizacoes(j['points'])*/;
 
   Map<String, dynamic> toJson() => {
@@ -87,13 +86,11 @@ class Corrida {
             last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,
         'distancia': json.encode(distancia),
-        'carro': carro,
-        'campanhas': campanhas,
+        'carro': carro== null? null: carro.toJson(),
         //'points': json.encode(points),
       };
 
   static getLocalizacoes(decoded) {
-    print('AQUI DECODED LOCALIZAÇÔES ${decoded}');
     List<Localizacao> localizacoes = new List();
     Map<dynamic, dynamic> points = decoded;
     if (decoded == null) {
@@ -105,8 +102,19 @@ class Corrida {
     return localizacoes;
   }
 
+  static getCampanhas(decoded) {
+    List<Campanha> localizacoes = new List();
+    Map<dynamic, dynamic> points = decoded;
+    if (decoded == null) {
+      return null;
+    }
+    points.forEach((k, v) {
+      localizacoes.add(Campanha.fromJson(v));
+    });
+    return localizacoes;
+  }
+
   static getDistancia(decoded) {
-    print('AQUI DECODED ${decoded}');
     List<Distancia> distancias = new List();
     if (decoded == null) {
       return null;

@@ -122,10 +122,8 @@ class Campanha{
   }
 
   EncodeCarros(List<Carro> carros) {
-   print('CHAMOU AQUI ${carros}');
    List encoded = new List();
    for(Carro c in carros){
-     print(c.toJsonSemCampanha());
      encoded.add(c.toJsonSemCampanha());
    }
    return encoded;

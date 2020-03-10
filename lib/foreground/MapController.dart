@@ -112,7 +112,6 @@ class MapController extends BlocBase{
   }
 
   void updateCorridaId(String v) {
-    print('ID DA CORRIDA ${v}');
     corridaRef =
         FirebaseDatabase.instance.reference()
             .child('Corridas')
@@ -120,17 +119,13 @@ class MapController extends BlocBase{
             .child(v);
     pointsRef =
         corridaRef.child('points');
-    print("AQUI CORRIDA CAPETA ${v}");
     corridaRef.onValue.listen((v) {
-      print("AQUI VALUE CORRIDAREF ${v.snapshot.value}");
       c = Corrida.fromJson(v.snapshot.value);
       inCorrida.add(c);
-      print('ENTROU AQUI CORRIDA VOLTANDO ${c.toString()}');
       //distanciaPercorridaEmMetros = c.distancia;
     });
 
     pointsRef.onValue.listen((points) {
-      print(' ${points.snapshot.value.runtimeType}');
       positions = new List();
       Map<dynamic, dynamic> pts = points.snapshot.value;
       pts.forEach((k, v) {
