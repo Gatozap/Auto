@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Corrida.dart';
 import 'package:bocaboca/Objetos/Localizacao.dart';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:geocoder/geocoder.dart';
 //import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,25 +28,22 @@ class NavigationBloc extends BlocBase {
   Stream<List> get outPoints => pointsController.stream;
   Sink<List> get inPoints => pointsController.sink;
   List<Localizacao> points;
+  Placemark ultimoEndereco;
+  void foregroundServiceFunction() {}
 
-  void foregroundServiceFunction() {
-    print("The current time is: ${DateTime.now()}");
-  }
-
-  Function globalForegroundService() {
-    print("current datetime is ${DateTime.now()}");
-  }
+  Function globalForegroundService() {}
 
   @override
   void dispose() {}
 
-  Future<String> start({String id}) async {
+  Future<String> start(Carro carroSelecionado, {String id}) async {
     if (id == null) {
       corrida = Corrida(
           id: idcorrida,
           // distancia: 0,
           hora_ini: DateTime.now(),
-          //user: user,
+          carro: carroSelecionado,
+          user: Helper.localUser.id,
           hora_fim: null,
           isRunning: true,
           last_seen: DateTime.now());
@@ -75,7 +75,7 @@ class NavigationBloc extends BlocBase {
       points = new List();
       Map<dynamic, dynamic> pts = v.snapshot.value;
       pts.forEach((k, v) {
-        if(v != null) {
+        if (v != null) {
           points.add(Localizacao.fromJson(v));
         }
       });
@@ -87,7 +87,7 @@ class NavigationBloc extends BlocBase {
     corridaRef.update(corrida.toJson());
     // pointsRef.push().set(location.toJson());
     inCorrida.add(corrida);
-    SharedPreferences.getInstance().then((v){
+    SharedPreferences.getInstance().then((v) {
       v.setString('corrida', corrida.id);
     });
     return corrida.id;
@@ -107,6 +107,7 @@ class NavigationBloc extends BlocBase {
             altitude: location.altitude,
             accuracy: location.accuracy,
             timestamp: DateTime.now());
+
         if (points == null) {
           points = new List();
         }
@@ -124,7 +125,7 @@ class NavigationBloc extends BlocBase {
               p.longitude,
               lastPoint.latitude,
               lastPoint.longitude,
-              );
+            );
           }
           lastPoint = p;
         }
@@ -132,8 +133,6 @@ class NavigationBloc extends BlocBase {
           if (points.length != 0) {
             Localizacao p = points.last;
             if (p.latitude != loc.latitude || p.longitude != loc.longitude) {
-              print(' AQUI LALALA  ${p.latitude} ${ loc.latitude}  ${p
-                  .longitude}  ${loc.longitude}');
               hasMoved = true;
             }
           } else {
@@ -142,8 +141,13 @@ class NavigationBloc extends BlocBase {
         } else {
           //hasMoved= true;
         }
-        print('HAS MOVED ${hasMoved}');
         if (hasMoved) {
+          print('Em Movimento ${location}' );
+          var addresses = await Geocoder.local.findAddressesFromCoordinates(Coordinates(location.latitude, location.longitude));
+          var first = addresses.first;
+          print("${first.featureName} : ${first.addressLine}");
+          print('${corrida.carro.anuncio_vidro_traseiro.zonas.toString()}');
+
           corrida.dist = dist;
           corridaRef.update(corrida.toJson());
           points.add(loc);
@@ -196,11 +200,10 @@ class NavigationBloc extends BlocBase {
     corridaRef = null;
     pointsRef = null;
     corrida.isRunning = false;
-    SharedPreferences.getInstance().then((v){
+    SharedPreferences.getInstance().then((v) {
       v.setString('corrida', '');
     });
     inCorrida.add(corrida);
-    print('AQUI FIM STOP ${corrida}');
   }
 }
 

@@ -47,7 +47,6 @@ class RacingController extends BlocBase {
   }
 
   updateLocation() async {
-    print('UPDATE');
     var location = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     bool canFetch = position != null;
@@ -59,8 +58,6 @@ class RacingController extends BlocBase {
     }
 
     if (isRacing) {
-      print('ENTROU AQUI IS RACING');
-
       position = Position(
           latitude: location.latitude,
           longitude: location.longitude,
@@ -82,7 +79,6 @@ class RacingController extends BlocBase {
             position.longitude,
             );*/
         } catch (err) {}
-        print('Error LastPosition Nula:${e.toString()}');
       }
       if (position != null) {
         if (points == null) {
@@ -92,7 +88,6 @@ class RacingController extends BlocBase {
       }
     }
     if (canFetch) {
-      print('AQUI NOVA LOCALIZAÇÂO ${location}');
       if (!hasStarted) {/*
         int cor =
             await sp.getInt('corrida', defaultValue: 789789789788789).first;
@@ -104,10 +99,6 @@ class RacingController extends BlocBase {
         }
         hasStarted = true;
       */}
-      print('IS RACING ${isRacing}');
-
-        print('ATUALIZANDO DADOS NO SERVIDOR');
-        print("AQUI CORRIDA ${c.toString()}");
         corridaRef.update(c.toJson());
         //pointsRef.push().set(position.toJson());
 
@@ -136,7 +127,6 @@ class RacingController extends BlocBase {
   Future<void> stopRacing() async {
     try {
       if (corrida != null) {
-        print("PARANDO CORRIDA ${corrida}");
         position = await Geolocator()
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         corridaRef =
@@ -162,7 +152,6 @@ class RacingController extends BlocBase {
         try{
 
       }catch(err){
-      print('Erro na merda do servidor ${err.toString()}');
     }
         corrida = null;
         corridaRef = null;
@@ -173,7 +162,6 @@ class RacingController extends BlocBase {
         c = null;
         _cancelNotification();
       } else {
-        print("CORRIDA NULA");
         /*int cor =
             await sp.getInt('corrida', defaultValue: 789789789788789).first;*/
         position = await Geolocator()
@@ -181,7 +169,6 @@ class RacingController extends BlocBase {
         corridaRef =
             FirebaseDatabase.instance.reference().child('Corridas').reference()/*.child(cor.toString())*/;
         c = Corrida.fromJson((await corridaRef.once()).value);
-        print('CORRIDA  POSITION ${position},  DISTANCIA ${c.distancia}');
 
         double dist = 0;
         var lastPoint;
@@ -272,9 +259,7 @@ class RacingController extends BlocBase {
     ;
     corridaRef.set(c.toJson());
     isRacing = true;
-    print('ADICIONANDO IS RACING ${isRacing}');
     //sp.setBool('isRacing', isRacing);
-    print('FIM START RACING');
     await _showOngoingNotification();
     //changePositionRandomly();
   }
