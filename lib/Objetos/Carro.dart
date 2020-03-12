@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:bocaboca/Objetos/Campanha.dart';
 
-
-
-class Carro{
+class Carro {
   String id;
   String cor;
   String modelo;
@@ -25,14 +23,27 @@ class Carro{
   Campanha anuncio_vidro_traseiro;
   Campanha anuncio_traseira_completa;
 
-
-  Carro({this.cor, this.modelo, this.marca, this.placa, this.ano, this.dono,
-      this.campanhas,this.dono_nome, this.renavam, this.foto ,this.created_at,this.id,
-    this.updated_at,
-    this.deleted_at, this.anuncio_traseira_completa, this.anuncio_vidro_traseiro, this.anuncio_laterais,this.anuncio_bancos});
+  Carro(
+      {this.cor,
+      this.modelo,
+      this.marca,
+      this.placa,
+      this.ano,
+      this.dono,
+      this.campanhas,
+      this.dono_nome,
+      this.renavam,
+      this.foto,
+      this.created_at,
+      this.id,
+      this.updated_at,
+      this.deleted_at,
+      this.anuncio_traseira_completa,
+      this.anuncio_vidro_traseiro,
+      this.anuncio_laterais,
+      this.anuncio_bancos});
 
   Carro.Empty();
-
 
   @override
   String toString() {
@@ -48,10 +59,20 @@ class Carro{
         placa = j['placa'],
         ano = j['ano'],
         dono = j['dono'],
-        anuncio_bancos = j['anuncio_bancos'] = j['anuncio_bancos'] == null ? null : Campanha.fromJson(j['anuncio_bancos']),
-        anuncio_traseira_completa = j['anuncio_traseira_completa'] = j['anuncio_traseira_completa'] == null ? null : Campanha.fromJson(j['anuncio_traseira_completa']),
-        anuncio_vidro_traseiro = j['anuncio_vidro_traseiro'] = j['anuncio_vidro_traseiro'] == null ? null : Campanha.fromJson(j['anuncio_vidro_traseiro']),
-        anuncio_laterais = j['anuncio_laterais'] = j['anuncio_laterais'] == null ? null :  Campanha.fromJson(j['anuncio_laterais']),
+        anuncio_bancos = j['anuncio_bancos'] = j['anuncio_bancos'] == null
+            ? null
+            : Campanha.fromJson(j['anuncio_bancos']),
+        anuncio_traseira_completa = j['anuncio_traseira_completa'] =
+            j['anuncio_traseira_completa'] == null
+                ? null
+                : Campanha.fromJson(j['anuncio_traseira_completa']),
+        anuncio_vidro_traseiro = j['anuncio_vidro_traseiro'] =
+            j['anuncio_vidro_traseiro'] == null
+                ? null
+                : Campanha.fromJson(j['anuncio_vidro_traseiro']),
+        anuncio_laterais = j['anuncio_laterais'] = j['anuncio_laterais'] == null
+            ? null
+            : Campanha.fromJson(j['anuncio_laterais']),
         created_at = j['created_at'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['created_at']),
@@ -67,49 +88,49 @@ class Carro{
         renavam = j['renavam'],
         foto = j['foto'];
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'cor': cor,
         'id': id,
         'modelo': modelo,
         'marca': marca,
         'placa': placa,
         'dono_nome': dono_nome,
-        'anuncio_laterais': anuncio_laterais == null? null:anuncio_laterais.toJson(),
-        'anuncio_traseira_completa': anuncio_traseira_completa == null? null:anuncio_traseira_completa.toJson(),
-        'anuncio_vidro_traseiro': anuncio_vidro_traseiro == null? null:anuncio_vidro_traseiro.toJson(),
-        'anuncio_bancos': anuncio_bancos == null? null : anuncio_bancos.toJson(),
-
+        'anuncio_laterais':
+            anuncio_laterais == null ? null : anuncio_laterais.toJson(),
+        'anuncio_traseira_completa': anuncio_traseira_completa == null
+            ? null
+            : anuncio_traseira_completa.toJson(),
+        'anuncio_vidro_traseiro': anuncio_vidro_traseiro == null
+            ? null
+            : anuncio_vidro_traseiro.toJson(),
+        'anuncio_bancos':
+            anuncio_bancos == null ? null : anuncio_bancos.toJson(),
         'created_at':
-        created_at == null ? null : created_at.millisecondsSinceEpoch,
+            created_at == null ? null : created_at.millisecondsSinceEpoch,
         'updated_at':
-        updated_at == null ? null : updated_at.millisecondsSinceEpoch,
+            updated_at == null ? null : updated_at.millisecondsSinceEpoch,
         'deleted_at':
-        deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
+            deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
         'ano': ano,
         'dono': dono,
-        'campanhas': this.campanhas == null ?null: json.encode(this.campanhas),
+        'campanhas':
+            this.campanhas == null ? null : json.encode(this.campanhas),
         'renavam': renavam,
         'foto': foto,
       };
-  Map<String, dynamic> toJsonSemCampanha() =>
-      {
+  Map<String, dynamic> toJsonSemCampanha() => {
         'cor': cor,
         'id': id,
         'modelo': modelo,
         'marca': marca,
         'placa': placa,
         'dono_nome': dono_nome,
-        'anuncio_laterais': anuncio_laterais == null? null:anuncio_laterais.toJson(),
-        'anuncio_traseira_completa': anuncio_traseira_completa == null? null:anuncio_traseira_completa.toJson(),
-        'anuncio_vidro_traseiro': anuncio_vidro_traseiro == null? null:anuncio_vidro_traseiro.toJson(),
-        'anuncio_bancos': anuncio_bancos == null? null : anuncio_bancos.toJson(),
         'created_at':
-        created_at == null ? null : created_at.millisecondsSinceEpoch,
+            created_at == null ? null : created_at.millisecondsSinceEpoch,
         'updated_at':
-        updated_at == null ? null : updated_at.millisecondsSinceEpoch,
+            updated_at == null ? null : updated_at.millisecondsSinceEpoch,
         'deleted_at':
-        deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
+            deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
         'ano': ano,
         'dono': dono,
         'renavam': renavam,
@@ -125,5 +146,4 @@ class Carro{
     }
     return campanhas;
   }
-
 }

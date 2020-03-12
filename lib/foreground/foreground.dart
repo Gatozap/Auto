@@ -8,6 +8,7 @@ import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Corrida.dart';
 import 'package:bocaboca/Objetos/Localizacao.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,14 +41,15 @@ class _MyAppState extends State<Racing> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  "Percurso",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25,
-                  ),
-                ),
+                child:
+                Text(
+                      "Percurso ",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 25,
+                      ),
+                    )
               ),
               Container(
                 color: Colors.red[500],
@@ -118,16 +120,28 @@ class _MyAppState extends State<Racing> {
                         });
                   });
             }),
-        StreamBuilder<Corrida>(
-            stream: mapController.outCorrida,
-            builder: (context, corrida) {
-              if (corrida.data == null) {
-                return Container();
-              }
-              return hText(
-                  'Distancia percorrida ${((corrida.data.dist == null ? 0 : corrida.data.dist) / 1000).toStringAsFixed(2)} Km',
-                  context);
-            }),
+        Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            StreamBuilder<Corrida>(
+                stream: mapController.outCorrida,
+                builder: (context, corrida) {
+                  if (corrida.data == null) {
+                    return Container();
+                  }
+                  return hText(
+                      'Distancia percorrida ${((corrida.data.dist == null ? 0 : corrida.data.dist) / 1000).toStringAsFixed(2)} Km',
+                      context);
+                }),
+            StreamBuilder<String>(
+                stream: nb.outUltimoEndereco,
+                builder: (context, snapshot) {
+                  return hText(
+                      '${snapshot.data == null? '':snapshot.data}',
+                      context);
+                }),
+
+          ],
+        ),
       ]),
       floatingActionButton: FloatingActionButton(
         child: started ? Text("Parar") : Text("Iniciar"),

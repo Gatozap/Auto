@@ -17,12 +17,11 @@ import 'package:bocaboca/Telas/FichaPersonagem/TalentoPage.dart';
 
 import 'CarroController.dart';
 
-
-
 class ListaCarroPage extends StatefulWidget {
   Carro carro;
   ListaCarroPage({
-    Key key,this.carro,
+    Key key,
+    this.carro,
   }) : super(key: key);
 
   @override
@@ -48,7 +47,6 @@ class ListaCarroPageState extends State<ListaCarroPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: myAppBar('Lista de Carros', context),
       body: Container(
@@ -57,20 +55,22 @@ class ListaCarroPageState extends State<ListaCarroPage> {
           children: <Widget>[
             StreamBuilder<List<Carro>>(
               builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
-
                 if (snapshot.data == null) {
                   return Loading(completed: Text('Erro ao Buscar Carros'));
                 }
                 if (snapshot.data.length == 0) {
-                  return Loading(
-                      completed: Text('Nenhum Carro encontrado'));
+                  return Loading(completed: Text('Nenhum Carro encontrado'));
                 }
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      Carro p = snapshot.data[index];
-                      return CarroListItem( p);
+                    itemBuilder: (context, i) {
+                      Carro p = snapshot.data[i];
+                      if (p.deleted_at == null) {
+                        return CarroListItem(p);
+                      } else {
+                        return Container();
+                      }
                     },
                     itemCount: snapshot.data.length,
                   ),
@@ -86,14 +86,13 @@ class ListaCarroPageState extends State<ListaCarroPage> {
 
   Widget CarroListItem(Carro p) {
     return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => EditarCarroPage(
-                carro: p
-            )));
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => EditarCarroPage(carro: p)));
       },
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -102,11 +101,12 @@ class ListaCarroPageState extends State<ListaCarroPage> {
                 backgroundColor: Colors.transparent,
                 child: p.foto != null
                     ? Image(
-                  image: CachedNetworkImageProvider(p.foto),
-                )
+                        image: CachedNetworkImageProvider(p.foto),
+                      )
                     : Image(
-                  image: CachedNetworkImageProvider('https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                )),
+                        image: CachedNetworkImageProvider(
+                            'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                      )),
             Container(
               width: getLargura(context) * .4,
               child: Column(
@@ -122,7 +122,6 @@ class ListaCarroPageState extends State<ListaCarroPage> {
                     'Cor: ${p.cor}',
                     context,
                     size: 44,
-
                   ),
                   hText('Ano: ${p.ano}', context,
                       size: 44, color: Colors.blueAccent),
@@ -130,7 +129,6 @@ class ListaCarroPageState extends State<ListaCarroPage> {
                 ],
               ),
             ),
-
           ],
         ),
       ),

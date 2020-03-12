@@ -47,7 +47,6 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
     if (userController == null) {
       userController = CadastroController();
     }
- 
   }
 
   CadastroController cc = new CadastroController();
@@ -267,7 +266,6 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                           carro.campanhas = new List();
                                         }
 
-
                                         if (carro.campanhas != null) {
                                           for (Campanha cc in carro.campanhas) {
                                             if (cc.nome == value.nome) {
@@ -327,7 +325,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                             Container(
                               child:
                                   defaultActionButton('Cadastrar', context, () {
-                                    List<Carro> carros = new List();
+                                List<Carro> carros = new List();
                                 Carro c = new Carro(
                                   ano: int.parse(controllerAno.text),
                                   cor: controllerCor.text,
@@ -339,13 +337,21 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                   updated_at: DateTime.now(),
                                   campanhas:
                                       carro == null ? null : carro.campanhas,
-                                  anuncio_bancos: carro == null? null : carro.anuncio_bancos,
-                                  anuncio_vidro_traseiro: carro == null? null : carro.anuncio_vidro_traseiro,
-                                  anuncio_traseira_completa: carro == null? null : carro.anuncio_traseira_completa,
-                                  anuncio_laterais: carro == null? null : carro.anuncio_laterais,
+                                  anuncio_bancos: carro == null
+                                      ? null
+                                      : carro.anuncio_bancos,
+                                  anuncio_vidro_traseiro: carro == null
+                                      ? null
+                                      : carro.anuncio_vidro_traseiro,
+                                  anuncio_traseira_completa: carro == null
+                                      ? null
+                                      : carro.anuncio_traseira_completa,
+                                  anuncio_laterais: carro == null
+                                      ? null
+                                      : carro.anuncio_laterais,
                                 );
-                                 carros.add(c);
-                                 Helper.localUser.carros = carros;
+                                carros.add(c);
+                                Helper.localUser.carros = carros;
                                 onLoad = true;
 
                                 carroController.CriarCarros(c).then((v) {
@@ -359,13 +365,12 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                         ),
                       ),
                     );
-                  }
-                  ),
-            )
-        )
+                  }),
+            ))
       ]),
     );
   }
+
   Widget seletorAnunciosCarro() {
     return StreamBuilder(
       stream: carroController.outCarroSelecionado,
@@ -380,7 +385,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
             children: <Widget>[
               Container(
                 child: hText(
-                    'Escolha as campanhas e suas respectivas posições', context, textaling: TextAlign.center),
+                    'Escolha as campanhas e suas respectivas posições', context,
+                    textaling: TextAlign.center),
               ),
               sb,
               Row(
@@ -409,7 +415,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -437,7 +444,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
@@ -465,7 +472,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -492,7 +500,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -520,7 +529,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
@@ -548,7 +557,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -575,7 +585,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -591,10 +602,11 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                       children: <Widget>[
                                         sb,
                                         hText(
-                                          carro.anuncio_traseira_completa == null
+                                          carro.anuncio_traseira_completa ==
+                                                  null
                                               ? 'Anuncios na Traseira'
-                                              : carro
-                                              .anuncio_traseira_completa.nome,
+                                              : carro.anuncio_traseira_completa
+                                                  .nome,
                                           context,
                                           size: 40,
                                           color: corPrimaria,
@@ -604,7 +616,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
@@ -632,7 +644,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -659,7 +672,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -677,7 +691,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                         hText(
                                           carro.anuncio_vidro_traseiro == null
                                               ? 'Vidro Traseiro'
-                                              : carro.anuncio_vidro_traseiro.nome,
+                                              : carro
+                                                  .anuncio_vidro_traseiro.nome,
                                           context,
                                           size: 40,
                                           color: corPrimaria,
@@ -687,7 +702,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
@@ -722,6 +737,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
       },
     );
   }
+
   ProgressDialog pr;
   Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();
@@ -732,15 +748,14 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
       List campanhas = new List();
 
       for (var d in v.documents) {
-
-              campanhas.add(Campanha.fromJson(d.data));
-
+        campanhas.add(Campanha.fromJson(d.data));
       }
       for (Campanha z in campanhas) {
-
-               items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
-
-
+        if(z.dataini.isBefore(DateTime.now())) {
+          if(z.deleted_at == null) {
+            items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
+          }
+        }
       }
       return items;
     }).catchError((err) {

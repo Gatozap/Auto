@@ -3,9 +3,11 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Objetos/Bairro.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Corrida.dart';
 import 'package:bocaboca/Objetos/Localizacao.dart';
+import 'package:bocaboca/Objetos/Zona.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geocoder/geocoder.dart';
@@ -29,6 +31,14 @@ class NavigationBloc extends BlocBase {
   Sink<List> get inPoints => pointsController.sink;
   List<Localizacao> points;
   Placemark ultimoEndereco;
+  BehaviorSubject<String> controllerUltimoEndereco = BehaviorSubject<String>();
+  Stream<String> get outUltimoEndereco => controllerUltimoEndereco.stream;
+  Sink<String> get inUltimoEndereco => controllerUltimoEndereco.sink;
+
+  BehaviorSubject<bool> controllerHasIdentificado = BehaviorSubject<bool>();
+  Stream<bool> get outHasIdentificado => controllerHasIdentificado.stream;
+  Sink<bool> get inHasIdentificado => controllerHasIdentificado.sink;
+
   void foregroundServiceFunction() {}
 
   Function globalForegroundService() {}
@@ -132,22 +142,38 @@ class NavigationBloc extends BlocBase {
         if (points != null) {
           if (points.length != 0) {
             Localizacao p = points.last;
-            if (p.latitude != loc.latitude || p.longitude != loc.longitude) {
+            if (p.latitude.toStringAsFixed(5) !=
+                    loc.latitude.toStringAsFixed(5) ||
+                p.longitude.toStringAsFixed(5) !=
+                    loc.longitude.toStringAsFixed(5)) {
+              print(
+                  'AQUI SETANDO HASMOVED ${p.latitude} == ${loc.latitude} ?  ${p.latitude != loc.latitude}');
+              print(
+                  'AQUI SETANDO HASMOVED ${p.longitude} == ${loc.longitude} ?  ${p.longitude != loc.longitude}');
               hasMoved = true;
             }
           } else {
-            hasMoved = true;
+            //hasMoved = true;
           }
         } else {
           //hasMoved= true;
         }
         if (hasMoved) {
-          print('Em Movimento ${location}' );
-          var addresses = await Geocoder.local.findAddressesFromCoordinates(Coordinates(location.latitude, location.longitude));
+          print('Em Movimento ${location}');
+          var addresses = await Geocoder.local.findAddressesFromCoordinates(
+              Coordinates(location.latitude, location.longitude));
           var first = addresses.first;
           print("${first.featureName} : ${first.addressLine}");
-          print('${corrida.carro.anuncio_vidro_traseiro.zonas.toString()}');
+          for (Zona z in corrida.carro.anuncio_vidro_traseiro.zonas) {
+            if (z.nome.toLowerCase().contains('CENTRAL'.toLowerCase()) ||
+                first.addressLine
+                    .toLowerCase()
+                    .contains('CENTRAL'.toLowerCase())) {
+              print('Identificada Região e Distancia');
+            }
+          }
 
+          inUltimoEndereco.add(first.addressLine);
           corrida.dist = dist;
           corridaRef.update(corrida.toJson());
           points.add(loc);

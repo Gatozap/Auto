@@ -43,7 +43,7 @@ class ListaCampanhaController extends BlocBase {
           campanhas.add(p);
         }
         campanhas.sort(
-                (Campanha a, Campanha b) => a.id.compareTo(b.id));
+                (Campanha a, Campanha b) => b.dataini.compareTo(a.dataini));
         campanhasmain = campanhas;
         inCampanhas.add(campanhas);
       } else {
