@@ -3,6 +3,7 @@ class Localizacao {
   var longitude;
   var altitude;
   var accuracy;
+  bool isInRange;
   DateTime timestamp;
 
   Localizacao({this.latitude, this.longitude, this.altitude, this.accuracy,

@@ -14,6 +14,9 @@ Firestore.instance.collection('Carro').reference();
 
 CollectionReference campanhasRef =
 Firestore.instance.collection('Campanha').reference();
+CollectionReference corridasRef =
+Firestore.instance.collection('Corridas').reference();
+
 
 CollectionReference zonasRef =
 Firestore.instance.collection('Zonas').reference();

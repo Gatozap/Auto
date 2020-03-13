@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:bocaboca/Helpers/Helper.dart';
+import 'package:bocaboca/Helpers/References.dart';
 import 'package:bocaboca/Objetos/Bairro.dart';
+import 'package:bocaboca/Objetos/Campanha.dart';
 import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Corrida.dart';
 import 'package:bocaboca/Objetos/Localizacao.dart';
@@ -108,128 +110,196 @@ class NavigationBloc extends BlocBase {
   }
 
   Future<bool> startRacing(location) async {
-    if (corrida != null) {
-      if (corrida.isRunning) {
-        bool hasMoved = false;
-        Localizacao loc = Localizacao(
-            latitude: location.latitude,
-            longitude: location.longitude,
-            altitude: location.altitude,
-            accuracy: location.accuracy,
-            timestamp: DateTime.now());
+    print('RODANDO START RACING');
+    try {
+      if (corrida != null) {
+        if (corrida.isRunning) {
+          bool hasMoved = false;
+          Localizacao loc = Localizacao(
+              latitude: location.latitude,
+              longitude: location.longitude,
+              altitude: location.altitude,
+              accuracy: location.accuracy,
+              timestamp: DateTime.now());
 
-        if (points == null) {
-          points = new List();
-        }
-        corrida.last_seen = DateTime.now();
-        double dist = 0;
-
-        Localizacao lastPoint;
-        points.sort((var a, var b) {
-          return a.timestamp.compareTo(b.timestamp);
-        });
-        for (var p in points) {
-          if (lastPoint != null) {
-            dist += await Geolocator().distanceBetween(
-              p.latitude,
-              p.longitude,
-              lastPoint.latitude,
-              lastPoint.longitude,
-            );
+          if (points == null) {
+            points = new List();
           }
-          lastPoint = p;
-        }
-        if (points != null) {
-          if (points.length != 0) {
-            Localizacao p = points.last;
-            if (p.latitude.toStringAsFixed(5) !=
-                    loc.latitude.toStringAsFixed(5) ||
-                p.longitude.toStringAsFixed(5) !=
-                    loc.longitude.toStringAsFixed(5)) {
-              print(
-                  'AQUI SETANDO HASMOVED ${p.latitude} == ${loc.latitude} ?  ${p.latitude != loc.latitude}');
-              print(
-                  'AQUI SETANDO HASMOVED ${p.longitude} == ${loc.longitude} ?  ${p.longitude != loc.longitude}');
+          corrida.last_seen = DateTime.now();
+          double dist = 0;
+
+          Localizacao lastPoint;
+          points.sort((var a, var b) {
+            return a.timestamp.compareTo(b.timestamp);
+          });
+          for (var p in points) {
+            if (lastPoint != null) {
+              dist += await Geolocator().distanceBetween(
+                p.latitude,
+                p.longitude,
+                lastPoint.latitude,
+                lastPoint.longitude,
+              );
+            }
+            lastPoint = p;
+          }
+          if (points != null) {
+            if (points.length != 0) {
+              Localizacao p = points.last;
+              if (p.latitude.toStringAsFixed(5) !=
+                      loc.latitude.toStringAsFixed(5) ||
+                  p.longitude.toStringAsFixed(5) !=
+                      loc.longitude.toStringAsFixed(5)) {
+                print(
+                    'AQUI SETANDO HASMOVED ${p.latitude} == ${loc.latitude} ?  ${p.latitude != loc.latitude}');
+                print(
+                    'AQUI SETANDO HASMOVED ${p.longitude} == ${loc.longitude} ?  ${p.longitude != loc.longitude}');
+                hasMoved = true;
+              }
+            } else {
               hasMoved = true;
             }
           } else {
-            //hasMoved = true;
+            //hasMoved= true;
           }
-        } else {
-          //hasMoved= true;
-        }
-        if (hasMoved) {
-          print('Em Movimento ${location}');
-          var addresses = await Geocoder.local.findAddressesFromCoordinates(
-              Coordinates(location.latitude, location.longitude));
-          var first = addresses.first;
-          print("${first.featureName} : ${first.addressLine}");
-          for (Zona z in corrida.carro.anuncio_vidro_traseiro.zonas) {
-            if (z.nome.toLowerCase().contains('CENTRAL'.toLowerCase()) ||
-                first.addressLine
-                    .toLowerCase()
-                    .contains('CENTRAL'.toLowerCase())) {
-              print('Identificada Região e Distancia');
-            }
+          if (hasMoved) {
+            print('Em Movimento ${location}');
+            var addresses = await Geocoder.local.findAddressesFromCoordinates(
+                Coordinates(location.latitude, location.longitude));
+            var first = addresses.first;
+            inUltimoEndereco.add('${first.subLocality}');
+            corrida.dist = dist;
+            corridaRef.update(corrida.toJson());
+            points.add(loc);
+            pointsRef.push().set(loc.toJson());
           }
-
-          inUltimoEndereco.add(first.addressLine);
-          corrida.dist = dist;
-          corridaRef.update(corrida.toJson());
-          points.add(loc);
-          pointsRef.push().set(loc.toJson());
+          return true;
         }
-        return true;
       }
+    } catch (err) {
+      print('Erro ao verificar status ${err.toString()}');
     }
   }
 
-/*
-  Future<void> startForegroundService() async {
-    StreamSubscription subscription;
-    // await FlutterForegroundPlugin.setServiceMethodInterval(seconds: 3);
-    start();
-    await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
-    await FlutterForegroundPlugin.startForegroundService(
-      holdWakeLock: false,
-      onStarted: () {
-        //quando o serviço é inicializado, ele inicia o geolocator para para a posição atual do user
-
-        final geolocator = Geolocator();
-
-        subscription = geolocator
-            .getPositionStream().listen((p){
-          startRacing(p);
-        });
-// serviço de primeiro plano iniciado
-        print("Foreground on Started");
-      },
-      onStopped: () {
-        // quando o serviço de primeiro plano termina, as atualizações de local são canceladas
-        subscription.cancel();
-        print("Foreground on Stopped");
-      },
-      // título, conteúdo e nome do ícone da notificação do serviço
-      title: "Location Service",
-      content: "",
-      iconName: "",
-      );
-  }
-*/
   Future<void> stopFGS() async {
-    corrida.hora_fim = DateTime.now();
-    corrida.last_seen = DateTime.now();
-    var location = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    // pointsRef.push().set(location.toJson());
-    corridaRef.update(corrida.toJson());
-    corridaRef = null;
-    pointsRef = null;
-    corrida.isRunning = false;
-    SharedPreferences.getInstance().then((v) {
-      v.setString('corrida', '');
+    Future.delayed(Duration(seconds: 5)).then((vo) async {
+      corrida.hora_fim = DateTime.now();
+      corrida.last_seen = DateTime.now();
+      if (corrida.carro.anuncio_vidro_traseiro != null) {
+        await gravarCorridaFirestore(corrida.carro.anuncio_vidro_traseiro);
+      }
+      if (corrida.carro.anuncio_bancos != null) {
+        await gravarCorridaFirestore(corrida.carro.anuncio_bancos);
+      }
+      if (corrida.carro.anuncio_laterais != null) {
+        await gravarCorridaFirestore(corrida.carro.anuncio_laterais);
+      }
+      if (corrida.carro.anuncio_traseira_completa != null) {
+        await gravarCorridaFirestore(corrida.carro.anuncio_traseira_completa);
+      }
+      Future.delayed(Duration(seconds: 10)).then((v) {
+        // pointsRef.push().set(location.toJson());
+        corridaRef.update(corrida.toJson());
+        points = new List();
+        corridaRef = null;
+        pointsRef = null;
+        corrida.isRunning = false;
+        corrida = null;
+        SharedPreferences.getInstance().then((v) {
+          v.setString('corrida', '');
+        });
+        inCorrida.add(corrida);
+      });
     });
-    inCorrida.add(corrida);
+  }
+
+  Future<void> gravarCorridaFirestore(Campanha anuncio) async {
+    Corrida c = corrida;
+    List enderecos = new List();
+    List<Localizacao> localizacoes = new List();
+    for (Localizacao l in points) {
+      var addresses = await Geocoder.local
+          .findAddressesFromCoordinates(Coordinates(l.latitude, l.longitude));
+      enderecos.add(addresses.first);
+    }
+
+    int duracao = 0;
+    for (Zona z in anuncio.zonas) {
+      try {
+        if (z != null) {
+          for (int i = 0; i < points.length; i++) {
+            if ((z.nome.toLowerCase().contains('CENTRAL'.toLowerCase()) ||
+                    enderecos[i]
+                        .subLocality
+                        .toLowerCase()
+                        .contains('CENTRAL'.toLowerCase())) ||
+                enderecos[i]
+                    .subLocality
+                    .toLowerCase()
+                    .contains(z.nome.toLowerCase())) {
+              localizacoes.add(points[i]);
+              if (i != 0) {
+                duracao += localizacoes[i]
+                    .timestamp
+                    .difference(localizacoes[i - 1].timestamp)
+                    .inSeconds;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        print('Erro ${err.toString()}');
+      }
+    }
+    List<Localizacao> localizacoesTemp = new List();
+    for (Localizacao l in localizacoes) {
+      bool contains = false;
+      for (Localizacao l2 in localizacoesTemp) {
+        if (l2.timestamp == l.timestamp) {
+          contains = true;
+        }
+      }
+      if (!contains) {
+        localizacoesTemp.add(l);
+      }
+    }
+    localizacoes = localizacoesTemp;
+    c.id_corrida = c.id;
+    c.id_carro = c.carro.id;
+    c.points = localizacoes;
+    c.campanha = anuncio.id;
+
+    var lastPoint;
+    c.duracao = duracao;
+    c.vizualizacoes = 0;
+
+    c.dist = 0;
+    for (var p in c.points) {
+      if (lastPoint != null) {
+        c.dist += await Geolocator().distanceBetween(
+          p.latitude,
+          p.longitude,
+          lastPoint.latitude,
+          lastPoint.longitude,
+        );
+      }
+      lastPoint = p;
+    }
+    var distInKM = ((c.dist == null ? 0 : c.dist) / 1000);
+    print("AQUI DISTANCIA EM KM ${distInKM}");
+    print('DURACAO ${((c.duracao / 60) * (15 / 60))}');
+    c.vizualizacoes =
+        ((distInKM * 15) + ((c.duracao / 60) * (15 / 60))).floor();
+    corridasRef.add(c.toJsonFirestore()).then((v) {
+      c.id = v.documentID;
+      corridasRef
+          .document(v.documentID)
+          .updateData(c.toJsonFirestore())
+          .then((d) {
+        dToast(
+            'Corrida Finalizada com Sucesso! Suas Vizualizações na campanha ${anuncio.nome} foram ${c.vizualizacoes}');
+      });
+    });
   }
 }
 
