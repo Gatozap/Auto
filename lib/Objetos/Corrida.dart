@@ -19,7 +19,7 @@ class Corrida {
   String user;
   String campanha;
   int duracao;
-  List<Distancia> distancia;
+
   String id_corrida;
   String id_carro;
   var dist;
@@ -28,7 +28,7 @@ class Corrida {
 
   @override
   String toString() {
-    return 'Corrida{id: $id, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, hora_ini: $hora_ini, hora_fim: $hora_fim, isRunning: $isRunning, last_seen: $last_seen, user: $user, distancia: $distancia, carro: $carro, Points: $points}';
+    return 'Corrida{id: $id, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, hora_ini: $hora_ini, hora_fim: $hora_fim, isRunning: $isRunning, last_seen: $last_seen, user: $user,  carro: $carro, Points: $points}';
   }
 
   Corrida(
@@ -40,7 +40,7 @@ class Corrida {
       this.user,
       this.dist,
       this.duracao,
-      this.distancia,
+
       this.vizualizacoes,
       this.carro,
       this.points,
@@ -67,9 +67,7 @@ class Corrida {
         id_corrida = j['id_corrida'],
         id_carro = j['id_carro'],
         vizualizacoes = j['vizualizacoes'],
-        distancia = j['distancia'] == null
-            ? null
-            : getDistancia(json.decode(j['distancia'])),
+
         hora_ini = j['hora_ini'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['hora_ini']),
@@ -97,9 +95,7 @@ class Corrida {
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['deleted_at']),
         dist = j['dist'],
-        distancia = j['distancia'] == null
-            ? null
-            : getDistancia(json.decode(j['distancia'])),
+
         hora_ini = j['hora_ini'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['hora_ini']),
@@ -132,7 +128,7 @@ class Corrida {
         'last_seen':
             last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,
-        'distancia': json.encode(distancia),
+
         'carro': carro == null ? null : carro.toJson(),
         //'points': json.encode(points),
       };
@@ -156,8 +152,8 @@ class Corrida {
         'last_seen':
             last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,
-        'distancia': json.encode(distancia),
-        'carro': carro == null ? null : carro.toJson(),
+
+        'carro': carro == null ? null : carro.toJsonSemCampanha(),
         'points': json.encode(points),
       };
 

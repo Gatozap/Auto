@@ -4,6 +4,7 @@ import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Corrida.dart';
 import 'package:bocaboca/Objetos/Distancia.dart';
 import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:bocaboca/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
 import 'package:bocaboca/Telas/Admin/TelasAdmin/ListaUsuarioPage.dart';
 import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
@@ -44,8 +45,8 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      drawer: CustomDrawerWidget(),
-      appBar: myAppBar('Administrador', context),
+
+      appBar: myAppBar('Administrador', context, showBack: true),
       body: Container(
           margin: EdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -100,7 +101,7 @@ class _AdminPageState extends State<AdminPage> {
         Row(children: <Widget>[   GestureDetector(
           onTap: () {
             Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ListaCarroUserPage(carro: widget.carro, user: widget.user,campanha: widget.campanha,)));
+                MaterialPageRoute(builder: (context) => ListaCarroUserPage(carro: widget.carro, user: widget.user,campanha: widget.campanha, )));
           },
           child: Container(
             color: Colors.lightBlue[50],
@@ -138,7 +139,27 @@ class _AdminPageState extends State<AdminPage> {
             ),
           ),
 
-        ],)
+        ],),
+        Row(children: <Widget>[  GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => EstatisticaPage(carro: widget.carro, user: widget.user,campanha: widget.campanha, corrida: widget.corrida,)));
+          },
+          child: Container(
+            color: Colors.lightBlue[50],
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+
+            height: getAltura(context) * .2,
+            width: getLargura(context)*.4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Icon(MdiIcons.chartAreaspline, size: 55, color: Colors.lightBlue[700]), hText('Estatísticas', context)
+              ],
+            ),
+          ),
+        ),],)
       ]),
 
       ),

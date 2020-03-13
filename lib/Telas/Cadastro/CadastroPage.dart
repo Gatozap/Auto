@@ -121,7 +121,6 @@ class _CadastroState extends State<Cadastro> {
   var controllerNumero_conta = new TextEditingController(text: '');
   var controllerAgencia = new TextEditingController(text: '');
 
-
   ProgressDialog pr;
   Future getDocumentoCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -352,383 +351,32 @@ class _CadastroState extends State<Cadastro> {
                 return Container();
               }
 
-                return Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    print('Pagina $index');
-                    switch (index) {
-                      case 0:
-                        return Stack(
-                          children: <Widget>[
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != null
-                                      ? index < 4 - 1
-                                          ? () {
-                                              sc.next(animation: true);
-                                            }
-                                          : null
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              right: 10,
-                            ),
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != 0
-                                      ? () {
-                                          sc.previous(animation: true);
-                                        }
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              left: 10,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(height: 45),
-                                hText('Insira os dados de sua conta Bancaria',
-                                    context),
-                                sb,
-                                sb,
-                                Padding(
-                                  padding: ei,
-                                  child: TypeAheadField(
-                                    textFieldConfiguration:
-                                        TextFieldConfiguration(
-                                            controller:
-                                                controllerConta_bancaria,
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                            decoration: DefaultInputDecoration(
-                                                context,
-                                                icon: MdiIcons.bank,
-                                                labelText: 'Banco',
-                                                hintText:
-                                                    'Caixa Economica Federal')),
-                                    suggestionsCallback: (pattern) async {
-                                      return await Banco.getSuggestions(
-                                          pattern);
-                                    },
-                                    itemBuilder: (context, suggestion) {
-                                      return ListTile(
-                                        title: Text(suggestion.nome),
-                                      );
-                                    },
-                                    onSuggestionSelected: (Banco suggestion) {
-                                      bancoSelecionado = suggestion;
-                                      controllerConta_bancaria.text =
-                                          suggestion.nome;
-                                    },
-                                  ),
+              return Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  print('Pagina $index');
+                  switch (index) {
+                    case 0:
+                      return Stack(
+                        children: <Widget>[
+                          Positioned(
+                            child: MaterialButton(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
                                 ),
-                                new Padding(
-                                  padding: ei,
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    controller: controllerAgencia,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        if (isCadastrarPressed) {
-                                          return 'É necessário preencher Agencia';
-                                        }
-                                      }
-                                    },
-                                    decoration: DefaultInputDecoration(
-                                      context,
-                                      icon: MdiIcons.creditCard,
-                                      hintText: '0999-9',
-                                      labelText: 'Número da Agência com dígito',
-                                    ),
-                                    autovalidate: true,
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                new Padding(
-                                  padding: ei,
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    controller: controllerNumero_conta,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        if (isCadastrarPressed) {
-                                          return 'É necessário preencher Conta Bancaria';
-                                        }
-                                      }
-                                    },
-                                    decoration: DefaultInputDecoration(
-                                      context,
-                                      icon: MdiIcons.creditCard,
-                                      hintText: '36.356-93',
-                                      labelText: 'Número da conta',
-                                    ),
-                                    autovalidate: true,
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    hText('Tipo de conta: ', context,
-                                        color: corPrimaria, size: 40),
-                                    sb,
-                                    DropdownButton(
-                                      style: TextStyle(
-                                          color: corPrimaria,
-                                          fontSize: ScreenUtil.getInstance()
-                                              .setSp(40),
-                                          fontWeight: FontWeight.bold),
-                                      icon: Icon(Icons.arrow_drop_down,
-                                          color: corPrimaria),
-                                      value: selectTipo,
-                                      items: _dropDownMenuItemsTipoConta,
-                                      onChanged: onChangeDropDownItens,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-
-                      case 1:
-                        return Stack(children: <Widget>[
-                          Padding(
-                              padding: const EdgeInsets.all(24.0),
-                              child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .85,
-                                  child: SingleChildScrollView(
-                                      child: Form(
-                                          key: _formKey,
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                sb,
-                                                sb,
-                                                sb,
-                                                Text(
-                                                  'Cadastre seu Carro',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20),
-                                                ),
-                                                sb,
-                                                sb,
-                                                new Padding(
-                                                  padding: ei,
-                                                  child: TextFormField(
-                                                    controller:
-                                                        controllerTipocarro,
-                                                    validator: (value) {
-                                                      if (value.isEmpty) {
-                                                        if (isCadastrarPressed) {
-                                                          return 'É necessário preencher o tipo de carro';
-                                                        }
-                                                      }
-                                                    },
-                                                    decoration:
-                                                        DefaultInputDecoration(
-                                                      context,
-                                                      icon:
-                                                          Icons.directions_car,
-                                                      hintText: 'Prisma',
-                                                      labelText:
-                                                          'Modelo de Carro',
-                                                    ),
-                                                    autovalidate: true,
-                                                  ),
-                                                ),
-                                                new Padding(
-                                                  padding: ei,
-                                                  child: TextFormField(
-                                                    controller: controllerCor,
-                                                    validator: (value) {
-                                                      if (value.isEmpty) {
-                                                        if (isCadastrarPressed) {
-                                                          return 'É necessário preencher a cor do veículo';
-                                                        }
-                                                      }
-                                                    },
-                                                    decoration:
-                                                        DefaultInputDecoration(
-                                                      context,
-                                                      icon: Icons.color_lens,
-                                                      hintText: 'Azul',
-                                                      labelText:
-                                                          'Cor do veículo',
-                                                    ),
-                                                    autovalidate: true,
-                                                  ),
-                                                ),
-                                                new Padding(
-                                                  padding: ei,
-                                                  child: TextFormField(
-                                                    controller: controllerPlaca,
-                                                    validator: (value) {
-                                                      if (value.isEmpty) {
-                                                        if (isCadastrarPressed) {
-                                                          return 'É necessário preencher a Placa do carro';
-                                                        }
-                                                      }
-                                                    },
-                                                    decoration:
-                                                        DefaultInputDecoration(
-                                                      context,
-                                                      icon: MdiIcons.carBack,
-                                                      hintText: 'AAA-9999',
-                                                      labelText:
-                                                          'Placa do carro',
-                                                    ),
-                                                    autovalidate: true,
-                                                  ),
-                                                ),
-                                                sb,
-                                                new Padding(
-                                                  padding: ei,
-                                                  child: TextFormField(
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    controller: controllerAno,
-                                                    validator: (value) {
-                                                      if (value.isEmpty) {
-                                                        if (isCadastrarPressed) {
-                                                          return 'É necessário preencher o ano do vínculo';
-                                                        }
-                                                      }
-                                                    },
-                                                    decoration:
-                                                        DefaultInputDecoration(
-                                                      context,
-                                                      icon: Icons.today,
-                                                      hintText: '2000',
-                                                      labelText: 'Ano',
-                                                    ),
-                                                  ),
-                                                ),
-                                                sb,
-                                                hText(
-                                                    'Quanto quilometros você em média anda por mês?',
-                                                    context,
-                                                    color: corPrimaria,
-                                                    size: 50),
-                                                Column(
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: ei,
-                                                      child: TextFormField(
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        controller:
-                                                            controllerKmsmin,
-                                                        validator: (value) {
-                                                          if (value.isEmpty) {
-                                                            if (isCadastrarPressed) {
-                                                              return 'É necessário preencher a quantia de Kms rodados';
-                                                            }
-                                                          }
-                                                        },
-                                                        decoration:
-                                                            DefaultInputDecoration(
-                                                          context,
-                                                          icon:
-                                                              MdiIcons.runFast,
-                                                          hintText: '400',
-                                                          labelText:
-                                                              'Km Mínimo',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: ei,
-                                                      child: TextFormField(
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        controller:
-                                                            controllerKmsmax,
-                                                        validator: (value) {
-                                                          if (value.isEmpty) {
-                                                            if (isCadastrarPressed) {
-                                                              return 'É necessário preencher a quantia de Kms rodados';
-                                                            }
-                                                          }
-                                                        },
-                                                        decoration:
-                                                            DefaultInputDecoration(
-                                                          context,
-                                                          icon:
-                                                              MdiIcons.runFast,
-                                                          hintText: '1500',
-                                                          labelText:
-                                                              'Km Máximo',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Padding(
-                                                  padding: ei,
-                                                  child: StreamBuilder(
-                                                      stream: cc.outUser,
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        return Column(
-                                                          children: <Widget>[
-                                                            defaultCheckBox(
-                                                                Helper.localUser
-                                                                    .atende_fds,
-                                                                'Atende Final de Semana',
-                                                                context, () {
-                                                              Helper.localUser
-                                                                      .atende_fds =
-                                                                  !Helper
-                                                                      .localUser
-                                                                      .atende_fds;
-                                                              cc.user = Helper
-                                                                  .localUser;
-                                                              cc.inUser
-                                                                  .add(cc.user);
-                                                            }),
-                                                            sb,
-                                                            defaultCheckBox(
-                                                                Helper.localUser
-                                                                    .atende_festa,
-                                                                'Atende em Festas',
-                                                                context, () {
-                                                              Helper.localUser
-                                                                      .atende_festa =
-                                                                  !Helper
-                                                                      .localUser
-                                                                      .atende_festa;
-                                                              cc.user = Helper
-                                                                  .localUser;
-                                                              cc.inUser
-                                                                  .add(cc.user);
-                                                            }),
-                                                            sb,
-                                                            sb,
-                                                            sb,
-                                                            sb,
-                                                          ],
-                                                        );
-                                                      }),
-                                                )
-                                              ]))))),
+                                color: corPrimaria,
+                                onPressed: index != null
+                                    ? index < 4 - 1
+                                        ? () {
+                                            sc.next(animation: true);
+                                          }
+                                        : null
+                                    : null,
+                                shape: new CircleBorder(
+                                    side: BorderSide(color: corPrimaria))),
+                            bottom: 5,
+                            right: 10,
+                          ),
                           Positioned(
                             child: MaterialButton(
                                 child: Icon(
@@ -746,708 +394,1040 @@ class _CadastroState extends State<Cadastro> {
                             bottom: 5,
                             left: 10,
                           ),
-                          Positioned(
-                            child: MaterialButton(
-                                child: Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 45),
+                              hText('Insira os dados de sua conta Bancaria',
+                                  context),
+                              sb,
+                              sb,
+                              Padding(
+                                padding: ei,
+                                child: TypeAheadField(
+                                  textFieldConfiguration:
+                                      TextFieldConfiguration(
+                                          controller: controllerConta_bancaria,
+                                          style: TextStyle(color: Colors.black),
+                                          decoration: DefaultInputDecoration(
+                                              context,
+                                              icon: MdiIcons.bank,
+                                              labelText: 'Banco',
+                                              hintText:
+                                                  'Caixa Economica Federal')),
+                                  suggestionsCallback: (pattern) async {
+                                    return await Banco.getSuggestions(pattern);
+                                  },
+                                  itemBuilder: (context, suggestion) {
+                                    return ListTile(
+                                      title: Text(suggestion.nome),
+                                    );
+                                  },
+                                  onSuggestionSelected: (Banco suggestion) {
+                                    bancoSelecionado = suggestion;
+                                    controllerConta_bancaria.text =
+                                        suggestion.nome;
+                                  },
                                 ),
-                                color: corPrimaria,
-                                onPressed: index != null
-                                    ? index < 5 - 1
-                                        ? () {
-                                            sc.next(animation: true);
-                                          }
-                                        : null
-                                    : null,
-                                shape: new CircleBorder(
-                                    side: BorderSide(color: corPrimaria))),
-                            bottom: 5,
-                            right: 10,
+                              ),
+                              new Padding(
+                                padding: ei,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  controller: controllerAgencia,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher Agencia';
+                                      }
+                                    }
+                                  },
+                                  decoration: DefaultInputDecoration(
+                                    context,
+                                    icon: MdiIcons.creditCard,
+                                    hintText: '0999-9',
+                                    labelText: 'Número da Agência com dígito',
+                                  ),
+                                  autovalidate: true,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              new Padding(
+                                padding: ei,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  controller: controllerNumero_conta,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher Conta Bancaria';
+                                      }
+                                    }
+                                  },
+                                  decoration: DefaultInputDecoration(
+                                    context,
+                                    icon: MdiIcons.creditCard,
+                                    hintText: '36.356-93',
+                                    labelText: 'Número da conta',
+                                  ),
+                                  autovalidate: true,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  hText('Tipo de conta: ', context,
+                                      color: corPrimaria, size: 40),
+                                  sb,
+                                  DropdownButton(
+                                    style: TextStyle(
+                                        color: corPrimaria,
+                                        fontSize:
+                                            ScreenUtil.getInstance().setSp(40),
+                                        fontWeight: FontWeight.bold),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: corPrimaria),
+                                    value: selectTipo,
+                                    items: _dropDownMenuItemsTipoConta,
+                                    onChanged: onChangeDropDownItens,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ]);
-                      case 2:
-                        var CPF = MaskedTextController(
-                            text: cc.CPF, mask: '000.000.000-00');
-                        var telefone = MaskedTextController(
-                            text: cc.telefone, mask: '(00) 0 0000-0000');
-                        var dataNascimento = MaskedTextController(
-                            text: cc.datanascimento, mask: '00/00/0000');
-                        return Stack(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(28.0),
-                              child: SingleChildScrollView(
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .84,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        sb,
-                                        sb,
-                                        sb,
-                                        hText('Foto do seu Perfil', context),
-                                        Container(
-                                          child: Row(
+                        ],
+                      );
+
+                    case 1:
+                      return Stack(children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * .85,
+                                child: SingleChildScrollView(
+                                    child: Form(
+                                        key: _formKey,
+                                        child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: <Widget>[
-                                              GestureDetector(
-                                                onTap: () => showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(15.0),
-                                                        child: AlertDialog(
-                                                          title: hText(
-                                                              "Selecione uma opção",
-                                                              context),
-                                                          content:
-                                                              SingleChildScrollView(
-                                                            child: ListBody(
-                                                              children: <
-                                                                  Widget>[
-                                                                defaultActionButton(
-                                                                    'Galeria',
-                                                                    context,
-                                                                    () {
-                                                                  getImage();
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                    icon: MdiIcons
-                                                                        .face),
-                                                                sb,
-                                                                defaultActionButton(
-                                                                    'Camera',
-                                                                    context,
-                                                                    () {
-                                                                  getImageCamera();
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                    icon: MdiIcons
-                                                                        .camera)
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
+                                              sb,
+                                              sb,
+                                              sb,
+                                              Text(
+                                                'Cadastre seu Carro',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20),
+                                              ),
+                                              sb,
+                                              sb,
+                                              new Padding(
+                                                padding: ei,
+                                                child: TextFormField(
+                                                  controller:
+                                                      controllerTipocarro,
+                                                  validator: (value) {
+                                                    if (value.isEmpty) {
+                                                      if (isCadastrarPressed) {
+                                                        return 'É necessário preencher o tipo de carro';
+                                                      }
+                                                    }
+                                                  },
+                                                  decoration:
+                                                      DefaultInputDecoration(
+                                                    context,
+                                                    icon: Icons.directions_car,
+                                                    hintText: 'Prisma',
+                                                    labelText:
+                                                        'Modelo de Carro',
+                                                  ),
+                                                  autovalidate: true,
+                                                ),
+                                              ),
+                                              new Padding(
+                                                padding: ei,
+                                                child: TextFormField(
+                                                  controller: controllerCor,
+                                                  validator: (value) {
+                                                    if (value.isEmpty) {
+                                                      if (isCadastrarPressed) {
+                                                        return 'É necessário preencher a cor do veículo';
+                                                      }
+                                                    }
+                                                  },
+                                                  decoration:
+                                                      DefaultInputDecoration(
+                                                    context,
+                                                    icon: Icons.color_lens,
+                                                    hintText: 'Azul',
+                                                    labelText: 'Cor do veículo',
+                                                  ),
+                                                  autovalidate: true,
+                                                ),
+                                              ),
+                                              new Padding(
+                                                padding: ei,
+                                                child: TextFormField(
+                                                  controller: controllerPlaca,
+                                                  validator: (value) {
+                                                    if (value.isEmpty) {
+                                                      if (isCadastrarPressed) {
+                                                        return 'É necessário preencher a Placa do carro';
+                                                      }
+                                                    }
+                                                  },
+                                                  decoration:
+                                                      DefaultInputDecoration(
+                                                    context,
+                                                    icon: MdiIcons.carBack,
+                                                    hintText: 'AAA-9999',
+                                                    labelText: 'Placa do carro',
+                                                  ),
+                                                  autovalidate: true,
+                                                ),
+                                              ),
+                                              sb,
+                                              new Padding(
+                                                padding: ei,
+                                                child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  controller: controllerAno,
+                                                  validator: (value) {
+                                                    if (value.isEmpty) {
+                                                      if (isCadastrarPressed) {
+                                                        return 'É necessário preencher o ano do vínculo';
+                                                      }
+                                                    }
+                                                  },
+                                                  decoration:
+                                                      DefaultInputDecoration(
+                                                    context,
+                                                    icon: Icons.today,
+                                                    hintText: '2000',
+                                                    labelText: 'Ano',
+                                                  ),
+                                                ),
+                                              ),
+                                              sb,
+                                              hText(
+                                                  'Quanto quilometros você em média anda por mês?',
+                                                  context,
+                                                  color: corPrimaria,
+                                                  size: 50),
+                                              Column(
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding: ei,
+                                                    child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      controller:
+                                                          controllerKmsmin,
+                                                      validator: (value) {
+                                                        if (value.isEmpty) {
+                                                          if (isCadastrarPressed) {
+                                                            return 'É necessário preencher a quantia de Kms rodados';
+                                                          }
+                                                        }
+                                                      },
+                                                      decoration:
+                                                          DefaultInputDecoration(
+                                                        context,
+                                                        icon: MdiIcons.runFast,
+                                                        hintText: '400',
+                                                        labelText: 'Km Mínimo',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: ei,
+                                                    child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      controller:
+                                                          controllerKmsmax,
+                                                      validator: (value) {
+                                                        if (value.isEmpty) {
+                                                          if (isCadastrarPressed) {
+                                                            return 'É necessário preencher a quantia de Kms rodados';
+                                                          }
+                                                        }
+                                                      },
+                                                      decoration:
+                                                          DefaultInputDecoration(
+                                                        context,
+                                                        icon: MdiIcons.runFast,
+                                                        hintText: '1500',
+                                                        labelText: 'Km Máximo',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: ei,
+                                                child: StreamBuilder(
+                                                    stream: cc.outUser,
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      return Column(
+                                                        children: <Widget>[
+                                                          defaultCheckBox(
+                                                              Helper.localUser
+                                                                  .atende_fds,
+                                                              'Atende Final de Semana',
+                                                              context, () {
+                                                            Helper.localUser
+                                                                    .atende_fds =
+                                                                !Helper
+                                                                    .localUser
+                                                                    .atende_fds;
+                                                            cc.user = Helper
+                                                                .localUser;
+                                                            cc.inUser
+                                                                .add(cc.user);
+                                                          }),
+                                                          sb,
+                                                          defaultCheckBox(
+                                                              Helper.localUser
+                                                                  .atende_festa,
+                                                              'Atende em Festas',
+                                                              context, () {
+                                                            Helper.localUser
+                                                                    .atende_festa =
+                                                                !Helper
+                                                                    .localUser
+                                                                    .atende_festa;
+                                                            cc.user = Helper
+                                                                .localUser;
+                                                            cc.inUser
+                                                                .add(cc.user);
+                                                          }),
+                                                          sb,
+                                                          sb,
+                                                          sb,
+                                                          sb,
+                                                        ],
                                                       );
                                                     }),
-                                                child: CircleAvatar(
-                                                    radius: (((getAltura(
-                                                                    context) +
-                                                                getLargura(
-                                                                    context)) /
-                                                            2) *
-                                                        .2),
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    child:
-                                                        Helper.localUser.foto !=
-                                                                null
-                                                            ? Image(
-                                                                image: CachedNetworkImageProvider(
-                                                                    Helper
-                                                                        .localUser
-                                                                        .foto),
-                                                              )
-                                                            : Image(
-                                                                image: CachedNetworkImageProvider(
-                                                                    'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                              )),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        sb,
-                                        StreamBuilder<String>(
-                                            stream: cc.outTelefone,
-                                            builder: (context, snapshot) {
-                                              return TextField(
-                                                  onChanged: (value) {
-                                                    cc.updateTelefone(value);
-                                                  },
-                                                  decoration: InputDecoration(
-                                                      labelText: 'Telefone',
-                                                      hintText:
-                                                          '(11) 9 9999-9999 (Oom WhatsApp)',
-                                                      icon: Icon(
-                                                          Icons.phone_iphone)),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  onSubmitted: (tel) {
-                                                    cc.updateTelefone(tel);
-                                                    Future.delayed(Duration(
-                                                            milliseconds:
-                                                                duracao))
-                                                        .then((v) {
-                                                      sc.next(animation: true);
-                                                    });
-                                                  },
-                                                  controller: telefone);
-                                            }),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        StreamBuilder<String>(
-                                            stream: cc.outDatanascimento,
-                                            builder: (context, snapshot) {
-                                              return TextField(
-                                                  onChanged: (value) {
-                                                    cc.updateDataNascimento(
-                                                        value);
-                                                  },
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'Data de Nascimento',
-                                                      hintText: '29/01/1990',
-                                                      icon: Icon(
-                                                          Icons.date_range)),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  onSubmitted: (data) {
-                                                    cc.updateDataNascimento(
-                                                        data);
-                                                    Future.delayed(Duration(
-                                                            milliseconds:
-                                                                duracao))
-                                                        .then((v) {
-                                                      sc.next(animation: true);
-                                                    });
-                                                  },
-                                                  controller: dataNascimento);
-                                            }),
-                                        sb,
-                                        sb,
-                                        StreamBuilder<Documento>(
-                                            stream: cc.outDocumento,
-                                            builder: (context, snapshot) {
-                                              if (snapshot.data == null) {
-                                                return Container();
-                                              }
-                                              if (snapshot.data.isValid) {
-                                                return Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            child: Column(
-                                                              children: <
-                                                                  Widget>[
-                                                                snapshot.data
-                                                                            .verso !=
-                                                                        null
-                                                                    ? hText(
-                                                                        'Frente',
+                                              )
+                                            ]))))),
+                        Positioned(
+                          child: MaterialButton(
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                              ),
+                              color: corPrimaria,
+                              onPressed: index != 0
+                                  ? () {
+                                      sc.previous(animation: true);
+                                    }
+                                  : null,
+                              shape: new CircleBorder(
+                                  side: BorderSide(color: corPrimaria))),
+                          bottom: 5,
+                          left: 10,
+                        ),
+                        Positioned(
+                          child: MaterialButton(
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                              ),
+                              color: corPrimaria,
+                              onPressed: index != null
+                                  ? index < 5 - 1
+                                      ? () {
+                                          sc.next(animation: true);
+                                        }
+                                      : null
+                                  : null,
+                              shape: new CircleBorder(
+                                  side: BorderSide(color: corPrimaria))),
+                          bottom: 5,
+                          right: 10,
+                        ),
+                      ]);
+                    case 2:
+                      var CPF = MaskedTextController(
+                          text: cc.CPF, mask: '000.000.000-00');
+                      var telefone = MaskedTextController(
+                          text: cc.telefone, mask: '(00) 0 0000-0000');
+                      var dataNascimento = MaskedTextController(
+                          text: cc.datanascimento, mask: '00/00/0000');
+                      return Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(28.0),
+                            child: SingleChildScrollView(
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * .84,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      sb,
+                                      sb,
+                                      sb,
+                                      hText('Foto do seu Perfil', context),
+                                      Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () => showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              15.0),
+                                                      child: AlertDialog(
+                                                        title: hText(
+                                                            "Selecione uma opção",
+                                                            context),
+                                                        content:
+                                                            SingleChildScrollView(
+                                                          child: ListBody(
+                                                            children: <Widget>[
+                                                              defaultActionButton(
+                                                                  'Galeria',
+                                                                  context, () {
+                                                                getImage();
+                                                                Navigator.of(
                                                                         context)
-                                                                    : Container(),
-                                                                snapshot.data
-                                                                            .frente ==
-                                                                        null
-                                                                    ? Container(
-                                                                        width: snapshot.data.verso !=
-                                                                                null
-                                                                            ? getLargura(context) *
-                                                                                .3
-                                                                            : getLargura(context) *
-                                                                                .6,
-                                                                        height:
-                                                                            getAltura(context) *
-                                                                                .2,
-                                                                        color: Colors
-                                                                            .grey[300])
-                                                                    : fotoDocumento(
-                                                                        snapshot
-                                                                            .data
-                                                                            .frente,
-                                                                        isValid: snapshot
-                                                                            .data
-                                                                            .isValid,
-                                                                        largura: snapshot.data.verso != null
-                                                                            ? getLargura(context) *
-                                                                                .3
-                                                                            : getLargura(context) *
-                                                                                .6,
-                                                                      ),
-                                                                defaultActionButton(
-                                                                    'Refazer',
-                                                                    context,
-                                                                    () {
-                                                                  cc.documento
-                                                                          .frente =
-                                                                      null;
-                                                                  cc.inDocumento
-                                                                      .add(cc
-                                                                          .documento);
-                                                                }, icon: null),
-                                                              ],
-                                                            ),
+                                                                    .pop();
+                                                              },
+                                                                  icon: MdiIcons
+                                                                      .face),
+                                                              sb,
+                                                              defaultActionButton(
+                                                                  'Camera',
+                                                                  context, () {
+                                                                getImageCamera();
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                                  icon: MdiIcons
+                                                                      .camera)
+                                                            ],
                                                           ),
-                                                          sb,
-                                                          snapshot.data.verso !=
-                                                                  null
-                                                              ? Container(
-                                                                  child: Column(
-                                                                    children: <
-                                                                        Widget>[
-                                                                      hText(
-                                                                          'Verso',
-                                                                          context),
-                                                                      snapshot.data.verso ==
-                                                                              null
-                                                                          ? Container(
-                                                                              width: getLargura(context) *
-                                                                                  .3,
-                                                                              height: getAltura(context) *
-                                                                                  .2,
-                                                                              color: Colors.grey[
-                                                                                  300])
-                                                                          : fotoDocumento(
-                                                                              snapshot.data.verso,
-                                                                              isValid: snapshot.data.isValid),
-                                                                      defaultActionButton(
-                                                                          'Refazer',
-                                                                          context,
-                                                                          () {
-                                                                        cc.documento.verso =
-                                                                            null;
-                                                                        cc.inDocumento
-                                                                            .add(cc.documento);
-                                                                      },
-                                                                          icon:
-                                                                              null),
-                                                                    ],
-                                                                  ),
-                                                                )
-                                                              : Container(),
-                                                        ],
-                                                      )
-                                                    ]);
-                                              }
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }),
+                                              child: CircleAvatar(
+                                                  radius: (((getAltura(
+                                                                  context) +
+                                                              getLargura(
+                                                                  context)) /
+                                                          2) *
+                                                      .2),
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  child:
+                                                      Helper.localUser.foto !=
+                                                              null
+                                                          ? Image(
+                                                              image: CachedNetworkImageProvider(
+                                                                  Helper
+                                                                      .localUser
+                                                                      .foto),
+                                                            )
+                                                          : Image(
+                                                              image: CachedNetworkImageProvider(
+                                                                  'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                            )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      sb,
+                                      StreamBuilder<String>(
+                                          stream: cc.outTelefone,
+                                          builder: (context, snapshot) {
+                                            return TextField(
+                                                onChanged: (value) {
+                                                  cc.updateTelefone(value);
+                                                },
+                                                decoration: InputDecoration(
+                                                    labelText: 'Telefone',
+                                                    hintText:
+                                                        '(11) 9 9999-9999 (Oom WhatsApp)',
+                                                    icon: Icon(
+                                                        Icons.phone_iphone)),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onSubmitted: (tel) {
+                                                  cc.updateTelefone(tel);
+                                                  Future.delayed(Duration(
+                                                          milliseconds:
+                                                              duracao))
+                                                      .then((v) {
+                                                    sc.next(animation: true);
+                                                  });
+                                                },
+                                                controller: telefone);
+                                          }),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      StreamBuilder<String>(
+                                          stream: cc.outDatanascimento,
+                                          builder: (context, snapshot) {
+                                            return TextField(
+                                                onChanged: (value) {
+                                                  cc.updateDataNascimento(
+                                                      value);
+                                                },
+                                                decoration: InputDecoration(
+                                                    labelText:
+                                                        'Data de Nascimento',
+                                                    hintText: '29/01/1990',
+                                                    icon:
+                                                        Icon(Icons.date_range)),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onSubmitted: (data) {
+                                                  cc.updateDataNascimento(data);
+                                                  Future.delayed(Duration(
+                                                          milliseconds:
+                                                              duracao))
+                                                      .then((v) {
+                                                    sc.next(animation: true);
+                                                  });
+                                                },
+                                                controller: dataNascimento);
+                                          }),
+                                      sb,
+                                      sb,
+                                      StreamBuilder<Documento>(
+                                          stream: cc.outDocumento,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.data == null) {
+                                              return Container();
+                                            }
+                                            if (snapshot.data.isValid) {
                                               return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: <Widget>[
-                                                  hText('Foto do seu Perfil',
-                                                      context),
-                                                  Container(
-                                                    child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
                                                       children: <Widget>[
-                                                        GestureDetector(
-                                                          onTap: () =>
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (context) {
-                                                                    return Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .all(
-                                                                          15.0),
-                                                                      child:
-                                                                          AlertDialog(
-                                                                        title: hText(
-                                                                            "Selecione uma opção",
-                                                                            context),
-                                                                        content:
-                                                                            SingleChildScrollView(
-                                                                          child:
-                                                                              ListBody(
-                                                                            children: <Widget>[
-                                                                              defaultActionButton('Galeria', context, () {
-                                                                                getImage();
-                                                                                Navigator.of(context).pop();
-                                                                              }, icon: MdiIcons.face),
-                                                                              sb,
-                                                                              defaultActionButton('Camera', context, () {
-                                                                                getImageCamera();
-                                                                                Navigator.of(context).pop();
-                                                                              }, icon: MdiIcons.camera)
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  }),
-                                                          child: CircleAvatar(
-                                                              radius: (((getAltura(
-                                                                              context) +
-                                                                          getLargura(
-                                                                              context)) /
-                                                                      2) *
-                                                                  .2),
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              child: Helper
-                                                                          .localUser
-                                                                          .foto !=
+                                                        Container(
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              snapshot.data
+                                                                          .verso !=
                                                                       null
-                                                                  ? Image(
-                                                                      image: CachedNetworkImageProvider(Helper
-                                                                          .localUser
-                                                                          .foto),
-                                                                    )
-                                                                  : Image(
-                                                                      image: CachedNetworkImageProvider(
-                                                                          'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                                    )),
+                                                                  ? hText(
+                                                                      'Frente',
+                                                                      context)
+                                                                  : Container(),
+                                                              snapshot.data
+                                                                          .frente ==
+                                                                      null
+                                                                  ? Container(
+                                                                      width: snapshot.data.verso != null
+                                                                          ? getLargura(context) *
+                                                                              .3
+                                                                          : getLargura(context) *
+                                                                              .6,
+                                                                      height:
+                                                                          getAltura(context) *
+                                                                              .2,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          300])
+                                                                  : fotoDocumento(
+                                                                      snapshot
+                                                                          .data
+                                                                          .frente,
+                                                                      isValid: snapshot
+                                                                          .data
+                                                                          .isValid,
+                                                                      largura: snapshot
+                                                                                  .data.verso !=
+                                                                              null
+                                                                          ? getLargura(context) *
+                                                                              .3
+                                                                          : getLargura(context) *
+                                                                              .6,
+                                                                    ),
+                                                              defaultActionButton(
+                                                                  'Refazer',
+                                                                  context, () {
+                                                                cc.documento
+                                                                        .frente =
+                                                                    null;
+                                                                cc.inDocumento
+                                                                    .add(cc
+                                                                        .documento);
+                                                              }, icon: null),
+                                                            ],
+                                                          ),
                                                         ),
+                                                        sb,
+                                                        snapshot.data.verso !=
+                                                                null
+                                                            ? Container(
+                                                                child: Column(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    hText(
+                                                                        'Verso',
+                                                                        context),
+                                                                    snapshot.data.verso ==
+                                                                            null
+                                                                        ? Container(
+                                                                            width: getLargura(context) *
+                                                                                .3,
+                                                                            height: getAltura(context) *
+                                                                                .2,
+                                                                            color: Colors.grey[
+                                                                                300])
+                                                                        : fotoDocumento(
+                                                                            snapshot
+                                                                                .data.verso,
+                                                                            isValid:
+                                                                                snapshot.data.isValid),
+                                                                    defaultActionButton(
+                                                                        'Refazer',
+                                                                        context,
+                                                                        () {
+                                                                      cc.documento
+                                                                              .verso =
+                                                                          null;
+                                                                      cc.inDocumento
+                                                                          .add(cc
+                                                                              .documento);
+                                                                    },
+                                                                        icon:
+                                                                            null),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            : Container(),
                                                       ],
-                                                    ),
-                                                  ),
-                                                  sb,
-                                                  StreamBuilder<String>(
-                                                      stream: cc.outTelefone,
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        return TextField(
-                                                            onChanged: (value) {
-                                                              cc.updateTelefone(
-                                                                  value);
-                                                            },
-                                                            decoration: InputDecoration(
-                                                                labelText:
-                                                                    'Telefone',
-                                                                hintText:
-                                                                    '(11) 9 9999-9999 (Oom WhatsApp)',
-                                                                icon: Icon(Icons
-                                                                    .phone_iphone)),
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                            onSubmitted: (tel) {
-                                                              cc.updateTelefone(
-                                                                  tel);
-                                                              Future.delayed(Duration(
-                                                                      milliseconds:
-                                                                          duracao))
-                                                                  .then((v) {
-                                                                sc.next(
-                                                                    animation:
-                                                                        true);
-                                                              });
-                                                            },
-                                                            controller:
-                                                                telefone);
-                                                      }),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  StreamBuilder<String>(
-                                                      stream:
-                                                          cc.outDatanascimento,
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        return TextField(
-                                                            onChanged: (value) {
-                                                              cc.updateDataNascimento(
-                                                                  value);
-                                                            },
-                                                            decoration: InputDecoration(
-                                                                labelText:
-                                                                    'Data de Nascimento',
-                                                                hintText:
-                                                                    '29/01/1990',
-                                                                icon: Icon(Icons
-                                                                    .date_range)),
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                            onSubmitted:
-                                                                (data) {
-                                                              cc.updateDataNascimento(
-                                                                  data);
-                                                              Future.delayed(Duration(
-                                                                      milliseconds:
-                                                                          duracao))
-                                                                  .then((v) {
-                                                                sc.next(
-                                                                    animation:
-                                                                        true);
-                                                              });
-                                                            },
-                                                            controller:
-                                                                dataNascimento);
-                                                      }),
-                                                  sb,
-                                                  sb,
-                                                  Row(
+                                                    )
+                                                  ]);
+                                            }
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                hText('Foto do seu Perfil',
+                                                    context),
+                                                Container(
+                                                  child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
                                                     children: <Widget>[
-                                                      Container(
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            hText('Frente',
-                                                                context),
-                                                            snapshot.data
-                                                                        .frente ==
+                                                      GestureDetector(
+                                                        onTap: () => showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        15.0),
+                                                                child:
+                                                                    AlertDialog(
+                                                                  title: hText(
+                                                                      "Selecione uma opção",
+                                                                      context),
+                                                                  content:
+                                                                      SingleChildScrollView(
+                                                                    child:
+                                                                        ListBody(
+                                                                      children: <
+                                                                          Widget>[
+                                                                        defaultActionButton(
+                                                                            'Galeria',
+                                                                            context,
+                                                                            () {
+                                                                          getImage();
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        }, icon: MdiIcons.face),
+                                                                        sb,
+                                                                        defaultActionButton(
+                                                                            'Camera',
+                                                                            context,
+                                                                            () {
+                                                                          getImageCamera();
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        }, icon: MdiIcons.camera)
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }),
+                                                        child: CircleAvatar(
+                                                            radius: (((getAltura(
+                                                                            context) +
+                                                                        getLargura(
+                                                                            context)) /
+                                                                    2) *
+                                                                .2),
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            child: Helper
+                                                                        .localUser
+                                                                        .foto !=
                                                                     null
-                                                                ? Container(
-                                                                    width: getLargura(
-                                                                            context) *
-                                                                        .3,
-                                                                    height:
-                                                                        getAltura(context) *
-                                                                            .2,
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        300])
-                                                                : fotoDocumento(
-                                                                    snapshot
-                                                                        .data
-                                                                        .frente),
-                                                            defaultActionButton(
-                                                                'Refazer',
-                                                                context, () {
-                                                              cc.documento
-                                                                      .frente =
-                                                                  null;
-                                                              cc.inDocumento.add(
-                                                                  cc.documento);
-                                                            }, icon: null),
-                                                          ],
-                                                        ),
+                                                                ? Image(
+                                                                    image: CachedNetworkImageProvider(Helper
+                                                                        .localUser
+                                                                        .foto),
+                                                                  )
+                                                                : Image(
+                                                                    image: CachedNetworkImageProvider(
+                                                                        'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                                  )),
                                                       ),
-                                                      sb,
-                                                      Container(
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            hText('Verso',
-                                                                context),
-                                                            snapshot.data
-                                                                        .verso ==
-                                                                    null
-                                                                ? Container(
-                                                                    width: getLargura(
-                                                                            context) *
-                                                                        .3,
-                                                                    height:
-                                                                        getAltura(context) *
-                                                                            .2,
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        300])
-                                                                : fotoDocumento(
-                                                                    snapshot
-                                                                        .data
-                                                                        .verso),
-                                                            defaultActionButton(
-                                                                'Refazer',
-                                                                context, () {
-                                                              cc.documento
-                                                                  .verso = null;
-                                                              cc.inDocumento.add(
-                                                                  cc.documento);
-                                                            }, icon: null),
-                                                          ],
-                                                        ),
-                                                      )
                                                     ],
                                                   ),
-                                                ],
+                                                ),
+                                                sb,
+                                                StreamBuilder<String>(
+                                                    stream: cc.outTelefone,
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      return TextField(
+                                                          onChanged: (value) {
+                                                            cc.updateTelefone(
+                                                                value);
+                                                          },
+                                                          decoration: InputDecoration(
+                                                              labelText:
+                                                                  'Telefone',
+                                                              hintText:
+                                                                  '(11) 9 9999-9999 (Oom WhatsApp)',
+                                                              icon: Icon(Icons
+                                                                  .phone_iphone)),
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          onSubmitted: (tel) {
+                                                            cc.updateTelefone(
+                                                                tel);
+                                                            Future.delayed(Duration(
+                                                                    milliseconds:
+                                                                        duracao))
+                                                                .then((v) {
+                                                              sc.next(
+                                                                  animation:
+                                                                      true);
+                                                            });
+                                                          },
+                                                          controller: telefone);
+                                                    }),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                StreamBuilder<String>(
+                                                    stream:
+                                                        cc.outDatanascimento,
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      return TextField(
+                                                          onChanged: (value) {
+                                                            cc.updateDataNascimento(
+                                                                value);
+                                                          },
+                                                          decoration: InputDecoration(
+                                                              labelText:
+                                                                  'Data de Nascimento',
+                                                              hintText:
+                                                                  '29/01/1990',
+                                                              icon: Icon(Icons
+                                                                  .date_range)),
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          onSubmitted: (data) {
+                                                            cc.updateDataNascimento(
+                                                                data);
+                                                            Future.delayed(Duration(
+                                                                    milliseconds:
+                                                                        duracao))
+                                                                .then((v) {
+                                                              sc.next(
+                                                                  animation:
+                                                                      true);
+                                                            });
+                                                          },
+                                                          controller:
+                                                              dataNascimento);
+                                                    }),
+                                                sb,
+                                                sb,
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          hText('Frente',
+                                                              context),
+                                                          snapshot.data
+                                                                      .frente ==
+                                                                  null
+                                                              ? Container(
+                                                                  width: getLargura(
+                                                                          context) *
+                                                                      .3,
+                                                                  height: getAltura(
+                                                                          context) *
+                                                                      .2,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      300])
+                                                              : fotoDocumento(
+                                                                  snapshot.data
+                                                                      .frente),
+                                                          defaultActionButton(
+                                                              'Refazer',
+                                                              context, () {
+                                                            cc.documento
+                                                                .frente = null;
+                                                            cc.inDocumento.add(
+                                                                cc.documento);
+                                                          }, icon: null),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    sb,
+                                                    Container(
+                                                      child: Column(
+                                                        children: <Widget>[
+                                                          hText(
+                                                              'Verso', context),
+                                                          snapshot.data.verso ==
+                                                                  null
+                                                              ? Container(
+                                                                  width: getLargura(
+                                                                          context) *
+                                                                      .3,
+                                                                  height: getAltura(
+                                                                          context) *
+                                                                      .2,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      300])
+                                                              : fotoDocumento(
+                                                                  snapshot.data
+                                                                      .verso),
+                                                          defaultActionButton(
+                                                              'Refazer',
+                                                              context, () {
+                                                            cc.documento.verso =
+                                                                null;
+                                                            cc.inDocumento.add(
+                                                                cc.documento);
+                                                          }, icon: null),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            );
+                                          }),
+                                      StreamBuilder<String>(
+                                          stream: cc.outCPF,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.data != null &&
+                                                controllercpf.text.isEmpty) {
+                                              controllercpf.text =
+                                                  snapshot.data;
+                                            }
+                                            return TextField(
+                                                onChanged: (value) {
+                                                  cc.updateCPF(value);
+                                                },
+                                                decoration: InputDecoration(
+                                                    labelText: 'CPF/CNPJ',
+                                                    hintText: '000.000.000-00',
+                                                    icon: Icon(
+                                                        Icons.perm_identity)),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onSubmitted: (tel) {
+                                                  cc.updateCPF(tel);
+                                                },
+                                                controller: CPF);
+                                          }),
+                                      sb,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          MaterialButton(
+                                            color: corPrimaria,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(60)),
+                                            onPressed: () async {
+                                              List<Carro> carros = new List();
+                                              Carro ccc = new Carro(
+                                                created_at: DateTime.now(),
+                                                dono_nome:
+                                                    Helper.localUser.nome,
+                                                updated_at: DateTime.now(),
+                                                cor: controllerCor.text,
+                                                ano: int.parse(
+                                                    controllerAno.text),
+                                                placa: controllerPlaca.text,
+                                                dono: Helper.localUser.id,
+                                                modelo:
+                                                    controllerTipocarro.text,
+                                                anuncio_bancos: carro == null
+                                                    ? null
+                                                    : carro.anuncio_bancos,
+                                                anuncio_vidro_traseiro: carro ==
+                                                        null
+                                                    ? null
+                                                    : carro
+                                                        .anuncio_vidro_traseiro,
+                                                anuncio_traseira_completa: carro ==
+                                                        null
+                                                    ? null
+                                                    : carro
+                                                        .anuncio_traseira_completa,
+                                                anuncio_laterais: carro == null
+                                                    ? null
+                                                    : carro.anuncio_laterais,
                                               );
-                                            }),
-                                        StreamBuilder<String>(
-                                            stream: cc.outCPF,
-                                            builder: (context, snapshot) {
-                                              if (snapshot.data != null &&
-                                                  controllercpf.text.isEmpty) {
-                                                controllercpf.text =
-                                                    snapshot.data;
-                                              }
-                                              return TextField(
-                                                  onChanged: (value) {
-                                                    cc.updateCPF(value);
-                                                  },
-                                                  decoration: InputDecoration(
-                                                      labelText: 'CPF/CNPJ',
-                                                      hintText:
-                                                          '000.000.000-00',
-                                                      icon: Icon(
-                                                          Icons.perm_identity)),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  onSubmitted: (tel) {
-                                                    cc.updateCPF(tel);
-                                                  },
-                                                  controller: CPF);
-                                            }),
+                                              carros.add(ccc);
 
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            StreamBuilder<bool>(
-                                                stream:
-                                                    cc.outIsPrestadorSelected,
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.data == null) {
-                                                    return Container();
-                                                  }
+                                              Helper.localUser.carros = carros;
+                                              print(
+                                                  'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                                              Helper.localUser.conta_bancaria =
+                                                  controllerConta_bancaria.text;
+                                              Helper.localUser.agencia =
+                                                  controllerAgencia.text;
+                                              Helper.localUser.numero_conta =
+                                                  controllerNumero_conta.text;
 
-                                                  if (snapshot.data) {
-                                                    return hText(
-                                                        'Anexe seus Documentos para verificação de veracidade, contendo primeiro anexo a frente e segundo anexo o verso da sua documentação, em específico seu CPF. ',
-                                                        context,
-                                                        textaling:
-                                                            TextAlign.justify);
-                                                  } else {
-                                                    return Container();
-                                                  }
-                                                }),
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                              Helper.localUser.tipo_conta =
+                                                  selectTipo;
+                                              Helper.localUser.kmmin =
+                                                  int.parse(
+                                                      controllerKmsmin.text);
+                                              Helper.localUser.kmmax =
+                                                  int.parse(
+                                                      controllerKmsmax.text);
+                                              userRef
+                                                  .document(Helper.localUser.id)
+                                                  .updateData(
+                                                      Helper.localUser.toJson())
+                                                  .then((v) {
+                                                dToast(
+                                                    'Banco salvo com sucesso !');
+                                                sc.next(animation: true);
+                                              });
+                                              carroController.CriarCarros(ccc);
+                                              cc.atualizarDados(sc, context, 1);
+                                            },
+                                            child: Text(
+                                              'Concluir Cadastro',
+                                              style: estiloTextoBotao,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          StreamBuilder<bool>(
+                                              stream: cc.outIsPrestadorSelected,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.data == null) {
+                                                  return Container();
+                                                }
+
+                                                if (snapshot.data) {
+                                                  return hText(
+                                                      'Anexe seus Documentos para verificação de veracidade, contendo primeiro anexo a frente e segundo anexo o verso da sua documentação, em específico seu CPF. ',
+                                                      context,
+                                                      textaling:
+                                                          TextAlign.justify);
+                                                } else {
+                                                  return Container();
+                                                }
+                                              }),
+                                        ],
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != null
-                                      ? index < 5 - 1
-                                      ? () {
-                                    sc.next(animation: true);
-                                  }
-                                      : null
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              right: 10,
-                            ),
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != 0
-                                      ? () {
-                                          sc.previous(animation: true);
-                                        }
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              left: 10,
-                            ),
-                          ],
-                        );
+                          ),
+                          Positioned(
+                            child: MaterialButton(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                ),
+                                color: corPrimaria,
+                                onPressed: index != 0
+                                    ? () {
+                                        sc.previous(animation: true);
+                                      }
+                                    : null,
+                                shape: new CircleBorder(
+                                    side: BorderSide(color: corPrimaria))),
+                            bottom: 5,
+                            left: 10,
+                          ),
+                        ],
+                      );
 
-                        break;
+                      break;
 
-                      case 3:
-                        return Stack(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(28.0),
-                              child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .84,
-                                  child: SingleChildScrollView(
-                                      child: seletorAnunciosCarro())),
-                            ),
-                         
-                            Positioned(
-                              child: MaterialButton(
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                  ),
-                                  color: corPrimaria,
-                                  onPressed: index != 0
-                                      ? () {
-                                          sc.previous(animation: true);
-                                        }
-                                      : null,
-                                  shape: new CircleBorder(
-                                      side: BorderSide(color: corPrimaria))),
-                              bottom: 5,
-                              left: 10,
-                            ),
-                            StreamBuilder<bool>(
-                                stream: cc.outIsPrestadorSelected,
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-
-                                  if (snapshot.data) {
-                                    return Positioned(
-                                      child: MaterialButton(
-                                          child: Icon(
-                                            Icons.arrow_forward,
-                                            color: Colors.white,
-                                          ),
-                                          color: corPrimaria,
-                                          onPressed: index != null
-                                              ? index < 6 - 1
-                                                  ? () {
-                                                      sc.next(animation: true);
-                                                    }
-                                                  : null
-                                              : null,
-                                          shape: new CircleBorder(
-                                              side: BorderSide(
-                                                  color: corPrimaria))),
-                                      bottom: 5,
-                                      right: 10,
-                                    );
-                                  } else {
-                                    return Container();
-                                  }
-                                }),
-                          ],
-                        );
-                      default:
-                        return Container();
-                    }
-                  },
-                  itemCount: 4,
-                  loop: false,
-                  scrollDirection: Axis.horizontal,
-                  controller: sc,
-                  onIndexChanged: (i) {
-                    cc.Validar(i, sc, context);
-                  },
-                  pagination: SwiperPagination(
-                      alignment: Alignment.bottomCenter,
-                      builder: FractionPaginationBuilder(
-                        color: Colors.grey[400],
-                        activeColor: corPrimaria,
-                        fontSize: 22,
-                        activeFontSize: 26,
-                      )),
-                );
-
+                  
+                    default:
+                      return Container();
+                  }
+                },
+                itemCount: 3,
+                loop: false,
+                scrollDirection: Axis.horizontal,
+                controller: sc,
+                onIndexChanged: (i) {
+                  cc.Validar(i, sc, context);
+                },
+                pagination: SwiperPagination(
+                    alignment: Alignment.bottomCenter,
+                    builder: FractionPaginationBuilder(
+                      color: Colors.grey[400],
+                      activeColor: corPrimaria,
+                      fontSize: 22,
+                      activeFontSize: 26,
+                    )),
+              );
             }));
   }
 
@@ -1551,7 +1531,8 @@ class _CadastroState extends State<Cadastro> {
             children: <Widget>[
               Container(
                 child: hText(
-                    'Áreas que você quer disponibilizar para os anúncios', context,
+                    'Áreas que você quer disponibilizar para os anúncios',
+                    context,
                     textaling: TextAlign.center),
               ),
               sb,
@@ -1565,7 +1546,7 @@ class _CadastroState extends State<Cadastro> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              'https://http2.mlstatic.com/capa-banco-carro-D_NQ_NP_625021-MLB20699986131_052016-F.jpg'),
+                              'https://cdn.shopify.com/s/files/1/2809/6686/products/sz10523_grande.jpg?v=1533527533'),
                           fit: BoxFit.cover),
                       border: carro.anuncio_bancos == null
                           ? Border.all(color: Colors.black, width: 3)
@@ -1626,7 +1607,7 @@ class _CadastroState extends State<Cadastro> {
                                       }
 
                                       carro.anuncio_bancos = value;
-                                         print('aqui anuncio bancos 22 ${value}');
+                                      print('aqui anuncio bancos 22 ${value}');
                                       carroController.inCarroSelecionado
                                           .add(carro);
                                     },
@@ -1822,7 +1803,7 @@ class _CadastroState extends State<Cadastro> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              'https://lh3.googleusercontent.com/proxy/hjG4FSqIYkUVW6YQTtLeh3E5aXt2AyEjB62_TxhN3aJnpzI5bD4sEW6h8Pc1aQhA3ggGapOi3tQ6OIj3RGXRd-AsA37X8ok-z-GJzT0lZsJUx2vLQ3zxX3tP35GCrqeZErq0v9l37-ridvwEZjw'),
+                              'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
                           fit: BoxFit.cover),
                       border: carro.anuncio_vidro_traseiro == null
                           ? Border.all(color: Colors.black, width: 3)
@@ -1896,116 +1877,9 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ),
                 ],
-              ), sb,       Row(
-                mainAxisAlignment:
-                MainAxisAlignment.center,
-                children: <Widget>[
-                  MaterialButton(
-                    color: corPrimaria,
-                    shape:
-                    RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius
-                            .circular(
-                            60)),
-                    onPressed: () async {
-                      List<Carro> carros =
-                      new List();
-                      Carro ccc = new Carro(
-                        created_at:
-                        DateTime.now(),
-                        dono_nome: Helper
-                            .localUser.nome,
-                        updated_at:
-                        DateTime.now(),
-                        cor: controllerCor.text,
-                        ano: int.parse(
-                            controllerAno.text),
-                        placa: controllerPlaca
-                            .text,
-                        dono:
-                        Helper.localUser.id,
-                        modelo:
-                        controllerTipocarro
-                            .text,
-                        anuncio_bancos: carro ==
-                            null
-                            ? null
-                            : carro
-                            .anuncio_bancos,
-                        anuncio_vidro_traseiro:
-                        carro == null
-                            ? null
-                            : carro
-                            .anuncio_vidro_traseiro,
-                        anuncio_traseira_completa:
-                        carro == null
-                            ? null
-                            : carro
-                            .anuncio_traseira_completa,
-                        anuncio_laterais: carro ==
-                            null
-                            ? null
-                            : carro
-                            .anuncio_laterais,
-                      );
-                      carros.add(ccc);
-
-                      Helper.localUser.carros =
-                          carros;
-                      print(
-                          'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                      Helper.localUser
-                          .conta_bancaria =
-                          controllerConta_bancaria
-                              .text;
-                      Helper.localUser.agencia =
-                          controllerAgencia
-                              .text;
-                      Helper.localUser
-                          .numero_conta =
-                          controllerNumero_conta
-                              .text;
-
-                      Helper.localUser
-                          .tipo_conta =
-                          selectTipo;
-                      Helper.localUser.kmmin =
-                          int.parse(
-                              controllerKmsmin
-                                  .text);
-                      Helper.localUser.kmmax =
-                          int.parse(
-                              controllerKmsmax
-                                  .text);
-                      userRef
-                          .document(Helper
-                          .localUser.id)
-                          .updateData(Helper
-                          .localUser
-                          .toJson())
-                          .then((v) {
-                        dToast(
-                            'Banco salvo com sucesso !');
-                        sc.next(
-                            animation: true);
-                      });
-                      carroController
-                          .CriarCarros(ccc);
-                      cc.atualizarDados(
-                          sc, context, 1);
-                    },
-                    child: Text(
-                      'Concluir Cadastro',
-                      style: estiloTextoBotao,
-                    ),
-                  ),
-
-                ],
-              ),
+              )
             ],
           ),
-
         );
       },
     );

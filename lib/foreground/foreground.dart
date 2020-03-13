@@ -144,6 +144,7 @@ class _MyAppState extends State<Racing> {
         ),
       ]),
       floatingActionButton: FloatingActionButton(
+        isExtended: true,
         child: started ? Text("Parar") : Text("Iniciar"),
         onPressed: () async {
           if (started) {
@@ -190,6 +191,8 @@ class _MyAppState extends State<Racing> {
 
   CarSelectorWidget() {
     return Container(
+      width: getLargura(context),
+   
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: FutureBuilder(
@@ -201,11 +204,12 @@ class _MyAppState extends State<Racing> {
 
               return DropdownButton(
                 hint: Row(
+                  
                   children: <Widget>[
                     Icon(MdiIcons.car, color: corPrimaria),
                     sb,
                     hText(
-                      'Selecione o Carro que deseja',
+                      'Selecionar Carro desejado',
                       context,
                       size: 40,
                       color: corPrimaria,
@@ -235,6 +239,7 @@ class _MyAppState extends State<Racing> {
         .then((v) {
       List carros = new List();
       for (var d in v.documents) {
+            
         carros.add(Carro.fromJson(d.data));
       }
       for (Carro z in carros) {

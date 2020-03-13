@@ -218,110 +218,8 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                               ],
                             ),
                             sb,
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: FutureBuilder(
-                                  future: getDropDownMenuItemsCampanha(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.data == null) {
-                                      return Container();
-                                    }
 
-                                    return DropdownButton(
-                                      hint: Row(
-                                        children: <Widget>[
-                                          Icon(Icons.map, color: corPrimaria),
-                                          sb,
-                                          hText(
-                                            'Selecione Campanha',
-                                            context,
-                                            size: 40,
-                                            color: corPrimaria,
-                                          ),
-                                        ],
-                                      ),
-                                      style: TextStyle(
-                                          color: corPrimaria,
-                                          fontSize: ScreenUtil.getInstance()
-                                              .setSp(40),
-                                          fontWeight: FontWeight.bold),
-                                      icon: Icon(Icons.arrow_drop_down,
-                                          color: corPrimaria),
-                                      items: snapshot.data,
-                                      onChanged: (value) {
-                                        Campanha c = value;
-                                        if (c == null) {
-                                          c = Campanha();
-                                        }
-                                        if (c.zonas == null) {
-                                          c.zonas = new List();
-                                        }
-                                        bool contains = false;
 
-                                        if (carro == null) {
-                                          carro = new Carro();
-                                        }
-                                        if (carro.campanhas == null) {
-                                          carro.campanhas = new List();
-                                        }
-
-                                        if (carro.campanhas != null) {
-                                          for (Campanha cc in carro.campanhas) {
-                                            if (cc.nome == value.nome) {
-                                              contains = true;
-                                            }
-                                          }
-                                        }
-                                        if (!contains) {
-                                          carro.campanhas.add(c);
-                                        }
-
-                                        carroController.inCarroSelecionado
-                                            .add(carro);
-                                      },
-                                    );
-                                  }),
-                            ),
-                            carro == null
-                                ? Container()
-                                : carro.campanhas == null
-                                    ? Container()
-                                    : carro.campanhas.length > 0
-                                        ? Container(
-                                            width: getLargura(context),
-                                            height: 100,
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: carro.campanhas.length,
-                                              scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, index) {
-                                                print(
-                                                    'MONTANDO CHIP ${carro.campanhas[index]}');
-                                                return Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 8.0),
-                                                  child: MaterialButton(
-                                                    onLongPress: () {},
-                                                    onPressed: () {},
-                                                    child: Chip(
-                                                      label: hText(
-                                                          capitalize(carro
-                                                              .campanhas[index]
-                                                              .nome),
-                                                          context,
-                                                          color: Colors.white),
-                                                      backgroundColor:
-                                                          corPrimaria,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          )
-                                        : Container(),
-                            seletorAnunciosCarro(),
                             Container(
                               child:
                                   defaultActionButton('Cadastrar', context, () {
@@ -335,8 +233,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
                                   placa: controllerPlaca.text,
                                   created_at: DateTime.now(),
                                   updated_at: DateTime.now(),
-                                  campanhas:
-                                      carro == null ? null : carro.campanhas,
+
                                   anuncio_bancos: carro == null
                                       ? null
                                       : carro.anuncio_bancos,

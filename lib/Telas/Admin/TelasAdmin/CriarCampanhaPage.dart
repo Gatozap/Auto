@@ -248,21 +248,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   onSubmited: (s) {}),
                               datainiField,
                               datafimField,
-                              DefaultField(
-                                  controller: controllerLimite,
-                                  hint: '100',
-                                  context: context,
-                                  label: 'Limite de Carros',
-                                  icon: FontAwesomeIcons.car,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      if (isCadastrarPressed) {
-                                        return 'É necessário preencher o Limite';
-                                      }
-                                    }
-                                  },
-                                  keyboardType: TextInputType.number,
-                                  onSubmited: (s) {}),
+
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
@@ -304,7 +290,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                     if (!contains) {
                                       c.zonas.add(value);
                                     }
-
+                                     campanhaController.inCampanha.add(c);
                                   },
                                 ),
                               ),
@@ -397,8 +383,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                           datainiField.selectedDate;
                                       campanha.datafim =
                                           datafimField.selectedDate;
-                                      campanha.limite =
-                                          controllerLimite.text == null? 200000: int.parse(controllerLimite.text);
+
                                       campanha.nome = controllerNome.text;
                                       campanha.updated_at = DateTime.now();
                                       if (widget.campanha == null) {
