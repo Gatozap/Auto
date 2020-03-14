@@ -28,7 +28,7 @@ class Corrida {
 
   @override
   String toString() {
-    return 'Corrida{id: $id, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, hora_ini: $hora_ini, hora_fim: $hora_fim, isRunning: $isRunning, last_seen: $last_seen, user: $user,  carro: $carro, Points: $points}';
+    return 'Corrida{id: $id, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, hora_ini: $hora_ini, hora_fim: $hora_fim, isRunning: $isRunning, last_seen: $last_seen, user: $user,  carro: $carro, points: $points}';
   }
 
   Corrida(
@@ -62,7 +62,7 @@ class Corrida {
         deleted_at = j['deleted_at'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['deleted_at']),
-        dist = j['dist'],
+        dist = j['dist'] ,
         campanha = j['campanha'],
         id_corrida = j['id_corrida'],
         id_carro = j['id_carro'],
@@ -81,7 +81,7 @@ class Corrida {
         isRunning = j['isRunning'],
         user = j['user'],
         carro = j['carro'] == null ? null : Carro.fromJson(j['carro']),
-        points = j['points'] == null ? null : getLocalizacoes(j['points']);
+        points = j['points'] == null ? null : getLocalizacoes(json.decode(j['points']));
 
   Corrida.fromJson(j)
       : id = j['id'],
@@ -130,7 +130,7 @@ class Corrida {
         'user': user,
 
         'carro': carro == null ? null : carro.toJson(),
-        //'points': json.encode(points),
+        'points': json.encode(points),
       };
 
   Map<String, dynamic> toJsonFirestore() => {
@@ -159,13 +159,13 @@ class Corrida {
 
   static getLocalizacoes(decoded) {
     List<Localizacao> localizacoes = new List();
-    Map<dynamic, dynamic> points = decoded;
+    List points = decoded;
     if (decoded == null) {
       return null;
     }
-    points.forEach((k, v) {
+    for(var v in points){
       localizacoes.add(Localizacao.fromJson(v));
-    });
+    }
     return localizacoes;
   }
 

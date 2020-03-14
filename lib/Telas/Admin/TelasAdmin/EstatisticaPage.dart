@@ -4,12 +4,13 @@ import 'package:bocaboca/Objetos/Carro.dart';
 import 'package:bocaboca/Objetos/Corrida.dart';
 import 'package:bocaboca/Objetos/Distancia.dart';
 import 'package:bocaboca/Objetos/User.dart';
+import 'package:bocaboca/Telas/Admin/TelasAdmin/Estatisticas/EstatisticasController.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 
 
-import 'Estatisticas/EstatisticasController.dart';
+
 
 class EstatisticaPage extends StatefulWidget {
 
@@ -17,8 +18,8 @@ class EstatisticaPage extends StatefulWidget {
   User user;
   Campanha campanha;
   Corrida corrida;
-  Distancia distancia;
-  EstatisticaPage({Key key, this.carro, this.campanha, this.user,this.corrida, this.distancia}) : super(key: key);
+
+  EstatisticaPage({Key key, this.carro, this.campanha, this.user,this.corrida}) : super(key: key);
 
   @override
   _EstatisticaPageState createState() {
@@ -26,8 +27,10 @@ class EstatisticaPage extends StatefulWidget {
   }
 }
 
+
+
 class _EstatisticaPageState extends State<EstatisticaPage> {
-  EstatisticasController estController;
+  EstatisticaController estController;
   DateTime dataini = DateTime.now().subtract(Duration(days: 30));
   DateTime datafim = DateTime.now();
   @override
@@ -44,7 +47,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
   @override
   Widget build(BuildContext context) {
     if(estController == null){
-      estController = new EstatisticasController();
+      estController = new EstatisticaController();
     }
     // TODO: implement build
     return Scaffold(appBar: myAppBar('Estatística', context),
@@ -56,6 +59,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                return Container(child: hText('aqui', context),);
              }
            return Column(children: <Widget>[
+
              getEstatisticasWidget(snapshot.data)
 
            ],);
@@ -63,18 +67,37 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
        ),
     ),);
   }
+
+
    getEstatisticasWidget(List<Corrida> corridas){
-    double totalvisualizacao = 0;
-     double maiorVisualizacao = 0;
-     double totalDistanciaPercorrida= 0;
-     double maiorDistancia = 0;
+    double visualizacoes = 0;
+    double dist = 0;
+
+         String id_corrida = '';
+     List<Corrida> corridasFiltradas = new List();
      for(Corrida c in corridas){
-       totalvisualizacao += c.vizualizacoes == null? 0: c.vizualizacoes;
-       totalDistanciaPercorrida += c.dist == null? 0 : c.dist;
 
+
+                          visualizacoes +=
+                          c.vizualizacoes == null ? 0 : c.vizualizacoes;
+                          dist += c.dist == null ? 0 : c.dist;
+                          corridasFiltradas.add(c);
+                        
+
+      corridas = corridasFiltradas;
+        estController.inCorridas.add(corridas);
      }
-     return hText('Total de visualizações: ${totalvisualizacao} + Total de distancia: ${totalDistanciaPercorrida}', context);
+     return hText('Total de visualizações: ${visualizacoes} dist: ${dist}', context);
 
+   }
+
+   getMediaWidget(List<Campanha> campanhas){
+    double totaldeCampanhas = 0;
+    List<Campanha> campanha = new List();
+    for(Campanha cc in campanhas){
+           
+    }
+    
    }
   /*EstatisticasGeraisWidget(List<Corrida> corridas) {
     double totalcorrida = 0;

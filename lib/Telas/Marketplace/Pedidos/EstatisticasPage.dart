@@ -407,7 +407,20 @@ class _EstatisticasPageState extends State<EstatisticasPage> {
     DateTime maiorVendaData = DateTime.now();
     String mvComprador = '';
     for (Pagamento p in pagamentos) {
-
+      bool contains = false;
+      for (String s in clientes) {
+        if (s == p.comprador) {
+          contains = true;
+        }
+      }
+      if (!contains) {
+        clientes.add(p.comprador);
+      }
+      if (p.total > maiorVenda) {
+        maiorVenda = p.total;
+        maiorVendaData = p.data_venda;
+        mvComprador = p.comprador;
+      }
       total += p.total;
     }
     return Container(
