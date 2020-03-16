@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Objetos/Endereco.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Objetos/Endereco.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;

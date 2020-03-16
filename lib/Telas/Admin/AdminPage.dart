@@ -1,14 +1,14 @@
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Objetos/Campanha.dart';
-import 'package:bocaboca/Objetos/Carro.dart';
-import 'package:bocaboca/Objetos/Corrida.dart';
-import 'package:bocaboca/Objetos/Distancia.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
-import 'package:bocaboca/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
-import 'package:bocaboca/Telas/Admin/TelasAdmin/ListaUsuarioPage.dart';
-import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
-import 'package:bocaboca/Telas/Versao/VersaoPage.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Carro.dart';
+import 'package:autooh/Objetos/Corrida.dart';
+import 'package:autooh/Objetos/Distancia.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/ListaUsuarioPage.dart';
+import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
+import 'package:autooh/Telas/Versao/VersaoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

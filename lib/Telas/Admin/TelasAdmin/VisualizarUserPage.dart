@@ -1,5 +1,5 @@
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Objetos/User.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Objetos/User.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

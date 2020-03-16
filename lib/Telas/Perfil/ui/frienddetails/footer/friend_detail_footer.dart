@@ -1,7 +1,7 @@
-import 'package:bocaboca/Objetos/Produto.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Perfil/ui/frienddetails/footer/portfolio_showcase.dart';
-import 'package:bocaboca/Telas/Perfil/ui/frienddetails/footer/skills_showcase.dart';
+import 'package:autooh/Objetos/Produto.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Perfil/ui/frienddetails/footer/portfolio_showcase.dart';
+import 'package:autooh/Telas/Perfil/ui/frienddetails/footer/skills_showcase.dart';
 
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class _FriendShowcaseState extends State<FriendShowcase>
     ];
     _pages = [
        PortfolioShowcase(user: widget.user, produto: widget.produto),
-       SkillsShowcase(user: widget.user, produto: widget.produto),
+       //SkillsShowcase(user: widget.user, produto: widget.produto),
        ArticlesShowcase(),
     ];
     _controller = new TabController(

@@ -1,4 +1,4 @@
-import 'package:bocaboca/Helpers/Styles.dart';
+import 'package:autooh/Helpers/Styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
@@ -21,7 +21,7 @@ class _IntroPageState extends State<IntroPage> {
           'Bem Vindo(a) ao aplicativo do prestador Moderno!',
         ),
         title: Text(
-          'bocaboca',
+          'autooh',
         ),
         textStyle: TextStyle(color: corPrimaria),
         mainImage: Image.asset(
@@ -34,9 +34,9 @@ class _IntroPageState extends State<IntroPage> {
       pageColor: corPrimaria,
       iconImageAssetPath: 'assets/images/nutrannoLogo.png',
       body: Text(
-        'No bocaboca você pode. . . .',
+        'No autooh você pode. . . .',
       ),
-      title: Text('bocaboca'),
+      title: Text('autooh'),
       mainImage: Image.asset(
         'assets/images/nutrannoLogo.png',
         height: 285.0,
@@ -51,7 +51,7 @@ class _IntroPageState extends State<IntroPage> {
       body: Text(
         'E Também . . . ',
       ),
-      title: Text('bocaboca'),
+      title: Text('autooh'),
       mainImage: Image.asset(
         'assets/images/nutrannoLogo.png',
         height: 285.0,

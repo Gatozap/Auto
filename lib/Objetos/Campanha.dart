@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Objetos/Zona.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Objetos/Zona.dart';
 
 import 'Carro.dart';
 

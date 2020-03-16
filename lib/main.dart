@@ -12,16 +12,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Home/Home.dart';
-import 'package:bocaboca/Telas/Login/Login.dart';
-import 'package:bocaboca/Telas/Login/LoginEmail/CadastroEmail/cadastroemail.dart';
-import 'package:bocaboca/Telas/Login/LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
-import 'package:bocaboca/Telas/Login/LoginEmail/LoginEmail.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Home/Home.dart';
+import 'package:autooh/Telas/Login/Login.dart';
+import 'package:autooh/Telas/Login/LoginEmail/CadastroEmail/cadastroemail.dart';
+import 'package:autooh/Telas/Login/LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
+import 'package:autooh/Telas/Login/LoginEmail/LoginEmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'BlocCentral/Racing/navigation_controller.dart';
 import 'Helpers/Bairros.dart';
 import 'Helpers/Cielo/src/Environment.dart';
 import 'Helpers/Cielo/src/Merchant.dart';
@@ -35,10 +34,9 @@ import 'Telas/Cadastro/CadastroPage.dart';
 import 'Telas/Compartilhados/WaitScreen.dart';
 import 'Telas/Intro/IntroPage.dart';
 
-RacingController rc;
 FirebaseDatabase database;
 String notificationUrl =
-    'https://us-central1-bocaboca.cloudfunctions.net/sendNotification';
+    'https://us-central1-autooh.cloudfunctions.net/sendNotification';
 //TODO FAzer CLOUD FUNCTIONS
 
 Future main() async {
@@ -66,6 +64,7 @@ Future main() async {
       gcmSenderID: '833154723346',
       apiKey: 'AIzaSyC1TP3_Egip9wBhskTz2_tNT8sS6enrDNw',
       projectID: 'avanticar-34239',
+      databaseURL: 'https://avanticar-34239.firebaseio.com/',
       storageBucket: 'avanticar-34239.appspot.com',
       clientID: Platform.isIOS
           ? '833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com'
@@ -169,7 +168,7 @@ class _MyAppState extends State<MyApp> {
         [SystemUiOverlay.bottom, SystemUiOverlay.top]);
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     var initializationSettingsAndroid =
-        new AndroidInitializationSettings('bocaboca');
+        new AndroidInitializationSettings('autooh');
     var initializationSettingsIOS = new IOSInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,

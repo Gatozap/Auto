@@ -2,7 +2,7 @@
 
 
 
-import 'package:bocaboca/Objetos/racing.dart';
+import 'package:autooh/Objetos/racing.dart';
 
 class ResultRacing {
   List<Racing> data;

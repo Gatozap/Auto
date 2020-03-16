@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bocaboca/Objetos/Localizacao.dart';
+import 'package:autooh/Objetos/Localizacao.dart';
 
 import 'Campanha.dart';
 import 'Carro.dart';
@@ -130,7 +130,7 @@ class Corrida {
         'user': user,
 
         'carro': carro == null ? null : carro.toJson(),
-        'points': json.encode(points),
+        //'points': json.encode(points),
       };
 
   Map<String, dynamic> toJsonFirestore() => {

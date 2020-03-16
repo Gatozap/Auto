@@ -5,11 +5,11 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Message.dart';
-import 'package:bocaboca/Objetos/Sala.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Message.dart';
+import 'package:autooh/Objetos/Sala.dart';
 
 class CriarGrupoPage extends StatefulWidget {
   @override

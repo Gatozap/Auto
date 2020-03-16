@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:bocaboca/Objetos/Prestador.dart';
+import 'package:autooh/Objetos/Prestador.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:http/http.dart' as http;
-import 'package:bocaboca/Objetos/Cartao.dart';
-import 'package:bocaboca/Objetos/Pacote.dart';
-import 'package:bocaboca/Objetos/ProdutoPedido.dart';
+import 'package:autooh/Objetos/Cartao.dart';
+import 'package:autooh/Objetos/Pacote.dart';
+import 'package:autooh/Objetos/ProdutoPedido.dart';
 
 import 'Cielo/flutter_cielo.dart';
 import 'Cielo/src/Subordinate.dart';
@@ -201,7 +201,7 @@ class CieloController {
             provider:
                 "SIMULADO", //TODO ALTERAR PARA Banco do Brasil ou Bradesco
             boletoNumber: '1234',
-            assignor: 'bocaboca',
+            assignor: 'autooh',
             demonstrative: 'Demonstrativo',
             instructions:
                 "Aceitar somente até a data de vencimento, após essa data juros de 1% dia.",
@@ -421,7 +421,7 @@ class CieloController {
           "Browser": {
             "CookiesAccepted": false,
             "Email": Helper.localUser.email,
-            "HostName": "bocaboca",
+            "HostName": "autooh",
             "IpAddress": ipAddress,
             "Type": "Chrome"
           },
@@ -603,7 +603,7 @@ class CieloController {
         "Interest": "ByMerchant",
         "Capture": true,
         "Authenticate": false,
-        "SoftDescriptor": 'bocaboca',
+        "SoftDescriptor": 'autooh',
         "CreditCard": {
           "CardNumber": c.number.replaceAll(' ', ''),
           "Holder": c.owner,
@@ -624,7 +624,7 @@ class CieloController {
           "Browser": {
             "CookiesAccepted": false,
             "Email": Helper.localUser.email,
-            "HostName": "bocaboca",
+            "HostName": "autooh",
             "IpAddress": ipAddress,
             "Type": "Chrome"
           },
@@ -818,7 +818,7 @@ class CieloController {
           "Browser": {
             "CookiesAccepted": false,
             "Email": Helper.localUser.email,
-            "HostName": "bocaboca",
+            "HostName": "autooh",
             "IpAddress": ipAddress,
             "Type": "Chrome"
           },

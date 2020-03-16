@@ -1,8 +1,8 @@
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Objetos/Campanha.dart';
-import 'package:bocaboca/Objetos/Corrida.dart';
-import 'package:bocaboca/Objetos/Localizacao.dart';
-import 'package:bocaboca/Telas/Card/bloc_provider.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Corrida.dart';
+import 'package:autooh/Objetos/Localizacao.dart';
+import 'package:autooh/Telas/Card/bloc_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:googleapis/calendar/v3.dart';
@@ -20,27 +20,44 @@ class EstatisticaController extends BlocBase{
   double visualizacoes;
 
 
-  EstatisticaController(){
-    corridasRef
-        .getDocuments()
-        .then((v) {
+  EstatisticaController(Campanha campanha){
+    if(campanha == null) {
+      corridasRef
+          .getDocuments()
+          .then((v) {
+        corridas = new List();
 
-            corridas = new List();
+        for (var i in v.documents) {
+          print('aqui corrida ${corridas.length} ');
+          Corrida p = Corrida.fromJsonFirestore(i.data);
+          p.id = i.documentID;
 
-      for (var i in v.documents) {
-        print('aqui corrida ${corridas.length} ');
-        Corrida p = Corrida.fromJsonFirestore(i.data);
-        p.id = i.documentID;
-        
-        corridas.add(p);
+          corridas.add(p);
+        }
 
-      }
+        corridas.sort(
+                (Corrida a, Corrida b) => b.id.compareTo(a.id));
+        inCorridas.add(corridas);
+      });
+    }else{
+      corridasRef.where('campanha',isEqualTo: campanha.id)
+          .getDocuments()
+          .then((v) {
+        corridas = new List();
 
-      corridas.sort(
-              (Corrida a, Corrida b) => b.id.compareTo(a.id) );
-      inCorridas.add(corridas);
-    });
+        for (var i in v.documents) {
+          print('aqui corrida ${corridas.length} ');
+          Corrida p = Corrida.fromJsonFirestore(i.data);
+          p.id = i.documentID;
 
+          corridas.add(p);
+        }
+
+        corridas.sort(
+                (Corrida a, Corrida b) => b.id.compareTo(a.id));
+        inCorridas.add(corridas);
+      });
+    }
   }
 
 

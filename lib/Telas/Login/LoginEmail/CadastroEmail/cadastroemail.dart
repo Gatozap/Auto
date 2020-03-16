@@ -1,15 +1,15 @@
-import 'package:bocaboca/Telas/Cadastro/CadastroController.dart';
-import 'package:bocaboca/Telas/Cadastro/CadastroPage.dart';
+import 'package:autooh/Telas/Cadastro/CadastroController.dart';
+import 'package:autooh/Telas/Cadastro/CadastroPage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
-import 'package:bocaboca/Telas/Login/LoginController.dart';
-import 'package:bocaboca/Telas/Login/LoginEmail/CadastroEmail/cadastroemailController.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
+import 'package:autooh/Telas/Login/LoginController.dart';
+import 'package:autooh/Telas/Login/LoginEmail/CadastroEmail/cadastroemailController.dart';
 
 import '../../PoliticaPage.dart';
 import '../../TermosPage.dart';

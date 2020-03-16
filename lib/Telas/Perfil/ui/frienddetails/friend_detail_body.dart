@@ -1,8 +1,8 @@
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Documento.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Perfil/PerfilVistoPage.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Documento.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Perfil/PerfilVistoPage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

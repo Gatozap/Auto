@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Objetos/User.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:rxdart/rxdart.dart';

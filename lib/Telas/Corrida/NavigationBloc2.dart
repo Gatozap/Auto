@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Objetos/Bairro.dart';
-import 'package:bocaboca/Objetos/Campanha.dart';
-import 'package:bocaboca/Objetos/Carro.dart';
-import 'package:bocaboca/Objetos/Corrida.dart';
-import 'package:bocaboca/Objetos/Localizacao.dart';
-import 'package:bocaboca/Objetos/Zona.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Bairro.dart';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Carro.dart';
+import 'package:autooh/Objetos/Corrida.dart';
+import 'package:autooh/Objetos/Localizacao.dart';
+import 'package:autooh/Objetos/Zona.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geocoder/geocoder.dart';
@@ -49,6 +49,7 @@ class NavigationBloc extends BlocBase {
   void dispose() {}
 
   Future<String> start(Carro carroSelecionado, {String id}) async {
+    FirebaseDatabase.instance.reference().child('Corridas').remove();
     if (id == null) {
       corrida = Corrida(
           id: idcorrida,
@@ -85,15 +86,18 @@ class NavigationBloc extends BlocBase {
     });
     pointsRef.onValue.listen((v) {
       points = new List();
-      Map<dynamic, dynamic> pts = v.snapshot.value;
-      pts.forEach((k, v) {
-        if (v != null) {
-          points.add(Localizacao.fromJson(v));
-        }
-      });
-      points.sort((var a, var b) {
-        return a.timestamp.compareTo(b.timestamp);
-      });
+
+      if (v.snapshot.value != 'null') {
+        Map<dynamic, dynamic> pts = v.snapshot.value;
+        pts.forEach((k, v) {
+          if (v != null) {
+            points.add(Localizacao.fromJson(v));
+          }
+        });
+        points.sort((var a, var b) {
+          return a.timestamp.compareTo(b.timestamp);
+        });
+      }
     });
 
     corridaRef.update(corrida.toJson());
@@ -111,73 +115,81 @@ class NavigationBloc extends BlocBase {
 
   Future<bool> startRacing(location) async {
     print('RODANDO START RACING');
-    try {
-      if (corrida != null) {
-        if (corrida.isRunning) {
-          bool hasMoved = false;
-          Localizacao loc = Localizacao(
-              latitude: location.latitude,
-              longitude: location.longitude,
-              altitude: location.altitude,
-              accuracy: location.accuracy,
-              timestamp: DateTime.now());
+    if (corrida != null) {
+      if (corrida.isRunning) {
+        bool hasMoved = false;
+        Localizacao loc = Localizacao(
+            latitude: location.latitude,
+            longitude: location.longitude,
+            altitude: location.altitude,
+            accuracy: location.accuracy,
+            timestamp: DateTime.now());
 
-          if (points == null) {
-            points = new List();
-          }
-          corrida.last_seen = DateTime.now();
-          double dist = 0;
+        if (points == null) {
+          points = new List();
+        }
+        corrida.last_seen = DateTime.now();
+        double dist = 0;
 
-          Localizacao lastPoint;
-          points.sort((var a, var b) {
-            return a.timestamp.compareTo(b.timestamp);
-          });
-          for (var p in points) {
-            if (lastPoint != null) {
-              dist += await Geolocator().distanceBetween(
-                p.latitude,
-                p.longitude,
-                lastPoint.latitude,
-                lastPoint.longitude,
-              );
-            }
-            lastPoint = p;
+        Localizacao lastPoint;
+        points.sort((var a, var b) {
+          return a.timestamp.compareTo(b.timestamp);
+        });
+        for (var p in points) {
+          if (lastPoint != null) {
+            dist += await Geolocator().distanceBetween(
+              p.latitude,
+              p.longitude,
+              lastPoint.latitude,
+              lastPoint.longitude,
+            );
           }
-          if (points != null) {
-            if (points.length != 0) {
-              Localizacao p = points.last;
-              if (p.latitude.toStringAsFixed(5) !=
-                      loc.latitude.toStringAsFixed(5) ||
-                  p.longitude.toStringAsFixed(5) !=
-                      loc.longitude.toStringAsFixed(5)) {
-                print(
-                    'AQUI SETANDO HASMOVED ${p.latitude} == ${loc.latitude} ?  ${p.latitude != loc.latitude}');
-                print(
-                    'AQUI SETANDO HASMOVED ${p.longitude} == ${loc.longitude} ?  ${p.longitude != loc.longitude}');
-                hasMoved = true;
-              }
-            } else {
+          lastPoint = p;
+        }
+        if (points != null) {
+          if (points.length != 0) {
+            Localizacao p = points.last;
+            if (p.latitude.toStringAsFixed(6) !=
+                    loc.latitude.toStringAsFixed(6) ||
+                p.longitude.toStringAsFixed(6) !=
+                    loc.longitude.toStringAsFixed(6)) {
               hasMoved = true;
             }
           } else {
-            //hasMoved= true;
+            hasMoved = true;
           }
-          if (hasMoved) {
-            print('Em Movimento ${location}');
-            var addresses = await Geocoder.local.findAddressesFromCoordinates(
-                Coordinates(location.latitude, location.longitude));
-            var first = addresses.first;
-            inUltimoEndereco.add('${first.subLocality}');
-            corrida.dist = dist;
-            corridaRef.update(corrida.toJson());
-            points.add(loc);
-            pointsRef.push().set(loc.toJson());
-          }
-          return true;
+        } else {
+          hasMoved = true;
         }
+        if (hasMoved) {
+          var addresses = await Geocoder.local.findAddressesFromCoordinates(
+              Coordinates(location.latitude, location.longitude));
+          var first = addresses.first;
+          inUltimoEndereco.add('${first.subLocality}');
+          corrida.dist = dist;
+          print('CORRIDA ${corrida.id}');
+          if (corridaRef == null) {
+            corridaRef = FirebaseDatabase.instance
+                .reference()
+                .child('Corridas')
+                .reference()
+                .child(corrida.id);
+            pointsRef = corridaRef.child('points');
+          }
+          corridaRef.update(corrida.toJson());
+          points.add(loc);
+          print('POINT LALALA ${loc.toJson()}');
+          print('POINTS LALALA ${points.length}');
+          await pointsRef
+              .child('${loc.timestamp.millisecondsSinceEpoch}')
+              .update(loc.toJson())
+              .catchError((err) {
+            print(
+                'ERRO AO ADICIONAR POINT ${err.toString()} ${loc.toString()}');
+          });
+        }
+        return true;
       }
-    } catch (err) {
-      print('Erro ao verificar status ${err.toString()}');
     }
   }
 
@@ -185,6 +197,7 @@ class NavigationBloc extends BlocBase {
     Future.delayed(Duration(seconds: 5)).then((vo) async {
       corrida.hora_fim = DateTime.now();
       corrida.last_seen = DateTime.now();
+      print('CORRIDA ${corrida.carro.toString()}');
       if (corrida.carro.anuncio_vidro_traseiro != null) {
         await gravarCorridaFirestore(corrida.carro.anuncio_vidro_traseiro);
       }
@@ -214,6 +227,7 @@ class NavigationBloc extends BlocBase {
   }
 
   Future<void> gravarCorridaFirestore(Campanha anuncio) async {
+    print("GRAVANDO CORRIDA FIRESTORE");
     Corrida c = corrida;
     List enderecos = new List();
     List<Localizacao> localizacoes = new List();
@@ -286,8 +300,6 @@ class NavigationBloc extends BlocBase {
       lastPoint = p;
     }
     var distInKM = ((c.dist == null ? 0 : c.dist) / 1000);
-    print("AQUI DISTANCIA EM KM ${distInKM}");
-    print('DURACAO ${((c.duracao / 60) * (15 / 60))}');
     c.vizualizacoes =
         ((distInKM * 15) + ((c.duracao / 60) * (15 / 60))).floor();
     corridasRef.add(c.toJsonFirestore()).then((v) {

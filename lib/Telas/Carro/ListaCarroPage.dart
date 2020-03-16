@@ -1,19 +1,13 @@
-import 'package:bocaboca/Objetos/Carro.dart';
-import 'package:bocaboca/Telas/Carro/EditarCarroPage.dart';
+import 'package:autooh/Objetos/Carro.dart';
+import 'package:autooh/Telas/Carro/EditarCarroPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Equipamento.dart';
-import 'package:bocaboca/Objetos/Personagem.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/BackgroundPage.dart';
-
-import 'package:bocaboca/Telas/FichaPersonagem/EquiparPage.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/FichaPersonagemPage.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/PericiasPage.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/TalentoPage.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Equipamento.dart';
+import 'package:autooh/Objetos/Personagem.dart';
 
 import 'CarroController.dart';
 

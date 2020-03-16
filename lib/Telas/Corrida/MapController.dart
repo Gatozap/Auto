@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:bocaboca/Objetos/Corrida.dart';
-import 'package:bocaboca/Objetos/Localizacao.dart';
+import 'package:autooh/Objetos/Corrida.dart';
+import 'package:autooh/Objetos/Localizacao.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -127,14 +129,16 @@ class MapController extends BlocBase{
 
     pointsRef.onValue.listen((points) {
       positions = new List();
-      Map<dynamic, dynamic> pts = points.snapshot.value;
-      pts.forEach((k, v) {
-        positions.add(v);
-      });
-      positions.sort((var a, var b) {
-        return a['timestamp'].compareTo(b['timestamp']);
-      });
-      updatePolyline(positions);
+      if(points.snapshot.value.toString() != 'null') {
+        var pts = points.snapshot.value;
+        pts.forEach((k, v) {
+          positions.add(v);
+        });
+        positions.sort((var a, var b) {
+          return a['timestamp'].compareTo(b['timestamp']);
+        });
+        updatePolyline(positions);
+      }
       //updatePolyline(positions);
     });
   }

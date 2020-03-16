@@ -1,19 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bocaboca/Helpers/Bairros.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/PhotoScroller.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Campanha.dart';
+import 'package:autooh/Helpers/Bairros.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/PhotoScroller.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Campanha.dart';
 
-import 'package:bocaboca/Objetos/Carro.dart';
-import 'package:bocaboca/Objetos/Documento.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Objetos/Zona.dart';
-import 'package:bocaboca/Telas/Cadastro/CadastroController.dart';
-import 'package:bocaboca/Telas/Carro/CarroController.dart';
+import 'package:autooh/Objetos/Carro.dart';
+import 'package:autooh/Objetos/Documento.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Objetos/Zona.dart';
+import 'package:autooh/Telas/Cadastro/CadastroController.dart';
+import 'package:autooh/Telas/Carro/CarroController.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

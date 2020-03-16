@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:bocaboca/BlocCentral/Racing/NavigationBloc2.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Carro.dart';
-import 'package:bocaboca/Objetos/Corrida.dart';
-import 'package:bocaboca/Objetos/Localizacao.dart';
+import 'package:autooh/Telas/Corrida/NavigationBloc2.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Carro.dart';
+import 'package:autooh/Objetos/Corrida.dart';
+import 'package:autooh/Objetos/Localizacao.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -258,7 +258,7 @@ MapController mapController;
 //função que inicializa o serviço em primeiro plano
 Future<String> startForegroundService(Carro carroSelecionado) async {
   StreamSubscription subscription;
-
+  String s = await nb.start(carroSelecionado);
   await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
   await FlutterForegroundPlugin.startForegroundService(
     holdWakeLock: false,
@@ -286,7 +286,7 @@ Future<String> startForegroundService(Carro carroSelecionado) async {
     content: "Você está Ganhando Dinheiro",
     iconName: "",
   );
-  return nb.start(carroSelecionado);
+  return s;
 }
 
 void globalForegroundService() async {

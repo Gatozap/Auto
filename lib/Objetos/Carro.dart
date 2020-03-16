@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bocaboca/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Campanha.dart';
 
 class Carro {
   String id;

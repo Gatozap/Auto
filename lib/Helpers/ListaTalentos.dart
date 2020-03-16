@@ -1,5 +1,5 @@
-import 'package:bocaboca/Objetos/Bonus.dart';
-import 'package:bocaboca/Objetos/Talento.dart';
+import 'package:autooh/Objetos/Bonus.dart';
+import 'package:autooh/Objetos/Talento.dart';
 
 List<Talento> ListaTalentos = [
   Talento(

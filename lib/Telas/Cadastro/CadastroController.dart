@@ -1,18 +1,18 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:bocaboca/Objetos/Campanha.dart';
-import 'package:bocaboca/Objetos/Carro.dart';
-import 'package:bocaboca/Objetos/Documento.dart';
-import 'package:bocaboca/Telas/Grupo/Chat/ChatScreen/ChatController.dart';
-import 'package:bocaboca/Telas/Home/Home.dart';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Carro.dart';
+import 'package:autooh/Objetos/Documento.dart';
+import 'package:autooh/Telas/Grupo/Chat/ChatScreen/ChatController.dart';
+import 'package:autooh/Telas/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_swiper/src/swiper_controller.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Objetos/Prestador.dart';
-import 'package:bocaboca/Objetos/Endereco.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Cadastro/Estabelecimento/CadastrarEstabelecimentoPage.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Prestador.dart';
+import 'package:autooh/Objetos/Endereco.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Cadastro/Estabelecimento/CadastrarEstabelecimentoPage.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CadastroController extends BlocBase {
@@ -215,7 +215,7 @@ class CadastroController extends BlocBase {
               print(
                   'AQUI IDADE DEMONIO ${Helper.localUser.data_nascimento.year - DateTime.now().year}');
               dToastTop(
-                  'Infelizmente você não tem a idade minima(12) para participar do bocaboca =/');
+                  'Infelizmente você não tem a idade minima(12) para participar do autooh =/');
               return;
             }
             if (DateTime.now().year - Helper.localUser.data_nascimento.year >

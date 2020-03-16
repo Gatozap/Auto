@@ -1,4 +1,4 @@
-import 'package:bocaboca/Objetos/Pericia.dart';
+import 'package:autooh/Objetos/Pericia.dart';
 
 List<Pericia> ListaPericias = [
   Pericia (nome: 'Acrobacia', atributo: 'dex', isAventureUnique: false, created_at: DateTime.now(), updated_at: DateTime.now(),descricao: ""),

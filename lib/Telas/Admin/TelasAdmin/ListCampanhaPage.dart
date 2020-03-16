@@ -1,39 +1,30 @@
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Objetos/Campanha.dart';
-import 'package:bocaboca/Objetos/Carro.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Admin/TelasAdmin/CriarCampanhaPage.dart';
-import 'package:bocaboca/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
-import 'package:bocaboca/Telas/Carro/EditarCarroPage.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Carro.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/CriarCampanhaPage.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
+import 'package:autooh/Telas/Carro/EditarCarroPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Equipamento.dart';
-import 'package:bocaboca/Objetos/Personagem.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/BackgroundPage.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Equipamento.dart';
+import 'package:autooh/Objetos/Personagem.dart';
 
-import 'package:bocaboca/Telas/FichaPersonagem/EquiparPage.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/FichaPersonagemPage.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/PericiasPage.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/TalentoPage.dart';
-
+import 'EstatisticaPage.dart';
 import 'ListCampanhaController.dart';
 import 'ListaCarroController.dart';
 import 'VisualizarCarroPage.dart';
-
-
-
 
 class ListaCampanhaPage extends StatefulWidget {
   Carro carro;
   User user;
   Campanha campanha;
-  ListaCampanhaPage({
-    Key key,this.carro, this.user, this.campanha
-  }) : super(key: key);
+  ListaCampanhaPage({Key key, this.carro, this.user, this.campanha})
+      : super(key: key);
 
   @override
   ListaCampanhaPageState createState() {
@@ -58,7 +49,6 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: myAppBar('Filtro por Campanha', context),
       body: Container(
@@ -67,7 +57,6 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
           children: <Widget>[
             StreamBuilder<List<Campanha>>(
               builder: (context, AsyncSnapshot<List<Campanha>> snapshot) {
-
                 if (snapshot.data == null) {
                   return Loading(completed: Text('Erro ao Buscar Campanhas'));
                 }
@@ -76,7 +65,7 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                       completed: Text('Nenhuma Campanha encontrado'));
                 }
 
-               /* List<Campanha> campanhasItens = new List();
+                /* List<Campanha> campanhasItens = new List();
                 for (Campanha p in snapshot.data) {
                   if(p.deleted_at == null) {
                     campanhasItens.add(p);
@@ -89,13 +78,9 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                     itemBuilder: (BuildContext context, index) {
                       Campanha p = snapshot.data[index];
 
-
-
-
-                           return CampanhaListItem(p);
-
+                      return CampanhaListItem(p);
                     },
-                    itemCount:snapshot.data.length,
+                    itemCount: snapshot.data.length,
                   ),
                 );
               },
@@ -109,14 +94,12 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
 
   Widget CampanhaListItem(Campanha p, {User pp}) {
     return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CriarCampanhaPage(
-              campanha: p
-            )));
+      onTap: () {
+
       },
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -125,11 +108,11 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                 backgroundColor: Colors.transparent,
                 child: p.fotos != null
                     ? Image(
-                  image: CachedNetworkImageProvider(p.fotos[0]),
-                )
+                        image: CachedNetworkImageProvider(p.fotos[0]),
+                      )
                     : Image(
-                  image: AssetImage('assets/autooh.png'),
-                )),
+                        image: AssetImage('assets/autooh.png'),
+                      )),
             Container(
               width: getLargura(context) * .4,
               child: Column(
@@ -145,62 +128,42 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                     'CNPJ: ${p.cnpj}',
                     context,
                     size: 44,
-
                   ),
-
                 ],
               ),
             ),
-            /*IconButton(onPressed: (){
-              showDialog(
+            PopupMenuButton<String>(
+              onSelected: (String s){
+                switch(s){
+                  case 'editar':
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CriarCampanhaPage(campanha: p)));
+                    break;
+                  case 'estatisticas':
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EstatisticaPage(campanha: p)));
+                    break;
 
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-
-                      title: hText(
-                          "Deseja deletar esta Campanha?",
-                          context),
-                      content:
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <
-                            Widget>[
-                          defaultActionButton(
-                            'Não',
-                            context,
-                                () {
-
-                              Navigator.of(context)
-                                  .pop();
-                            },
-                          ),
-
-                          defaultActionButton(
-                            'Sim',
-                            context,
-                                () {
-                              p.deleted_at = DateTime.now();
-
-
-                              campanhasRef.document(p.id).updateData(p.toJson()).then((v){
-                                dToast('Campanha deletada com sucesso!');
-
-                                Navigator.of(context)
-                                    .pop();
-                              });
-                              Navigator.of(context)
-                                  .pop();
-                            },
-                          )
-                        ],
-                      ),
-                    );
-                  });
-            }, icon: Icon(Icons.block),color: Colors.red, ), */
+                }
+              },
+                itemBuilder: (context) {
+                  List<PopupMenuItem<String>> itens = new List();
+                  itens.add(PopupMenuItem(
+                    child: hText('Estatisticas', context),
+                    value: 'estatisticas',
+                  ));
+                  itens.add(PopupMenuItem(
+                    child: hText('Editar', context),
+                    value: 'editar',
+                  ));
+                  return itens;
+                },
+                icon: Icon(Icons.more_vert))
           ],
         ),
       ),
     );
   }
+
+
 }

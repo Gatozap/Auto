@@ -1,5 +1,5 @@
-name: bocaboca
-description: bocaboca de mesa
+name: autooh
+description: autooh de mesa
 version: 1.0.0+1
 
 environment:
@@ -24,7 +24,7 @@ dependencies:
   hydrated: 1.2.4
   #cloud_functions: 0.4.1+1
   short_stream_builder: ^0.0.1
-  firebase_database: 3.0.7
+  firebase_database: 3.1.3
   fl_chart: ^0.2.2
   firebase_remote_config: 0.2.0+7
   firebase_analytics: 5.0.2

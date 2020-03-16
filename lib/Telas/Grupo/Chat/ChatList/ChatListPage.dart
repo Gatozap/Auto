@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:bocaboca/Helpers/BadgerController.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Objetos/Sala.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
-import 'package:bocaboca/Telas/Grupo/Chat/ChatScreen/ChatPage.dart';
-import 'package:bocaboca/Telas/Grupo/Chat/CriarGrupo/CriarGrupoPage.dart';
-import 'package:bocaboca/Telas/Grupo/Chat/ListGrupoPage/list_grupo_page.dart';
+import 'package:autooh/Helpers/BadgerController.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Sala.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
+import 'package:autooh/Telas/Grupo/Chat/ChatScreen/ChatPage.dart';
+import 'package:autooh/Telas/Grupo/Chat/CriarGrupo/CriarGrupoPage.dart';
+import 'package:autooh/Telas/Grupo/Chat/ListGrupoPage/list_grupo_page.dart';
 
 import 'ChatListController.dart';
 

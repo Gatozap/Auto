@@ -1,5 +1,5 @@
-import 'package:bocaboca/Objetos/Bairro.dart';
-import 'package:bocaboca/Objetos/Zona.dart';
+import 'package:autooh/Objetos/Bairro.dart';
+import 'package:autooh/Objetos/Zona.dart';
 
 List<Bairro> bairros = [
   Bairro(bairro: 'ST. UNIVERSITÁRIO', pessoa_hora_parado: 15, pessoa_km_rodado: 15),

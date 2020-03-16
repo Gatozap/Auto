@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bocaboca/Helpers/Bancos.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/PhotoScroller.dart';
-import 'package:bocaboca/Helpers/Rekonizer.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Documento.dart';
-import 'package:bocaboca/Objetos/User.dart';
-import 'package:bocaboca/Telas/Cadastro/CadastroController.dart';
-import 'package:bocaboca/Telas/Perfil/PerfilController.dart';
-import 'package:bocaboca/Telas/Perfil/addEndereco.dart';
+import 'package:autooh/Helpers/Bancos.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/PhotoScroller.dart';
+import 'package:autooh/Helpers/Rekonizer.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Documento.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Cadastro/CadastroController.dart';
+import 'package:autooh/Telas/Perfil/PerfilController.dart';
+import 'package:autooh/Telas/Perfil/addEndereco.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';

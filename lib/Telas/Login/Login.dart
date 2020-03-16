@@ -1,7 +1,7 @@
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Telas/Cadastro/CadastroPage.dart';
-import 'package:bocaboca/Telas/Home/Home.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Telas/Cadastro/CadastroPage.dart';
+import 'package:autooh/Telas/Home/Home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +205,7 @@ class _LoginState extends State<Login> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        CupertinoButton(
+                        /*CupertinoButton(
                           child: (Image(
                             image: AssetImage(
                               "assets/facebook_logo.png",
@@ -234,7 +234,7 @@ class _LoginState extends State<Login> {
                               print('ERRO ${onError.toString()}');
                             });
                           },
-                        ),
+                        ),*/
                         CupertinoButton(
                           child: (Image(
                             image: AssetImage(

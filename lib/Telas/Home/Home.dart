@@ -1,23 +1,18 @@
-import 'package:bocaboca/BlocCentral/Racing/navigation_page.dart';
-import 'package:bocaboca/Helpers/Bairros.dart';
-import 'package:bocaboca/Helpers/References.dart';
-import 'package:bocaboca/Objetos/Zona.dart';
-import 'package:bocaboca/Telas/Intro/IntroPage.dart';
-import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoGeneralController.dart';
-import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoList/ProdutoListItem.dart';
-import 'package:bocaboca/Telas/Marketplace/Produto/ProdutoList/ProdutoListPage.dart';
-import 'package:bocaboca/foreground/foreground.dart';
-import 'package:bocaboca/main.dart';
+
+import 'package:autooh/Helpers/Bairros.dart';
+import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Zona.dart';
+import 'package:autooh/Telas/Intro/IntroPage.dart';
+import 'package:autooh/Telas/Corrida/foreground.dart';
+import 'package:autooh/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:bocaboca/Helpers/Helper.dart';
-import 'package:bocaboca/Helpers/Styles.dart';
-import 'package:bocaboca/Objetos/Grupo.dart';
-import 'package:bocaboca/Telas/Compartilhados/custom_drawer_widget.dart';
-import 'package:bocaboca/Telas/FichaPersonagem/FichaPersonagemPage.dart';
-import 'package:bocaboca/Telas/Grupo/Chat/ChatList/ChatListPage.dart';
-import 'package:bocaboca/Telas/Home/GruposController.dart';
-import 'package:bocaboca/Telas/Personagens/PersonagensListaPage.dart';
+import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Grupo.dart';
+import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
+import 'package:autooh/Telas/Grupo/Chat/ChatList/ChatListPage.dart';
+import 'package:autooh/Telas/Home/GruposController.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -253,7 +248,6 @@ class _HomePageState extends State<HomePage> {
         pageChanged(index);
       },
       children: <Widget>[
-        ProdutoListPage(),
         ChatListPage(),
         //Yellow(),
       ],

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bocaboca/Objetos/Talento.dart';
+import 'package:autooh/Objetos/Talento.dart';
 
 import 'Equipamento.dart';
 import 'Pericia.dart';
