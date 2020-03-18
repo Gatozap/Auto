@@ -61,7 +61,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
               if (snapshot.data == null) {
                 return Center(
                   child: Container(
-                    child: hText('aqui', context),
+                    child: hText('', context),
                   ),
                 );
               }
