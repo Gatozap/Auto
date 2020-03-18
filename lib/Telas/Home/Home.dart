@@ -1,7 +1,9 @@
 
 import 'package:autooh/Helpers/Bairros.dart';
+import 'package:autooh/Helpers/ListaEquipamentos.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Zona.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Intro/IntroPage.dart';
 import 'package:autooh/Telas/Corrida/foreground.dart';
 import 'package:autooh/main.dart';
@@ -176,20 +178,25 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    Container(
-                      color: Colors.lightBlue[50],
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      height: getAltura(context) * .2,
-                      width: getLargura(context) * .4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Icon(MdiIcons.carConvertible,
-                              size: 55, color: Colors.lightBlue[700]),
-                          hText('Meus Percursos', context)
-                        ],
+                    GestureDetector(onTap:(){
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EstatisticaPage(user: Helper.localUser)));
+                    },
+                      child: Container(
+                        color: Colors.lightBlue[50],
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        height: getAltura(context) * .2,
+                        width: getLargura(context) * .4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Icon(MdiIcons.carConvertible,
+                                size: 55, color: Colors.lightBlue[700]),
+                            hText('Meus Percursos', context)
+                          ],
+                        ),
                       ),
                     )
                   ],

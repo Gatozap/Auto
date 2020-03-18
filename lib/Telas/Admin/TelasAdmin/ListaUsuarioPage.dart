@@ -13,6 +13,8 @@ import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Equipamento.dart';
 import 'package:autooh/Objetos/Personagem.dart';
 
+import 'EstatisticaPage.dart';
+
 
 
 
@@ -90,71 +92,91 @@ class ListaUsuarioPageState extends State<ListaUsuarioPage> {
     for (String word in words) {
       initials += word.split('')[0].toUpperCase();
     }
-    return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => VisualizarUserPage(
-                user: p
-            )));
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          color: Colors.white,
-          child: Row(
-            children: <Widget>[
-              Hero(
-                tag: p.id,
-                child: p.foto != null
-                    ? CircleAvatar(
-                    radius: ScreenUtil.getInstance().setSp(120),
-                    backgroundColor: Colors.purple,
-                    backgroundImage:
-                    CachedNetworkImageProvider(p.foto))
-                    : CircleAvatar(
-                    radius: ScreenUtil.getInstance().setSp(120),
-                    backgroundColor: Colors.purple,
-                    child: hText(initials, context,
-                        size: 150, color: Colors.white)),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left:8.0),
-                child: Container(
-                  width: getLargura(context)*.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Hero(
+              tag: p.id,
+              child: p.foto != null
+                  ? CircleAvatar(
+                  radius: ScreenUtil.getInstance().setSp(120),
+                  backgroundColor: Colors.purple,
+                  backgroundImage:
+                  CachedNetworkImageProvider(p.foto))
+                  : CircleAvatar(
+                  radius: ScreenUtil.getInstance().setSp(120),
+                  backgroundColor: Colors.purple,
+                  child: hText(initials, context,
+                      size: 150, color: Colors.white)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left:8.0),
+              child: Container(
+                width: getLargura(context)*.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
 
-                        child: p.nome == null? hText('Nome não informado', context, size: 44):hText('Nome: ${p.nome}', context,
-                            size: 44, weight: FontWeight.bold),
+                      child: p.nome == null? hText('Nome não informado', context, size: 44):hText('Nome: ${p.nome}', context,
+                          size: 44, weight: FontWeight.bold),
 
-                      ),sb,
-                       Container(
-                         width: getLargura(context),
-                         child: p.celular == null? hText('Não possui telefone', context, size: 44):hText('${p.celular}', context, size: 44),),sb,
+                    ),sb,
+                     Container(
+                       width: getLargura(context),
+                       child: p.celular == null? hText('Não possui telefone', context, size: 44):hText('${p.celular}', context, size: 44),),sb,
 
 
-                     Container(child: p.conta_bancaria ==null? hText('Não informou seu Banco', context, size: 44) :  hText(
-                       'Banco: ${p.conta_bancaria}',
-                       context,
-                       size: 44,
+                   Container(child: p.conta_bancaria ==null? hText('Não informou seu Banco', context, size: 44) :  hText(
+                     'Banco: ${p.conta_bancaria}',
+                     context,
+                     size: 44,
 
-                     ), )
+                   ), )
 
 
 
-                    ],
-                  ),
+                  ],
                 ),
               ),
+            ),
+            PopupMenuButton<String>(
+                onSelected: (String s){
+                  switch(s){
+                    case 'editar':
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => VisualizarUserPage(
+                              user: p
+                          )));
+                      break;
+                    case 'estatisticas':
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EstatisticaPage(user: p)));
+                      break;
 
-            ],
-          ),
-
+                  }
+                },
+                itemBuilder: (context) {
+                  List<PopupMenuItem<String>> itens = new List();
+                  itens.add(PopupMenuItem(
+                    child: hText('Estatisticas', context),
+                    value: 'estatisticas',
+                  ));
+                  itens.add(PopupMenuItem(
+                    child: hText('Vizualizar Dados', context),
+                    value: 'editar',
+                  ));
+                  return itens;
+                },
+                icon: Icon(Icons.more_vert))
+          ],
         ),
+
       ),
     );
   }

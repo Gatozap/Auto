@@ -25,6 +25,7 @@ class Corrida {
   var dist;
   Carro carro;
   List points;
+  Campanha anuncio;
 
   @override
   String toString() {
@@ -40,6 +41,7 @@ class Corrida {
       this.user,
       this.dist,
       this.duracao,
+        this.anuncio,
 
       this.vizualizacoes,
       this.carro,
@@ -66,6 +68,7 @@ class Corrida {
         campanha = j['campanha'],
         id_corrida = j['id_corrida'],
         id_carro = j['id_carro'],
+        anuncio= j['anuncio'] == null? null: Campanha.fromJson(j['anuncio']),
         vizualizacoes = j['vizualizacoes'],
 
         hora_ini = j['hora_ini'] == null
@@ -129,6 +132,7 @@ class Corrida {
             last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,
 
+
         'carro': carro == null ? null : carro.toJson(),
         //'points': json.encode(points),
       };
@@ -149,6 +153,7 @@ class Corrida {
         'campanha': campanha,
         'id_corrida': id_corrida,
         'dist': dist,
+    'anuncio':anuncio.toJson(),
         'last_seen':
             last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,

@@ -282,7 +282,7 @@ class NavigationBloc extends BlocBase {
     c.id_carro = c.carro.id;
     c.points = localizacoes;
     c.campanha = anuncio.id;
-
+    c.anuncio = anuncio;
     var lastPoint;
     c.duracao = duracao;
     c.vizualizacoes = 0;

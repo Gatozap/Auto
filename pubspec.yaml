@@ -87,7 +87,8 @@ dependencies:
   flutter_rating_bar: ^3.0.1+1
   #flutter_duration_picker: 1.0.4
   date_range_picker: 1.0.6
-  expandable: ^3.0.0+1
+  expandable: 4.1.2
+  random_color: 1.0.3
   #super_tooltip: ^0.9.0
   #true_time: ^0.1.0
   font_awesome_flutter: 8.5.0

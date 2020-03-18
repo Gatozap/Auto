@@ -315,7 +315,7 @@ packages:
       name: expandable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "4.1.2"
   firebase_analytics:
     dependency: "direct main"
     description:
@@ -1110,6 +1110,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  random_color:
+    dependency: "direct main"
+    description:
+      name: random_color
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   random_string:
     dependency: "direct main"
     description:
@@ -1382,5 +1389,5 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.6.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.5 <2.0.0"
