@@ -12,6 +12,7 @@ class Carro {
   String kms;
   String dono;
   String dono_nome;
+  bool isAprovado;
   List<Campanha> campanhas;
   String renavam;
   String foto;
@@ -22,6 +23,8 @@ class Carro {
   Campanha anuncio_laterais;
   Campanha anuncio_vidro_traseiro;
   Campanha anuncio_traseira_completa;
+  String confirmacao;
+  DateTime ultima_confirmacao;
 
   Carro(
       {this.cor,
@@ -29,9 +32,12 @@ class Carro {
       this.marca,
       this.placa,
       this.ano,
+      this.confirmacao,
+      this.ultima_confirmacao,
       this.dono,
       this.campanhas,
       this.dono_nome,
+        this.isAprovado,
       this.renavam,
       this.foto,
       this.created_at,
@@ -57,8 +63,13 @@ class Carro {
         modelo = j['modelo'],
         marca = j['marca'],
         placa = j['placa'],
+        isAprovado = j['isAprovado']== null? false : j['isAprovado'],
         ano = j['ano'],
         dono = j['dono'],
+        ultima_confirmacao = j['ultima_confirmacao'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(j['ultima_confirmacao']),
+        confirmacao = j['confirmacao'],
         anuncio_bancos = j['anuncio_bancos'] = j['anuncio_bancos'] == null
             ? null
             : Campanha.fromJson(j['anuncio_bancos']),
@@ -95,6 +106,11 @@ class Carro {
         'marca': marca,
         'placa': placa,
         'dono_nome': dono_nome,
+        'confirmacao': confirmacao,
+        'isAprovado': isAprovado == null? false: isAprovado,
+        'ultima_confirmacao': ultima_confirmacao == null
+            ? null
+            : ultima_confirmacao.millisecondsSinceEpoch,
         'anuncio_laterais':
             anuncio_laterais == null ? null : anuncio_laterais.toJson(),
         'anuncio_traseira_completa': anuncio_traseira_completa == null
@@ -125,6 +141,11 @@ class Carro {
         'marca': marca,
         'placa': placa,
         'dono_nome': dono_nome,
+        'confirmacao': confirmacao,
+    'isAprovado': isAprovado == null? false: isAprovado,
+        'ultima_confirmacao': ultima_confirmacao == null
+            ? null
+            : ultima_confirmacao.millisecondsSinceEpoch,
         'created_at':
             created_at == null ? null : created_at.millisecondsSinceEpoch,
         'updated_at':

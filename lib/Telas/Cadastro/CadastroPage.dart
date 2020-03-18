@@ -1287,67 +1287,81 @@ class _CadastroState extends State<Cadastro> {
                                                 borderRadius:
                                                     BorderRadius.circular(60)),
                                             onPressed: () async {
-                                              List<Carro> carros = new List();
-                                              Carro ccc = new Carro(
-                                                created_at: DateTime.now(),
-                                                dono_nome:
-                                                    Helper.localUser.nome,
-                                                updated_at: DateTime.now(),
-                                                cor: controllerCor.text,
-                                                ano: int.parse(
-                                                    controllerAno.text),
-                                                placa: controllerPlaca.text,
-                                                dono: Helper.localUser.id,
-                                                modelo:
-                                                    controllerTipocarro.text,
-                                                anuncio_bancos: carro == null
-                                                    ? null
-                                                    : carro.anuncio_bancos,
-                                                anuncio_vidro_traseiro: carro ==
-                                                        null
-                                                    ? null
-                                                    : carro
-                                                        .anuncio_vidro_traseiro,
-                                                anuncio_traseira_completa: carro ==
-                                                        null
-                                                    ? null
-                                                    : carro
-                                                        .anuncio_traseira_completa,
-                                                anuncio_laterais: carro == null
-                                                    ? null
-                                                    : carro.anuncio_laterais,
-                                              );
-                                              carros.add(ccc);
+                                              if (int.parse(
+                                                      controllerKmsmin.text) >
+                                                  4000) {
+                                                List<Carro> carros = new List();
+                                                Carro ccc = new Carro(
+                                                  created_at: DateTime.now(),
+                                                  dono_nome:
+                                                      Helper.localUser.nome,
+                                                  updated_at: DateTime.now(),
+                                                  cor: controllerCor.text,
+                                                  ano: int.parse(
+                                                      controllerAno.text),
+                                                  placa: controllerPlaca.text,
+                                                  dono: Helper.localUser.id,
+                                                  modelo:
+                                                      controllerTipocarro.text,
+                                                  anuncio_bancos: carro == null
+                                                      ? null
+                                                      : carro.anuncio_bancos,
+                                                  anuncio_vidro_traseiro: carro ==
+                                                          null
+                                                      ? null
+                                                      : carro
+                                                          .anuncio_vidro_traseiro,
+                                                  anuncio_traseira_completa:
+                                                      carro == null
+                                                          ? null
+                                                          : carro
+                                                              .anuncio_traseira_completa,
+                                                  anuncio_laterais: carro ==
+                                                          null
+                                                      ? null
+                                                      : carro.anuncio_laterais,
+                                                );
+                                                carros.add(ccc);
 
-                                              Helper.localUser.carros = carros;
-                                              print(
-                                                  'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                              Helper.localUser.conta_bancaria =
-                                                  controllerConta_bancaria.text;
-                                              Helper.localUser.agencia =
-                                                  controllerAgencia.text;
-                                              Helper.localUser.numero_conta =
-                                                  controllerNumero_conta.text;
+                                                Helper.localUser.carros =
+                                                    carros;
+                                                print(
+                                                    'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                                                Helper.localUser
+                                                        .conta_bancaria =
+                                                    controllerConta_bancaria
+                                                        .text;
+                                                Helper.localUser.agencia =
+                                                    controllerAgencia.text;
+                                                Helper.localUser.numero_conta =
+                                                    controllerNumero_conta.text;
 
-                                              Helper.localUser.tipo_conta =
-                                                  selectTipo;
-                                              Helper.localUser.kmmin =
-                                                  int.parse(
-                                                      controllerKmsmin.text);
-                                              Helper.localUser.kmmax =
-                                                  int.parse(
-                                                      controllerKmsmax.text);
-                                              userRef
-                                                  .document(Helper.localUser.id)
-                                                  .updateData(
-                                                      Helper.localUser.toJson())
-                                                  .then((v) {
+                                                Helper.localUser.tipo_conta =
+                                                    selectTipo;
+                                                Helper.localUser.kmmin =
+                                                    int.parse(
+                                                        controllerKmsmin.text);
+                                                Helper.localUser.kmmax =
+                                                    int.parse(
+                                                        controllerKmsmax.text);
+                                                userRef
+                                                    .document(
+                                                        Helper.localUser.id)
+                                                    .updateData(Helper.localUser
+                                                        .toJson())
+                                                    .then((v) {
+                                                  dToast(
+                                                      'Banco salvo com sucesso !');
+                                                  sc.next(animation: true);
+                                                });
+                                                carroController.CriarCarros(
+                                                    ccc);
+                                                cc.atualizarDados(
+                                                    sc, context, 1);
+                                              } else {
                                                 dToast(
-                                                    'Banco salvo com sucesso !');
-                                                sc.next(animation: true);
-                                              });
-                                              carroController.CriarCarros(ccc);
-                                              cc.atualizarDados(sc, context, 1);
+                                                    'Kilometragem minima precisa ser superior a 4 mil!');
+                                              }
                                             },
                                             child: Text(
                                               'Concluir Cadastro',
@@ -1407,7 +1421,6 @@ class _CadastroState extends State<Cadastro> {
 
                       break;
 
-                  
                     default:
                       return Container();
                   }

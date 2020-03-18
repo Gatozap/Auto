@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-
-
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/PhotoScroller.dart';
@@ -48,8 +46,6 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
     if (userController == null) {
       userController = CadastroController();
     }
-
-
   }
 
   CadastroController cc = new CadastroController();
@@ -83,8 +79,6 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     var linearGradient = const BoxDecoration(
       gradient: const LinearGradient(
         begin: FractionalOffset.centerRight,
@@ -118,7 +112,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                       );
                     }
                     carro = snapshot.data;
-                      
+
                     if (onLoad) {
                       controllerAno.text = carro.ano.toString();
                       controllerCor.text = carro.cor;
@@ -234,39 +228,60 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                             ],
                           ),
                           sb,
-                   
-                           
-
-
+                          hText('Foto da Semana', context),
+                          GestureDetector(
+                            onTap: () {
+                              getImageCamera(carro, isConfirmacao: true);
+                            },
+                            child: CircleAvatar(
+                                radius: (((getAltura(context) +
+                                            getLargura(context)) /
+                                        2) *
+                                    .2),
+                                backgroundColor: Colors.transparent,
+                                child: carro.confirmacao != null
+                                    ? Image(
+                                        image: CachedNetworkImageProvider(
+                                            carro.confirmacao),
+                                      )
+                                    : Image(
+                                        image: CachedNetworkImageProvider(
+                                            'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                                      )),
+                          ),
+                          hText(
+                              'Tire uma foto do seu carro para que possamos contabilizar suas corridas',
+                              context,
+                              size: 30),
                           Container(
-                            child: defaultActionButton(
+                            child:
+                                defaultActionButton('Atualizar', context, () {
+                              carro.placa = controllerPlaca.text;
+                              carro.ano = int.parse(controllerAno.text);
+                              carro.modelo = controllerModelo.text;
+                              carro.cor = controllerCor.text;
+                              carro.dono_nome = Helper.localUser.nome;
+                              carro.anuncio_laterais =
+                                  carro == null ? null : carro.anuncio_laterais;
+                              carro.anuncio_bancos =
+                                  carro == null ? null : carro.anuncio_bancos;
+                              carro.anuncio_traseira_completa = carro == null
+                                  ? null
+                                  : carro.anuncio_traseira_completa;
+                              carro.anuncio_vidro_traseiro = carro == null
+                                  ? null
+                                  : carro.anuncio_vidro_traseiro;
+                              if (widget.carro == null) {
+                                carro.updated_at = DateTime.now();
+                              } else {
+                                carro = widget.carro;
+                              }
+                              onLoad = true;
 
-                                     'Atualizar',
-                                context, () {
-
-                                carro.placa = controllerPlaca.text;
-                                carro.ano = int.parse(controllerAno.text);
-                                carro.modelo = controllerModelo.text;
-                                carro.cor = controllerCor.text;
-                                carro.dono_nome = Helper.localUser.nome;
-                                carro.anuncio_laterais = carro == null? null : carro.anuncio_laterais;
-                                carro.anuncio_bancos = carro == null? null : carro.anuncio_bancos;
-                                carro.anuncio_traseira_completa = carro == null? null : carro.anuncio_traseira_completa;
-                                carro.anuncio_vidro_traseiro = carro == null? null : carro.anuncio_vidro_traseiro;
-                                 if(widget.carro == null) {
-                                   carro.updated_at = DateTime.now();
-                                 }else{
-                                   carro = widget.carro;
-                                 }
-                                onLoad = true;
-
-                                carroController.updateCarro(carro).then((v) {
-
-                                    dToast('Dados atualizados com sucesso!');
-                                    Navigator.of(context).pop();
-
-                                });
-
+                              carroController.updateCarro(carro).then((v) {
+                                dToast('Dados atualizados com sucesso!');
+                                Navigator.of(context).pop();
+                              });
                             }),
                           ),
                         ],
@@ -280,52 +295,75 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
     );
   }
 
-
-
-
-  Future <List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
-
+  Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();
-    return campanhasRef.where('datafim',isGreaterThan: DateTime.now().millisecondsSinceEpoch).getDocuments().then((v){
+    return campanhasRef
+        .where('datafim', isGreaterThan: DateTime.now().millisecondsSinceEpoch)
+        .getDocuments()
+        .then((v) {
       List campanhas = new List();
-      for(var d in v.documents){
+      for (var d in v.documents) {
         campanhas.add(Campanha.fromJson(d.data));
       }
       for (Campanha z in campanhas) {
         items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
-
       }
       return items;
-    }
-    ).catchError((err) {
+    }).catchError((err) {
       print('aqui erro 1 ${err}');
       return null;
     });
   }
+
   ProgressDialog pr;
 
-  Future getImageCamera(Carro carro) async {
-    File image = await ImagePicker.pickImage(source: ImageSource.camera);
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-        ));
-    pr.show();
-    carro.foto = await uploadPicture(
-      image.path,
-    );
-    carroController.updateCarro(carro);
-    pr.dismiss();
-    dToast('Salvando Foto!');
+  Future getImageCamera(Carro carro, {bool isConfirmacao = false}) async {
+    if (!isConfirmacao) {
+      File image = await ImagePicker.pickImage(source: ImageSource.camera);
+      pr = new ProgressDialog(context,
+          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+      pr.style(
+          message: 'Salvando',
+          borderRadius: 10.0,
+          backgroundColor: Colors.white,
+          progressWidget: Container(
+            padding: EdgeInsets.all(1),
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width * .3,
+            height: MediaQuery.of(context).size.height * .15,
+            color: Colors.transparent,
+          ));
+      pr.show();
+      carro.foto = await uploadPicture(
+        image.path,
+      );
+      carroController.updateCarro(carro);
+      pr.dismiss();
+      dToast('Salvando Foto!');
+    } else {
+      File image = await ImagePicker.pickImage(source: ImageSource.camera);
+      pr = new ProgressDialog(context,
+          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+      pr.style(
+          message: 'Salvando',
+          borderRadius: 10.0,
+          backgroundColor: Colors.white,
+          progressWidget: Container(
+            padding: EdgeInsets.all(1),
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width * .3,
+            height: MediaQuery.of(context).size.height * .15,
+            color: Colors.transparent,
+          ));
+      pr.show();
+      carro.confirmacao = await uploadPicture(
+        image.path,
+      );
+      carro.ultima_confirmacao = DateTime.now();
+      carroController.updateCarro(carro);
+      pr.dismiss();
+      dToast('Salvando Foto!');
+    }
   }
 
   Future getImage(Carro carro) async {
@@ -347,6 +385,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
     carro.foto = await uploadPicture(
       image.path,
     );
+
     carroController.updateCarro(carro);
     pr.dismiss();
     dToast('Salvando Foto!');

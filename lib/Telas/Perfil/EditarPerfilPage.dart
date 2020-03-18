@@ -34,16 +34,14 @@ class EditarPerfilPage extends StatefulWidget {
 }
 
 class _EditarPerfilPageState extends State<EditarPerfilPage> {
-
   @override
   void initState() {
-
-    if(perfilController == null){
-      perfilController == PerfilController(widget.user
-      );
+    if (perfilController == null) {
+      perfilController == PerfilController(widget.user);
     }
     super.initState();
   }
+
   CadastroController cc = new CadastroController();
   Banco bancoSelecionado;
   var controllerTelefone =
@@ -126,52 +124,34 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           GestureDetector(
-                            onTap: () =>  showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Padding(
-                            padding:
-                            const EdgeInsets
-                                .all(
-                                15.0),
-                            child:
-                            AlertDialog(
-                              title: hText(
-                                  "Selecione uma opção",
-                                  context),
-                              content:
-                              SingleChildScrollView(
-                                child:
-                                ListBody(
-                                  children: <
-                                      Widget>[
-                                    defaultActionButton(
-                                        'Galeria',
-                                        context,
-                                            () {
-                                          getImage();
-                                          Navigator.of(context)
-                                              .pop();
-                                        },
-                                        icon:
-                                        MdiIcons.face),
-                                    sb,
-                                    defaultActionButton(
-                                        'Camera',
-                                        context,
-                                            () {
-                                          getImageCamera();
-                                          Navigator.of(context)
-                                              .pop();
-                                        },
-                                        icon:
-                                        MdiIcons.camera)
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
+                            onTap: () => showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: AlertDialog(
+                                      title:
+                                          hText("Selecione uma opção", context),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: <Widget>[
+                                            defaultActionButton(
+                                                'Galeria', context, () {
+                                              getImage();
+                                              Navigator.of(context).pop();
+                                            }, icon: MdiIcons.face),
+                                            sb,
+                                            defaultActionButton(
+                                                'Camera', context, () {
+                                              getImageCamera();
+                                              Navigator.of(context).pop();
+                                            }, icon: MdiIcons.camera)
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
                             child: CircleAvatar(
                                 radius: (((getAltura(context) +
                                             getLargura(context)) /
@@ -244,18 +224,21 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                       keyboardType: TextInputType.phone))
                             ],
                           ),
-                         Row(  mainAxisSize: MainAxisSize.max,
-                             mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[hText('Dados da sua conta Bancaria',
-                              context, size: 35)]),sb,
-
+                          Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                hText('Dados da sua conta Bancaria', context,
+                                    size: 35)
+                              ]),
+                          sb,
                           Padding(
                             padding: ei,
                             child: TypeAheadField(
                               textFieldConfiguration: TextFieldConfiguration(
                                   controller: controllerConta_bancaria,
                                   style: TextStyle(color: Colors.black),
-                                  decoration: DefaultInputDecoration(
-                                      context,
+                                  decoration: DefaultInputDecoration(context,
                                       icon: MdiIcons.bank,
                                       labelText: 'Banco',
                                       hintText: 'Caixa Economica Federal')),
@@ -273,126 +256,120 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                               },
                             ),
                           ),
-
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-
                               Expanded(
                                   child: DefaultField(
-                                    controller: controllerAgencia,
-                                    hint: u.agencia,
-                                    context: context,
-                                    label: 'Agência',
-                                    icon: MdiIcons.creditCard,
-                                  ))
-                            ],
-                          ),  Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-
-                              Expanded(
-                                  child: DefaultField(
-                                    controller: controllerNumero_conta,
-                                    hint: u.numero_conta,
-                                    context: context,
-                                    label: 'Número da Conta',
-                                    icon: MdiIcons.creditCard,
-                                  ))
+                                controller: controllerAgencia,
+                                hint: u.agencia,
+                                context: context,
+                                label: 'Agência',
+                                icon: MdiIcons.creditCard,
+                              ))
                             ],
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-
                               Expanded(
                                   child: DefaultField(
-                                    keyboardType:
-                                    TextInputType
-                                        .number,
-                                    controller: controllerKmmin,
-                                    hint: '${u.kmmin}',
-                                    context: context,
-                                    label: 'Quilometros percorridos no Mínimo',
-                                    icon: MdiIcons.run,
-                                  ))
+                                controller: controllerNumero_conta,
+                                hint: u.numero_conta,
+                                context: context,
+                                label: 'Número da Conta',
+                                icon: MdiIcons.creditCard,
+                              ))
                             ],
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-
                               Expanded(
                                   child: DefaultField(
-                                    keyboardType:
-                                    TextInputType
-                                        .number,
-                                    controller: controllerKmmax,
-                                    hint: '${u.kmmax}',
-                                    context: context,
-                                    label: 'Quilometros percorridos Máximo',
-                                    icon: MdiIcons.run,
-                                  ))
+                                keyboardType: TextInputType.number,
+                                controller: controllerKmmin,
+                                hint: '${u.kmmin}',
+                                context: context,
+                                label: 'Quilometros percorridos no Mínimo',
+                                icon: MdiIcons.run,
+                              ))
                             ],
                           ),
-                           sb,
-                          StreamBuilder(
-                            stream: cc.outUser,
-                            builder: (context, snapshot) {
-                              return defaultCheckBox(
-                                  Helper.localUser.atende_fds, 'Atende Final de Semana', context, () {
-                                Helper.localUser.atende_fds = !Helper.localUser.atende_fds;
-                                cc.user = Helper.localUser;
-                                cc.inUser.add(cc.user);
-
-                              });
-                            }
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                  child: DefaultField(
+                                keyboardType: TextInputType.number,
+                                controller: controllerKmmax,
+                                hint: '${u.kmmax}',
+                                context: context,
+                                label: 'Quilometros percorridos Máximo',
+                                icon: MdiIcons.run,
+                              ))
+                            ],
                           ),
                           sb,
                           StreamBuilder(
-                            stream: cc.outUser,
-                            builder: (context, snapshot) {
-                              return defaultCheckBox(
-                                  Helper.localUser.atende_festa, 'Atende em Festas', context, () {
-                                Helper.localUser.atende_festa = !Helper.localUser.atende_festa;
-                                cc.user = Helper.localUser;
-                                cc.inUser.add(cc.user);
-
-                              } );
-                            }
+                              stream: cc.outUser,
+                              builder: (context, snapshot) {
+                                return defaultCheckBox(
+                                    Helper.localUser.atende_fds,
+                                    'Atende Final de Semana',
+                                    context, () {
+                                  Helper.localUser.atende_fds =
+                                      !Helper.localUser.atende_fds;
+                                  cc.user = Helper.localUser;
+                                  cc.inUser.add(cc.user);
+                                });
+                              }),
+                          sb,
+                          StreamBuilder(
+                              stream: cc.outUser,
+                              builder: (context, snapshot) {
+                                return defaultCheckBox(
+                                    Helper.localUser.atende_festa,
+                                    'Atende em Festas',
+                                    context, () {
+                                  Helper.localUser.atende_festa =
+                                      !Helper.localUser.atende_festa;
+                                  cc.user = Helper.localUser;
+                                  cc.inUser.add(cc.user);
+                                });
+                              }),
+                          Container(
+                            child:
+                                defaultActionButton('Atualizar', context, () {
+                              if (int.parse(controllerKmmin.text) > 4000) {
+                                u.nome = controllerNome.text;
+                                u.celular = controllerTelefone.text;
+                                u.email = controllerEmail.text;
+                                u.numero_conta = controllerNumero_conta.text;
+                                u.agencia = controllerAgencia.text;
+                                u.conta_bancaria =
+                                    controllerConta_bancaria.text;
+                                u.kmmin = int.parse(controllerKmmin.text);
+                                u.kmmax = int.parse(controllerKmmax.text);
+                                u.updated_at = DateTime.now();
+                                onLoad = true;
+                                perfilController.updateUser(u).then((v) {
+                                  if (v == 'Atualizado com sucesso!') {
+                                    dToast('Dados atualizados com sucesso!');
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    dToast('Dados atualizados com sucesso!');
+                                  }
+                                });
+                              }else{
+                                dToast('Kilometragem minima precisa ser superior a 4 mil!');
+                              }
+                            }),
                           ),
-                           Container(
-
-
-                            child: defaultActionButton('Atualizar', context,
-                                    () {
-                                  u.nome = controllerNome.text;
-                                  u.celular = controllerTelefone.text;
-                                  u.email = controllerEmail.text;
-                                  u.numero_conta = controllerNumero_conta.text
-                                  ;
-                                  u.agencia = controllerAgencia.text;
-                                  u.conta_bancaria = controllerConta_bancaria.text;
-                                  u.kmmin = int.parse(controllerKmmin.text);
-                                  u.kmmax = int.parse(controllerKmmax.text);
-                                  u.updated_at = DateTime.now();
-                                  onLoad = true;
-                                  perfilController.updateUser(u).then((v) {
-                                    if (v == 'Atualizado com sucesso!') {
-                                      dToast('Dados atualizados com sucesso!');
-                                      Navigator.of(context).pop();
-                                    } else {
-                                      dToast('Dados atualizados com sucesso!');
-                                    }
-                                  });
-                                }),
-                          ),
-
-
                         ],
                       ),
                     );
@@ -403,8 +380,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       ]),
     );
   }
- 
-
 
   ProgressDialog pr;
   Future getDocumentoCamera(User u) async {
@@ -446,7 +421,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       List<int> imageBytes = image.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       vision.BatchAnnotateImagesResponse result =
-      await RekognizeProvider().search(base64Image);
+          await RekognizeProvider().search(base64Image);
       print('AQUI RECONHECIMENTO ${result.toJson()}');
 
       List<Map<String, Object>> r = result.toJson()['responses'];
@@ -465,7 +440,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       List<int> imageBytes = image.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       vision.BatchAnnotateImagesResponse result =
-      await RekognizeProvider().search(base64Image);
+          await RekognizeProvider().search(base64Image);
       print('AQUI RECONHECIMENTO ${result.toJson()}');
 
       List<Map<String, Object>> r = result.toJson()['responses'];
@@ -509,7 +484,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
             perfilController.updateUser(u);
             break;
         }
-
       } else {
         d.isValid = true;
         u.documentos.add(d);
@@ -522,7 +496,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     pr.dismiss();
     dToast('Salvando Documento!');
   }
-
 
   Future getDocumento(User u) async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -598,7 +571,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
             d.isValid = true;
             d.data = sequencial;
             u.documentos.add(d);
-              perfilController.updateUser(u);
+            perfilController.updateUser(u);
 
             break;
           case documentos.CPF:
@@ -626,7 +599,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
             perfilController.updateUser(u);
             break;
         }
-
       } else {
         d.isValid = true;
         u.documentos.add(d);

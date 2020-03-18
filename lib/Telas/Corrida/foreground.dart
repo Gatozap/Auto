@@ -40,17 +40,15 @@ class _MyAppState extends State<Racing> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(20.0),
-                child:
-                Text(
-                      "Percurso ",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 25,
-                      ),
-                    )
-              ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    "Percurso ",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 25,
+                    ),
+                  )),
               Container(
                 color: Colors.red[500],
                 height: 4.0,
@@ -120,7 +118,8 @@ class _MyAppState extends State<Racing> {
                         });
                   });
             }),
-        Column(crossAxisAlignment: CrossAxisAlignment.start,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             StreamBuilder<Corrida>(
                 stream: mapController.outCorrida,
@@ -136,10 +135,8 @@ class _MyAppState extends State<Racing> {
                 stream: nb.outUltimoEndereco,
                 builder: (context, snapshot) {
                   return hText(
-                      '${snapshot.data == null? '':snapshot.data}',
-                      context);
+                      '${snapshot.data == null ? '' : snapshot.data}', context);
                 }),
-
           ],
         ),
       ]),
@@ -165,7 +162,7 @@ class _MyAppState extends State<Racing> {
                         Navigator.of(context).pop();
                       }, icon: null),
                       defaultActionButton('Iniciar', context, () async {
-                        if(carroSelecionado != null) {
+                        if (carroSelecionado != null) {
                           startForegroundService(carroSelecionado).then((v) {
                             if (v != null) {
                               mapController.updateCorridaId(v);
@@ -176,7 +173,7 @@ class _MyAppState extends State<Racing> {
                               dToast('Corrida iniciado com sucesso!');
                             }
                           });
-                        }else{
+                        } else {
                           dToast('Selecione um Carro');
                         }
                       }, icon: null)
@@ -192,7 +189,6 @@ class _MyAppState extends State<Racing> {
   CarSelectorWidget() {
     return Container(
       width: getLargura(context),
-   
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: FutureBuilder(
@@ -204,7 +200,6 @@ class _MyAppState extends State<Racing> {
 
               return DropdownButton(
                 hint: Row(
-                  
                   children: <Widget>[
                     Icon(MdiIcons.car, color: corPrimaria),
                     sb,
@@ -239,11 +234,17 @@ class _MyAppState extends State<Racing> {
         .then((v) {
       List carros = new List();
       for (var d in v.documents) {
-            
-        carros.add(Carro.fromJson(d.data));
+        Carro c = Carro.fromJson(d.data);
+        if (c.isAprovado) {
+          carros.add(c);
+        }
       }
       for (Carro z in carros) {
-        items.add(DropdownMenuItem(value: z, child: Text('${z.modelo} ${z.placa}')));
+        items.add(
+            DropdownMenuItem(value: z, child: Text('${z.modelo} ${z.placa}')));
+      }
+      if(items.length== 0){
+        dToast('Você não possui carros aprovados para rodar');
       }
       return items;
     }).catchError((err) {
@@ -289,5 +290,4 @@ Future<String> startForegroundService(Carro carroSelecionado) async {
   return s;
 }
 
-void globalForegroundService() async {
-}
+void globalForegroundService() async {}

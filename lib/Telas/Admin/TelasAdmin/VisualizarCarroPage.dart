@@ -23,8 +23,8 @@ class VisualizarCarroPage extends StatefulWidget {
 class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
   @override
   void initState() {
-    if(carroController == null){
-      carroController = new CarroController(carro:  widget.carro);
+    if (carroController == null) {
+      carroController = new CarroController(carro: widget.carro);
     }
     super.initState();
   }
@@ -33,107 +33,144 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
   void dispose() {
     super.dispose();
   }
-    CarroController carroController;
+
+  CarroController carroController;
   Carro carro;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(appBar: myAppBar('${widget.carro.dono_nome}', context),
-
+    return Scaffold(
+      appBar: myAppBar('${widget.carro.dono_nome}', context),
       body: StreamBuilder<Carro>(
-        stream: carroController.outCarroSelecionado,
-        builder: (context, snapshot) {
-          carro = snapshot.data;
-          return SingleChildScrollView(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min, children: <Widget>[
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Hero(
-                      tag: widget.carro.id,
-                      child: widget.carro.foto != null
-                          ? CircleAvatar(
-                          radius: ScreenUtil.getInstance().setSp(200),
-                          backgroundColor: Colors.transparent,
-                          backgroundImage:
-                          CachedNetworkImageProvider(widget.carro.foto))
-                          : CircleAvatar(
-                          radius: ScreenUtil.getInstance().setSp(200),
-                          backgroundColor: Colors.transparent,
-                          child: Image(
-                            image: CachedNetworkImageProvider(
-                                'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                          )),
-
-                    ),
-
-                  ],
-                ),
-                Padding(padding: EdgeInsets.all(8.0),
-                    child: hText('Dono: ${widget.carro.dono_nome}', context)),
-                Padding(padding: EdgeInsets.all(8.0),
-                    child: hText('Modelo: ${widget.carro.modelo}', context)),
-                Padding(padding: EdgeInsets.all(8.0),
-                    child: hText('Cor: ${widget.carro.cor}', context)),
-                Padding(padding: EdgeInsets.all(8.0),
-                    child: hText('Ano: ${widget.carro.ano}', context)),
-                Padding(padding: EdgeInsets.all(8.0),
-                    child: hText('Placa: ${widget.carro.placa}', context)),
-
-
-
-
-                
-                Padding(   padding:
-                const EdgeInsets.all(10.0),
-                    child:
-                    seletorAnunciosCarro()),
-                Center(
-                  child: Container(
-                    child: defaultActionButton(
-
-                        'Cadastrar Anúncios',
-                        context, () {
-
-
-                      carro.anuncio_laterais = carro == null? null : carro.anuncio_laterais;
-                      carro.anuncio_bancos = carro == null? null : carro.anuncio_bancos;
-                      carro.anuncio_traseira_completa = carro == null? null : carro.anuncio_traseira_completa;
-                      carro.anuncio_vidro_traseiro = carro == null? null : carro.anuncio_vidro_traseiro;
-
-
-
-                      carroController.updateCarro(carro).then((v) {
-
-                        dToast('Dados atualizados com sucesso!');
-                        Navigator.of(context).pop();
-
-                      });
-
-                    }),
+          stream: carroController.outCarroSelecionado,
+          builder: (context, snapshot) {
+            carro = snapshot.data;
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Hero(
+                        tag: widget.carro.id,
+                        child: widget.carro.foto != null
+                            ? CircleAvatar(
+                                radius: ScreenUtil.getInstance().setSp(200),
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    widget.carro.foto))
+                            : CircleAvatar(
+                                radius: ScreenUtil.getInstance().setSp(200),
+                                backgroundColor: Colors.transparent,
+                                child: Image(
+                                  image: CachedNetworkImageProvider(
+                                      'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                                )),
+                      ),
+                    ],
                   ),
-                ),
-              ],),
-          );
-        }
-      ),);
+                  Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: hText('Dono: ${widget.carro.dono_nome}', context)),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: hText('Modelo: ${widget.carro.modelo}', context)),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: hText('Cor: ${widget.carro.cor}', context)),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: hText('Ano: ${widget.carro.ano}', context)),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: hText('Placa: ${widget.carro.placa}', context)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(child: hText('Foto de confirmação', context)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      widget.carro.confirmacao != null
+                          ? CircleAvatar(
+                              radius: ScreenUtil.getInstance().setSp(200),
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  widget.carro.confirmacao))
+                          : hText('Sem foto de confirmação.', context),
+                    ],
+                  ),
+                  sb,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      widget.carro.ultima_confirmacao != null
+                          ? hText(
+                              'Foto enviada em: ${widget.carro.ultima_confirmacao.day.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.day.toString() : widget.carro.ultima_confirmacao.day}/${widget.carro.ultima_confirmacao.month.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.month.toString() : widget.carro.ultima_confirmacao.month}/${widget.carro.ultima_confirmacao.year} ${widget.carro.ultima_confirmacao.hour.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.hour.toString() : widget.carro.ultima_confirmacao.hour.toString()}:${widget.carro.ultima_confirmacao.minute.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.minute.toString() : widget.carro.ultima_confirmacao.minute.toString()}',
+                              context)
+                          : hText('Sem data de confirmacao', context),
+                    ],
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: seletorAnunciosCarro()),
+                  sb,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: defaultCheckBox(
+                          carro.isAprovado, 'Carro Liberado?', context, () {
+                        carro.isAprovado = !carro.isAprovado;
+                        carroController.inCarroSelecionado.add(carro);
+                      }),
+                    ),
+                  ),
+                  sb,
+                  Center(
+                    child: Container(
+                      child: defaultActionButton('Cadastrar Anúncios', context,
+                          () {
+                        carro.anuncio_laterais =
+                            carro == null ? null : carro.anuncio_laterais;
+                        carro.anuncio_bancos =
+                            carro == null ? null : carro.anuncio_bancos;
+                        carro.anuncio_traseira_completa = carro == null
+                            ? null
+                            : carro.anuncio_traseira_completa;
+                        carro.anuncio_vidro_traseiro =
+                            carro == null ? null : carro.anuncio_vidro_traseiro;
+
+                        carroController.updateCarro(carro).then((v) {
+                          dToast('Dados atualizados com sucesso!');
+                          Navigator.of(context).pop();
+                        });
+                      }),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+    );
   }
-  Future <List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
+
+  Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();
-    return campanhasRef.where('datafim',isGreaterThan: DateTime.now().millisecondsSinceEpoch).getDocuments().then((v){
+    return campanhasRef
+        .where('datafim', isGreaterThan: DateTime.now().millisecondsSinceEpoch)
+        .getDocuments()
+        .then((v) {
       List campanhas = new List();
-      for(var d in v.documents){
+      for (var d in v.documents) {
         campanhas.add(Campanha.fromJson(d.data));
       }
       for (Campanha z in campanhas) {
         items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
-
       }
       return items;
-    }
-    ).catchError((err) {
+    }).catchError((err) {
       print('aqui erro 1 ${err}');
       return null;
     });
@@ -153,9 +190,11 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
             children: <Widget>[
               Container(
                 child: hText(
-                    'Escolha as campanhas e suas respectivas posições', context, textaling: TextAlign.center),
+                    'Escolha as campanhas e suas respectivas posições', context,
+                    textaling: TextAlign.center),
               ),
-              sb,sb,
+              sb,
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -182,7 +221,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -210,7 +250,7 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
@@ -238,7 +278,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -265,7 +306,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -293,7 +335,7 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
@@ -321,7 +363,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -348,7 +391,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -364,10 +408,11 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                                       children: <Widget>[
                                         sb,
                                         hText(
-                                          carro.anuncio_traseira_completa == null
+                                          carro.anuncio_traseira_completa ==
+                                                  null
                                               ? 'Anuncios na Traseira'
-                                              : carro
-                                              .anuncio_traseira_completa.nome,
+                                              : carro.anuncio_traseira_completa
+                                                  .nome,
                                           context,
                                           size: 40,
                                           color: corPrimaria,
@@ -377,7 +422,7 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
@@ -405,7 +450,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                     ),
                   ),
                 ],
-              ),sb,
+              ),
+              sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -432,7 +478,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: FutureBuilder(
                                 future: getDropDownMenuItemsCampanha(),
                                 builder: (context, snapshot) {
@@ -450,7 +497,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                                         hText(
                                           carro.anuncio_vidro_traseiro == null
                                               ? 'Vidro Traseiro'
-                                              : carro.anuncio_vidro_traseiro.nome,
+                                              : carro
+                                                  .anuncio_vidro_traseiro.nome,
                                           context,
                                           size: 40,
                                           color: corPrimaria,
@@ -460,7 +508,7 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                                     style: TextStyle(
                                         color: corPrimaria,
                                         fontSize:
-                                        ScreenUtil.getInstance().setSp(40),
+                                            ScreenUtil.getInstance().setSp(40),
                                         fontWeight: FontWeight.bold),
                                     icon: Icon(Icons.arrow_drop_down,
                                         color: corPrimaria),
