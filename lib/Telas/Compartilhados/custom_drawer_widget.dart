@@ -128,12 +128,12 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                        carro: widget.carro
                       )));
                 }),
-                menuButton(context, 'Cadastrar Novos Carros', Icons.directions_car, true, () {
+                /*menuButton(context, 'Cadastrar Novos Carros', Icons.directions_car, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CadastrarNovoCarroPage(
                           carro: widget.carro, campanha: widget.campanha,
                       )));
-                }),
+                }),*/
 
                 Helper.localUser.permissao == 10 ?menuButton(context, 'Painel do Administrador', Icons.person, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
