@@ -813,71 +813,59 @@ class _CadastroState extends State<Cadastro> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-                                            GestureDetector(
-                                              onTap: () => showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              15.0),
-                                                      child: AlertDialog(
-                                                        title: hText(
-                                                            "Selecione uma opção",
-                                                            context),
-                                                        content:
-                                                            SingleChildScrollView(
-                                                          child: ListBody(
-                                                            children: <Widget>[
-                                                              defaultActionButton(
-                                                                  'Galeria',
-                                                                  context, () {
-                                                                getImage();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                                  icon: MdiIcons
-                                                                      .face),
-                                                              sb,
-                                                              defaultActionButton(
-                                                                  'Camera',
-                                                                  context, () {
-                                                                getImageCamera();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                                  icon: MdiIcons
-                                                                      .camera)
-                                                            ],
+                                            StreamBuilder<Object>(
+                                                stream: perfilController.outUser,
+                                                builder: (context, AsyncSnapshot snapshot) {
+                                                  if (snapshot.data == null) {
+                                                    return Container();
+                                                  }
+                                                  User u = snapshot.data;
+                                                return GestureDetector(
+                                                  onTap: () => showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return Padding(
+                                                          padding: const EdgeInsets.all(15.0),
+                                                          child: AlertDialog(
+                                                            title:
+                                                            hText("Selecione uma opção", context),
+                                                            content: SingleChildScrollView(
+                                                              child: ListBody(
+                                                                children: <Widget>[
+                                                                  defaultActionButton(
+                                                                      'Galeria', context, () {
+                                                                    getImage();
+                                                                    Navigator.of(context).pop();
+                                                                  }, icon: MdiIcons.face),
+                                                                  sb,
+                                                                  defaultActionButton(
+                                                                      'Camera', context, () {
+                                                                    getImageCamera();
+                                                                    Navigator.of(context).pop();
+                                                                  }, icon: MdiIcons.camera)
+                                                                ],
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }),
-                                              child: CircleAvatar(
-                                                  radius: (((getAltura(
-                                                                  context) +
-                                                              getLargura(
-                                                                  context)) /
+                                                        );
+                                                      }),
+                                                  child: CircleAvatar(
+                                                      radius: (((getAltura(context) +
+                                                          getLargura(context)) /
                                                           2) *
-                                                      .2),
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  child:
-                                                      Helper.localUser.foto !=
-                                                              null
+                                                          .2),
+                                                      backgroundColor: Colors.transparent,
+                                                      child: u.foto != null
                                                           ? Image(
-                                                              image: CachedNetworkImageProvider(
-                                                                  Helper
-                                                                      .localUser
-                                                                      .foto),
-                                                            )
+                                                        image:
+                                                        CachedNetworkImageProvider(u.foto),
+                                                      )
                                                           : Image(
-                                                              image: CachedNetworkImageProvider(
-                                                                  'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                            )),
+                                                        image: CachedNetworkImageProvider(
+                                                            'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                      )),
+                                                );
+                                              }
                                             ),
                                           ],
                                         ),
