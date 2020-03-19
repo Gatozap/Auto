@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                               hText('Km\'s Atuais', context,
                                   color: Colors.black),
                               SizedBox(height: 5),
-                              hText('Km\'s: ${Helper.localUser.kmmax}', context,
+                              hText('Km\'s: 0', context,
                                   color: corPrimaria,
                                   style: FontStyle.normal,
                                   weight: FontWeight.bold)

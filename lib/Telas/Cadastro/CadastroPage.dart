@@ -813,14 +813,8 @@ class _CadastroState extends State<Cadastro> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-                                            StreamBuilder<Object>(
-                                                stream: perfilController.outUser,
-                                                builder: (context, AsyncSnapshot snapshot) {
-                                                  if (snapshot.data == null) {
-                                                    return Container();
-                                                  }
-                                                  User u = snapshot.data;
-                                                return GestureDetector(
+
+                                             GestureDetector(
                                                   onTap: () => showDialog(
                                                       context: context,
                                                       builder: (context) {
@@ -855,18 +849,17 @@ class _CadastroState extends State<Cadastro> {
                                                           2) *
                                                           .2),
                                                       backgroundColor: Colors.transparent,
-                                                      child: u.foto != null
+                                                      child: Helper.localUser.foto != null
                                                           ? Image(
                                                         image:
-                                                        CachedNetworkImageProvider(u.foto),
+                                                        CachedNetworkImageProvider(Helper.localUser.foto),
                                                       )
                                                           : Image(
                                                         image: CachedNetworkImageProvider(
                                                             'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
                                                       )),
-                                                );
-                                              }
-                                            ),
+                                                ),
+
                                           ],
                                         ),
                                       ),
