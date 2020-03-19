@@ -172,7 +172,7 @@ Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria
             height: 35,
             width: 35,
           ),sb,
-          hText(text, context),
+          hText(text, context, size: 40, color: corPrimaria),
         ],
       ),
     );

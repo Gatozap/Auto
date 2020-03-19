@@ -753,6 +753,38 @@ class _CadastroState extends State<Cadastro> {
                           right: 10,
                         ),
                       ]);
+                    case 3:
+                      return Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(28.0),
+                            child: SingleChildScrollView(
+                              child: Container(
+                                child: seletorAnunciosCarro(),
+                              ),
+                            ),
+                          ),
+
+                          Positioned(
+                            child: MaterialButton(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                ),
+                                color: corPrimaria,
+                                onPressed: index != 0
+                                    ? () {
+                                        sc.previous(animation: true);
+                                      }
+                                    : null,
+                                shape: new CircleBorder(
+                                    side: BorderSide(color: corPrimaria))),
+                            bottom: 5,
+                            left: 10,
+                          ),
+                          
+                        ],
+                      );
                     case 2:
                       var CPF = MaskedTextController(
                           text: cc.CPF, mask: '000.000.000-00');
@@ -1277,99 +1309,6 @@ class _CadastroState extends State<Cadastro> {
                                                 controller: CPF);
                                           }),
                                       sb,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          MaterialButton(
-                                            color: corPrimaria,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(60)),
-                                            onPressed: () async {
-                                              if (int.parse(
-                                                      controllerKmsmin.text) >
-                                                  4000) {
-                                                List<Carro> carros = new List();
-                                                Carro ccc = new Carro(
-                                                  created_at: DateTime.now(),
-                                                  dono_nome:
-                                                      Helper.localUser.nome,
-                                                  updated_at: DateTime.now(),
-                                                  cor: controllerCor.text,
-                                                  ano: int.parse(
-                                                      controllerAno.text),
-                                                  placa: controllerPlaca.text,
-                                                  dono: Helper.localUser.id,
-                                                  modelo:
-                                                      controllerTipocarro.text,
-                                                  anuncio_bancos: carro == null
-                                                      ? null
-                                                      : carro.anuncio_bancos,
-                                                  anuncio_vidro_traseiro: carro ==
-                                                          null
-                                                      ? null
-                                                      : carro
-                                                          .anuncio_vidro_traseiro,
-                                                  anuncio_traseira_completa:
-                                                      carro == null
-                                                          ? null
-                                                          : carro
-                                                              .anuncio_traseira_completa,
-                                                  anuncio_laterais: carro ==
-                                                          null
-                                                      ? null
-                                                      : carro.anuncio_laterais,
-                                                );
-                                                carros.add(ccc);
-
-                                                Helper.localUser.carros =
-                                                    carros;
-                                                print(
-                                                    'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                                Helper.localUser
-                                                        .conta_bancaria =
-                                                    controllerConta_bancaria
-                                                        .text;
-                                                Helper.localUser.agencia =
-                                                    controllerAgencia.text;
-                                                Helper.localUser.numero_conta =
-                                                    controllerNumero_conta.text;
-
-                                                Helper.localUser.tipo_conta =
-                                                    selectTipo;
-                                                Helper.localUser.kmmin =
-                                                    int.parse(
-                                                        controllerKmsmin.text);
-                                                Helper.localUser.kmmax =
-                                                    int.parse(
-                                                        controllerKmsmax.text);
-                                                userRef
-                                                    .document(
-                                                        Helper.localUser.id)
-                                                    .updateData(Helper.localUser
-                                                        .toJson())
-                                                    .then((v) {
-                                                  dToast(
-                                                      'Banco salvo com sucesso !');
-                                                  sc.next(animation: true);
-                                                });
-                                                carroController.CriarCarros(
-                                                    ccc);
-                                                cc.atualizarDados(
-                                                    sc, context, 1);
-                                              } else {
-                                                dToast(
-                                                    'Kilometragem minima precisa ser superior a 4 mil!');
-                                              }
-                                            },
-                                            child: Text(
-                                              'Concluir Cadastro',
-                                              style: estiloTextoBotao,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -1402,6 +1341,25 @@ class _CadastroState extends State<Cadastro> {
                           Positioned(
                             child: MaterialButton(
                                 child: Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                ),
+                                color: corPrimaria,
+                                onPressed: index != null
+                                    ? index < 5 - 1
+                                    ? () {
+                                  sc.next(animation: true);
+                                }
+                                    : null
+                                    : null,
+                                shape: new CircleBorder(
+                                    side: BorderSide(color: corPrimaria))),
+                            bottom: 5,
+                            right: 10,
+                          ),
+                          Positioned(
+                            child: MaterialButton(
+                                child: Icon(
                                   Icons.arrow_back,
                                   color: Colors.white,
                                 ),
@@ -1425,7 +1383,7 @@ class _CadastroState extends State<Cadastro> {
                       return Container();
                   }
                 },
-                itemCount: 3,
+                itemCount: 4,
                 loop: false,
                 scrollDirection: Axis.horizontal,
                 controller: sc,
@@ -1538,6 +1496,20 @@ class _CadastroState extends State<Cadastro> {
         if (car.data == null) {
           carro = new Carro();
         }
+        if (carro.is_anuncio_bancos == null) {
+          carro.is_anuncio_bancos = false;
+        }
+
+        if (carro.is_anuncio_laterais == null) {
+          carro.is_anuncio_laterais = false;
+        }
+        if (carro.is_anuncio_traseira_completa == null) {
+          carro.is_anuncio_traseira_completa = false;
+        }
+        if (carro.is_anuncio_vidro_traseiro == null) {
+          carro.is_anuncio_vidro_traseiro = false;
+        }
+
         return Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Column(
@@ -1561,7 +1533,7 @@ class _CadastroState extends State<Cadastro> {
                           image: CachedNetworkImageProvider(
                               'https://cdn.shopify.com/s/files/1/2809/6686/products/sz10523_grande.jpg?v=1533527533'),
                           fit: BoxFit.cover),
-                      border: carro.anuncio_bancos == null
+                      border: carro.is_anuncio_bancos == false
                           ? Border.all(color: Colors.black, width: 3)
                           : Border.all(color: Colors.green, width: 3),
                       borderRadius: BorderRadius.circular(0),
@@ -1577,55 +1549,15 @@ class _CadastroState extends State<Cadastro> {
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_bancos == null
-                                              ? 'Anuncios nos bancos'
-                                              : carro.anuncio_bancos.nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_bancos = value;
-                                      print('aqui anuncio bancos 22 ${value}');
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
+                            child: defaultCheckBox(carro.is_anuncio_bancos,
+                                'Bancos Traseiros', context, () {
+                              carro.is_anuncio_bancos =
+                                  !carro.is_anuncio_bancos;
+                              carroController.carroSelecionado = carro;
+                              carroController.inCarroSelecionado
+                                  .add(carroController.carroSelecionado);
+                              print('anuncio ${carro.is_anuncio_bancos}');
+                            }, size: 10),
                           ),
                         ],
                       ),
@@ -1646,7 +1578,7 @@ class _CadastroState extends State<Cadastro> {
                           image: CachedNetworkImageProvider(
                               'https://images.vexels.com/media/users/3/145586/isolated/preview/8f11dbfb5ce1e294f79a0f9aea6b36bf-silhueta-de-vista-lateral-de-carro-de-cidade-by-vexels.png'),
                           fit: BoxFit.cover),
-                      border: carro.anuncio_laterais == null
+                      border: carro.is_anuncio_laterais == false
                           ? Border.all(color: Colors.black, width: 3)
                           : Border.all(color: Colors.green, width: 3),
                       borderRadius: BorderRadius.circular(0),
@@ -1655,65 +1587,13 @@ class _CadastroState extends State<Cadastro> {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_laterais == null
-                                              ? 'Anuncios nas laterais'
-                                              : carro.anuncio_laterais.nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_laterais = value;
-
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
+                      child: defaultCheckBox(
+                          carro.is_anuncio_laterais, 'Laterais', context, () {
+                        carro.is_anuncio_laterais = !carro.is_anuncio_laterais;
+                        carroController.carroSelecionado = carro;
+                        carroController.inCarroSelecionado
+                            .add(carroController.carroSelecionado);
+                      }, size: 10),
                     ),
                   ),
                 ],
@@ -1731,7 +1611,7 @@ class _CadastroState extends State<Cadastro> {
                           image: CachedNetworkImageProvider(
                               'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
                           fit: BoxFit.cover),
-                      border: carro.anuncio_traseira_completa == null
+                      border: carro.is_anuncio_traseira_completa == false
                           ? Border.all(color: Colors.black, width: 3)
                           : Border.all(color: Colors.green, width: 3),
                       borderRadius: BorderRadius.circular(0),
@@ -1740,67 +1620,14 @@ class _CadastroState extends State<Cadastro> {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_traseira_completa ==
-                                                  null
-                                              ? 'Anuncios na Traseira'
-                                              : carro.anuncio_traseira_completa
-                                                  .nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_traseira_completa = value;
-
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
+                      child: defaultCheckBox(carro.is_anuncio_traseira_completa,
+                          'Traseira Completa', context, () {
+                        carro.is_anuncio_traseira_completa =
+                            !carro.is_anuncio_traseira_completa;
+                        carroController.carroSelecionado = carro;
+                        carroController.inCarroSelecionado
+                            .add(carroController.carroSelecionado);
+                      }, size: 10),
                     ),
                   ),
                 ],
@@ -1818,7 +1645,7 @@ class _CadastroState extends State<Cadastro> {
                           image: CachedNetworkImageProvider(
                               'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
                           fit: BoxFit.cover),
-                      border: carro.anuncio_vidro_traseiro == null
+                      border: carro.is_anuncio_vidro_traseiro == false
                           ? Border.all(color: Colors.black, width: 3)
                           : Border.all(color: Colors.green, width: 3),
                       borderRadius: BorderRadius.circular(0),
@@ -1827,70 +1654,97 @@ class _CadastroState extends State<Cadastro> {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_vidro_traseiro == null
-                                              ? 'Vidro Traseiro'
-                                              : carro
-                                                  .anuncio_vidro_traseiro.nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_vidro_traseiro = value;
-
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
+                      child: defaultCheckBox(carro.is_anuncio_vidro_traseiro,
+                          'Vidro traseira', context, () {
+                        carro.is_anuncio_vidro_traseiro =
+                            !carro.is_anuncio_vidro_traseiro;
+                        carroController.carroSelecionado = carro;
+                        carroController.inCarroSelecionado
+                            .add(carroController.carroSelecionado);
+                      }, size: 10),
                     ),
                   ),
+
                 ],
-              )
+              ),sb,sb,
+              MaterialButton(
+                color: corPrimaria,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(60)),
+                onPressed: () async {
+                  if (int.parse(controllerKmsmin.text) > 4000) {
+                    List<Carro> carros = new List();
+                    Carro ccc = new Carro(
+                      created_at: DateTime.now(),
+                      dono_nome: Helper.localUser.nome,
+                      updated_at: DateTime.now(),
+                      cor: controllerCor.text,
+                      ano: int.parse(controllerAno.text),
+                      placa: controllerPlaca.text,
+                      dono: Helper.localUser.id,
+                      modelo: controllerTipocarro.text,
+                      is_anuncio_bancos: carro == null
+                          ? false
+                          : carro.is_anuncio_bancos,
+                      is_anuncio_vidro_traseiro: carro == null
+                          ? false
+                          : carro.is_anuncio_vidro_traseiro,
+                      is_anuncio_traseira_completa: carro ==
+                          null
+                          ? false
+                          : carro.is_anuncio_traseira_completa,
+                      is_anuncio_laterais: carro == null
+                          ? false
+                          : carro.is_anuncio_laterais,
+                      anuncio_bancos: carro == null
+                          ? null
+                          : carro.anuncio_bancos,
+                      anuncio_vidro_traseiro: carro == null
+                          ? null
+                          : carro.anuncio_vidro_traseiro,
+                      anuncio_traseira_completa: carro == null
+                          ? null
+                          : carro.anuncio_traseira_completa,
+                      anuncio_laterais: carro == null
+                          ? null
+                          : carro.anuncio_laterais,
+                    );
+                    carros.add(ccc);
+
+                    Helper.localUser.carros = carros;
+                    print(
+                        'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                    Helper.localUser.conta_bancaria =
+                        controllerConta_bancaria.text;
+                    Helper.localUser.agencia =
+                        controllerAgencia.text;
+                    Helper.localUser.numero_conta =
+                        controllerNumero_conta.text;
+
+                    Helper.localUser.tipo_conta = selectTipo;
+                    Helper.localUser.kmmin =
+                        int.parse(controllerKmsmin.text);
+                    Helper.localUser.kmmax =
+                        int.parse(controllerKmsmax.text);
+                    userRef
+                        .document(Helper.localUser.id)
+                        .updateData(Helper.localUser.toJson())
+                        .then((v) {
+                      dToast('Banco salvo com sucesso !');
+                      sc.next(animation: true);
+                    });
+                    carroController.CriarCarros(ccc);
+                    cc.atualizarDados(sc, context, 1);
+                  } else {
+                    dToast(
+                        'Kilometragem minima precisa ser superior a 4 mil!');
+                  }
+                },
+                child: Text(
+                  'Concluir Cadastro',
+                  style: estiloTextoBotao,
+                ),
+              ),
             ],
           ),
         );
