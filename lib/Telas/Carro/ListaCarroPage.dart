@@ -34,6 +34,7 @@ class ListaCarroPageState extends State<ListaCarroPage> {
     }
   }
 
+  String selectedCategoria = 'Nenhuma';
   @override 
   void dispose() {
     super.dispose();
@@ -42,7 +43,7 @@ class ListaCarroPageState extends State<ListaCarroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar('Lista de Carros', context),
+      appBar: myAppBar('Lista de Carros', context, ),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -127,5 +128,16 @@ class ListaCarroPageState extends State<ListaCarroPage> {
         ),
       ),
     );
+  }
+  List<PopupMenuItem<String>> getCategoriasMenuButton() {
+    {
+      List<PopupMenuItem<String>> items = List();
+      items.add(PopupMenuItem(value: 'Nenhuma', child: Text('Nenhuma')));
+      items.add(PopupMenuItem(value: 'lateral', child: Text('Lateral')));
+      items.add(PopupMenuItem(value: 'banco', child: Text('Banco')));
+      items.add(PopupMenuItem(value: 'traseira', child: Text('Traseira')));
+      items.add(PopupMenuItem(value: 'vidro_traseiro', child: Text('Vidro Traseiro')));
+      return items;
+    }
   }
 }

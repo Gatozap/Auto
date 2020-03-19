@@ -183,4 +183,6 @@ class CarroController extends BlocBase {
     carrosController.close();
     // TODO: implement dispose
   }
+
+  void FilterByCategoria(String selectedCategoria) {}
 }

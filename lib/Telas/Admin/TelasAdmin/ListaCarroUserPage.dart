@@ -43,11 +43,27 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
   void dispose() {
     super.dispose();
   }
+  String selectedCategoria = 'Nenhuma';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar('Lista de Carros', context),
+      appBar: myAppBar('Lista de Carros', context,actions: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PopupMenuButton(
+            onSelected: (String s) {
+                selectedCategoria = s;
+                pc.FilterByCategoria(selectedCategoria);
+            },
+            itemBuilder: (context) {
+              return getCategoriasMenuButton();
+            },
+            initialValue: selectedCategoria,
+            icon: Icon(Icons.filter_list, color: Colors.white),
+          ),
+        ),
+      ],),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -153,5 +169,17 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
         ),
       ),
     ]);
+  }
+  List<PopupMenuItem<String>> getCategoriasMenuButton() {
+    {
+      List<PopupMenuItem<String>> items = List();
+      items.add(PopupMenuItem(value: 'Nenhuma', child: Text('Nenhuma')));
+      items.add(PopupMenuItem(value: 'lateral', child: Text('Lateral')));
+      items.add(PopupMenuItem(value: 'banco', child: Text('Banco')));
+      items.add(PopupMenuItem(value: 'traseira', child: Text('Traseira')));
+      items.add(PopupMenuItem(
+          value: 'vidro_traseiro', child: Text('Vidro Traseiro')));
+      return items;
+    }
   }
 }

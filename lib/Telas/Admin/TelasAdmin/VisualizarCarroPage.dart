@@ -36,11 +36,12 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
 
   CarroController carroController;
   Carro carro;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: myAppBar('${widget.carro.dono_nome}', context),
+      appBar: myAppBar('${widget.carro.dono_nome}', context,),
       body: StreamBuilder<Carro>(
           stream: carroController.outCarroSelecionado,
           builder: (context, snapshot) {
@@ -199,86 +200,89 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  carro.is_anuncio_bancos == false? Container():
-                  Container(
-                    height: getAltura(context) * .15,
-                    width: getLargura(context) * .30,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://cdn.shopify.com/s/files/1/2809/6686/products/sz10523_grande.jpg?v=1533527533'),
-                          fit: BoxFit.cover),
-                      border: carro.is_anuncio_bancos == false
-                          ? Border.all(color: Colors.black, width: 3)
-                          : Border.all(color: Colors.green, width: 3),
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  carro.is_anuncio_bancos == false? Container():
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_bancos == null
-                                              ? 'Anuncios nos bancos'
-                                              : carro.anuncio_bancos.nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_bancos = value;
-
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
+                  carro.is_anuncio_bancos == false
+                      ? Container()
+                      : Container(
+                          height: getAltura(context) * .15,
+                          width: getLargura(context) * .30,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                    'https://cdn.shopify.com/s/files/1/2809/6686/products/sz10523_grande.jpg?v=1533527533'),
+                                fit: BoxFit.cover),
+                            border: carro.is_anuncio_bancos == false
+                                ? Border.all(color: Colors.black, width: 3)
+                                : Border.all(color: Colors.green, width: 3),
+                            borderRadius: BorderRadius.circular(0),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                  carro.is_anuncio_bancos == false
+                      ? Container()
+                      : Container(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 8.0, top: 30.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: FutureBuilder(
+                                      future: getDropDownMenuItemsCampanha(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data == null) {
+                                          return Container();
+                                        }
+                                        if (carro == null) {
+                                          carro = new Carro();
+                                        }
+
+                                        return DropdownButton(
+                                          hint: Row(
+                                            children: <Widget>[
+                                              sb,
+                                              hText(
+                                                carro.anuncio_bancos == null
+                                                    ? 'Anuncios nos bancos'
+                                                    : carro.anuncio_bancos.nome,
+                                                context,
+                                                size: 40,
+                                                color: corPrimaria,
+                                              ),
+                                            ],
+                                          ),
+                                          style: TextStyle(
+                                              color: corPrimaria,
+                                              fontSize: ScreenUtil.getInstance()
+                                                  .setSp(40),
+                                              fontWeight: FontWeight.bold),
+                                          icon: Icon(Icons.arrow_drop_down,
+                                              color: corPrimaria),
+                                          items: snapshot.data,
+                                          onChanged: (value) {
+                                            Campanha c = value;
+                                            if (c == null) {
+                                              c = Campanha();
+                                            }
+
+                                            if (carro == null) {
+                                              carro = new Carro();
+                                            }
+
+                                            carro.anuncio_bancos = value;
+
+                                            carroController.inCarroSelecionado
+                                                .add(carro);
+                                          },
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                 ],
               ),
               sb,
@@ -286,86 +290,90 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  carro.is_anuncio_laterais == false? Container():
-                  Container(
-                    height: getAltura(context) * .15,
-                    width: getLargura(context) * .30,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://images.vexels.com/media/users/3/145586/isolated/preview/8f11dbfb5ce1e294f79a0f9aea6b36bf-silhueta-de-vista-lateral-de-carro-de-cidade-by-vexels.png'),
-                          fit: BoxFit.cover),
-                      border: carro.is_anuncio_laterais == false
-                          ? Border.all(color: Colors.black, width: 3)
-                          : Border.all(color: Colors.green, width: 3),
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  carro.is_anuncio_laterais == false? Container():
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_laterais == null
-                                              ? 'Anuncios nas laterais'
-                                              : carro.anuncio_laterais.nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_laterais = value;
-
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
+                  carro.is_anuncio_laterais == false
+                      ? Container()
+                      : Container(
+                          height: getAltura(context) * .15,
+                          width: getLargura(context) * .30,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                    'https://images.vexels.com/media/users/3/145586/isolated/preview/8f11dbfb5ce1e294f79a0f9aea6b36bf-silhueta-de-vista-lateral-de-carro-de-cidade-by-vexels.png'),
+                                fit: BoxFit.cover),
+                            border: carro.is_anuncio_laterais == false
+                                ? Border.all(color: Colors.black, width: 3)
+                                : Border.all(color: Colors.green, width: 3),
+                            borderRadius: BorderRadius.circular(0),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                  carro.is_anuncio_laterais == false
+                      ? Container()
+                      : Container(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 8.0, top: 30.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: FutureBuilder(
+                                      future: getDropDownMenuItemsCampanha(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data == null) {
+                                          return Container();
+                                        }
+                                        if (carro == null) {
+                                          carro = new Carro();
+                                        }
+
+                                        return DropdownButton(
+                                          hint: Row(
+                                            children: <Widget>[
+                                              sb,
+                                              hText(
+                                                carro.anuncio_laterais == null
+                                                    ? 'Anuncios nas laterais'
+                                                    : carro
+                                                        .anuncio_laterais.nome,
+                                                context,
+                                                size: 40,
+                                                color: corPrimaria,
+                                              ),
+                                            ],
+                                          ),
+                                          style: TextStyle(
+                                              color: corPrimaria,
+                                              fontSize: ScreenUtil.getInstance()
+                                                  .setSp(40),
+                                              fontWeight: FontWeight.bold),
+                                          icon: Icon(Icons.arrow_drop_down,
+                                              color: corPrimaria),
+                                          items: snapshot.data,
+                                          onChanged: (value) {
+                                            Campanha c = value;
+                                            if (c == null) {
+                                              c = Campanha();
+                                            }
+
+                                            if (carro == null) {
+                                              carro = new Carro();
+                                            }
+
+                                            carro.anuncio_laterais = value;
+
+                                            carroController.inCarroSelecionado
+                                                .add(carro);
+                                          },
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                 ],
               ),
               sb,
@@ -373,88 +381,93 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  carro.is_anuncio_traseira_completa == false? Container():
-                  Container(
-                    height: getAltura(context) * .15,
-                    width: getLargura(context) * .30,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
-                          fit: BoxFit.cover),
-                      border: carro.is_anuncio_traseira_completa == false
-                          ? Border.all(color: Colors.black, width: 3)
-                          : Border.all(color: Colors.green, width: 3),
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  carro.is_anuncio_traseira_completa == false? Container():
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_traseira_completa ==
-                                                  null
-                                              ? 'Anuncios na Traseira'
-                                              : carro.anuncio_traseira_completa
-                                                  .nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_traseira_completa = value;
-
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
+                  carro.is_anuncio_traseira_completa == false
+                      ? Container()
+                      : Container(
+                          height: getAltura(context) * .15,
+                          width: getLargura(context) * .30,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                    'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
+                                fit: BoxFit.cover),
+                            border: carro.is_anuncio_traseira_completa == false
+                                ? Border.all(color: Colors.black, width: 3)
+                                : Border.all(color: Colors.green, width: 3),
+                            borderRadius: BorderRadius.circular(0),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                  carro.is_anuncio_traseira_completa == false
+                      ? Container()
+                      : Container(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 8.0, top: 30.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: FutureBuilder(
+                                      future: getDropDownMenuItemsCampanha(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data == null) {
+                                          return Container();
+                                        }
+                                        if (carro == null) {
+                                          carro = new Carro();
+                                        }
+
+                                        return DropdownButton(
+                                          hint: Row(
+                                            children: <Widget>[
+                                              sb,
+                                              hText(
+                                                carro.anuncio_traseira_completa ==
+                                                        null
+                                                    ? 'Anuncios na Traseira'
+                                                    : carro
+                                                        .anuncio_traseira_completa
+                                                        .nome,
+                                                context,
+                                                size: 40,
+                                                color: corPrimaria,
+                                              ),
+                                            ],
+                                          ),
+                                          style: TextStyle(
+                                              color: corPrimaria,
+                                              fontSize: ScreenUtil.getInstance()
+                                                  .setSp(40),
+                                              fontWeight: FontWeight.bold),
+                                          icon: Icon(Icons.arrow_drop_down,
+                                              color: corPrimaria),
+                                          items: snapshot.data,
+                                          onChanged: (value) {
+                                            Campanha c = value;
+                                            if (c == null) {
+                                              c = Campanha();
+                                            }
+
+                                            if (carro == null) {
+                                              carro = new Carro();
+                                            }
+
+                                            carro.anuncio_traseira_completa =
+                                                value;
+
+                                            carroController.inCarroSelecionado
+                                                .add(carro);
+                                          },
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                 ],
               ),
               sb,
@@ -462,87 +475,93 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  carro.is_anuncio_vidro_traseiro == false? Container():
-                  Container(
-                    height: getAltura(context) * .15,
-                    width: getLargura(context) * .30,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
-                          fit: BoxFit.cover),
-                      border: carro.is_anuncio_vidro_traseiro == false
-                          ? Border.all(color: Colors.black, width: 3)
-                          : Border.all(color: Colors.green, width: 3),
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  carro.is_anuncio_vidro_traseiro == false? Container():
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: FutureBuilder(
-                                future: getDropDownMenuItemsCampanha(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return Container();
-                                  }
-                                  if (carro == null) {
-                                    carro = new Carro();
-                                  }
-
-                                  return DropdownButton(
-                                    hint: Row(
-                                      children: <Widget>[
-                                        sb,
-                                        hText(
-                                          carro.anuncio_vidro_traseiro == null
-                                              ? 'Vidro Traseiro'
-                                              : carro
-                                                  .anuncio_vidro_traseiro.nome,
-                                          context,
-                                          size: 40,
-                                          color: corPrimaria,
-                                        ),
-                                      ],
-                                    ),
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    items: snapshot.data,
-                                    onChanged: (value) {
-                                      Campanha c = value;
-                                      if (c == null) {
-                                        c = Campanha();
-                                      }
-
-                                      if (carro == null) {
-                                        carro = new Carro();
-                                      }
-
-                                      carro.anuncio_vidro_traseiro = value;
-
-                                      carroController.inCarroSelecionado
-                                          .add(carro);
-                                    },
-                                  );
-                                }),
+                  carro.is_anuncio_vidro_traseiro == false
+                      ? Container()
+                      : Container(
+                          height: getAltura(context) * .15,
+                          width: getLargura(context) * .30,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                    'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
+                                fit: BoxFit.cover),
+                            border: carro.is_anuncio_vidro_traseiro == false
+                                ? Border.all(color: Colors.black, width: 3)
+                                : Border.all(color: Colors.green, width: 3),
+                            borderRadius: BorderRadius.circular(0),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                  carro.is_anuncio_vidro_traseiro == false
+                      ? Container()
+                      : Container(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 8.0, top: 30.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: FutureBuilder(
+                                      future: getDropDownMenuItemsCampanha(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.data == null) {
+                                          return Container();
+                                        }
+                                        if (carro == null) {
+                                          carro = new Carro();
+                                        }
+
+                                        return DropdownButton(
+                                          hint: Row(
+                                            children: <Widget>[
+                                              sb,
+                                              hText(
+                                                carro.anuncio_vidro_traseiro ==
+                                                        null
+                                                    ? 'Vidro Traseiro'
+                                                    : carro
+                                                        .anuncio_vidro_traseiro
+                                                        .nome,
+                                                context,
+                                                size: 40,
+                                                color: corPrimaria,
+                                              ),
+                                            ],
+                                          ),
+                                          style: TextStyle(
+                                              color: corPrimaria,
+                                              fontSize: ScreenUtil.getInstance()
+                                                  .setSp(40),
+                                              fontWeight: FontWeight.bold),
+                                          icon: Icon(Icons.arrow_drop_down,
+                                              color: corPrimaria),
+                                          items: snapshot.data,
+                                          onChanged: (value) {
+                                            Campanha c = value;
+                                            if (c == null) {
+                                              c = Campanha();
+                                            }
+
+                                            if (carro == null) {
+                                              carro = new Carro();
+                                            }
+
+                                            carro.anuncio_vidro_traseiro =
+                                                value;
+
+                                            carroController.inCarroSelecionado
+                                                .add(carro);
+                                          },
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ],
@@ -551,4 +570,6 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
       },
     );
   }
+
+
 }

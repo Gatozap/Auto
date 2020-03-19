@@ -67,4 +67,39 @@ class ListaCarroController extends BlocBase {
 
     // TODO: implement dispose
   }
+
+  void FilterByCategoria(String selectedCategoria) {
+    List<Carro> carrosFiltrados = new List();
+    if(selectedCategoria == 'Nenhuma'){
+      carrosFiltrados = carrosmain;
+      carros = carrosFiltrados;
+      inCarros.add(carros);
+      return;
+    }
+    for(Carro c in carrosmain){
+      if(selectedCategoria == 'lateral'){
+        if(c.is_anuncio_laterais){
+          carrosFiltrados.add(c);
+        }
+      }
+      if(selectedCategoria == 'banco'){
+        if(c.is_anuncio_bancos){
+          carrosFiltrados.add(c);
+        }
+      }
+      if(selectedCategoria == 'traseira'){
+        if(c.is_anuncio_traseira_completa){
+          carrosFiltrados.add(c);
+        }
+      }
+      if(selectedCategoria == 'vidro_traseiro'){
+        if(c.is_anuncio_vidro_traseiro){
+          carrosFiltrados.add(c);
+        }
+      }
+    }
+    carros = carrosFiltrados;
+    inCarros.add(carros);
+    return;
+  }
 }
