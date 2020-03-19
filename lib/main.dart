@@ -103,17 +103,6 @@ class _MyAppState extends State<MyApp> {
       switch (n.behaivior) {
       }
     });
-    /*switch (j['tipo']) {
-      case 'Estacionado':
-        Estacionado e = Estacionado.fromJson(
-            json.decode(json.decode(j['assunto'])['Estacionado']));
-        Rua rua = Rua.fromJson(json.decode(json.decode(j['assunto'])['Rua']));
-
-        print(
-            'AQUI DIFERENCA     ${e.data_saida.difference(DateTime.now()).inSeconds}');
-        Dialogs().ShowEstenderDialog(context, e, rua, false);
-        break;
-    }*/
   }
 
   @override
@@ -124,30 +113,9 @@ class _MyAppState extends State<MyApp> {
           context, MaterialPageRoute(builder: (context) => IntroPage()));
       SharedPreferences.getInstance().then((sp) {
         bool intro = sp.getBool('intro');
-        /*if (intro == null) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => IntroPage()));
-          } else {
-            if (intro == false) {*/
-
-        /*}
-          }*/
         isIntroOpen = true;
       });
     });
-
-    //TODO COMENTAR ESSAS 2 LINHAS
-    /*for (Assinatura a in assinaturas) {
-      assinaturasRef.document(a.id).setData(a.toJson());
-    }*/
-    //  Inserir planos
-    /*final planosRef = Firestore.instance.collection('Planos').reference();
-    for (Plano p in planos) {
-      planosRef.add(p.toJson()).then((docref) {
-        p.id = docref.documentID;
-        planosRef.document(p.id).updateData(p.toJson());
-      });
-    }*/
   }
 
   final userRef = Firestore.instance.collection('Users').reference();
@@ -211,12 +179,8 @@ class _MyAppState extends State<MyApp> {
           sp.setString('lastpush', json.encode(msg));
         });
         NotificacoesHelper().showNotification(msg, context);
-
-        /*pushData = msg;
-        hasPush = true;*/
       },
     );
-    //NotificacoesHelper().showDailyAtTime();
 
     fbmsg.requestNotificationPermissions(
         const IosNotificationSettings(alert: true, badge: true, sound: true));
@@ -236,15 +200,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         navigatorKey: MyApp.navKey,
         title: 'Autooh',
-        /*localizationsDelegates: [
-          // ... app-specific localization delegate[s] here
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('pt_br'),
-        ],*/
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             fontFamily: 'Helvetica',
@@ -252,15 +207,6 @@ class _MyAppState extends State<MyApp> {
             textSelectionHandleColor: corPrimaria,
             highlightColor: Colors.white,
             cursorColor: corPrimaria),
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: Helper.analytics),
         ],
@@ -317,8 +263,6 @@ class _MyAppState extends State<MyApp> {
 
   Future onDidRecieveLocalNotification(
       int id, String title, String body, String payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
-
     dToast('Aqui push ${payload.toString()}');
     NotificacoesHelper().showNotification(json.decode(payload), context);
     SharedPreferences.getInstance().then((sp) {

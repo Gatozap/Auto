@@ -23,6 +23,10 @@ class Carro {
   Campanha anuncio_laterais;
   Campanha anuncio_vidro_traseiro;
   Campanha anuncio_traseira_completa;
+  bool is_anuncio_bancos;
+  bool is_anuncio_laterais;
+  bool is_anuncio_vidro_traseiro;
+  bool is_anuncio_traseira_completa;
   String confirmacao;
   DateTime ultima_confirmacao;
 
@@ -43,6 +47,10 @@ class Carro {
       this.created_at,
       this.id,
       this.updated_at,
+        this.is_anuncio_bancos,
+        this.is_anuncio_laterais,
+        this.is_anuncio_vidro_traseiro,
+        this.is_anuncio_traseira_completa,
       this.deleted_at,
       this.anuncio_traseira_completa,
       this.anuncio_vidro_traseiro,
@@ -62,6 +70,10 @@ class Carro {
         dono_nome = j['dono_nome'],
         modelo = j['modelo'],
         marca = j['marca'],
+        is_anuncio_bancos=j['is_anuncio_bancos'],
+        is_anuncio_laterais=j['is_anuncio_laterais'],
+  is_anuncio_vidro_traseiro=j['is_anuncio_vidro_traseiro'],
+  is_anuncio_traseira_completa=j['is_anuncio_traseira_completa'],
         placa = j['placa'],
         isAprovado = j['isAprovado']== null? false : j['isAprovado'],
         ano = j['ano'],
@@ -105,6 +117,10 @@ class Carro {
         'modelo': modelo,
         'marca': marca,
         'placa': placa,
+    'is_anuncio_bancos': is_anuncio_bancos,
+    'is_anuncio_laterais': is_anuncio_laterais,
+    'is_anuncio_vidro_traseiro': is_anuncio_vidro_traseiro,
+    'is_anuncio_traseira_completa': is_anuncio_traseira_completa,
         'dono_nome': dono_nome,
         'confirmacao': confirmacao,
         'isAprovado': isAprovado == null? false: isAprovado,
@@ -139,6 +155,10 @@ class Carro {
         'id': id,
         'modelo': modelo,
         'marca': marca,
+    'is_anuncio_bancos':is_anuncio_bancos,
+    'is_anuncio_laterais':is_anuncio_laterais,
+    'is_anuncio_vidro_traseiro':is_anuncio_vidro_traseiro,
+    'is_anuncio_traseira_completa':is_anuncio_traseira_completa,
         'placa': placa,
         'dono_nome': dono_nome,
         'confirmacao': confirmacao,
