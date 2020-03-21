@@ -40,6 +40,9 @@ class User {
   bool isPrestador;
   bool isEmailVerified;
   bool isEmpresario;
+  bool manha;
+  bool tarde;
+  bool noite;
   String prestador;
   String tipo;
   bool isAdm;
@@ -133,6 +136,7 @@ class User {
       this.senha,this.tipo_conta,
       this.strike,this.numero_conta,this.agencia,
       this.identidade,
+        this.manha,this.tarde,this.noite,
       this.identidade_expedidor,
       this.identidade_data_expedicao,
       this.permissao,
@@ -168,12 +172,20 @@ this.atende_fds,
           hoje.month == this.data_nascimento.month;
     }
     if (this.atende_fds == null){
-      this.atende_fds == false;
+      this.atende_fds = false;
     }
     if (this.atende_festa == null){
-    this.atende_festa == false;
+    this.atende_festa = false;
     }
-
+     if(this.manha == null){
+       this.manha = false;
+     }
+     if(this.tarde == null){
+       this.tarde = false;
+     }
+     if(this.noite == null){
+       this.noite = false;
+     }
     
   }
 
@@ -194,6 +206,9 @@ this.atende_fds,
     this.agencia = j['agencia'] == null ? null : j['agencia'];
     this.numero_conta = j['numero_conta'] == null ? null : j['numero_conta'];
     this.isEmpresario = j['isEmpresario'] == null? false: j['isEmpresario'];
+    this.manha = j['manha'] == null? false: j['manha'];
+    this.tarde = j['tarde'] == null? false: j['tarde'];
+    this.noite = j['noite'] == null? false: j['noite'];
     this.data_nascimento = j['data_nascimento'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(j['data_nascimento']);
@@ -266,6 +281,10 @@ this.atende_fds,
     data['agencia'] = this.agencia;
     data['atende_festa'] = this.atende_festa == null? false: this.atende_festa;
     data['atende_fds'] = this.atende_fds == null? false: this.atende_fds;
+    data['manha'] = this.manha == null? false: this.manha;
+    data['tarde'] = this.tarde == null? false: this.tarde;
+    data['noite'] = this.noite == null? false: this.noite;
+
     data['conta_bancaria'] = this.conta_bancaria;
     data['isEmailVerified'] = this.isEmailVerified;
     data['data_nascimento'] = this.data_nascimento != null
@@ -310,7 +329,7 @@ this.atende_fds,
 
   @override
   String toString() {
-    return 'User{id: $id, nome: $nome, data_nascimento: $data_nascimento, celular: $celular, cpf: $cpf, isGroupAdm: $isGroupAdm, email: $email, responsavel: $responsavel, senha: $senha, user_responsavel: $user_responsavel, strike: $strike, identidade: $identidade, identidade_expedidor: $identidade_expedidor, identidade_data_expedicao: $identidade_data_expedicao, permissao: $permissao, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, cartoes: $cartoes, antecedentes: $antecedentes, antecendete_verificados_em: $antecendete_verificados_em, remember_token: $remember_token, genero: $genero, isPrestador: $isPrestador, isEmailVerified: $isEmailVerified, isEmpresario: $isEmpresario, prestador: $prestador, tipo: $tipo, isAdm: $isAdm, foto: $foto, isAlowed: $isAlowed, endereco: $endereco, isAniversario: $isAniversario, grupo: $grupo, tipo_conta: $tipo_conta, kmmin: $kmmin, kmmax: $kmmax, conta_bancaria: $conta_bancaria, carros: $carros, telefone: $telefone, agencia: $agencia, numero_conta: $numero_conta, isBanido: $isBanido, atende_festa: $atende_festa, atende_fds: $atende_fds, documentos: $documentos, example: $example}';
+    return 'User{id: $id, nome: $nome, data_nascimento: $data_nascimento, celular: $celular, cpf: $cpf, isGroupAdm: $isGroupAdm, email: $email, responsavel: $responsavel, senha: $senha, user_responsavel: $user_responsavel, strike: $strike, saldo: $saldo, identidade: $identidade, identidade_expedidor: $identidade_expedidor, identidade_data_expedicao: $identidade_data_expedicao, permissao: $permissao, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, cartoes: $cartoes, antecedentes: $antecedentes, antecendete_verificados_em: $antecendete_verificados_em, remember_token: $remember_token, genero: $genero, isPrestador: $isPrestador, isEmailVerified: $isEmailVerified, isEmpresario: $isEmpresario, manha: $manha, tarde: $tarde, noite: $noite, prestador: $prestador, tipo: $tipo, isAdm: $isAdm, foto: $foto, isAlowed: $isAlowed, endereco: $endereco, isAniversario: $isAniversario, grupo: $grupo, tipo_conta: $tipo_conta, kmmin: $kmmin, kmmax: $kmmax, conta_bancaria: $conta_bancaria, carros: $carros, telefone: $telefone, agencia: $agencia, numero_conta: $numero_conta, isBanido: $isBanido, atende_festa: $atende_festa, atende_fds: $atende_fds, documentos: $documentos, example: $example}';
   }
 
   static getCarros(decoded) {

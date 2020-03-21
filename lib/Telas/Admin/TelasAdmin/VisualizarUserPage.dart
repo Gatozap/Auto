@@ -113,7 +113,61 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
                     : Icon(
                   MdiIcons.close,
                   color: Colors.red,
-                ),],)
+                ),],),sb,
+              Row(
+                children: <Widget>[
+                  hText('Circula pela parte da manhã', context,
+                  ),
+                  widget.user.manha == true
+                      ? Icon(
+                    MdiIcons.checkBold,
+                    color: Colors.green,
+                  )
+                      : Icon(
+                    MdiIcons.close,
+                    color: Colors.red,
+                  ),
+
+
+                ],
+
+              ),sb,
+              Row(
+                children: <Widget>[
+                  hText('Circula pela parte da tarde', context,
+                  ),
+                  widget.user.tarde == true
+                      ? Icon(
+                    MdiIcons.checkBold,
+                    color: Colors.green,
+                  )
+                      : Icon(
+                    MdiIcons.close,
+                    color: Colors.red,
+                  ),
+
+
+                ],
+
+              ),sb,
+              Row(
+                children: <Widget>[
+                  hText('Circula pela parte da noite', context,
+                  ),
+                  widget.user.noite == true
+                      ? Icon(
+                    MdiIcons.checkBold,
+                    color: Colors.green,
+                  )
+                      : Icon(
+                    MdiIcons.close,
+                    color: Colors.red,
+                  ),
+
+
+                ],
+
+              ),sb,
             ],
           ),
         )),

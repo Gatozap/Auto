@@ -708,12 +708,59 @@ class _CadastroState extends State<Cadastro> {
                                                                 .add(cc.user);
                                                           }),
                                                           sb,
+                                                          defaultCheckBox(
+                                                              Helper.localUser
+                                                                  .manha,
+                                                              'Circula na parte da manhã',
+                                                              context, () {
+                                                            Helper.localUser
+                                                                .manha =
+                                                            !Helper
+                                                                .localUser
+                                                                .manha;
+                                                            cc.user = Helper
+                                                                .localUser;
+                                                            cc.inUser
+                                                                .add(cc.user);
+                                                          }),
                                                           sb,
+                                                          defaultCheckBox(
+                                                              Helper.localUser
+                                                                  .tarde,
+                                                              'Circula na parte da tarde',
+                                                              context, () {
+                                                            Helper.localUser
+                                                                .tarde =
+                                                            !Helper
+                                                                .localUser
+                                                                .tarde;
+                                                            cc.user = Helper
+                                                                .localUser;
+                                                            cc.inUser
+                                                                .add(cc.user);
+                                                          }),
                                                           sb,
+                                                          defaultCheckBox(
+                                                              Helper.localUser
+                                                                  .noite,
+                                                              'Circula na parte da noite',
+                                                              context, () {
+                                                            Helper.localUser
+                                                                .noite =
+                                                            !Helper
+                                                                .localUser
+                                                                .noite;
+                                                            cc.user = Helper
+                                                                .localUser;
+                                                            cc.inUser
+                                                                .add(cc.user);
+                                                          }),
                                                           sb,
+                                                          sb,sb,sb,sb,
                                                         ],
                                                       );
                                                     }),
+
                                               )
                                             ]))))),
                         Positioned(

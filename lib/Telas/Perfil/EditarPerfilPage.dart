@@ -316,32 +316,102 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                           ),
                           sb,
                           StreamBuilder(
-                              stream: cc.outUser,
-                              builder: (context, snapshot) {
-                                return defaultCheckBox(
-                                    Helper.localUser.atende_fds,
-                                    'Atende Final de Semana',
-                                    context, () {
-                                  Helper.localUser.atende_fds =
-                                      !Helper.localUser.atende_fds;
-                                  cc.user = Helper.localUser;
-                                  cc.inUser.add(cc.user);
-                                });
-                              }),
-                          sb,
-                          StreamBuilder(
-                              stream: cc.outUser,
-                              builder: (context, snapshot) {
-                                return defaultCheckBox(
-                                    Helper.localUser.atende_festa,
-                                    'Atende em Festas',
-                                    context, () {
-                                  Helper.localUser.atende_festa =
-                                      !Helper.localUser.atende_festa;
-                                  cc.user = Helper.localUser;
-                                  cc.inUser.add(cc.user);
-                                });
-                              }),
+                            stream: perfilController.outUser,
+                            builder: (context, snapshot) {
+                              return Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+
+                                Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: defaultCheckBox(
+                                            Helper.localUser.atende_fds,
+                                            'Atende Final de Semana',
+                                            context, () {
+                                          Helper.localUser.atende_fds =
+                                          !Helper.localUser.atende_fds;
+                                          perfilController.u = Helper.localUser;
+                                          perfilController.inUser.add(perfilController.u);
+                                        }),
+                                      ),
+                                sb,
+                         Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child:  defaultCheckBox(
+                                            Helper.localUser.atende_festa,
+                                            'Atende em Festas',
+                                            context, () {
+                                          Helper.localUser.atende_festa =
+                                          !Helper.localUser.atende_festa;
+                                          perfilController.u = Helper.localUser;
+                                          perfilController.inUser.add(perfilController.u);
+                                        }),
+                                      ),sb,
+Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
+                                          defaultCheckBox(
+                                              Helper.localUser
+                                                  .manha,
+                                              'Circula na parte da manhã',
+                                              context, () {
+                                            Helper.localUser
+                                                .manha =
+                                            !Helper
+                                                .localUser
+                                                .manha;
+                                            perfilController.u = Helper
+                                                .localUser;
+                                            perfilController.inUser
+                                                .add(perfilController.u);
+                                          }),
+
+
+
+
+
+
+                                        ],),
+                                      ),sb,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[ defaultCheckBox(
+                                      Helper.localUser
+                                          .tarde,
+                                      'Circula na parte da tarde',
+                                      context, () {
+                                    Helper.localUser
+                                        .tarde =
+                                    !Helper
+                                        .localUser
+                                        .tarde;
+                                    perfilController.u = Helper
+                                        .localUser;
+                                    perfilController.inUser
+                                        .add(perfilController.u);
+                                  }),],),
+                                ),sb,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[      defaultCheckBox(
+                                      Helper.localUser
+                                          .noite,
+                                      'Circula na parte da noite',
+                                      context, () {
+                                    Helper.localUser
+                                        .noite =
+                                    !Helper
+                                        .localUser
+                                        .noite;
+                                    perfilController.u = Helper
+                                        .localUser;
+                                    perfilController.inUser
+                                        .add(perfilController.u);
+                                  }),],),
+                                ),
+
+                              ],);
+                            }
+                          ),
+
                           Container(
                             child:
                                 defaultActionButton('Atualizar', context, () {
