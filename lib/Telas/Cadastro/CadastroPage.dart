@@ -76,11 +76,9 @@ class _CadastroState extends State<Cadastro> {
     selectTipo = _dropDownMenuItemsTipoConta[0].value;
 
     super.initState();
-    if (perfilController == null) {
-      perfilController == PerfilController(widget.user);
-    }
+
     if (cc == null) {
-      cc == CadastroController();
+      cc = CadastroController();
     }
     if (carroController == null) {
       carroController = CarroController(carro: widget.carro);
@@ -342,6 +340,9 @@ class _CadastroState extends State<Cadastro> {
   FocusNode myFocusNode;
   @override
   Widget build(BuildContext context) {
+    if (perfilController == null) {
+      perfilController = PerfilController(Helper.localUser);
+    }
     int duracao = 300;
     return Scaffold(
         body: StreamBuilder(
@@ -355,7 +356,7 @@ class _CadastroState extends State<Cadastro> {
                 itemBuilder: (BuildContext context, int index) {
                   print('Pagina $index');
                   switch (index) {
-                    case 0:
+                    case 2:
                       return Stack(
                         children: <Widget>[
                           Positioned(
@@ -499,7 +500,7 @@ class _CadastroState extends State<Cadastro> {
                         ],
                       );
 
-                    case 1:
+                    case 3:
                       return Stack(children: <Widget>[
                         Padding(
                             padding: const EdgeInsets.all(24.0),
@@ -800,7 +801,7 @@ class _CadastroState extends State<Cadastro> {
                           right: 10,
                         ),
                       ]);
-                    case 3:
+                    case 1:
                       return Stack(
                         children: <Widget>[
                           Padding(
@@ -832,7 +833,7 @@ class _CadastroState extends State<Cadastro> {
                           
                         ],
                       );
-                    case 2:
+                    case 0:
                       var CPF = MaskedTextController(
                           text: cc.CPF, mask: '000.000.000-00');
                       var telefone = MaskedTextController(
@@ -893,6 +894,10 @@ class _CadastroState extends State<Cadastro> {
                                                   child: StreamBuilder<User>(
                                                     stream: perfilController.outUser,
                                                     builder: (context, snapshot) {
+
+                                                         if(snapshot.data == null){
+                                                           return Container(child: hText('aqui veio null', context),);
+                                                         }
                                                       return CircleAvatar(
                                                           radius: (((getAltura(context) +
                                                               getLargura(context)) /
@@ -1710,85 +1715,8 @@ class _CadastroState extends State<Cadastro> {
                   ),
 
                 ],
-              ),sb,sb,
-              MaterialButton(
-                color: corPrimaria,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60)),
-                onPressed: () async {
-                  if (int.parse(controllerKmsmin.text) > 4000) {
-                    List<Carro> carros = new List();
-                    Carro ccc = new Carro(
-                      created_at: DateTime.now(),
-                      dono_nome: Helper.localUser.nome,
-                      updated_at: DateTime.now(),
-                      cor: controllerCor.text,
-                      ano: int.parse(controllerAno.text),
-                      placa: controllerPlaca.text,
-                      dono: Helper.localUser.id,
-                      modelo: controllerTipocarro.text,
-                      is_anuncio_bancos: carro == null
-                          ? false
-                          : carro.is_anuncio_bancos,
-                      is_anuncio_vidro_traseiro: carro == null
-                          ? false
-                          : carro.is_anuncio_vidro_traseiro,
-                      is_anuncio_traseira_completa: carro ==
-                          null
-                          ? false
-                          : carro.is_anuncio_traseira_completa,
-                      is_anuncio_laterais: carro == null
-                          ? false
-                          : carro.is_anuncio_laterais,
-                      anuncio_bancos: carro == null
-                          ? null
-                          : carro.anuncio_bancos,
-                      anuncio_vidro_traseiro: carro == null
-                          ? null
-                          : carro.anuncio_vidro_traseiro,
-                      anuncio_traseira_completa: carro == null
-                          ? null
-                          : carro.anuncio_traseira_completa,
-                      anuncio_laterais: carro == null
-                          ? null
-                          : carro.anuncio_laterais,
-                    );
-                    carros.add(ccc);
+              )
 
-                    Helper.localUser.carros = carros;
-                    print(
-                        'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                    Helper.localUser.conta_bancaria =
-                        controllerConta_bancaria.text;
-                    Helper.localUser.agencia =
-                        controllerAgencia.text;
-                    Helper.localUser.numero_conta =
-                        controllerNumero_conta.text;
-
-                    Helper.localUser.tipo_conta = selectTipo;
-                    Helper.localUser.kmmin =
-                        int.parse(controllerKmsmin.text);
-                    Helper.localUser.kmmax =
-                        int.parse(controllerKmsmax.text);
-                    userRef
-                        .document(Helper.localUser.id)
-                        .updateData(Helper.localUser.toJson())
-                        .then((v) {
-                      dToast('Banco salvo com sucesso !');
-                      sc.next(animation: true);
-                    });
-                    carroController.CriarCarros(ccc);
-                    cc.atualizarDados(sc, context, 1);
-                  } else {
-                    dToast(
-                        'Kilometragem minima precisa ser superior a 4 mil!');
-                  }
-                },
-                child: Text(
-                  'Concluir Cadastro',
-                  style: estiloTextoBotao,
-                ),
-              ),
             ],
           ),
         );
