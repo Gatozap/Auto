@@ -69,7 +69,7 @@ Future main() async {
       clientID: Platform.isIOS
           ? '833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com'
           : '833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com',
-      bundleID: 'br.com.avanti.divulcars',
+      bundleID: 'com.rbsoftware.autooh',
     ),
   );
   var firestore = new Firestore(app: app);

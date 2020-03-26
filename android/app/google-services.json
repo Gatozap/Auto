@@ -15,6 +15,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "833154723346-mkuvpbdqm8a54kmuond2cta7tss4i077.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.avanti.divulcars",
+            "certificate_hash": "2ab8f0b2d36a5ea17b1744b1554821727ee3f27b"
+          }
+        },
+        {
+          "client_id": "833154723346-h2mltfmrf27b71cl4n0d8tsn44vscl2t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.avanti.divulcars",
+            "certificate_hash": "ecf27e04956d9f7f72692e90a03562bfaf7e9958"
+          }
+        },
+        {
+          "client_id": "833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1TP3_Egip9wBhskTz2_tNT8sS6enrDNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833154723346:android:feebc8ad33bdd77fb9f2cb",
+        "android_client_info": {
+          "package_name": "com.rbsoftware.autooh"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com",
           "client_type": 3
         }
