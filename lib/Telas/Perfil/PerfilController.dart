@@ -83,6 +83,9 @@ class PerfilController extends BlocBase {
   }
 
   Future<String>  updateUser(User user) async {
+    if(user.data_nascimento == null){
+      user.data_nascimento = DateTime.now();
+    }
     user.data_nascimento = user.data_nascimento.subtract(Duration(hours: 3));
 
 

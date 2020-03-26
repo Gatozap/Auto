@@ -757,7 +757,102 @@ class _CadastroState extends State<Cadastro> {
                                                                 .add(cc.user);
                                                           }),
                                                           sb,
-                                                          sb,sb,sb,sb,
+                                                          sb,sb,
+                                                          StreamBuilder<Carro>(
+                                                              stream: carroController.outCarroSelecionado,
+                                                              builder: (context, car) {
+                                                                Carro carro = car.data;
+                                                                if (car.data == null) {
+                                                                  carro = new Carro();
+                                                                }
+                                                              return Row(
+                                                                mainAxisAlignment:
+                                                                MainAxisAlignment.center,
+                                                                children: <Widget>[
+                                                                  MaterialButton(
+                                                                    color: corPrimaria,
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius.circular(60)),
+                                                                    onPressed: () async {
+                                                                      if (int.parse(controllerKmsmin.text) > 4000) {
+                                                                        List<Carro> carros = new List();
+                                                                        Carro ccc = new Carro(
+                                                                          created_at: DateTime.now(),
+                                                                          dono_nome: Helper.localUser.nome,
+                                                                          updated_at: DateTime.now(),
+                                                                          cor: controllerCor.text,
+                                                                          ano: int.parse(controllerAno.text),
+                                                                          placa: controllerPlaca.text,
+                                                                          dono: Helper.localUser.id,
+                                                                          modelo: controllerTipocarro.text,
+                                                                          is_anuncio_bancos: carro == null
+                                                                              ? false
+                                                                              : carro.is_anuncio_bancos,
+                                                                          is_anuncio_vidro_traseiro: carro == null
+                                                                              ? false
+                                                                              : carro.is_anuncio_vidro_traseiro,
+                                                                          is_anuncio_traseira_completa: carro ==
+                                                                              null
+                                                                              ? false
+                                                                              : carro.is_anuncio_traseira_completa,
+                                                                          is_anuncio_laterais: carro == null
+                                                                              ? false
+                                                                              : carro.is_anuncio_laterais,
+                                                                          anuncio_bancos: carro == null
+                                                                              ? null
+                                                                              : carro.anuncio_bancos,
+                                                                          anuncio_vidro_traseiro: carro == null
+                                                                              ? null
+                                                                              : carro.anuncio_vidro_traseiro,
+                                                                          anuncio_traseira_completa: carro == null
+                                                                              ? null
+                                                                              : carro.anuncio_traseira_completa,
+                                                                          anuncio_laterais: carro == null
+                                                                              ? null
+                                                                              : carro.anuncio_laterais,
+                                                                        );
+                                                                        carros.add(ccc);
+
+                                                                        Helper.localUser.carros = carros;
+                                                                        print(
+                                                                            'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                                                                        Helper.localUser.conta_bancaria =
+                                                                            controllerConta_bancaria.text;
+                                                                        Helper.localUser.agencia =
+                                                                            controllerAgencia.text;
+                                                                        Helper.localUser.numero_conta =
+                                                                            controllerNumero_conta.text;
+
+                                                                        Helper.localUser.tipo_conta = selectTipo;
+                                                                        Helper.localUser.kmmin =
+                                                                            int.parse(controllerKmsmin.text);
+                                                                        Helper.localUser.kmmax =
+                                                                            int.parse(controllerKmsmax.text);
+                                                                        userRef
+                                                                            .document(Helper.localUser.id)
+                                                                            .updateData(Helper.localUser.toJson())
+                                                                            .then((v) {
+                                                                          dToast('Banco salvo com sucesso !');
+                                                                          sc.next(animation: true);
+                                                                        });
+                                                                        carroController.CriarCarros(ccc);
+                                                                        cc.atualizarDados(sc, context, 1);
+                                                                      } else {
+                                                                        dToast(
+                                                                            'Kilometragem minima precisa ser superior a 4 mil!');
+                                                                      }
+                                                                    },
+                                                                    child: Text(
+                                                                      'Concluir Cadastro',
+                                                                      style: estiloTextoBotao,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            }
+                                                          ),
+                                                          sb,sb,
                                                         ],
                                                       );
                                                     }),
@@ -781,29 +876,12 @@ class _CadastroState extends State<Cadastro> {
                           bottom: 5,
                           left: 10,
                         ),
-                        Positioned(
-                          child: MaterialButton(
-                              child: Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                              ),
-                              color: corPrimaria,
-                              onPressed: index != null
-                                  ? index < 5 - 1
-                                      ? () {
-                                          sc.next(animation: true);
-                                        }
-                                      : null
-                                  : null,
-                              shape: new CircleBorder(
-                                  side: BorderSide(color: corPrimaria))),
-                          bottom: 5,
-                          right: 10,
-                        ),
+
                       ]);
                     case 1:
                       return Stack(
                         children: <Widget>[
+
                           Padding(
                             padding: const EdgeInsets.all(28.0),
                             child: SingleChildScrollView(
@@ -830,7 +908,25 @@ class _CadastroState extends State<Cadastro> {
                             bottom: 5,
                             left: 10,
                           ),
-                          
+                          Positioned(
+                            child: MaterialButton(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                ),
+                                color: corPrimaria,
+                                onPressed: index != null
+                                    ? index < 5 - 1
+                                    ? () {
+                                  sc.next(animation: true);
+                                }
+                                    : null
+                                    : null,
+                                shape: new CircleBorder(
+                                    side: BorderSide(color: corPrimaria))),
+                            bottom: 5,
+                            right: 10,
+                          ),
                         ],
                       );
                     case 0:
@@ -890,21 +986,24 @@ class _CadastroState extends State<Cadastro> {
                                                             ),
                                                           ),
                                                         );
-                                                      }),
+                                                      }
+                                                      ),
                                                   child: StreamBuilder<User>(
                                                     stream: perfilController.outUser,
                                                     builder: (context, snapshot) {
 
-                                                         if(snapshot.data == null){
-                                                           return Container(child: hText('aqui veio null', context),);
-                                                         }
                                                       return CircleAvatar(
                                                           radius: (((getAltura(context) +
                                                               getLargura(context)) /
                                                               2) *
                                                               .2),
                                                           backgroundColor: Colors.transparent,
-                                                          child: snapshot.data.foto != null
+                                                          child:
+                                                           snapshot.data == null?Image(
+                                                             image: CachedNetworkImageProvider(
+                                                                 'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                           ):
+                                                          snapshot.data.foto != null
                                                               ? Image(
                                                             image:
                                                             CachedNetworkImageProvider(snapshot.data.foto),
@@ -1171,7 +1270,8 @@ class _CadastroState extends State<Cadastro> {
                                                                     : Image(
                                                                         image: CachedNetworkImageProvider(
                                                                             'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                                      ));
+                                                                      )
+                                                            );
                                                           }
                                                         ),
                                                       ),
