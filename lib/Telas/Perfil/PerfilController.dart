@@ -35,10 +35,16 @@ class PerfilController extends BlocBase {
     if(Helper.localUser.data_nascimento != null) {
       Helper.localUser.data_nascimento =
           Helper.localUser.data_nascimento.add(Duration(hours: 3));
+    }else{
+      Helper.localUser.data_nascimento = DateTime.now();
     }
     if (u != null) {
-      u.data_nascimento = u.data_nascimento.add(Duration(hours: 3));
-      print("data de nascimento AQUI ${u.data_nascimento.toIso8601String()}");
+      if(u.data_nascimento != null) {
+        u.data_nascimento = u.data_nascimento.add(Duration(hours: 3));
+        print("data de nascimento AQUI ${u.data_nascimento.toIso8601String()}");
+      }else{
+        u.data_nascimento = DateTime.now();
+      }
       inUser.add(u);
       userRef.document(u.id).snapshots().listen((snap) {
         u = new User.fromJson(snap.data);
@@ -76,7 +82,7 @@ class PerfilController extends BlocBase {
 
   }
 
-  Future<String> updateUser(User user) async {
+  Future<String>  updateUser(User user) async {
     user.data_nascimento = user.data_nascimento.subtract(Duration(hours: 3));
 
 

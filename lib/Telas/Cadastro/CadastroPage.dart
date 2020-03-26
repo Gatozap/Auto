@@ -890,21 +890,26 @@ class _CadastroState extends State<Cadastro> {
                                                           ),
                                                         );
                                                       }),
-                                                  child: CircleAvatar(
-                                                      radius: (((getAltura(context) +
-                                                          getLargura(context)) /
-                                                          2) *
-                                                          .2),
-                                                      backgroundColor: Colors.transparent,
-                                                      child: Helper.localUser.foto != null
-                                                          ? Image(
-                                                        image:
-                                                        CachedNetworkImageProvider(Helper.localUser.foto),
-                                                      )
-                                                          : Image(
-                                                        image: CachedNetworkImageProvider(
-                                                            'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                      )),
+                                                  child: StreamBuilder<User>(
+                                                    stream: perfilController.outUser,
+                                                    builder: (context, snapshot) {
+                                                      return CircleAvatar(
+                                                          radius: (((getAltura(context) +
+                                                              getLargura(context)) /
+                                                              2) *
+                                                              .2),
+                                                          backgroundColor: Colors.transparent,
+                                                          child: snapshot.data.foto != null
+                                                              ? Image(
+                                                            image:
+                                                            CachedNetworkImageProvider(snapshot.data.foto),
+                                                          )
+                                                              : Image(
+                                                            image: CachedNetworkImageProvider(
+                                                                'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                          ));
+                                                    }
+                                                  ),
                                                 ),
 
                                           ],
@@ -1138,29 +1143,32 @@ class _CadastroState extends State<Cadastro> {
                                                                 ),
                                                               );
                                                             }),
-                                                        child: CircleAvatar(
-                                                            radius: (((getAltura(
-                                                                            context) +
-                                                                        getLargura(
-                                                                            context)) /
-                                                                    2) *
-                                                                .2),
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            child: Helper
-                                                                        .localUser
-                                                                        .foto !=
-                                                                    null
-                                                                ? Image(
-                                                                    image: CachedNetworkImageProvider(Helper
-                                                                        .localUser
-                                                                        .foto),
-                                                                  )
-                                                                : Image(
-                                                                    image: CachedNetworkImageProvider(
-                                                                        'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                                  )),
+                                                        child: StreamBuilder<User>(
+                                                          stream: perfilController.outUser,
+                                                          builder: (context, snapshot) {
+                                                            return CircleAvatar(
+                                                                radius: (((getAltura(
+                                                                                context) +
+                                                                            getLargura(
+                                                                                context)) /
+                                                                        2) *
+                                                                    .2),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                child: snapshot.data
+                                                                            .foto !=
+                                                                        null
+                                                                    ? Image(
+                                                                        image: CachedNetworkImageProvider(snapshot.data
+                                                                            .foto),
+                                                                      )
+                                                                    : Image(
+                                                                        image: CachedNetworkImageProvider(
+                                                                            'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                                      ));
+                                                          }
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -1484,12 +1492,18 @@ class _CadastroState extends State<Cadastro> {
           color: Colors.transparent,
         ));
     pr.show();
-    Helper.localUser.foto = await uploadPicture(
-      image.path,
-    );
-    perfilController.updateUser(Helper.localUser);
+
+      Helper.localUser.foto = await uploadPicture(
+        image.path,
+      );
+      print('Helper ${Helper.localUser}');
+      if(perfilController == null){
+        perfilController = new PerfilController(Helper.localUser);
+      }
+      perfilController.updateUser(Helper.localUser);
+
     pr.dismiss();
-    dToast('Salvando Foto!');
+
   }
 
   Future getImage() async {
@@ -1508,12 +1522,14 @@ class _CadastroState extends State<Cadastro> {
           color: Colors.transparent,
         ));
     pr.show();
-    Helper.localUser.foto = await uploadPicture(
-      image.path,
-    );
-    perfilController.updateUser(Helper.localUser);
+      Helper.localUser.foto = await uploadPicture(
+        image.path,
+      );
+    if(perfilController == null){
+      perfilController = new PerfilController(Helper.localUser);
+    }
+      perfilController.updateUser(Helper.localUser);
     pr.dismiss();
-    dToast('Salvando Foto!');
   }
 
   Widget seletorAnunciosCarro() {
