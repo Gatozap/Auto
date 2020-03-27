@@ -1075,27 +1075,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.7"
-  qr:
-    dependency: transitive
-    description:
-      name: qr
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
-  qr_flutter:
-    dependency: "direct main"
-    description:
-      name: qr_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
-  qrcode_reader:
-    dependency: "direct main"
-    description:
-      name: qrcode_reader
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.4"
   quick_actions:
     dependency: "direct main"
     description:

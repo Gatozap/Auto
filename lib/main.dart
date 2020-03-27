@@ -30,7 +30,7 @@ import 'Helpers/NotificacoesHelper.dart';
 import 'Helpers/References.dart';
 import 'Objetos/Notificacao.dart';
 import 'Objetos/Zona.dart';
-import 'Telas/Cadastro/CadastroPage.dart';
+import 'Telas/Cadastro/CadastroPage.dart';  
 import 'Telas/Compartilhados/WaitScreen.dart';
 import 'Telas/Intro/IntroPage.dart';
 

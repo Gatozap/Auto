@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string/random_string.dart';
 
 import '../../../main.dart';
