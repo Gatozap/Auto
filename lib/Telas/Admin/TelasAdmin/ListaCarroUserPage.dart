@@ -66,26 +66,8 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
       ],),
       body: Container(
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-        StreamBuilder<List<Carro>>(
-            stream: pc.outCarros,
-            builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
-      if (snapshot.data == null) {
-      return Loading(completed: Text('Erro ao Buscar Carros'));
-      }
-      if (snapshot.data.length == 0) {
-      return Loading(completed: Text('Nenhum Carro encontrado'));
-      }
-      return
-        Container(
-          width: getLargura(context),
-             color: Colors.black12,
-            child: hText('Carros cadastrados: ${snapshot.data.length}',context, size: 75 ));
-            }),
-
             StreamBuilder<List<Carro>>(
               builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
                 if (snapshot.data == null) {
@@ -188,9 +170,6 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
       ),
     ]);
   }
-
-
-
   List<PopupMenuItem<String>> getCategoriasMenuButton() {
     {
       List<PopupMenuItem<String>> items = List();
@@ -198,7 +177,8 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
       items.add(PopupMenuItem(value: 'lateral', child: Text('Lateral')));
       items.add(PopupMenuItem(value: 'banco', child: Text('Banco')));
       items.add(PopupMenuItem(value: 'traseira', child: Text('Traseira')));
-      items.add(PopupMenuItem(value: 'vidro_traseiro', child: Text('Vidro Traseiro')));
+      items.add(PopupMenuItem(
+          value: 'vidro_traseiro', child: Text('Vidro Traseiro')));
       return items;
     }
   }
