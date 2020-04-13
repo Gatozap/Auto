@@ -68,30 +68,6 @@ class ListaCarroController extends BlocBase {
     // TODO: implement dispose
   }
 
-  FiltrarCarroPorCor(String desc) {
-    List<Carro> CarroFiltradoCor = new List();
-    for (Carro e in carrosmain) {
-      if (e.cor.toLowerCase().contains(desc.toLowerCase())) {
-        carrosmain.add(e);
-      }
-    }
-    carros = CarroFiltradoCor;
-    inCarros.add(carros);
-  }
-
-  List<Carro> FilerByCor(String selectedCor,String text) {
-    List<Carro> carroCor = new List();
-    for(Carro c in carrosmain){
-           if(selectedCor == text){
-             carroCor = carrosmain;
-             carros = carroCor;
-             inCarros.add(carros);
-           }
-    }
-  
-
-  }
-
   void FilterByCategoria(String selectedCategoria) {
     List<Carro> carrosFiltrados = new List();
     if(selectedCategoria == 'Nenhuma'){
@@ -106,7 +82,6 @@ class ListaCarroController extends BlocBase {
           carrosFiltrados.add(c);
         }
       }
-
       if(selectedCategoria == 'banco'){
         if(c.is_anuncio_bancos){
           carrosFiltrados.add(c);
