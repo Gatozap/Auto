@@ -1,7 +1,9 @@
 
+import 'package:autooh/CampanhasParaUsuario/ListaCampanhasUsuario.dart';
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/ListaEquipamentos.dart';
 import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Zona.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Intro/IntroPage.dart';
@@ -18,7 +20,8 @@ import 'package:autooh/Telas/Home/GruposController.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  Campanha campanha;
+  HomePage({Key key,this.campanha }) : super(key: key);
 
   @override
   _HomePageState createState() {
@@ -206,20 +209,26 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: <Widget>[
-                    Container(
-                      color: Colors.lightBlue[50],
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      height: getAltura(context) * .2,
-                      width: getLargura(context) * .4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Icon(MdiIcons.charity,
-                              size: 55, color: Colors.lightBlue[700]),
-                          hText('Anúncios', context)
-                        ],
+                    GestureDetector(
+                      onTap:(){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ListaCampanhasUsuarioPage(user: Helper.localUser, campanha: widget.campanha,)));
+                      },
+                      child: Container(
+                        color: Colors.lightBlue[50],
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        height: getAltura(context) * .2,
+                        width: getLargura(context) * .4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Icon(MdiIcons.charity,
+                                size: 55, color: Colors.lightBlue[700]),
+                            hText('Campanhas', context)
+                          ],
+                        ),
                       ),
                     ),
                     Container(

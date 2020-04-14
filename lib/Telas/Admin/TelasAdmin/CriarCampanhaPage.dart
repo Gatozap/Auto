@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/DateSelector.dart';
 import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/References.dart';
+
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Bairro.dart';
 import 'package:autooh/Objetos/Zona.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:short_stream_builder/short_stream_builder.dart';
+
 import 'package:autooh/Objetos/Campanha.dart';
-import 'package:autooh/Objetos/Produto.dart';
+
 import 'package:autooh/Telas/Admin/TelasAdmin/CampanhaController.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -32,22 +32,28 @@ class CriarCampanhaPage extends StatefulWidget {
 }
 
 class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
-  CampanhaController campanhaController;
+
   var controllerEmpresa = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
   var controllerCNPJ =
       new MaskedTextController(text: '', mask: '00.000.000/0000-00');
+  var controllerSobre = new TextEditingController(text: '');
   var controllerLimite = new TextEditingController(text: '');
   Campanha campanha;
   final _formKey = GlobalKey<FormState>();
   bool isCadastrarPressed = false;
   @override
   void initState() {
-    campanhaController = CampanhaController(campanha: widget.campanha);
+
+
 
     super.initState();
-  }
+    if(campanhaController == null){
+      campanhaController =  CampanhaController(campanha: widget.campanha);
+    }
 
+  }
+  CampanhaController campanhaController;
   @override
   void dispose() {
     super.dispose();
@@ -57,6 +63,8 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     BasicDateTimeField datainiField = BasicDateTimeField(
         label: 'Data de Início', icon: FontAwesomeIcons.solidCalendarPlus);
     BasicDateTimeField datafimField = BasicDateTimeField(
@@ -64,6 +72,8 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
 
     if (widget.campanha != null) {
+
+         controllerSobre.text = widget.campanha.sobre;
       controllerEmpresa.text = widget.campanha.empresa;
       controllerNome.text = widget.campanha.nome;
       controllerCNPJ.text = widget.campanha.cnpj;
@@ -78,6 +88,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
       }
 
       if (widget.campanha.datafim != null) {
+        
         datafim = widget.campanha.datafim;
         datafimField = BasicDateTimeField(
             label: 'Data de Fim',
@@ -100,7 +111,33 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                 child: StreamBuilder(
                     stream: campanhaController.outCampanha,
                     builder: (context, AsyncSnapshot snap) {
-                      campanha = snap.data;
+                      Campanha campanha = snap.data;
+
+                      if(campanha == null){
+                        campanha = new Campanha();
+                      }
+
+                      if(campanha.final_de_semana == null){
+                        campanha.final_de_semana = false;
+                      }
+
+                      if(campanha.atende_festas == null){
+                        campanha.atende_festas = false;
+                      }
+
+                      if(campanha.tarde == null){
+                        campanha.tarde = false;
+                      }
+                        if(campanha.manha == null){
+                          campanha.manha = false;
+                        }
+
+                        if(campanha.noite == null){
+                          campanha.noite = false;
+                        }
+
+
+
                       return Form(
                         key: _formKey,
                         child: Container(
@@ -170,14 +207,14 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                                                 campanha.fotos[
                                                                     0]))))
                                             : Image.asset(
-                                                'assets/images/nutrannoLogo.png',
+                                                'assets/images/autooh.png',
                                                 height: 200,
                                                 width: MediaQuery.of(context)
                                                     .size
                                                     .width,
                                               )
                                         : Image.asset(
-                                            'assets/images/nutrannoLogo.png',
+                                            'assets/images/autooh.png',
                                             height: 200,
                                             width: MediaQuery.of(context)
                                                 .size
@@ -246,9 +283,109 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.number,
                                   onSubmited: (s) {}),
+
+                              DefaultField(
+                                  controller: controllerSobre,
+                                  hint: 'Texto destinado a explicar como funciona a campanha, quem você representa e etc',
+                                  context: context,
+                                  label: 'Sobre',
+                                  icon: MdiIcons.accountEdit,
+                                  minLines: 1,
+                                  maxLines: 15,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher Sobre o que se trata a Campanha';
+                                      }
+                                    }
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  onSubmited: (s) {}),
                               datainiField,
                               datafimField,
+                              DefaultField(
+                                  controller: controllerLimite,
+                                  hint: '50',
+                                  context: context,
+                                  label: 'Limite de carros',
+                                  icon: FontAwesomeIcons.atlas,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher o Limite de carros por campanha';
+                                      }
+                                    }
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  onSubmited: (s) {}),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
+                                  defaultCheckBox(
+                                         campanha.final_de_semana
+                                         ,
+                                      'Campanha no Final de Semana',
+                                      context, () {
+                                    campanha.final_de_semana =
+                                    ! campanha.final_de_semana;
+                                    campanhaController.campanha = campanha
+                                        ;
+                                    campanhaController.inCampanha
+                                        .add(campanhaController.campanha);
+                                  }), sb,
+                                  defaultCheckBox(
+                                      campanha.atende_festas
+                                      ,
+                                      'Campanha para atendimento em festas',
+                                      context, () {
+                                    campanha.atende_festas =
+                                    ! campanha.atende_festas;
+                                    campanhaController.campanha = campanha
+                                    ;
+                                    campanhaController.inCampanha
+                                        .add(campanhaController.campanha);
+                                  }),sb,
+
+
+                                  defaultCheckBox(
+                                      campanha.tarde
+                                      ,
+                                      'Campanha no perido da Tarde',
+                                      context, () {
+                                    campanha.tarde =
+                                    ! campanha.tarde;
+                                    campanhaController.campanha = campanha
+                                    ;
+                                    campanhaController.inCampanha
+                                        .add(campanhaController.campanha);
+                                  }),  sb,
+                                  defaultCheckBox(
+                                      campanha.manha
+                                      ,
+                                      'Campanha no perido da manhã',
+                                      context, () {
+                                    campanha.manha =
+                                    ! campanha.manha;
+                                    campanhaController.campanha = campanha
+                                    ;
+                                    campanhaController.inCampanha
+                                        .add(campanhaController.campanha);
+                                  }),   sb,
+                                  defaultCheckBox(
+                                      campanha.noite
+                                      ,
+                                      'Campanha no perido da Noite',
+                                      context, () {
+                                    campanha.noite =
+                                    ! campanha.noite;
+                                    campanhaController.campanha = campanha
+                                    ;
+                                    campanhaController.inCampanha
+                                        .add(campanhaController.campanha);
+                                  }),
+                                ],),
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
@@ -376,9 +513,16 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       if (campanha == null) {
                                         campanha = new Campanha();
                                       }
+                                      campanha.atende_festas == null? false: campanha.atende_festas;
+                                      campanha.manha == null? false: campanha.manha;
+                                      campanha.tarde == null? false: campanha.tarde;
+                                      campanha.noite == null? false: campanha.noite;
+
+                                      campanha.sobre = controllerSobre.text;
+                                      campanha.final_de_semana == null? false: campanha.final_de_semana;
                                       campanha.empresa = controllerEmpresa.text;
                                       campanha.cnpj = controllerCNPJ.text;
-
+                                        campanha.limite = int.parse(controllerLimite.text);
                                       campanha.dataini =
                                           datainiField.selectedDate;
                                       campanha.datafim =
@@ -398,6 +542,8 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                         if(campanha.datafim == null){
                                           campanha.datafim = datafim;
                                         }
+
+
 
                                         campanhaController.EditarCampanha(
                                                 campanha)

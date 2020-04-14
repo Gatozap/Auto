@@ -13,6 +13,14 @@ class Campanha{
   DateTime datafim;
   List zonas;
   String nome;
+
+  bool manha;
+  bool tarde;
+  bool noite;
+  bool final_de_semana;
+  bool atende_festas;
+   String sobre;
+
  DateTime horaini;
  DateTime horafim;
  DateTime dias;
@@ -28,16 +36,22 @@ class Campanha{
      this.horaini,this.nome, this.horafim, this.dias, this.limite, this.fotos,this.created_at,
    this.updated_at,
    this.deleted_at,
-     this.carros, this.id});
+     this.carros, this.id, this.atende_festas, this.final_de_semana, this.manha, this.noite, this.sobre,this.tarde});
 
 
- @override
- String toString() {
-   return 'Campanha{empresa: $empresa, nome: $nome,id: $id,cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
- }
+  @override
+  String toString() {
+    return 'Campanha{id: $id, empresa: $empresa, cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, nome: $nome, manha: $manha, tarde: $tarde, noite: $noite, final_de_semana: $final_de_semana, atende_festas: $atende_festas, sobre: $sobre, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
+  }
 
- factory Campanha.fromJson(j){
+  factory Campanha.fromJson(j){
    Campanha c = new Campanha(
+     atende_festas: j['atende_festas'] == null ? false : j["atende_festas"],
+    final_de_semana: j['final_de_semana'] == null ? false : j["final_de_semana"],
+    manha: j['manha'] == null ? false : j["manha"],
+     noite: j['noite'] == null ? false : j["noite"],
+     tarde: j['noite'] == null ? false : j["noite"],
+    sobre: j['sobre'] == null ? null : j["sobre"],
     empresa: j['empresa'] == null ? null : j["empresa"],
      nome: j['nome'] == null ? null : j["nome"],
      id: j['id'] == null ? null : j["id"],
@@ -82,6 +96,12 @@ class Campanha{
      'nome': this.nome == null ? null : this.nome,
      'empresa': this.empresa == null ? null : this.empresa,
      'cnpj': this.cnpj == null ? null : this.cnpj,
+       'tarde':  this.tarde == null ? false : this.tarde,
+     'noite':  this.noite == null ? false : this.noite,
+     'manha':  this.manha == null ? false : this.manha,
+     'atende_festas':  this.atende_festas == null ? false : this.atende_festas,
+     'final_de_semana':  this.final_de_semana == null ? false : this.final_de_semana,
+     'sobre': this.sobre == null ? null : this.sobre,
      'dataini': this.dataini == null ? null : dataini.millisecondsSinceEpoch,
      'datafim': this.datafim == null ? null : datafim.millisecondsSinceEpoch,
      'zonas': this.zonas == null ?null: json.encode(this.zonas),
