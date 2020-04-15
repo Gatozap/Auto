@@ -13,7 +13,10 @@ class Campanha{
   DateTime datafim;
   List zonas;
   String nome;
-
+  bool anuncio_bancos;
+  bool anuncio_laterais;
+  bool anuncio_vidro_traseiro;
+  bool anuncio_traseira_completa;
   bool manha;
   bool tarde;
   bool noite;
@@ -34,20 +37,21 @@ class Campanha{
 
  Campanha({this.empresa, this.cnpj, this.dataini, this.datafim, this.zonas,
      this.horaini,this.nome, this.horafim, this.dias, this.limite, this.fotos,this.created_at,
-   this.updated_at,
+   this.updated_at,this.anuncio_bancos, this.anuncio_laterais, this.anuncio_traseira_completa, this.anuncio_vidro_traseiro,
    this.deleted_at,
      this.carros, this.id, this.atende_festas, this.final_de_semana, this.manha, this.noite, this.sobre,this.tarde});
 
 
-  @override
-  String toString() {
-    return 'Campanha{id: $id, empresa: $empresa, cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, nome: $nome, manha: $manha, tarde: $tarde, noite: $noite, final_de_semana: $final_de_semana, atende_festas: $atende_festas, sobre: $sobre, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
-  }
+
 
   factory Campanha.fromJson(j){
    Campanha c = new Campanha(
      atende_festas: j['atende_festas'] == null ? false : j["atende_festas"],
     final_de_semana: j['final_de_semana'] == null ? false : j["final_de_semana"],
+     anuncio_laterais: j['anuncio_laterais'] == null ? false : j["anuncio_laterais"],
+     anuncio_bancos: j['anuncio_bancos'] == null ? false : j["anuncio_bancos"],
+     anuncio_traseira_completa: j['anuncio_traseira_completa'] == null ? false : j["anuncio_traseira_completa"],
+     anuncio_vidro_traseiro: j['anuncio_vidro_traseiro'] == null ? false : j["anuncio_vidro_traseiro"],
     manha: j['manha'] == null ? false : j["manha"],
      noite: j['noite'] == null ? false : j["noite"],
      tarde: j['noite'] == null ? false : j["noite"],
@@ -90,7 +94,13 @@ class Campanha{
    );
    return c;
  }
- Map<String, dynamic> toJson() {
+
+  @override
+  String toString() {
+    return 'Campanha{id: $id, empresa: $empresa, cnpj: $cnpj, dataini: $dataini, datafim: $datafim, zonas: $zonas, nome: $nome, anuncio_bancos: $anuncio_bancos, anuncio_laterais: $anuncio_laterais, anuncio_vidro_traseiro: $anuncio_vidro_traseiro, anuncio_traseira_completa: $anuncio_traseira_completa, manha: $manha, tarde: $tarde, noite: $noite, final_de_semana: $final_de_semana, atende_festas: $atende_festas, sobre: $sobre, horaini: $horaini, horafim: $horafim, dias: $dias, limite: $limite, fotos: $fotos, carros: $carros, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at}';
+  }
+
+  Map<String, dynamic> toJson() {
    return {
      'id': this.id == null ? null : this.id,
      'nome': this.nome == null ? null : this.nome,
@@ -99,6 +109,10 @@ class Campanha{
        'tarde':  this.tarde == null ? false : this.tarde,
      'noite':  this.noite == null ? false : this.noite,
      'manha':  this.manha == null ? false : this.manha,
+     'anuncio_bancos':  this.anuncio_bancos == null ? false : this.anuncio_bancos,
+     'anuncio_vidro_traseiro':  this.anuncio_vidro_traseiro == null ? false : this.anuncio_vidro_traseiro,
+     'anuncio_traseira_completa':  this.anuncio_traseira_completa == null ? false : this.anuncio_traseira_completa,
+     'anuncio_laterais':  this.anuncio_laterais == null ? false : this.anuncio_laterais,
      'atende_festas':  this.atende_festas == null ? false : this.atende_festas,
      'final_de_semana':  this.final_de_semana == null ? false : this.final_de_semana,
      'sobre': this.sobre == null ? null : this.sobre,

@@ -46,17 +46,45 @@ class ListaUsuarioPageState extends State<ListaUsuarioPage> {
   void dispose() {
     super.dispose();
   }
-
+    String selectedCategoria = 'Nenhuma';
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: myAppBar('Lista de Carros', context),
+      appBar: myAppBar('Lista de Carros', context, actions: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PopupMenuButton(
+            onSelected: (String s) {
+              selectedCategoria = s;
+              pc.FilterByCategoria(selectedCategoria);
+            },
+            itemBuilder: (context) {
+              return getCategoriasMenuButton();
+            },
+            initialValue: selectedCategoria,
+            icon: Icon(Icons.filter_list, color: Colors.white),
+          ),
+        ),
+      ]),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            StreamBuilder<List<User>>(
+        StreamBuilder<List<User>>(
+            builder: (context, AsyncSnapshot<List<User>> snapshot) {
+
+      if (snapshot.data == null) {
+      return Loading(completed: Text('Erro ao Buscar Usuarios'));
+      }
+      if (snapshot.data.length == 0) {
+      return Loading(
+      completed: Text('Nenhum Usuario encontrado'));
+      }
+      return   hText('Total de Usuarios: ${snapshot.data.length}', context,);
+
+            }),
+      StreamBuilder<List<User>>(
               builder: (context, AsyncSnapshot<List<User>> snapshot) {
 
                 if (snapshot.data == null) {
@@ -67,19 +95,28 @@ class ListaUsuarioPageState extends State<ListaUsuarioPage> {
                       completed: Text('Nenhum Usuario encontrado'));
                 }
                 return Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      User p = snapshot.data[index];
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
 
-                      return CarroListItem( p);
-                    },
-                    itemCount: snapshot.data.length,
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            User p = snapshot.data[index];
+
+                            return CarroListItem( p);
+                          },
+                          itemCount: snapshot.data.length,
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
               stream: pc.outUsers,
-            )
+
+            ),
+
           ],
         ),
       ),
@@ -180,4 +217,16 @@ class ListaUsuarioPageState extends State<ListaUsuarioPage> {
       ),
     );
   }
+    List<PopupMenuItem<String>> getCategoriasMenuButton() {
+      {
+        List<PopupMenuItem<String>> items = List();
+        items.add(PopupMenuItem(value: 'Nenhuma', child: Text('Nenhuma')));
+        items.add(PopupMenuItem(value: 'manha', child: Text('manha')));
+        items.add(PopupMenuItem(value: 'tarde', child: Text('tarde')));
+        items.add(PopupMenuItem(value: 'noite', child: Text('noite')));
+        items.add(PopupMenuItem(value: 'atende_final_de_semana', child: Text('atende final de semana ')));
+        items.add(PopupMenuItem(value: 'atende_festas', child: Text('atende festas')));
+        return items;
+      }
+    }
 }

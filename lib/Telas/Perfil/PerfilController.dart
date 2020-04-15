@@ -81,6 +81,45 @@ class PerfilController extends BlocBase {
     });
 
   }
+  void FilterByCategoria(String selectedCategoria) {
+    List<User> userFiltrados = new List();
+    if(selectedCategoria == 'Nenhuma'){
+      userFiltrados = usersmain;
+      users = userFiltrados;
+      inUsers.add(users);
+      return;
+    }
+    for(User c in usersmain){
+      if(selectedCategoria == 'manha'){
+        if(c.manha){
+          userFiltrados.add(c);
+        }
+      }
+      if(selectedCategoria == 'tarde'){
+        if(c.tarde){
+          userFiltrados.add(c);
+        }
+      }
+      if(selectedCategoria == 'noite'){
+        if(c.noite){
+          userFiltrados.add(c);
+        }
+      }
+      if(selectedCategoria == 'atende_final_de_semana'){
+        if(c.atende_fds){
+          userFiltrados.add(c);
+        }
+      }
+      if(selectedCategoria == 'atende_festas'){
+        if(c.atende_festa){
+          userFiltrados.add(c);
+        }
+      }
+    }
+    users = userFiltrados;
+    inUsers.add(users);
+    return;
+  }
 
   Future<String>  updateUser(User user) async {
     if(user.data_nascimento == null){

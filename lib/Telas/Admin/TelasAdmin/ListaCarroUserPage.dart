@@ -68,16 +68,30 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+        StreamBuilder<List<Carro>>(
+    stream: pc.outCarros,
+            builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
+              if (snapshot.data == null) {
+                return Loading(completed: Text('Erro ao Buscar Carros'));
+              }
+
+              if (snapshot.data.length == 0) {
+                return Loading(completed: Text('Nenhum Carro encontrado'));
+              }
+              return hText('Total de Carros: ${snapshot.data.length}', context,) ;
+
+            }),
             StreamBuilder<List<Carro>>(
               builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
                 if (snapshot.data == null) {
                   return Loading(completed: Text('Erro ao Buscar Carros'));
                 }
+
                 if (snapshot.data.length == 0) {
                   return Loading(completed: Text('Nenhum Carro encontrado'));
                 }
                 return Expanded(
-                  child: ListView.builder(
+                  child:  ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       Carro p = snapshot.data[index];
@@ -86,6 +100,7 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                     },
                     itemCount: snapshot.data.length,
                   ),
+                 
                 );
               },
               stream: pc.outCarros,
