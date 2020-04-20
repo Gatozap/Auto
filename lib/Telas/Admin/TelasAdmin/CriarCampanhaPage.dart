@@ -387,6 +387,15 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                 ],),
                               ),
                               Padding(
+                                padding: const EdgeInsets.all(28.0),
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    child: seletorAnunciosCampanhas(),
+                                  ),
+                                ),
+                              ),
+
+                              Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: DropdownButton(
@@ -518,6 +527,11 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       campanha.tarde == null? false: campanha.tarde;
                                       campanha.noite == null? false: campanha.noite;
 
+                                       campanha.anuncio_bancos == null? false: campanha.anuncio_bancos;
+                                      campanha.anuncio_laterais == null? false: campanha.anuncio_laterais;
+                                      campanha.anuncio_traseira_completa == null? false: campanha.anuncio_traseira_completa;
+                                      campanha.anuncio_vidro_traseiro == null? false: campanha.anuncio_vidro_traseiro;
+
                                       campanha.sobre = controllerSobre.text;
                                       campanha.final_de_semana == null? false: campanha.final_de_semana;
                                       campanha.empresa = controllerEmpresa.text;
@@ -576,7 +590,192 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                       );
                     }))));
   }
+  Widget seletorAnunciosCampanhas() {
+    return StreamBuilder<Campanha>(
+      stream: campanhaController.outCampanha,
+      builder: (context, camp) {
+        Campanha campanha = camp.data;
+        if (camp.data == null) {
+          campanha = new Campanha();
+        }
+        if (campanha.anuncio_bancos == null) {
+          campanha.anuncio_bancos = false;
+        }
 
+        if (campanha.anuncio_laterais == null) {
+          campanha.anuncio_laterais = false;
+        }
+        if (campanha.anuncio_traseira_completa == null) {
+          campanha.anuncio_traseira_completa = false;
+        }
+        if (campanha.anuncio_vidro_traseiro == null) {
+          campanha.anuncio_vidro_traseiro = false;
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: hText(
+                    'Áreas que você quer disponibilizar para os anúncios',
+                    context,
+                    textaling: TextAlign.center),
+              ),
+              sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://cdn.shopify.com/s/files/1/2809/6686/products/sz10523_grande.jpg?v=1533527533'),
+                          fit: BoxFit.cover),
+                      border: campanha.anuncio_bancos == false
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: defaultCheckBox(campanha.anuncio_bancos,
+                                'Bancos Traseiros', context, () {
+                                  campanha.anuncio_bancos =
+                                  !campanha.anuncio_bancos;
+                                  campanhaController.campanha = campanha;
+                                  campanhaController.inCampanha
+                                      .add(campanhaController.campanha);
+                                  print('anuncio ${campanha.anuncio_bancos}');
+                                }, size: 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://images.vexels.com/media/users/3/145586/isolated/preview/8f11dbfb5ce1e294f79a0f9aea6b36bf-silhueta-de-vista-lateral-de-carro-de-cidade-by-vexels.png'),
+                          fit: BoxFit.cover),
+                      border: campanha.anuncio_laterais == false
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: defaultCheckBox(
+                          campanha.anuncio_laterais, 'Laterais', context, () {
+                        campanha.anuncio_laterais = !campanha.anuncio_laterais;
+                        campanhaController.campanha = campanha;
+                        campanhaController.inCampanha
+                            .add(campanhaController.campanha);
+                      }, size: 10),
+                    ),
+                  ),
+                ],
+              ),
+              sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
+                          fit: BoxFit.cover),
+                      border: campanha.anuncio_traseira_completa == false
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: defaultCheckBox(campanha.anuncio_traseira_completa,
+                          'Traseira Completa', context, () {
+                            campanha.anuncio_traseira_completa =
+                            !campanha.anuncio_traseira_completa;
+                            campanhaController.campanha = campanha;
+                            campanhaController.inCampanha
+                                .add(campanhaController.campanha);
+                          }, size: 10),
+                    ),
+                  ),
+                ],
+              ),
+              sb,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: getAltura(context) * .15,
+                    width: getLargura(context) * .30,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
+                          fit: BoxFit.cover),
+                      border: campanha.anuncio_vidro_traseiro == false
+                          ? Border.all(color: Colors.black, width: 3)
+                          : Border.all(color: Colors.green, width: 3),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30.0),
+                      child: defaultCheckBox(campanha.anuncio_vidro_traseiro,
+                          'Vidro traseira', context, () {
+                            campanha.anuncio_vidro_traseiro =
+                            !campanha.anuncio_vidro_traseiro;
+                            campanhaController.campanha = campanha;
+                            campanhaController.inCampanha
+                                .add(campanhaController.campanha);
+                          }, size: 10),
+                    ),
+                  ),
+
+                ],
+              )
+
+            ],
+          ),
+        );
+      },
+    );
+  }
   Future getImage(Campanha e) async {
     if (e == null) {
       e = new Campanha.Empty();
