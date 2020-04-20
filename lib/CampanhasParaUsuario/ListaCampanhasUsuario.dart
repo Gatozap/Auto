@@ -1,3 +1,4 @@
+import 'package:autooh/CampanhasParaUsuario/VisualizarCampanhaUserPage.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
@@ -69,8 +70,9 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       Campanha p = snapshot.data[index];
-
-                      return CampanhaListItem(p);
+      if(p.datafim.isAfter(DateTime.now())) {
+        return CampanhaListItem(p);
+      }
                     },
                     itemCount: snapshot.data.length,
                   ),
@@ -87,7 +89,7 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
   Widget CampanhaListItem(Campanha p, {User pp}) {
     return GestureDetector(
       onTap: () {
-
+        
       },
       child: Card(
         shape:
@@ -124,7 +126,27 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
                 ],
               ),
             ),
+            PopupMenuButton<String>(
+                onSelected: (String s){
+                  switch(s){
+                    case 'visualizar':
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => VisualizarCampanhaUserPage(campanha: p)));
+                      break;
 
+
+                  }
+                },
+                itemBuilder: (context) {
+                  List<PopupMenuItem<String>> itens = new List();
+                  itens.add(PopupMenuItem(
+                    child: hText('Visualizar Campanha', context),
+                    value: 'visualizar',
+                  ));
+                
+                  return itens;
+                },
+                icon: Icon(Icons.more_vert))
           ],
         ),
       ),
