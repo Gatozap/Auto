@@ -3,6 +3,7 @@ import 'package:autooh/Telas/Carro/EditarCarroPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/Styles.dart';
@@ -98,28 +99,50 @@ class ListaCarroPageState extends State<ListaCarroPage> {
                     ? Image(
                         image: CachedNetworkImageProvider(p.foto),
                       )
-                    : Image(
-                        image: CachedNetworkImageProvider(
-                            'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                      )),
+                    : 
+                Image(image: AssetImage('assets/carro_foto.png'))),
+            sb,
             Container(
-              width: getLargura(context) * .4,
+              width: getLargura(context)*.6,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    child: hText('${p.modelo}', context,
-                        size: 44, weight: FontWeight.bold),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(FontAwesomeIcons.carSide, size: 20, color: Colors.blue,), sb,sb,
+                        hText('Modelo: ${p.modelo}', context,
+                            size: 44, weight: FontWeight.bold),
+                      ],
+                    ),
+                  ),SizedBox(height: 2,),
+                  Row(
+
+                    children: <Widget>[
+                     Container(
+                          width: 30, height: 30,
+                         child: Image(image: AssetImage('assets/placa_veiculo.png'),)),sb,
+                      hText('Placa: ${p.placa}', context, size: 44),
+                    ],
+                  ),SizedBox(height: 2,),
+                  Row(
+                    children: <Widget>[
+                      Icon(FontAwesomeIcons.palette, color: Colors.blue, size: 20,), sb,sb,
+                      hText(
+                        'Cor: ${p.cor}',
+                        context,
+                        size: 44,
+                      ),
+                    ],
+                  ),SizedBox(height: 2,),
+                  Row(
+                    children: <Widget>[
+                      Icon(FontAwesomeIcons.calendar, color: Colors.blue, size: 20),sb,sb,
+                      hText('Ano: ${p.ano}', context,
+                          size: 44, color: Colors.blueAccent),
+                    ],
                   ),
-                  hText('Placa: ${p.placa}', context, size: 44),
-                  hText(
-                    'Cor: ${p.cor}',
-                    context,
-                    size: 44,
-                  ),
-                  hText('Ano: ${p.ano}', context,
-                      size: 44, color: Colors.blueAccent),
                   sb
                 ],
               ),

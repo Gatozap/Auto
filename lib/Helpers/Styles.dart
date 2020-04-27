@@ -28,7 +28,7 @@ const myOrange = const Color(0xFFF18904);
 const myBlue = const Color(0xFF0047BB);
 
 // fonte botões
-const estiloTextoBotao = TextStyle(fontSize: 21, color: Colors.white);
+const estiloTextoBotao = TextStyle(fontSize: 21, color: Colors.blue, fontWeight: FontWeight.bold);
 
 // fonte nota de rodapé
 const estiloTextoRodape = TextStyle(color: myBlack, fontSize: 12);

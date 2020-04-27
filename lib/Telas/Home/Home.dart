@@ -87,62 +87,65 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomDrawerWidget(),
-      appBar: myAppBar('Bem vindo ${Helper.localUser.nome}', context),
+      appBar: myAppBar('Bem vindo, ${Helper.localUser.nome}', context),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              sb,sb,sb,
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Expanded(
-                    child: Card(
-                        margin: EdgeInsets.zero,
-                        color: Colors.grey[200],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(35.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              hText('Saldo Atual', context,
-                                  color: Colors.black),
-                              SizedBox(height: 5),
-                              hText('R\$: 0.00', context,
+                  Card(
+
+                      margin: EdgeInsets.zero,
+                      color: Colors.yellowAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            hText('Saldo Atual', context,
+                                color: Colors.black),
+                            SizedBox(height: 5),
+                            Center(
+                              child: hText('R\$: 0.00', context,
                                   color: corPrimaria,
                                   style: FontStyle.normal,
-                                  weight: FontWeight.bold)
-                            ],
-                          ),
-                        )),
-                  ),
-                  Expanded(
-                    child: Card(
-                        margin: EdgeInsets.zero,
-                        color: Colors.grey[200],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
+                                  weight: FontWeight.bold),
+                            )
+                          ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(35.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              hText('Km\'s Atuais', context,
-                                  color: Colors.black),
-                              SizedBox(height: 5),
-                              hText('Km\'s: 0', context,
-                                  color: corPrimaria,
-                                  style: FontStyle.normal,
-                                  weight: FontWeight.bold)
-                            ],
-                          ),
-                        )),
-                  ),
+                      )),
+                  Card(
+                      margin: EdgeInsets.zero,
+                      color: Colors.yellowAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment. center,
+                          children: <Widget>[
+                            hText('Km\'s Atuais', context,
+                                color: Colors.black),
+                            SizedBox(height: 5),
+                            hText('Km\'s: 0', context,
+                                color: corPrimaria,
+                                style: FontStyle.normal,
+                                weight: FontWeight.bold)
+                          ],
+                        ),
+                      )),
                 ],
-              ),
+              ),sb,
+              Divider(color: Colors.blue,),
+
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -150,13 +153,15 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                     children: <Widget>[
                       hText('Atividades', context,
-                          color: Colors.grey[700], size: 100)
+                          color: Colors.blue, size: 100, weight: FontWeight.bold)
                     ],
                   )),
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+
+                margin: EdgeInsets.all(10),
+
                 child: Row(
                   children: <Widget>[
                     GestureDetector(
@@ -165,7 +170,15 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) => Racing()));
                       },
                       child: Container(
-                        color: Colors.lightBlue[50],
+
+                        decoration: BoxDecoration(
+                          color:Color.fromRGBO(0, 125, 190, 100),
+                          border: Border.all(
+                               color: Colors.transparent,
+                            width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         margin:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         height: getAltura(context) * .2,
@@ -174,9 +187,8 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Icon(MdiIcons.compass,
-                                size: 55, color: Colors.lightBlue[700]),
-                            hText('Iniciar Percurso', context)
+                                Container(width: 60, height: 60,child:  Image.asset('assets/iniciar_percurso.png', fit: BoxFit.fill),),
+                            hText('Iniciar\nPercurso', context, color:  Colors.white, textaling: TextAlign.center)
                           ],
                         ),
                       ),
@@ -185,19 +197,26 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => EstatisticaPage(user: Helper.localUser)));
                     },
-                      child: Container(
-                        color: Colors.lightBlue[50],
+                      child:  Container(
+
+                        decoration: BoxDecoration(
+                          color:Color.fromRGBO(0, 125, 190, 100),
+                          border: Border.all(
+                            color: Colors.transparent,
+                            width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         height: getAltura(context) * .2,
                         width: getLargura(context) * .4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Icon(MdiIcons.carConvertible,
-                                size: 55, color: Colors.lightBlue[700]),
-                            hText('Meus Percursos', context)
+                            Container(width: 60, height: 60,child:  Image.asset('assets/meus_percursos.png', fit: BoxFit.fill),),
+                            hText('Meus\nPercursos', context, color:  Colors.white, textaling: TextAlign.center)
                           ],
                         ),
                       ),
@@ -214,39 +233,53 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ListaCampanhasUsuarioPage(user: Helper.localUser, campanha: widget.campanha,)));
                       },
-                      child: Container(
-                        color: Colors.lightBlue[50],
+                      child:  Container(
+
+                        decoration: BoxDecoration(
+                          color:Color.fromRGBO(0, 125, 190, 100),
+                          border: Border.all(
+                            color: Colors.transparent,
+                            width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         height: getAltura(context) * .2,
                         width: getLargura(context) * .4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Icon(MdiIcons.charity,
-                                size: 55, color: Colors.lightBlue[700]),
-                            hText('Campanhas', context)
+                            Container(width: 60, height: 60,child:  Image.asset('assets/Campanhas.png', fit: BoxFit.fill),),
+                            hText('Campanhas', context, color:  Colors.white, textaling: TextAlign.center)
                           ],
                         ),
                       ),
                     ),
                     Container(
-                      color: Colors.lightBlue[50],
+
+                      decoration: BoxDecoration(
+                        color:Color.fromRGBO(0, 125, 190, 100),
+                        border: Border.all(
+                          color: Colors.transparent,
+                          width: 5,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       height: getAltura(context) * .2,
                       width: getLargura(context) * .4,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(MdiIcons.help,
-                              size: 55, color: Colors.lightBlue[700]),
-                          hText('Dúvidas', context)
+                          Container(width: 60, height: 60,child:  Image.asset('assets/duvidas_icone.png', fit: BoxFit.fill),),
+                          hText('Dúvidas', context, color:  Colors.white, textaling: TextAlign.center)
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               )

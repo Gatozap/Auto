@@ -168,11 +168,12 @@ Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria
             child: Icon(
               Icons.done,
               color: Colors.white,
+              size: 35,
             ),
-            height: 35,
-            width: 35,
+            height: 40,
+            width: 40,
           ),sb,
-          hText(text, context, size: 40, color: corPrimaria),
+          hText(text, context, size: 45, color: corPrimaria),
         ],
       ),
     );
@@ -180,9 +181,9 @@ Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria
 }
 
 Widget defaultActionButton(String text, context, Function onPressed,
-    {var icon = Icons.add,color = corPrimaria, textColor = Colors.white,size= 50}) {
+    {var icon = Icons.add,color = Colors.yellowAccent, textColor = Colors.blue,size= 50}) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding:  EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
     child: MaterialButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
       color: color,
@@ -196,11 +197,14 @@ Widget defaultActionButton(String text, context, Function onPressed,
                   color: textColor,
                 ),
           icon == null ? Container() : sb,
-          hText(
-            text,
-            context,
-            size: size,
-            color: textColor,
+          Padding(
+            padding:  EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+            child: hText(
+              text,
+              context,
+              size: size,
+              color: textColor,
+            ),
           )
         ],
       ),
@@ -980,7 +984,16 @@ dToast(String msg, {int timeInSecForIoss, String cor}) {
       textColor: Colors.white,
       fontSize: 16.0);
 }
-
+var linearGradient = const BoxDecoration(
+  gradient: const LinearGradient(
+    begin: FractionalOffset.topLeft,
+    end: FractionalOffset.bottomRight,
+    colors: <Color>[
+      Color.fromRGBO(0, 168, 180, 100),
+      Colors.indigo,
+    ],
+  ),
+);
 myAppBar(String titulo, context,
     {actions, bool showBack = false, bool close = false}) {
   if (showBack) {
@@ -1051,7 +1064,8 @@ myAppBar(String titulo, context,
       titulo,
       style: TextStyle(
         fontSize: 22,
-        color: Colors.white,
+        color: Colors.yellowAccent,
+        fontWeight: FontWeight.bold,
         fontFamily: 'HelveticaNeueBd',
       ),
     ),

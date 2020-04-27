@@ -88,6 +88,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       ),
     );
     return Scaffold(
+
       appBar: myAppBar('Editar Perfil', context),
       body: Stack(children: <Widget>[
         Align(
@@ -159,87 +160,116 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                     .2),
                                 backgroundColor: Colors.transparent,
                                 child: u.foto != null
-                                    ? Image(
-                                        image:
-                                            CachedNetworkImageProvider(u.foto),
-                                      )
-                                    : Image(
-                                        image: CachedNetworkImageProvider(
-                                            'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                      )),
+                                    ? Stack(
+                                      children: <Widget>[
+                                        Positioned(
+                                          child: Image(
+                                  image: CachedNetworkImageProvider(
+                                            u.foto),
+                                ),
+                                        ),
+                    Positioned(
+                    top: 90,
+                    left: 70,
+                    child: Center(
+                    child: CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Colors.black12,
+                    child: Icon(
+                    MdiIcons.cameraOutline,
+                    color: Colors.white,
+                    ),
+                    ),
+                    ),
+                    ),
+                                      ],
+                                    )
+                                    : Stack(children: <Widget>[
+                                  Positioned(
+                                    child: Image(
+                                        image: AssetImage(
+                                            'assets/editar_perfil.png')),
+                                  ),
+                                  Positioned(
+                                    top: 35,
+                                    left: 75,
+                                    child: Center(
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Colors.black12,
+                                        child: Icon(
+                                          MdiIcons.cameraOutline,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ])),
                           ),
                           sb,
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                controller: controllerNome,
-                                hint: u.nome,
-                                context: context,
-                                label: 'Nome',
-                                icon: Icons.account_box,
-                              ))
-                            ],
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 30),
+                            child: DefaultField(
+                              controller: controllerNome,
+                              hint: u.nome,
+                              context: context,
+                              label: 'Nome',
+                              icon: FontAwesomeIcons.user,
+                            ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                controller: controllerEmail,
-                                hint: u.email,
-                                context: context,
-                                label: 'Email',
-                                icon: Icons.email,
-                                keyboardType: TextInputType.emailAddress,
-                                validator: (value) {
-                                  if (isPressed) {
-                                    if (value.contains('@')) {
-                                      u.email = value.removerAcentos;
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 30),
+                            child: DefaultField(
+                              controller: controllerEmail,
+                              hint: u.email,
+                              context: context,
+                              label: 'Email',
+                              icon: FontAwesomeIcons.envelope,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                            if (isPressed) {
+                              if (value.contains('@')) {
+                                u.email = value.removerAcentos;
 
-                                      perfilController.inUser.add(u);
-                                      return null;
-                                    } else {
-                                      return 'E-mail inválido!';
-                                    }
-                                  }
-                                },
-                              ))
-                            ],
+                                perfilController.inUser.add(u);
+                                return null;
+                              } else {
+                                return 'E-mail inválido!';
+                              }
+                            }
+                              },
+                            ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                      controller: controllerTelefone,
-                                      hint: u.celular,
-                                      context: context,
-                                      label: 'Telefone',
-                                      icon: Icons.add_call,
-                                      keyboardType: TextInputType.phone))
-                            ],
-                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 30),
+                            child: DefaultField(
+                                controller: controllerTelefone,
+                                hint: u.celular,
+                                context: context,
+                                label: 'Telefone',
+                                icon: FontAwesomeIcons.mobileAlt,
+                                keyboardType: TextInputType.phone),
+                          ),sb,
+                          Divider(color: corPrimaria),
+                          sb,
                           Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                hText('Dados da sua conta Bancaria', context,
-                                    size: 35)
+                                hText('Dados Bancários', context,
+                                    size: 50)
                               ]),
                           sb,
+                          Divider(color: corPrimaria),
+                          sb,
                           Padding(
-                            padding: ei,
+                            padding: EdgeInsets.only(left: 60, right: 30),
                             child: TypeAheadField(
                               textFieldConfiguration: TextFieldConfiguration(
                                   controller: controllerConta_bancaria,
                                   style: TextStyle(color: Colors.black),
                                   decoration: DefaultInputDecoration(context,
-                                      icon: MdiIcons.bank,
+                                      icon: FontAwesomeIcons.university,
                                       labelText: 'Banco',
                                       hintText: 'Caixa Economica Federal')),
                               suggestionsCallback: (pattern) async {
@@ -256,64 +286,79 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                               },
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 30),
+                            child: DefaultField(
+                              controller: controllerAgencia,
+                              hint: u.agencia,
+                              context: context,
+                              label: 'Agência',
+                              icon:FontAwesomeIcons.creditCard,
+                            ),
+                          ),
+
+                    Padding(
+                    padding: EdgeInsets.only(left: 50, right: 30),
+                    child: DefaultField(
+                            controller: controllerNumero_conta,
+                            hint: u.numero_conta,
+                            context: context,
+                            label: 'Número da Conta',
+                            icon:FontAwesomeIcons.creditCard,
+                          ),   ),
+
+
                           Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
+
                             children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(left: 55, right: 5),
+                                child: Container(height: 30, width: 30, child: Image.asset('assets/velocimetro_low.png',fit: BoxFit.fill,),),
+                              ),
                               Expanded(
-                                  child: DefaultField(
-                                controller: controllerAgencia,
-                                hint: u.agencia,
-                                context: context,
-                                label: 'Agência',
-                                icon: MdiIcons.creditCard,
-                              ))
+                                child: DefaultField(
+                                  keyboardType: TextInputType.number,
+                                  controller: controllerKmmin,
+                                  hint: '${u.kmmin}',
+                                  context: context,
+                                  label: 'Quilometros percorridos no Mínimo',
+                                  icon: null,
+                                ),
+                              ),
                             ],
                           ),
                           Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
+
                             children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(left: 55, right: 5),
+                                child:Container(height: 30, width: 30, child: Image.asset('assets/velocimetro_fast.png',fit: BoxFit.fill,),),
+                              ),
                               Expanded(
                                   child: DefaultField(
-                                controller: controllerNumero_conta,
-                                hint: u.numero_conta,
-                                context: context,
-                                label: 'Número da Conta',
-                                icon: MdiIcons.creditCard,
-                              ))
+                                    keyboardType: TextInputType.number,
+                                    controller: controllerKmmax,
+                                    hint: '${u.kmmax}',
+                                    context: context,
+                                    label: 'Quilometros percorridos Máximo',
+                                    icon:null,
+                                  )
+                              ),
                             ],
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                keyboardType: TextInputType.number,
-                                controller: controllerKmmin,
-                                hint: '${u.kmmin}',
-                                context: context,
-                                label: 'Quilometros percorridos no Mínimo',
-                                icon: MdiIcons.run,
-                              ))
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                keyboardType: TextInputType.number,
-                                controller: controllerKmmax,
-                                hint: '${u.kmmax}',
-                                context: context,
-                                label: 'Quilometros percorridos Máximo',
-                                icon: MdiIcons.run,
-                              ))
-                            ],
-                          ),
+                    sb,
+                    Divider(color: corPrimaria),
+                    sb,
+                    Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                    hText('Rotinas de Trabalho', context,
+                    size: 50)
+                    ]),
+                    sb,
+                    Divider(color: corPrimaria),
+                    sb,
                           sb,
                           StreamBuilder(
                             stream: perfilController.outUser,
@@ -321,7 +366,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                               return Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
                                 Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.only(left: 50, right: 30),
                                         child: defaultCheckBox(
                                             Helper.localUser.atende_fds,
                                             'Atende Final de Semana',
@@ -332,9 +377,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                           perfilController.inUser.add(perfilController.u);
                                         }),
                                       ),
-                                sb,
+                                sb, sb,
                          Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                           padding: EdgeInsets.only(left: 50, right: 30),
                                         child:  defaultCheckBox(
                                             Helper.localUser.atende_festa,
                                             'Atende em Festas',
@@ -344,9 +389,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                           perfilController.u = Helper.localUser;
                                           perfilController.inUser.add(perfilController.u);
                                         }),
-                                      ),sb,
+                                      ),sb,sb,
 Padding(
-                                        padding: const EdgeInsets.all(8.0),
+  padding: EdgeInsets.only(left: 50, right: 30),
                                         child: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
                                           defaultCheckBox(
                                               Helper.localUser
@@ -370,9 +415,9 @@ Padding(
 
 
                                         ],),
-                                      ),sb,
+                                      ),sb,sb,
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.only(left: 50, right: 30),
                                   child: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[ defaultCheckBox(
                                       Helper.localUser
                                           .tarde,
@@ -388,10 +433,11 @@ Padding(
                                     perfilController.inUser
                                         .add(perfilController.u);
                                   }),],),
-                                ),sb,
+                                ),sb,sb,
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.only(left: 50, right: 30),
                                   child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[      defaultCheckBox(
+
                                       Helper.localUser
                                           .noite,
                                       'Circula na parte da noite',
@@ -405,12 +451,12 @@ Padding(
                                         .localUser;
                                     perfilController.inUser
                                         .add(perfilController.u);
-                                  }),],),
+                                  }, ),],),
                                 ),
 
                               ],);
                             }
-                          ),
+                          ),sb,sb,
 
                           Container(
                             child:
@@ -438,8 +484,8 @@ Padding(
                               }else{
                                 dToast('Kilometragem minima precisa ser superior a 4 mil!');
                               }
-                            }),
-                          ),
+                            }, size: 90, icon: null),
+                          ),sb,sb,
                         ],
                       ),
                     );

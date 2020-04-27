@@ -46,10 +46,27 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
     if (pfcontroller == null) {
       pfcontroller = PerfilController(widget.user);
     }
+    var linearGradient = const BoxDecoration(
+      gradient: const LinearGradient(
+        begin: FractionalOffset.topLeft,
+        end: FractionalOffset.bottomRight,
+        colors: <Color>[
+          Color.fromRGBO(0, 168, 180, 100),
+          Colors.indigo,
+        ],
+      ),
+    );
     return Drawer(
-      child: Scrollbar(
-        child: Container(
-          color: corPrimaria,
+
+      child:
+      Stack(children: <Widget>[
+      Scrollbar(
+        child:
+
+       Container(
+          decoration: linearGradient,
+
+         height: getAltura(context),
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .1, left: 10),
@@ -62,7 +79,10 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
 
                   child: Row(
                     children: <Widget>[
-                      CircleAvatar(
+                     Container(width: 100, height: 100, child:  Helper
+                         .localUser.foto !=
+                         null ? Image(image: CachedNetworkImageProvider(Helper.localUser.foto )): AssetImage('assets/foto_perfil.png')),
+                      /*CircleAvatar(
                         radius: 30,
                         backgroundImage: CachedNetworkImageProvider(Helper
                                     .localUser !=
@@ -71,7 +91,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                                 ? Helper.localUser.foto
                                 : 'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'
                             : 'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                      ),
+                      ),*/
                       SizedBox(
                         width: 5,
                       ),
@@ -90,9 +110,9 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                                       : 'Carregando usuário'
                                   : 'Carregando usuário',
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.yellowAccent,
                                   fontSize: 24,
-                                  fontStyle: FontStyle.normal),
+                                  fontStyle: FontStyle.normal, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 5,
@@ -114,15 +134,15 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                       )
                     ],
                   ),
-                ),
+                ),sb,sb,
 
-                menuButton(context, 'Editar Perfil', Icons.person, true, () {
+                menuButton(context, 'Editar Perfil', FontAwesomeIcons.user, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => EditarPerfilPage(
                             user: Helper.localUser,
                           )));
                 }),
-                menuButton(context, 'Editar Meus Carros', Icons.directions_car, true, () {
+                menuButton(context, 'Editar Meu Carro', FontAwesomeIcons.carSide, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ListaCarroPage(
                        carro: widget.carro
@@ -135,7 +155,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                       )));
                 }),*/
 
-                Helper.localUser.permissao == 10 ?menuButton(context, 'Painel do Administrador', Icons.person, true, () {
+                Helper.localUser.permissao == 10 ?menuButton(context, 'Painel do Administrador', FontAwesomeIcons.wrench, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AdminPage(
                         user: widget.user, campanha: widget.campanha, carro: widget.carro, corrida: widget.corrida, distancia: widget.distancia,
@@ -166,6 +186,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
           ),
         ),
       ),
+      ])
     );
   }
 
@@ -176,7 +197,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
         color: Colors.grey[200]);
   }
 
-  Widget menuButton(context, text, icon, isLogout, onPress) {
+  Widget menuButton(context, text, icon, isLogout, onPress, {color}) {
     return Container(
         width: MediaQuery.of(context).size.width * .8,
         child: MaterialButton(
@@ -188,7 +209,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
               SizedBox(width: 15),
               Icon(
                 icon,
-                color: !isLogout ? Colors.white : Colors.white,
+                color: Colors.yellowAccent,
                 size: 24,
               ),
               SizedBox(

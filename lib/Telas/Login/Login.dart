@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Telas/Cadastro/CadastroPage.dart';
@@ -27,7 +29,16 @@ class _LoginState extends State<Login> {
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
     pr.show();
   }
-
+  var linearGradient = const BoxDecoration(
+    gradient: const LinearGradient(
+      begin: FractionalOffset.topLeft,
+      end: FractionalOffset.bottomRight,
+      colors: <Color>[
+        Color.fromRGBO(0, 168, 180, 100),
+        Colors.indigo,
+      ],
+    ),
+  );
   var controllerEmail = new TextEditingController();
 
   var controllerSenha = new TextEditingController();
@@ -37,12 +48,17 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     double margem = MediaQuery.of(context).size.height * .03;
-    double labelsSize = MediaQuery.of(context).size.width * .035;
+    double labelsSize = MediaQuery.of(context).size.width * .040;
     final registerLabel = FlatButton(
       splashColor: Colors.black,
-      child: Text(
-        'Cadastre-se',
-        style: TextStyle(color: Colors.black, fontSize: labelsSize),
+      child: Row(
+        children: <Widget>[
+          hText('Não possui uma conta? ', context, size: 45, color: Colors.white),
+          Text(
+            'Cadastre-se',
+            style: TextStyle(color: Colors.yellowAccent, fontSize: labelsSize),
+          ),
+        ],
       ),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CadastroEmail()));
@@ -52,7 +68,7 @@ class _LoginState extends State<Login> {
     final forgotLabel = FlatButton(
       child: Text(
         'Esqueceu a senha?',
-        style: TextStyle(color: Colors.black, fontSize: labelsSize),
+        style: TextStyle(color: Colors.yellowAccent, fontSize: labelsSize),
       ),
       onPressed: () {
         Navigator.of(context).pushNamed('/esqueceusenha');
@@ -67,12 +83,7 @@ class _LoginState extends State<Login> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                /*image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('assets/bg_login.png'),
-              ),*/
-                ),
+            decoration: linearGradient
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -81,8 +92,8 @@ class _LoginState extends State<Login> {
               height: MediaQuery.of(context).size.height - 40.0,
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
@@ -109,22 +120,30 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: margem,
                     ),
+                    hText('Vamos Começar', context, size: 80, color: Colors.yellowAccent, weight: FontWeight.bold),sb,sb,
+                    hText('E-mail', context, size: 60, color: Colors.white54),sb,
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       controller: controllerEmail,
-                      style: TextStyle(color: Colors.black),
+                      
+                      style: TextStyle(color: Colors.white70, ),
                       decoration: InputDecoration(
-                        hintText: 'E-mail',
+                                  fillColor: Colors.cyan,
+                        filled: true,
+
                         suffixIcon: Icon(
                           LineAwesomeIcons.envelope,
-                          color: corPrimaria,
+                          color: Colors.white54,
                         ),
-                        hintStyle: TextStyle(color: Colors.black),
+                        hintStyle: TextStyle(color: Colors.white70),
                         contentPadding:
                             EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+
                         enabledBorder: OutlineInputBorder(
+
                             borderRadius: BorderRadius.circular(32.0),
                             borderSide: BorderSide(color: Colors.black)),
+
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32.0),
                             borderSide: BorderSide(color: Colors.black)),
@@ -133,17 +152,21 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: margem,
                     ),
+                    hText('Senha', context, size: 60, color: Colors.white54),sb,
                     TextFormField(
+
                       controller: controllerSenha,
                       obscureText: true,
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white70),
                       decoration: InputDecoration(
-                        hintText: 'Senha',
+                        fillColor: Colors.cyan,
+                        filled: true,
+
                         suffixIcon: Icon(
                           LineAwesomeIcons.key,
-                          color: corPrimaria,
+                          color:  Colors.white54,
                         ),
-                        hintStyle: TextStyle(color: Colors.black),
+
                         contentPadding:
                             EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                         enabledBorder: OutlineInputBorder(
@@ -154,40 +177,112 @@ class _LoginState extends State<Login> {
                             borderSide: BorderSide(color: Colors.black)),
                       ),
                     ),
+                    Row(mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[  forgotLabel],),
                     SizedBox(
                       height: margem,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.0),
-                      child: RaisedButton(
-                        color: corPrimaria,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        CupertinoButton(
+                          child: (Image(
+                            image: AssetImage(
+                              "graphics/google-logo.png",
+                              package: "flutter_auth_buttons",
+                            ),
+                            height: 40.0,
+                            width: 40.0,
+                          )),
+                          onPressed: () {
+                            showLoading(context);
+                            lc.LoginGoogle().then((r) {
+                              if (r == 0) {
+                                if (pr.isShowing()) {
+                                  pr.dismiss();
+                                }
+                                pushHome(context);
+                              } else {
+                                if (pr.isShowing()) {
+                                  pr.dismiss();
+                                }
+                                print(r.toString());
+                              }
+                            }).catchError((onError) {
+                              if (pr.isShowing()) {
+                                pr.dismiss();
+                              }
+                              print('Erro: ${onError.toString()}');
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          showLoading(context);
-                          lc.LoginEmail(
-                                  email: controllerEmail.text,
-                                  password: controllerSenha.text)
-                              .then((v) {
-                            if (pr.isShowing()) {
-                              pr.dismiss();
-                            }
-                            if (v) {
-                              pushHome(context);
-                            } else {
-                              dToast(
-                                  'Erro ao efetuar Login. Você já é cadastrado(a)?');
-                            }
-                          }).catchError((err) {
-                            if (pr.isShowing()) {
-                              pr.dismiss();
-                            }
-                          });
-                        },
-                        padding: EdgeInsets.all(5),
-                        child: Text('Entrar', style: estiloTextoBotao),
-                      ),
+                        isIOS
+                            ? CupertinoButton(
+                          child: (Image(
+                            image: NetworkImage(
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/152px-Apple_logo_black.svg.png'),
+                            height: 40.0,
+                            width: 40.0,
+                          )),
+                          onPressed: () {
+                            showLoading(context);
+                            lc.logInApple().then((r) {
+                              if (r == 0) {
+                                print('CHEGOU AQUI RETORNOU 0');
+                                if (pr.isShowing()) {
+                                  pr.dismiss();
+                                }
+                                pushHome(context);
+                              } else {
+                                if (pr.isShowing()) {
+                                  pr.dismiss();
+                                }
+                                print(r.toString());
+                              }
+                            }).catchError((onError) {
+                              print('CHEGOU AQUI RETORNOU ERRO ${onError.toString()}');
+                              if (pr.isShowing()) {
+                                pr.dismiss();
+                              }
+                              print('Erro: ${onError.toString()}');
+                            });
+                          },
+                        )
+                            : Container(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          child: RaisedButton(
+
+                            color: Colors.yellowAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            onPressed: () {
+                              showLoading(context);
+                              lc.LoginEmail(
+                                      email: controllerEmail.text,
+                                      password: controllerSenha.text)
+                                  .then((v) {
+                                if (pr.isShowing()) {
+                                  pr.dismiss();
+                                }
+                                if (v) {
+                                  pushHome(context);
+                                } else {
+                                  dToast(
+                                      'Erro ao efetuar Login. Você já é cadastrado(a)?');
+                                }
+                              }).catchError((err) {
+                                if (pr.isShowing()) {
+                                  pr.dismiss();
+                                }
+                              });
+                            },
+                            padding: EdgeInsets.only(top: 15, left: 70, right: 70, bottom: 15),
+                            child: Text('Entrar', style: estiloTextoBotao),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: margem,
@@ -195,7 +290,7 @@ class _LoginState extends State<Login> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        forgotLabel,
+
                         registerLabel,
                       ],
                     ),
@@ -235,70 +330,7 @@ class _LoginState extends State<Login> {
                             });
                           },
                         ),*/
-                        CupertinoButton(
-                          child: (Image(
-                            image: AssetImage(
-                              "graphics/google-logo.png",
-                              package: "flutter_auth_buttons",
-                            ),
-                            height: 40.0,
-                            width: 40.0,
-                          )),
-                          onPressed: () {
-                            showLoading(context);
-                            lc.LoginGoogle().then((r) {
-                              if (r == 0) {
-                                if (pr.isShowing()) {
-                                  pr.dismiss();
-                                }
-                                pushHome(context);
-                              } else {
-                                if (pr.isShowing()) {
-                                  pr.dismiss();
-                                }
-                                print(r.toString());
-                              }
-                            }).catchError((onError) {
-                              if (pr.isShowing()) {
-                                pr.dismiss();
-                              }
-                              print('Erro: ${onError.toString()}');
-                            });
-                          },
-                        ),
-                        isIOS
-                            ? CupertinoButton(
-                                child: (Image(
-                                  image: NetworkImage(
-                                      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/152px-Apple_logo_black.svg.png'),
-                                  height: 40.0,
-                                  width: 40.0,
-                                )),
-                                onPressed: () {
-                                  showLoading(context);
-                                  lc.logInApple().then((r) {
-                                    if (r == 0) {
-                                      print('CHEGOU AQUI RETORNOU 0');
-                                      if (pr.isShowing()) {
-                                        pr.dismiss();
-                                      }
-                                      pushHome(context);
-                                    } else {
-                                      if (pr.isShowing()) {
-                                        pr.dismiss();
-                                      }
-                                      print(r.toString());
-                                    }
-                                  }).catchError((onError) {
-                                    print('CHEGOU AQUI RETORNOU ERRO ${onError.toString()}');
-                                    if (pr.isShowing()) {
-                                      pr.dismiss();
-                                    }
-                                    print('Erro: ${onError.toString()}');
-                                  });
-                                },
-                              )
-                            : Container(),
+
                       ],
                     ),
                     SizedBox(

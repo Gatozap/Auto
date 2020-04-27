@@ -17,6 +17,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:googleapis/vision/v1.dart' as vision;
@@ -97,11 +98,11 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
             alignment: FractionalOffset.bottomCenter,
             heightFactor: 1.4,
             child: Container(
-              decoration: linearGradient,
               height: getAltura(context),
               padding: EdgeInsets.all(1),
               alignment: Alignment.center,
               child: Container(
+                decoration: linearGradient,
                 height: getAltura(context),
                 child: StreamBuilder<Carro>(
                   stream: carroController.outCarroSelecionado,
@@ -123,6 +124,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                     }
                     return SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           GestureDetector(
@@ -165,70 +167,88 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                         image: CachedNetworkImageProvider(
                                             carro.foto),
                                       )
-                                    : Image(
-                                        image: CachedNetworkImageProvider(
-                                            'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                                      )),
+                                    : Stack(children: <Widget>[
+                                        Positioned(
+                                          child: Image(
+                                              image: AssetImage(
+                                                  'assets/carro_foto.png')),
+                                        ),
+                                        Positioned(
+                                          top: 35,
+                                          left: 75,
+                                          child: Center(
+                                            child: CircleAvatar(
+                                              radius: 15,
+                                              backgroundColor: Colors.black12,
+                                              child: Icon(
+                                                MdiIcons.cameraOutline,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ])),
                           ),
                           sb,
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                controller: controllerModelo,
-                                hint: 'Prisma',
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 30),
+                            child: DefaultField(
+                              controller: controllerModelo,
+                              hint: 'Prisma',
+                              context: context,
+                              label: 'Modelo',
+                              icon: FontAwesomeIcons.carSide,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 30),
+                            child: DefaultField(
+                              controller: controllerCor,
+                              hint: 'Preto',
+                              context: context,
+                              label: 'Cor',
+                              icon: FontAwesomeIcons.palette,
+                            ),
+                          ),
+
+                           DefaultField(
+                                padding: EdgeInsets.only(left: 50, right: 30),
+                                controller: controllerAno,
+                                hint: '1990',
                                 context: context,
-                                label: 'Modelo',
-                                icon: Icons.directions_car,
-                              ))
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                controller: controllerCor,
-                                hint: 'Preto',
-                                context: context,
-                                label: 'Cor',
-                                icon: Icons.color_lens,
-                              ))
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                      controller: controllerAno,
-                                      hint: '1990',
-                                      context: context,
-                                      label: 'Ano',
-                                      icon: Icons.assignment,
-                                      keyboardType: TextInputType.number))
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                  child: DefaultField(
-                                controller: controllerPlaca,
-                                hint: 'AAA-9999',
-                                context: context,
-                                label: 'Placa',
-                                icon: MdiIcons.carBack,
-                              ))
-                            ],
-                          ),
+                                label: 'Ano',
+                                expands: false,
+                                icon: FontAwesomeIcons.calendar,
+                                keyboardType: TextInputType.number),
+
+
+                           Row(
+
+                             children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 50, right: 8),
+                                    child: Container(height: 25, width: 25, child: Image(image: AssetImage('assets/placa_veiculo.png'),),),
+                                  ),
+                               Expanded(
+                                 child: DefaultField(
+
+                                    controller: controllerPlaca,
+                                    hint: 'AAA-9999',
+                                    context: context,
+                                    label: 'Placa',
+
+                                    icon: null,
+                                  ),
+                               ),
+                             ],
+                           ),
+                          sb,
+                          Divider(color: corPrimaria),
                           sb,
                           hText('Foto da Semana', context),
+                          sb,
+                          Divider(color: corPrimaria),
+                          sb,
                           GestureDetector(
                             onTap: () {
                               getImageCamera(carro, isConfirmacao: true);
@@ -244,23 +264,50 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                         image: CachedNetworkImageProvider(
                                             carro.confirmacao),
                                       )
-                                    : Image(
-                                        image: CachedNetworkImageProvider(
-                                            'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                                      )),
+                                    : Stack(children: <Widget>[
+                                  Positioned(
+                                    child: Image(
+                                        image: AssetImage(
+                                            'assets/carro_foto.png')),
+                                  ),
+                                  Positioned(
+                                    top: 35,
+                                    left: 75,
+                                    child: Center(
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Colors.black12,
+                                        child: Icon(
+                                          MdiIcons.cameraOutline,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ])),
                           ),
+
                           hText(
                               'Tire uma foto do seu carro para que possamos contabilizar suas corridas',
                               context,
                               size: 30),
-                          Padding(
-                            padding: const EdgeInsets.all(28.0),
-                            child: SingleChildScrollView(
+                            sb,Divider(color: corPrimaria),sb,
+                          Container(
+                            child: hText(
+                                'Áreas que você quer disponibilizar para os anúncios',
+                                context,
+                                textaling: TextAlign.start),
+                          ),
+                          sb,Divider(color: corPrimaria),sb,
+                          SingleChildScrollView(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 50, right: 8),
                               child: Container(
-                                child: seletorAnunciosCarro(),
+                                child:
+                                seletorAnunciosCarro(),
                               ),
                             ),
-                          ),
+                          ),sb,sb,
                           Container(
                             child:
                                 defaultActionButton('Atualizar', context, () {
@@ -279,10 +326,18 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                               carro.anuncio_vidro_traseiro = carro == null
                                   ? null
                                   : carro.anuncio_vidro_traseiro;
-                              carro.is_anuncio_laterais = carro == null? false: carro.is_anuncio_laterais;
-                              carro.is_anuncio_traseira_completa = carro == null? false: carro.is_anuncio_traseira_completa;
-                              carro.is_anuncio_vidro_traseiro = carro == null? false: carro.is_anuncio_vidro_traseiro;
-                              carro.is_anuncio_bancos = carro == null? false: carro.is_anuncio_bancos;
+                              carro.is_anuncio_laterais = carro == null
+                                  ? false
+                                  : carro.is_anuncio_laterais;
+                              carro.is_anuncio_traseira_completa = carro == null
+                                  ? false
+                                  : carro.is_anuncio_traseira_completa;
+                              carro.is_anuncio_vidro_traseiro = carro == null
+                                  ? false
+                                  : carro.is_anuncio_vidro_traseiro;
+                              carro.is_anuncio_bancos = carro == null
+                                  ? false
+                                  : carro.is_anuncio_bancos;
                               if (widget.carro == null) {
                                 carro.updated_at = DateTime.now();
                               } else {
@@ -293,9 +348,9 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                               carroController.updateCarro(carro).then((v) {
                                 dToast('Dados atualizados com sucesso!');
                                 Navigator.of(context).pop();
-                              });
-                            }),
-                          ),
+                              } );
+                            }, icon: null, size: 90),
+                          ),sb,sb,
                         ],
                       ),
                     );
@@ -308,7 +363,6 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
   }
 
   Widget seletorAnunciosCarro() {
-
     return StreamBuilder<Carro>(
       stream: carroController.outCarroSelecionado,
       builder: (context, car) {
@@ -316,32 +370,27 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
         if (car.data == null) {
           carro = new Carro();
         }
-        if(carro.is_anuncio_bancos == null){
+        if (carro.is_anuncio_bancos == null) {
           carro.is_anuncio_bancos = false;
         }
 
-        if(carro.is_anuncio_laterais == null){
+        if (carro.is_anuncio_laterais == null) {
           carro.is_anuncio_laterais = false;
         }
-        if(carro.is_anuncio_traseira_completa == null){
+        if (carro.is_anuncio_traseira_completa == null) {
           carro.is_anuncio_traseira_completa = false;
         }
-        if(carro.is_anuncio_vidro_traseiro == null){
+        if (carro.is_anuncio_vidro_traseiro == null) {
           carro.is_anuncio_vidro_traseiro = false;
         }
-
 
         return Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Column(
             children: <Widget>[
-              Container(
-                child: hText(
-                    'Áreas que você quer disponibilizar para os anúncios',
-                    context,
-                    textaling: TextAlign.center),
-              ),
-              sb,
+
+
+              
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -369,15 +418,15 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                         children: <Widget>[
                           Padding(
                             padding:
-                            const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.only(left: 4.0),
                             child: defaultCheckBox(carro.is_anuncio_bancos,
                                 'Bancos Traseiros', context, () {
-                                  carro.is_anuncio_bancos =
+                              carro.is_anuncio_bancos =
                                   !carro.is_anuncio_bancos;
-                                  carroController.carroSelecionado = carro;
-                                  carroController.inCarroSelecionado
-                                      .add(carroController.carroSelecionado);
-                                },size: 10),
+                              carroController.carroSelecionado = carro;
+                              carroController.inCarroSelecionado
+                                  .add(carroController.carroSelecionado);
+                            }, size: 10),
                           ),
                         ],
                       ),
@@ -407,14 +456,13 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
-                      child: defaultCheckBox(carro.is_anuncio_laterais,
-                          'Laterais', context, () {
-                            carro.is_anuncio_laterais =
-                            !carro.is_anuncio_laterais;
-                            carroController.carroSelecionado = carro;
-                            carroController.inCarroSelecionado
-                                .add(carroController.carroSelecionado);
-                          },size: 10),
+                      child: defaultCheckBox(
+                          carro.is_anuncio_laterais, 'Laterais', context, () {
+                        carro.is_anuncio_laterais = !carro.is_anuncio_laterais;
+                        carroController.carroSelecionado = carro;
+                        carroController.inCarroSelecionado
+                            .add(carroController.carroSelecionado);
+                      }, size: 10),
                     ),
                   ),
                 ],
@@ -443,12 +491,12 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
                       child: defaultCheckBox(carro.is_anuncio_traseira_completa,
                           'Traseira Completa', context, () {
-                            carro.is_anuncio_traseira_completa =
+                        carro.is_anuncio_traseira_completa =
                             !carro.is_anuncio_traseira_completa;
-                            carroController.carroSelecionado = carro;
-                            carroController.inCarroSelecionado
-                                .add(carroController.carroSelecionado);
-                          },size: 10),
+                        carroController.carroSelecionado = carro;
+                        carroController.inCarroSelecionado
+                            .add(carroController.carroSelecionado);
+                      }, size: 10),
                     ),
                   ),
                 ],
@@ -464,8 +512,8 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
-                          fit: BoxFit.cover),
+                              'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg',),
+                          fit: BoxFit.fill),
                       border: carro.is_anuncio_vidro_traseiro == false
                           ? Border.all(color: Colors.black, width: 3)
                           : Border.all(color: Colors.green, width: 3),
@@ -477,12 +525,12 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
                       child: defaultCheckBox(carro.is_anuncio_vidro_traseiro,
                           'Vidro traseira', context, () {
-                            carro.is_anuncio_vidro_traseiro =
+                        carro.is_anuncio_vidro_traseiro =
                             !carro.is_anuncio_vidro_traseiro;
-                            carroController.carroSelecionado = carro;
-                            carroController.inCarroSelecionado
-                                .add(carroController.carroSelecionado);
-                          },size: 10),
+                        carroController.carroSelecionado = carro;
+                        carroController.inCarroSelecionado
+                            .add(carroController.carroSelecionado);
+                      }, size: 10),
                     ),
                   ),
                 ],
@@ -493,7 +541,6 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
       },
     );
   }
-
 
   Future<List<DropdownMenuItem<Campanha>>> getDropDownMenuItemsCampanha() {
     List<DropdownMenuItem<Campanha>> items = List();

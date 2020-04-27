@@ -7,6 +7,7 @@ import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Bairro.dart';
 import 'package:autooh/Objetos/Zona.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -103,7 +104,7 @@ class _VisualizarCampanhaUserPageState extends State<VisualizarCampanhaUserPage>
     // TODO: implement build
     return Scaffold(
         appBar: myAppBar(
-            widget.campanha == null ? 'Criar Campanha' : 'Editar Campanha',
+           campanha.nome,
             context,
             showBack: true),
         body: Container(
@@ -144,129 +145,212 @@ class _VisualizarCampanhaUserPageState extends State<VisualizarCampanhaUserPage>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                  height: 200,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Stack(children: <Widget>[
-                                    campanha != null
-                                        ? campanha.fotos != null
-                                        ? campanha.fotos.length != 1
-                                        ? Swiper(
-                                      itemBuilder:
-                                          (BuildContext context,
-                                          int index) {
-                                        return Container(
-                                          child: campanha
-                                              .fotos[index]
-                                              .contains(
-                                              'http')
-                                              ? Image(
-                                              image: CachedNetworkImageProvider(
-                                                  campanha.fotos[
-                                                  index]),
-                                              height: 200,
-                                              fit: BoxFit
-                                                  .fitHeight,
-                                              width: 300)
-                                              : Image.file(
-                                              File(campanha
-                                                  .fotos[
-                                              index]),
-                                              height: 200,
-                                              fit: BoxFit
-                                                  .fitHeight,
-                                              width: 300),
-                                          height: 200,
-                                          width: 300,
-                                        );
-                                      },
-                                      itemHeight: 200,
-                                      itemWidth: 300,
-                                      containerWidth: 300,
-                                      itemCount:
-                                      campanha.fotos.length,
-                                      scrollDirection:
-                                      Axis.horizontal,
-                                      pagination:
-                                      new SwiperPagination(),
-                                      control:
-                                      new SwiperControl(),
-                                    )
-                                        : Container(
-                                        child: Center(
-                                            child: campanha.fotos[0]
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                    height: 200,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Stack(children: <Widget>[
+                                      campanha != null
+                                          ? campanha.fotos != null
+                                          ? campanha.fotos.length != 1
+                                          ? Swiper(
+                                        itemBuilder:
+                                            (BuildContext context,
+                                            int index) {
+                                          return Container(
+                                            child: campanha
+                                                .fotos[index]
                                                 .contains(
                                                 'http')
                                                 ? Image(
-                                              image: CachedNetworkImageProvider(
-                                                  campanha
-                                                      .fotos[0]),
-                                              height: 200,
-                                            )
-                                                : Image.file(File(
-                                                campanha.fotos[
-                                                0]))))
-                                        : Image.asset(
-                                      'assets/images/autooh.png',
-                                      height: 200,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width,
-                                    )
-                                        : Image.asset(
-                                      'assets/images/autooh.png',
-                                      height: 200,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width,
+                                                image: CachedNetworkImageProvider(
+                                                    campanha.fotos[
+                                                    index]),
+                                                height: 200,
+                                                fit: BoxFit
+                                                    .fitHeight,
+                                                width: 300)
+                                                : Image.file(
+                                                File(campanha
+                                                    .fotos[
+                                                index]),
+                                                height: 200,
+                                                fit: BoxFit
+                                                    .fitHeight,
+                                                width: 300),
+                                            height: 200,
+                                            width: 300,
+                                          );
+                                        },
+                                        itemHeight: 200,
+                                        itemWidth: 300,
+                                        containerWidth: 300,
+                                        itemCount:
+                                        campanha.fotos.length,
+                                        scrollDirection:
+                                        Axis.horizontal,
+                                        pagination:
+                                        new SwiperPagination(),
+                                        control:
+                                        new SwiperControl(),
+                                      )
+                                          : Container(
+                                          child: Center(
+                                              child: campanha.fotos[0]
+                                                  .contains(
+                                                  'http')
+                                                  ? Image(
+                                                image: CachedNetworkImageProvider(
+                                                    campanha
+                                                        .fotos[0]),
+                                                height: 200,
+                                              )
+                                                  : Image.file(File(
+                                                  campanha.fotos[
+                                                  0]))))
+                                          : Image.asset(
+                                        'assets/images/autooh.png',
+                                        height: 200,
+                                        width: MediaQuery.of(context)
+                                            .size
+                                            .width,
+                                      )
+                                          : Image.asset(
+                                        'assets/images/autooh.png',
+                                        height: 200,
+                                        width: MediaQuery.of(context)
+                                            .size
+                                            .width,
+                                      ),
+
+                                    ])),
+                              ),sb,sb,
+                                   Divider(color: corPrimaria),sb,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: hText('Informações de Empresa e Campanha', context),
+                              ),sb,
+                              Divider(color: corPrimaria),sb,
+                              Padding(
+                                padding: EdgeInsets.only(left: 40, right: 8, top: 20),
+                                child: Row(
+
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.building, color: corPrimaria),sb,
+                                    hText('Empresa: ', context, color: corPrimaria),
+                                    hText('${campanha.empresa}', context)
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 40, right: 8,top: 20),
+                                child: Row(
+
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.mapMarkedAlt, color: corPrimaria),sb,
+                                    hText('Campanha: ', context, color: corPrimaria),
+                                    hText('${campanha.nome}', context)
+                                  ],
+                                ),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 20),
+                                child: Row(
+
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.idCard, color: corPrimaria),sb,
+                                    hText('CNPJ: ', context, color: corPrimaria),
+                                    hText('${campanha.cnpj}', context)
+                                  ],
+                                ),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.only(left: 40, right: 8,top: 20),
+                                child: Row(
+
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.prescription, color: corPrimaria),sb,
+                                    Column(
+
+                                      children: <Widget>[
+
+                                      ],
                                     ),
-
-                                  ])),
-
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('Nome da Empresa: ${campanha.empresa}', context),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('Nome da Campanha: ${campanha.nome}', context),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('CNPJ da Empresa: ${campanha.cnpj}', context),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('Sobre a Campanha: ${campanha.sobre}', context),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('Campanha iniciou-se: ${campanha.dataini}', context),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('Campanha termina em: ${campanha.datafim}', context),
+                                    hText('Sobre a Campanha: ', context, color: corPrimaria)
+                                  ],
+                                ),
                               ),
 
 
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('Limite de carros nessa campanha: ${campanha.limite}', context),
+                                padding: EdgeInsets.only(left: 40, right: 30,top: 20),
+                                child: hText('${campanha.sobre}', context),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 20),
+                                child: Row(
+
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.calendarMinus, color: corPrimaria),sb,
+                                    hText('Campanha iniciou-se: ', context, color: corPrimaria),
+
+                                  ],
+                                ),
                               ),
 
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 10),
+                                child: hText(' ${campanha.dataini}', context),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 20),
+                                child: Row(
+
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.calendarMinus, color: corPrimaria),sb,
+                                    hText('Campanha termina em: ', context, color: corPrimaria),
+
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 10),
+                                child: hText(' ${campanha.datafim}', context),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 20),
+                                child: Row(
+
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.carSide, color: corPrimaria),sb,
+                                    hText('Limite de carros: ', context, color: corPrimaria),
+                                    hText('${campanha.limite}', context)
+                                  ],
+                                ),
+                              ),
+                            sb,
+                            Divider(color: corPrimaria),sb,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: hText('Preferências para Campanha', context),
+                        ),sb,
+                        Divider(color: corPrimaria),sb,
+
+
+                              Padding(
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 20),
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
                                  Row(children: <Widget>[
                                    campanha.final_de_semana == true?
                                    Icon(MdiIcons.checkBold, color: Colors.green):
                                        Icon(MdiIcons.close, color: Colors.red),
-                                    sb, hText('Atende final de semana', context)
+                                    sb, hText('Atende final de semana', context, color: corPrimaria)
 
                                  ],),
 
@@ -275,7 +359,7 @@ class _VisualizarCampanhaUserPageState extends State<VisualizarCampanhaUserPage>
                               campanha.atende_festas == true?
                               Icon(MdiIcons.checkBold, color: Colors.green):
                               Icon(MdiIcons.close, color: Colors.red),
-                              sb, hText('Atende em festas', context)
+                              sb, hText('Atende em festas', context, color: corPrimaria)
 
                             ],),sb,
 
@@ -284,34 +368,48 @@ class _VisualizarCampanhaUserPageState extends State<VisualizarCampanhaUserPage>
                                     campanha.tarde == true?
                                     Icon(MdiIcons.checkBold, color: Colors.green):
                                     Icon(MdiIcons.close, color: Colors.red),
-                                    sb, hText('Atende a Tarde', context)
+                                    sb, hText('Atende a Tarde', context, color: corPrimaria)
 
                                   ],), sb,
                                   Row(children: <Widget>[
                                     campanha.manha == true?
                                     Icon(MdiIcons.checkBold, color: Colors.green):
                                     Icon(MdiIcons.close, color: Colors.red),
-                                    sb, hText('Atende de Manhã', context)
+                                    sb, hText('Atende de Manhã', context, color: corPrimaria)
 
                                   ],),   sb,
                                   Row(children: <Widget>[
                                     campanha.noite == true?
                                     Icon(MdiIcons.checkBold, color: Colors.green):
                                     Icon(MdiIcons.close, color: Colors.red),
-                                    sb, hText('Atende de Noite', context)
+                                    sb, hText('Atende de Noite', context, color: corPrimaria)
 
                                   ],),
                                 ],),
                               ),
+                              sb,
+                              Divider(color: corPrimaria),sb,
                               Padding(
-                                padding: const EdgeInsets.all(28.0),
+                                padding: const EdgeInsets.all(8.0),
+                                child: hText('Preferências de onde colocar o anúncia nesta Campanha', context),
+                              ),sb,
+                              Divider(color: corPrimaria),
+
+                              Padding(
+                                padding: EdgeInsets.only(left: 40,right: 8, top: 10),
                                 child: SingleChildScrollView(
                                   child: Container(
                                     child: seletorAnunciosCampanhas(),
                                   ),
                                 ),
                               ),
-
+                              sb,
+                              Divider(color: corPrimaria),sb,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: hText('Zonas que a Campanha Abrangê ', context),
+                              ),sb,
+                              Divider(color: corPrimaria),sb,
                               snap.data == null
                                   ? Container()
                                   : snap.data.zonas == null
@@ -390,7 +488,7 @@ class _VisualizarCampanhaUserPageState extends State<VisualizarCampanhaUserPage>
                                          'Solicitar Participação',
                                         context, () {
 
-                                    }, icon: null, size: 50),
+                                    }, icon: null, size: 60),
                                   ),
                                 ],
                               )
@@ -426,12 +524,7 @@ class _VisualizarCampanhaUserPageState extends State<VisualizarCampanhaUserPage>
           padding: const EdgeInsets.only(top: 20.0),
           child: Column(
             children: <Widget>[
-              Container(
-                child: hText(
-                    'Áreas que você quer disponibilizar para os anúncios',
-                    context,
-                    textaling: TextAlign.center),
-              ),
+
               sb,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

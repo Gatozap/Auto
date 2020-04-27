@@ -98,15 +98,20 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
         child: Row(
           children: <Widget>[
             CircleAvatar(
-                radius: (((getAltura(context) + getLargura(context)) / 2) * .1),
+                radius: 50,
                 backgroundColor: Colors.transparent,
                 child: p.fotos != null
-                    ? Image(
+                    ? Container(
+                  width: 70, height: 70,
+                      child: Image(
                   image: CachedNetworkImageProvider(p.fotos[0]),
-                )
-                    : Image(
-                  image: AssetImage('assets/autooh.png'),
-                )),
+                fit: BoxFit.fill,),
+                    )
+                    : Container(
+                  width: 70, height: 70,
+                      child: Image.asset('assets/campanha_sem_foto.png', fit: BoxFit.fill,
+                ),
+                    )),
             Container(
               width: getLargura(context) * .4,
               child: Column(
