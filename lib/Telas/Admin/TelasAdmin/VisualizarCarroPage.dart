@@ -8,6 +8,7 @@ import 'package:autooh/Telas/Carro/CarroController.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VisualizarCarroPage extends StatefulWidget {
   Carro carro;
@@ -51,46 +52,82 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Hero(
-                        tag: widget.carro.id,
-                        child: widget.carro.foto != null
-                            ? CircleAvatar(
-                                radius: ScreenUtil.getInstance().setSp(200),
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: CachedNetworkImageProvider(
-                                    widget.carro.foto))
-                            : CircleAvatar(
-                                radius: ScreenUtil.getInstance().setSp(200),
-                                backgroundColor: Colors.transparent,
-                                child: Image(
-                                  image: CachedNetworkImageProvider(
-                                      'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                                )),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: hText('Dono: ${widget.carro.dono_nome}', context)),
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: hText('Modelo: ${widget.carro.modelo}', context)),
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: hText('Cor: ${widget.carro.cor}', context)),
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: hText('Ano: ${widget.carro.ano}', context)),
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: hText('Placa: ${widget.carro.placa}', context)),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Center(child: hText('Foto de confirmação', context)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Hero(
+                          tag: widget.carro.id,
+                          child: widget.carro.foto != null
+                              ? CircleAvatar(
+                                  radius: ScreenUtil.getInstance().setSp(200),
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      widget.carro.foto))
+                              : CircleAvatar(
+                                  radius: ScreenUtil.getInstance().setSp(200),
+                                  backgroundColor: Colors.transparent,
+                                  child: Image(
+                                    image: CachedNetworkImageProvider(
+                                        'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                                  )),
+                        ),
+                      ],
+                    ),
                   ),
+                  Padding(
+                      padding: EdgeInsets.only(left: 20, top: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(FontAwesomeIcons.user, color: corPrimaria,),sb,
+                          hText('Dono: ${widget.carro.dono_nome}', context),
+                        ],
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(left: 20, top: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(FontAwesomeIcons.carSide, color: corPrimaria,),sb,
+                          hText('Modelo: ${widget.carro.modelo}', context),
+                        ],
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(left: 20, top: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(FontAwesomeIcons.palette, color: corPrimaria,),sb,
+                          hText('Cor: ${widget.carro.cor}', context),
+                        ],
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(left: 20, top: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(FontAwesomeIcons.calendar, color: corPrimaria,),sb,
+                          hText('Ano: ${widget.carro.ano}', context),
+                        ],
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(left: 20, top: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Container(width: 25, height: 30,child: Image.asset('assets/placa_veiculo.png')),sb,
+                          hText('Placa: ${widget.carro.placa}', context),
+                        ],
+                      )),
+                  sb,sb,sb,
+                  sb,Divider(color: corPrimaria,),sb,
+                  Center(child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+
+                      hText('Foto de confirmação', context, size: 70),
+
+                    ],
+                  )),
+
+                  sb,Divider(color: corPrimaria,),sb,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -100,10 +137,16 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                               backgroundColor: Colors.transparent,
                               backgroundImage: CachedNetworkImageProvider(
                                   widget.carro.confirmacao))
-                          : hText('Sem foto de confirmação.', context),
+                          : Column(
+                            children: <Widget>[
+                              Container(width: 200,height: 200,child: Image.asset('assets/carro_foto.png')),sb,
+                              hText('Sem foto de confirmação.', context),
+                            ],
+                          ),
                     ],
                   ),
-                  sb,
+                  sb,sb,sb,
+                  sb,Divider(color: corPrimaria,),sb,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -111,22 +154,30 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                           ? hText(
                               'Foto enviada em: ${widget.carro.ultima_confirmacao.day.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.day.toString() : widget.carro.ultima_confirmacao.day}/${widget.carro.ultima_confirmacao.month.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.month.toString() : widget.carro.ultima_confirmacao.month}/${widget.carro.ultima_confirmacao.year} ${widget.carro.ultima_confirmacao.hour.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.hour.toString() : widget.carro.ultima_confirmacao.hour.toString()}:${widget.carro.ultima_confirmacao.minute.toString().length == 1 ? '0' + widget.carro.ultima_confirmacao.minute.toString() : widget.carro.ultima_confirmacao.minute.toString()}',
                               context)
-                          : hText('Sem data de confirmacao', context),
+                          : Column(
+                            children: <Widget>[
+                              Icon(Icons.close, size: 60, color: Colors.red), sb,
+                              hText('Sem data de confirmacao', context),
+                            ],
+                          ),
                     ],
                   ),
+                  sb,Divider(color: corPrimaria,),sb,
                   Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: seletorAnunciosCarro()),
                   sb,
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: defaultCheckBox(
-                          carro.isAprovado, 'Carro Liberado?', context, () {
-                        carro.isAprovado = !carro.isAprovado;
-                        carroController.inCarroSelecionado.add(carro);
-                      }),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: defaultCheckBox(
+                            carro.isAprovado, 'Carro Liberado?', context, () {
+                          carro.isAprovado = !carro.isAprovado;
+                          carroController.inCarroSelecionado.add(carro);
+                        }),
+                      ),
+                    ],
                   ),
                   sb,
                   Center(
@@ -147,7 +198,7 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                           dToast('Dados atualizados com sucesso!');
                           Navigator.of(context).pop();
                         });
-                      }),
+                      }, icon: null),
                     ),
                   ),
                 ],

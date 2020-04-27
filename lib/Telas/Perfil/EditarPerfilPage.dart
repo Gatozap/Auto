@@ -163,18 +163,22 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                     ? Stack(
                                       children: <Widget>[
                                         Positioned(
-                                          child: Image(
-                                  image: CachedNetworkImageProvider(
-                                            u.foto),
-                                ),
+                                          child: CircleAvatar(
+                                            radius: 75,
+                                            backgroundColor: Colors.transparent,
+                                            backgroundImage:
+                                            CachedNetworkImageProvider(
+                                                u.foto),
+
+                                          ),
                                         ),
                     Positioned(
-                    top: 90,
-                    left: 70,
+                      top: 100,
+                      left: 115,
                     child: Center(
                     child: CircleAvatar(
                     radius: 15,
-                    backgroundColor: Colors.black12,
+                    backgroundColor: Colors.black,
                     child: Icon(
                     MdiIcons.cameraOutline,
                     color: Colors.white,
@@ -204,7 +208,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                       ),
                                     ),
                                   ),
-                                ])),
+                        ])),
                           ),
                           sb,
                           Padding(
@@ -256,7 +260,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                hText('Dados Bancários', context,
+                                hText('   Dados Bancários', context,
                                     size: 50)
                               ]),
                           sb,
@@ -287,7 +291,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 50, right: 30),
+                            padding: EdgeInsets.only(left: 50, right: 21),
                             child: DefaultField(
                               controller: controllerAgencia,
                               hint: u.agencia,
@@ -298,7 +302,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                           ),
 
                     Padding(
-                    padding: EdgeInsets.only(left: 50, right: 30),
+                    padding: EdgeInsets.only(left: 50, right: 21),
                     child: DefaultField(
                             controller: controllerNumero_conta,
                             hint: u.numero_conta,
@@ -316,14 +320,16 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                 child: Container(height: 30, width: 30, child: Image.asset('assets/velocimetro_low.png',fit: BoxFit.fill,),),
                               ),
                               Expanded(
-                                child: DefaultField(
+                                child:   Padding(
+                    padding: EdgeInsets.only( right: 21),
+                    child: DefaultField(
                                   keyboardType: TextInputType.number,
                                   controller: controllerKmmin,
                                   hint: '${u.kmmin}',
                                   context: context,
                                   label: 'Quilometros percorridos no Mínimo',
                                   icon: null,
-                                ),
+                                ),)
                               ),
                             ],
                           ),
@@ -335,14 +341,16 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                 child:Container(height: 30, width: 30, child: Image.asset('assets/velocimetro_fast.png',fit: BoxFit.fill,),),
                               ),
                               Expanded(
-                                  child: DefaultField(
+                                  child: Padding(
+                    padding: EdgeInsets.only( right: 21),
+                    child:DefaultField(
                                     keyboardType: TextInputType.number,
                                     controller: controllerKmmax,
                                     hint: '${u.kmmax}',
                                     context: context,
                                     label: 'Quilometros percorridos Máximo',
                                     icon:null,
-                                  )
+                                  )  )
                               ),
                             ],
                           ),
@@ -353,7 +361,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                    hText('Rotinas de Trabalho', context,
+                    hText('   Rotinas de Trabalho', context,
                     size: 50)
                     ]),
                     sb,

@@ -83,7 +83,16 @@ class _CadastroState extends State<Cadastro> {
     if (carroController == null) {
       carroController = CarroController(carro: widget.carro);
     }
-  }
+  }     var linearGradient = const BoxDecoration(
+    gradient: const LinearGradient(
+      begin: FractionalOffset.topLeft,
+      end: FractionalOffset.bottomRight,
+      colors: <Color>[
+        Color.fromRGBO(0, 168, 180, 100),
+        Colors.indigo,
+      ],
+    ),
+  );
 
   CadastroController cc = new CadastroController();
   SwiperController sc = new SwiperController();
@@ -345,6 +354,7 @@ class _CadastroState extends State<Cadastro> {
     }
     int duracao = 300;
     return Scaffold(
+
         body: StreamBuilder(
             stream: carroController.outCarroSelecionado,
             builder: (context, isPrestador) {
@@ -398,13 +408,14 @@ class _CadastroState extends State<Cadastro> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(height: 45),
+                              SizedBox(height: 60
+                              ),
+
                               hText('Insira os dados de sua conta Bancaria',
                                   context),
-                              sb,
-                              sb,
+                              sb, Divider(color: Colors.grey,),sb,
                               Padding(
-                                padding: ei,
+                                padding: EdgeInsets.only(left: 40, right: 20),
                                 child: TypeAheadField(
                                   textFieldConfiguration:
                                       TextFieldConfiguration(
@@ -430,9 +441,9 @@ class _CadastroState extends State<Cadastro> {
                                         suggestion.nome;
                                   },
                                 ),
-                              ),
+                              ), SizedBox(height: 20),
                               new Padding(
-                                padding: ei,
+                                padding: EdgeInsets.only(left: 40, right: 20),
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
                                   controller: controllerAgencia,
@@ -454,7 +465,7 @@ class _CadastroState extends State<Cadastro> {
                               ),
                               SizedBox(height: 20),
                               new Padding(
-                                padding: ei,
+                                padding: EdgeInsets.only(left: 40, right: 20),
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
                                   controller: controllerNumero_conta,
@@ -470,30 +481,35 @@ class _CadastroState extends State<Cadastro> {
                                     icon: MdiIcons.creditCard,
                                     hintText: '36.356-93',
                                     labelText: 'Número da conta',
+
+
                                   ),
                                   autovalidate: true,
                                 ),
                               ),
                               SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  hText('Tipo de conta: ', context,
-                                      color: corPrimaria, size: 40),
-                                  sb,
-                                  DropdownButton(
-                                    style: TextStyle(
-                                        color: corPrimaria,
-                                        fontSize:
-                                            ScreenUtil.getInstance().setSp(40),
-                                        fontWeight: FontWeight.bold),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: corPrimaria),
-                                    value: selectTipo,
-                                    items: _dropDownMenuItemsTipoConta,
-                                    onChanged: onChangeDropDownItens,
-                                  ),
-                                ],
+                              Padding(
+                                padding: EdgeInsets.only(left: 40, right: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    hText('Tipo de conta: ', context,
+                                        color: corPrimaria, size: 40),
+                                    sb,
+                                    DropdownButton(
+                                      style: TextStyle(
+                                          color: corPrimaria,
+                                          fontSize:
+                                              ScreenUtil.getInstance().setSp(40),
+                                          fontWeight: FontWeight.bold),
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: corPrimaria),
+                                      value: selectTipo,
+                                      items: _dropDownMenuItemsTipoConta,
+                                      onChanged: onChangeDropDownItens,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -516,7 +532,9 @@ class _CadastroState extends State<Cadastro> {
                                             children: <Widget>[
                                               sb,
                                               sb,
+
                                               sb,
+
                                               Text(
                                                 'Cadastre seu Carro',
                                                 style: TextStyle(
@@ -524,6 +542,7 @@ class _CadastroState extends State<Cadastro> {
                                                     fontSize: 20),
                                               ),
                                               sb,
+                                              Divider(color: Colors.blue),
                                               sb,
                                               new Padding(
                                                 padding: ei,
@@ -573,6 +592,7 @@ class _CadastroState extends State<Cadastro> {
                                                 padding: ei,
                                                 child: TextFormField(
                                                   controller: controllerPlaca,
+
                                                   validator: (value) {
                                                     if (value.isEmpty) {
                                                       if (isCadastrarPressed) {
@@ -590,7 +610,7 @@ class _CadastroState extends State<Cadastro> {
                                                   autovalidate: true,
                                                 ),
                                               ),
-                                              sb,
+
                                               new Padding(
                                                 padding: ei,
                                                 child: TextFormField(
@@ -614,11 +634,13 @@ class _CadastroState extends State<Cadastro> {
                                                 ),
                                               ),
                                               sb,
+                                              Divider(color: Colors.blue),sb,
                                               hText(
                                                   'Quanto quilometros você em média anda por mês?',
                                                   context,
-                                                  color: corPrimaria,
+
                                                   size: 50),
+                                              sb, Divider(color: Colors.blue),sb,
                                               Column(
                                                 children: <Widget>[
                                                   Padding(
@@ -669,6 +691,15 @@ class _CadastroState extends State<Cadastro> {
                                                   ),
                                                 ],
                                               ),
+
+                                              sb, Divider(color: Colors.blue),sb,
+
+                                              hText(
+                                                  'Marque qual atendimento você pode executar',
+                                                  context,
+                                               
+                                                  size: 50),
+                                              sb,Divider(color: Colors.blue),sb,
                                               Padding(
                                                 padding: ei,
                                                 child: StreamBuilder(
@@ -709,6 +740,14 @@ class _CadastroState extends State<Cadastro> {
                                                                 .add(cc.user);
                                                           }),
                                                           sb,
+                                                           Divider(color: Colors.blue),sb,
+
+                                                          hText(
+                                                              'Marque qual periodo costuma trabalhar',
+                                                              context,
+
+                                                              size: 50),
+                                                          sb,Divider(color: Colors.blue),sb,
                                                           defaultCheckBox(
                                                               Helper.localUser
                                                                   .manha,
@@ -770,7 +809,8 @@ class _CadastroState extends State<Cadastro> {
                                                                 MainAxisAlignment.center,
                                                                 children: <Widget>[
                                                                   MaterialButton(
-                                                                    color: corPrimaria,
+
+                                                                    color: Colors.yellowAccent,
                                                                     shape: RoundedRectangleBorder(
                                                                         borderRadius:
                                                                         BorderRadius.circular(60)),
@@ -783,7 +823,7 @@ class _CadastroState extends State<Cadastro> {
                                                                           updated_at: DateTime.now(),
                                                                           cor: controllerCor.text,
                                                                           ano: int.parse(controllerAno.text),
-                                                                          placa: controllerPlaca.text,
+                                                                          placa: controllerPlaca.text.toUpperCase(),
                                                                           dono: Helper.localUser.id,
                                                                           modelo: controllerTipocarro.text,
                                                                           is_anuncio_bancos: carro == null
@@ -952,6 +992,7 @@ class _CadastroState extends State<Cadastro> {
                                       sb,
                                       sb,
                                       hText('Foto do seu Perfil', context),
+                                      sb, Divider(color: corPrimaria), sb,
                                       Container(
                                         child: Row(
                                           mainAxisAlignment:
@@ -998,20 +1039,58 @@ class _CadastroState extends State<Cadastro> {
                                                               2) *
                                                               .2),
                                                           backgroundColor: Colors.transparent,
-                                                          child:
-                                                           snapshot.data == null?Image(
-                                                             image: CachedNetworkImageProvider(
-                                                                 'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                           ):
-                                                          snapshot.data.foto != null
-                                                              ? Image(
-                                                            image:
-                                                            CachedNetworkImageProvider(snapshot.data.foto),
+                                                          child: snapshot.data.foto != null
+                                                              ? Stack(
+                                                            children: <Widget>[
+                                                              Positioned(
+                                                                child:
+
+                                                                CircleAvatar(
+                                                                  radius: 75,
+                                                                  backgroundColor: Colors.transparent,
+                                                                  backgroundImage: 
+                                                                    CachedNetworkImageProvider(
+                                                                        snapshot.data.foto),
+                                                                  
+                                                                ),
+                                                              ),
+                                                              Positioned(
+                                                                top: 140,
+                                                                left: 160,
+                                                                child: Center(
+                                                                  child: CircleAvatar(
+                                                                    radius: 15,
+                                                                    backgroundColor: Colors.black,
+                                                                    child: Icon(
+                                                                      MdiIcons.cameraOutline,
+                                                                      color: Colors.white,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           )
-                                                              : Image(
-                                                            image: CachedNetworkImageProvider(
-                                                                'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                          ));
+                                                              : Stack(children: <Widget>[
+                                                            Positioned(
+                                                              child: Image(
+                                                                  image: AssetImage(
+                                                                      'assets/editar_perfil.png')),
+                                                            ),
+                                                            Positioned(
+                                                              top: 150,
+                                                              left: 175,
+                                                              child: Center(
+                                                                child: CircleAvatar(
+                                                                  radius: 15,
+                                                                  backgroundColor: Colors.black12,
+                                                                  child: Icon(
+                                                                    MdiIcons.cameraOutline,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ]));
                                                     }
                                                   ),
                                                 ),
@@ -1028,11 +1107,12 @@ class _CadastroState extends State<Cadastro> {
                                                   cc.updateTelefone(value);
                                                 },
                                                 decoration: InputDecoration(
+
                                                     labelText: 'Telefone',
                                                     hintText:
                                                         '(11) 9 9999-9999 (Oom WhatsApp)',
                                                     icon: Icon(
-                                                        Icons.phone_iphone)),
+                                                        Icons.phone_iphone, color: corPrimaria,)),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 onSubmitted: (tel) {
@@ -1062,7 +1142,7 @@ class _CadastroState extends State<Cadastro> {
                                                         'Data de Nascimento',
                                                     hintText: '29/01/1990',
                                                     icon:
-                                                        Icon(Icons.date_range)),
+                                                        Icon(Icons.date_range,color: corPrimaria)),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 onSubmitted: (data) {
@@ -1440,8 +1520,9 @@ class _CadastroState extends State<Cadastro> {
                                                 decoration: InputDecoration(
                                                     labelText: 'CPF/CNPJ',
                                                     hintText: '000.000.000-00',
+                                                    
                                                     icon: Icon(
-                                                        Icons.perm_identity)),
+                                                        Icons.perm_identity, color: corPrimaria)),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 onSubmitted: (tel) {

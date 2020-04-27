@@ -16,7 +16,7 @@ class _IntroPageState extends State<IntroPage> {
     PageViewModel(
         pageColor: corPrimaria,
         // iconImageAssetPath: 'assets/air-hostess.png',
-        bubble: Image.asset('assets/images/nutrannoLogo.png'),
+
         body: Text(
           'Bem Vindo(a) ao aplicativo do prestador Moderno!',
         ),
@@ -24,40 +24,25 @@ class _IntroPageState extends State<IntroPage> {
           'autooh',
         ),
         textStyle: TextStyle(color: corPrimaria),
-        mainImage: Image.asset(
-          'assets/images/nutrannoLogo.png',
-          height: 285.0,
-          width: 285.0,
-          alignment: Alignment.center,
-        )),
+     ),
     PageViewModel(
       pageColor: corPrimaria,
-      iconImageAssetPath: 'assets/images/nutrannoLogo.png',
+
       body: Text(
         'No autooh você pode. . . .',
       ),
       title: Text('autooh'),
-      mainImage: Image.asset(
-        'assets/images/nutrannoLogo.png',
-        height: 285.0,
-        width: 285.0,
-        alignment: Alignment.center,
-      ),
+
       textStyle: TextStyle(color: Colors.black),
     ),
     PageViewModel(
       pageColor: const Color(0xFF607D8B),
-      iconImageAssetPath: 'assets/images/nutrannoLogo.png',
+
       body: Text(
         'E Também . . . ',
       ),
       title: Text('autooh'),
-      mainImage: Image.asset(
-        'assets/images/nutrannoLogo.png',
-        height: 285.0,
-        width: 285.0,
-        alignment: Alignment.center,
-      ),
+
       textStyle: TextStyle(color: Colors.black),
     ),
   ];

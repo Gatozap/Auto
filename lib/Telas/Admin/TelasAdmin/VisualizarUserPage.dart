@@ -1,8 +1,10 @@
 import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class VisualizarUserPage extends StatefulWidget {
@@ -55,118 +57,194 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
                             backgroundColor: Colors.purple,
                             backgroundImage:
                                 CachedNetworkImageProvider(widget.user.foto))
-                        : CircleAvatar(
-                            radius: ScreenUtil.getInstance().setSp(200),
-                            backgroundColor: Colors.purple,
-                            child: hText(initials, context,
-                                size: 150, color: Colors.white)),
+                        : Container(
+                      height: 200,
+                          width: 200,
+                          child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                          'assets/editar_perfil.png',
+                      ),),
+                        ),
                   )
                 ],
               ),
-              hText('Nome: ${widget.user.nome}', context),
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(FontAwesomeIcons.user, color: corPrimaria),sb,
+                    hText('Nome: ${widget.user.nome}', context),
+                  ],
+                ),
+              ),
               sb,
               widget.user.celular == null
                   ? hText('Não informou número', context)
-                  : hText(
-                      'Telefone para contato: ${widget.user.celular}', context),
+                  : Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(FontAwesomeIcons.mobileAlt, color: corPrimaria),sb,
+                        Column(
+                          children: <Widget>[
+                            hText(
+                                'Telefone: ${widget.user.celular}', context),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+              sb,
+              Divider(color: corPrimaria),sb,
+              hText('   Dados Bancarios', context, size: 60),
+              sb,
+              Divider(color: corPrimaria),
+
               sb,
               widget.user.conta_bancaria == null
                   ? hText('Não informou Banco', context)
-                  : hText('Banco: ${widget.user.conta_bancaria}', context),
-              sb,
-              hText('Agência: ${widget.user.agencia}', context),
-              sb,
-              hText('Número da conta: ${widget.user.numero_conta}', context),
-              sb,
-              hText('Quilômetros Mínimos que roda: ${widget.user.kmmin}',
-                  context),
-              sb,
-              hText('Quilômetros Máximos que roda: ${widget.user.kmmax}',
-                  context),
-              sb,
+                  : Row(
+                    children: <Widget>[
+                      Icon(FontAwesomeIcons.university, color: corPrimaria),sb,
+                      hText('Banco: ${widget.user.conta_bancaria}', context),
+                    ],
+                  ),sb,
+              
               Row(
                 children: <Widget>[
-                hText('Atende em Festas', context,
+                  Padding(
+                    padding:  EdgeInsets.only(left: 60.0),
+                    child: Column(
+                      children: <Widget>[
+                        hText('Agência', context, color: corPrimaria),sb,
+                        hText('${widget.user.agencia}', context)
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding:  EdgeInsets.only(left: 40.0),
+                    child: Column(
+                      children: <Widget>[
+                        hText('Número da conta', context, color: corPrimaria),sb,
+                        hText('${widget.user.numero_conta}', context)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              sb,
+              sb,
+              sb,
+              Divider(color: corPrimaria),sb,
+              hText('   Quilometrogem Mensal', context, size: 60),
+              sb,
+              Divider(color: corPrimaria),
+
+              sb,
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                     Container(height: 30,width: 30, child: Image.asset('assets/velocimetro_low.png')),sb,
+                    hText('Quilômetros Mínimos: ${widget.user.kmmin}',
+                        context),
+                  ],
+                ),
+              ),
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(height: 30,width: 30, child: Image.asset('assets/velocimetro_fast.png')),sb,
+                    hText('Quilômetros Máximos: ${widget.user.kmmax}',
+                        context),
+                  ],
+                ),
+              ),
+              sb,
+
+              sb,
+              Divider(color: corPrimaria),sb,
+              hText('   Atendimentos e períodos', context, size: 60),
+              sb,
+              Divider(color: corPrimaria),
+
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                  hText('Atende em Festas? ', context,
              ),
-                  widget.user.atende_festa == true
-                      ? Icon(
-                          MdiIcons.checkBold,
-                          color: Colors.green,
-                        )
-                      : Icon(
-                          MdiIcons.close,
-                          color: Colors.red,
-                        ),
+                    widget.user.atende_festa == true
+                        ? hText('Sim', context, color: Colors.green)
+                        : hText('Não', context, color: Colors.red)
 
 
-                ],
+                  ],
 
+                ),
               ),sb,
-              Row(children: <Widget>[
-                hText('Atende em Finais de Semana', context,
-                   ),
-                widget.user.atende_fds == true
-                    ? Icon(
-                  MdiIcons.checkBold,
-                  color: Colors.green,
-                )
-                    : Icon(
-                  MdiIcons.close,
-                  color: Colors.red,
-                ),],),sb,
-              Row(
-                children: <Widget>[
-                  hText('Circula pela parte da manhã', context,
-                  ),
-                  widget.user.manha == true
-                      ? Icon(
-                    MdiIcons.checkBold,
-                    color: Colors.green,
-                  )
-                      : Icon(
-                    MdiIcons.close,
-                    color: Colors.red,
-                  ),
-
-
-                ],
-
+              Padding(
+                padding:  EdgeInsets.only(left: 20.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                  hText('Atende em Finais de Semana? ', context,
+                     ),
+                  widget.user.atende_fds == true
+                      ? hText('Sim', context, color: Colors.green)
+                      : hText('Não', context, color: Colors.red),],),
               ),sb,
-              Row(
-                children: <Widget>[
-                  hText('Circula pela parte da tarde', context,
-                  ),
-                  widget.user.tarde == true
-                      ? Icon(
-                    MdiIcons.checkBold,
-                    color: Colors.green,
-                  )
-                      : Icon(
-                    MdiIcons.close,
-                    color: Colors.red,
-                  ),
+              Padding(
+                padding:  EdgeInsets.only(left: 20.0),
+                child: Row(
 
+                  children: <Widget>[
+                    hText('Circula pela parte da manhã? ', context,
+                    ),
+                    widget.user.manha == true
+                        ? hText('Sim', context, color: Colors.green)
+                        : hText('Não', context, color: Colors.red)
 
-                ],
+                  ],
 
+                ),
               ),sb,
-              Row(
-                children: <Widget>[
-                  hText('Circula pela parte da noite', context,
-                  ),
-                  widget.user.noite == true
-                      ? Icon(
-                    MdiIcons.checkBold,
-                    color: Colors.green,
-                  )
-                      : Icon(
-                    MdiIcons.close,
-                    color: Colors.red,
-                  ),
+              Padding(
+                padding:  EdgeInsets.only(left: 20.0),
+                child: Row(
+                  children: <Widget>[
+                    hText('Circula pela parte da tarde? ', context,
+                    ),
+                    widget.user.tarde == true
+                        ? hText('Sim', context, color: Colors.green)
+                        : hText('Não', context, color: Colors.red)
 
 
-                ],
+                  ],
 
+                ),
+              ),sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 20.0),
+                child: Row(
+                  children: <Widget>[
+                    hText('Circula pela parte da noite? ', context,
+                    ),
+                    widget.user.noite == true
+                        ? hText('Sim', context, color: Colors.green)
+                        : hText('Não', context, color: Colors.red)
+
+
+                  ],
+
+                ),
               ),sb,
             ],
           ),

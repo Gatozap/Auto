@@ -21,7 +21,7 @@ import 'card_back_display.dart';
 import 'card_chip.dart';
 import 'card_color.dart';
 import 'card_controller.dart';
-import 'card_create.dart';
+
 import 'card_front_display.dart';
 import 'card_list_controller.dart';
 
@@ -43,7 +43,7 @@ class CardListWidget extends StatelessWidget {
         onPressed: () {
           var blocProviderCardCreate = BlocProvider(
             bloc: CardController(),
-            child: CardCreate(),
+
           );
           blocProviderCardCreate.bloc.Incard_type(buttonText);
           Navigator.push(context,
@@ -264,7 +264,7 @@ class CardListWidget extends StatelessWidget {
                     onPressed: () {
                       var blocProviderCardCreate = BlocProvider(
                         bloc: CardController(),
-                        child: CardCreate(),
+
                       );
                       blocProviderCardCreate.bloc.Incard_type('Credito');
                       Navigator.push(

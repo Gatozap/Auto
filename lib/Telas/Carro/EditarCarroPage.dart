@@ -199,7 +199,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                               label: 'Modelo',
                               icon: FontAwesomeIcons.carSide,
                             ),
-                          ),
+                          ),sb,
                           Padding(
                             padding: EdgeInsets.only(left: 50, right: 30),
                             child: DefaultField(
@@ -210,9 +210,9 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                               icon: FontAwesomeIcons.palette,
                             ),
                           ),
-
+                             sb,
                            DefaultField(
-                                padding: EdgeInsets.only(left: 50, right: 30),
+                                padding: EdgeInsets.only(left: 60, right: 35),
                                 controller: controllerAno,
                                 hint: '1990',
                                 context: context,
@@ -221,17 +221,17 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                                 icon: FontAwesomeIcons.calendar,
                                 keyboardType: TextInputType.number),
 
-
+                             sb,
                            Row(
 
                              children: <Widget>[
                                   Padding(
-                                    padding: EdgeInsets.only(left: 50, right: 8),
+                                    padding: EdgeInsets.only(left: 60, right: 15),
                                     child: Container(height: 25, width: 25, child: Image(image: AssetImage('assets/placa_veiculo.png'),),),
                                   ),
                                Expanded(
                                  child: DefaultField(
-
+                                   padding: EdgeInsets.only(right: 35),
                                     controller: controllerPlaca,
                                     hint: 'AAA-9999',
                                     context: context,
@@ -311,7 +311,7 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
                           Container(
                             child:
                                 defaultActionButton('Atualizar', context, () {
-                              carro.placa = controllerPlaca.text;
+                              carro.placa = controllerPlaca.text.toUpperCase();
                               carro.ano = int.parse(controllerAno.text);
                               carro.modelo = controllerModelo.text;
                               carro.cor = controllerCor.text;

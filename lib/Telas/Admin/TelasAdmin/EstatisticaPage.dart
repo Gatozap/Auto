@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:autooh/Helpers/ExpandableContainer.dart';
 import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Corrida.dart';
@@ -11,6 +12,7 @@ import 'package:autooh/Telas/Admin/TelasAdmin/Estatisticas/EstatisticasControlle
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:random_color/random_color.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -125,15 +127,21 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Center(
-                  child: hText('Estatisticas Gerais', context,
-                      size: 70, weight: FontWeight.bold)),
+            
               sb,
               GestureDetector(
                 onTap: () {},
                 child: ExpandablePanel(
                     controller: expController,
-                    header: hText('Mapa', context),
+                    header: Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(FontAwesomeIcons.mapSigns, color: corPrimaria,),sb,
+                          hText('  Mapa', context, ),
+                        ],
+                      ),
+                    ),
                     expanded: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -156,35 +164,86 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                     ),
                         ))),
               ),
-              sb,
-              hText(
-                  'Total de visualizações: ${visualizacoes.toStringAsFixed(0)}',
-                  context),
-              sb,
-              hText(
-                  'Distancia percorrida: Km ${(dist / 1000).toStringAsFixed(2)}',
-                  context),
-              sb,
-              hText('Tempo na Rua: ${(tempoNaRua / 60).toStringAsFixed(0)} min',
-                  context),
-              sb,
-              hText('Corridas: ${countCorridas}', context),
+              sb,sb,
+              Padding(
+                padding:  EdgeInsets.only(left:15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(FontAwesomeIcons.user, color: corPrimaria,) ,sb,
+                    hText(
+                        'Total de visualizações: ${visualizacoes.toStringAsFixed(0)}',
+                        context),
+                  ],
+                ),
+              ),
+              sb,sb,
+              Padding(
+                padding:  EdgeInsets.only(left:15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(FontAwesomeIcons.route, color: corPrimaria,) ,sb,
+                    hText(
+                        'Distancia percorrida: Km ${(dist / 1000).toStringAsFixed(2)}',
+                        context),
+                  ],
+                ),
+              ),
+              sb, sb,
+              Padding(
+                padding:  EdgeInsets.only(left:15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(FontAwesomeIcons.clock, color: corPrimaria,) ,sb,
+                    hText('Tempo na Rua: ${(tempoNaRua / 60).toStringAsFixed(0)} min',
+                        context),
+                  ],
+                ),
+              ),
+              sb,  sb,
+              Padding(
+                padding:  EdgeInsets.only(left:15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(FontAwesomeIcons.truck, color: corPrimaria,) ,sb,
+                    hText('Corridas: ${countCorridas}', context),
+                  ],
+                ),
+              ),
               sb,
               widget.carro == null
-                  ? hText('Carros:${carros}', context)
+                  ? Padding(
+                padding:  EdgeInsets.only(left:15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(FontAwesomeIcons.car, color: corPrimaria,) ,sb,
+                        hText('Carros:${carros}', context),
+                      ],
+                    ),
+                  )
                   : Container(),
+              sb, sb,
+              Padding(
+                padding:  EdgeInsets.only(left:15.0),
+                child: Row(
+                  children: <Widget>[
+                    
+                    hText(
+                        'Ultima Corrida:${corridas.last.hora_ini.day.toString().length == 1 ? '0' + corridas.last.hora_ini.day.toString() : corridas.last.hora_ini.day}/${corridas.last.hora_ini.month.toString().length == 1 ? '0' + corridas.last.hora_ini.month.toString() : corridas.last.hora_ini.month}/${corridas.last.hora_ini.year} ${corridas.last.hora_ini.hour.toString().length == 1 ? '0' + corridas.last.hora_ini.hour.toString() : corridas.last.hora_ini.hour.toString()}:${corridas.last.hora_ini.minute.toString().length == 1 ? '0' + corridas.last.hora_ini.minute.toString() : corridas.last.hora_ini.minute.toString()}  \nFeita por ${corridas.last.carro.placa}',
+                        context),
+                  ],
+                ),
+              ),
               sb,
-              hText(
-                  'Ultima Corrida:${corridas.last.hora_ini.day.toString().length == 1 ? '0' + corridas.last.hora_ini.day.toString() : corridas.last.hora_ini.day}/${corridas.last.hora_ini.month.toString().length == 1 ? '0' + corridas.last.hora_ini.month.toString() : corridas.last.hora_ini.month}/${corridas.last.hora_ini.year} ${corridas.last.hora_ini.hour.toString().length == 1 ? '0' + corridas.last.hora_ini.hour.toString() : corridas.last.hora_ini.hour.toString()}:${corridas.last.hora_ini.minute.toString().length == 1 ? '0' + corridas.last.hora_ini.minute.toString() : corridas.last.hora_ini.minute.toString()}  \nFeita por ${corridas.last.carro.placa}',
-                  context),
-              sb,
-              Divider(),
+              Divider(color: corPrimaria),
               sb,
               widget.carro == null
                   ? Center(
                       child: hText('Carros', context,
                           size: 70, weight: FontWeight.bold))
                   : Container(),
+              sb,
+              Divider(color: corPrimaria,),
+              sb,
               widget.carro == null
                   ? ListView.builder(
                       shrinkWrap: true,
@@ -221,15 +280,23 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                               expanded: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  hText(
-                                      'Total de visualizações: ${vizualizacoesCarro.toStringAsFixed(0)}',
-                                      context),
+                                  Row(
+                                    children: <Widget>[    Icon(FontAwesomeIcons.eye, color: corPrimaria,),sb,
+                                      hText(
+                                          'Total de visualizações: ${vizualizacoesCarro.toStringAsFixed(0)}',
+                                          context),
+                                    ],
+                                  ),
                                   sb,
                                   //hText('Corridas: ${countCorridastemp}', context),
                                   sb,
-                                  hText(
-                                      'Distancia percorrida: Km ${(distCarro / 1000).toStringAsFixed(2)}',
-                                      context),
+                                  Row(
+                                    children: <Widget>[   Icon(FontAwesomeIcons.route, color: corPrimaria,),sb,
+                                      hText(
+                                          'Distancia percorrida: Km ${(distCarro / 1000).toStringAsFixed(2)}',
+                                          context),
+                                    ],
+                                  ),
                                   sb,
                                 ],
                               ),

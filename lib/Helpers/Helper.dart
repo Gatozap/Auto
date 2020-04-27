@@ -670,7 +670,7 @@ InputDecoration DefaultInputDecoration(
   FontStyle fontStyle = FontStyle.italic;
   ScreenUtil.instance = ScreenUtil(allowFontScaling: true)..init(context);
   OutlineInputBorder border = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+    borderSide: BorderSide(color: corPrimaria, width: 0.0),
   );
   OutlineInputBorder focusedborder = OutlineInputBorder(
     borderSide: BorderSide(color: borderColor, width: 2.0),
@@ -1048,7 +1048,8 @@ myAppBar(String titulo, context,
         titulo,
         style: TextStyle(
           fontSize: 22,
-          color: Colors.white,
+          color: Colors.yellowAccent,
+          fontWeight: FontWeight.bold,
           fontFamily: 'HelveticaNeueBd',
         ),
       ),
@@ -1072,24 +1073,6 @@ myAppBar(String titulo, context,
   );
 }
 
-nutrannoLogo(context, m1, m2) {
-  return SizedBox(
-    width: MediaQuery.of(context).size.width * m1,
-    height: MediaQuery.of(context).size.height * m2,
-    child: Container(
-      padding: EdgeInsets.all(1),
-      alignment: Alignment.center,
-      width: MediaQuery.of(context).size.width * m1,
-      height: MediaQuery.of(context).size.height * m2,
-      color: Colors.transparent,
-      child: Image(
-        image: AssetImage('assets/images/nutrannoLogo.png'),
-        width: MediaQuery.of(context).size.width * m1,
-        height: MediaQuery.of(context).size.height * m2,
-      ),
-    ),
-  );
-}
 
 class Helper {
   final FirebaseAuth _auth = FirebaseAuth.instance;

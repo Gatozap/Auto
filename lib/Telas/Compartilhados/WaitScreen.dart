@@ -6,10 +6,7 @@ class WaitScreen extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
       body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          color: Colors.white,
-          child: Image(image: AssetImage('assets/images/nutrannoLogo.png'))),
+    ),
     );
     ;
   }

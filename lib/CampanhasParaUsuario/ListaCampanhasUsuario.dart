@@ -1,18 +1,15 @@
 import 'package:autooh/CampanhasParaUsuario/VisualizarCampanhaUserPage.dart';
-import 'package:autooh/Helpers/References.dart';
+
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/ListCampanhaController.dart';
-import 'package:autooh/Telas/Carro/EditarCarroPage.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:autooh/Helpers/Helper.dart';
-import 'package:autooh/Helpers/Styles.dart';
-import 'package:autooh/Objetos/Equipamento.dart';
-import 'package:autooh/Objetos/Personagem.dart';
 
 
 class ListaCampanhasUsuarioPage extends StatefulWidget {

@@ -10,6 +10,7 @@ import 'package:autooh/Telas/Admin/TelasAdmin/ListaUsuarioPage.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Versao/VersaoPage.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'TelasAdmin/CriarCampanhaPage.dart';
@@ -60,106 +61,160 @@ class _AdminPageState extends State<AdminPage> {
                   MaterialPageRoute(builder: (context) => CriarCampanhaPage()));
             },
             child: Container(
-              color: Colors.lightBlue[50],
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
 
+              decoration: BoxDecoration(
+                color:Color.fromRGBO(0, 125, 190, 100),
+                border: Border.all(
+                  color: Colors.transparent,
+                  width: 5,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               height: getAltura(context) * .2,
-              width: getLargura(context)*.4,
+              width: getLargura(context) * .4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Icon(MdiIcons.appleSafari, size: 55, color: Colors.lightBlue[700]), hText('Criar Campanha', context)
+                  Container(width: 60, height: 60,child:  Image.asset('assets/icone_campanha.png', fit: BoxFit.fill),),
+                  hText('Criar\nCampanha', context, color:  Colors.white, textaling: TextAlign.center)
+                ],
+              ),
+            ),
+          ),
+
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ListaUsuarioPage(user: widget.user,)));
+            },
+            child: Container(
+
+              decoration: BoxDecoration(
+                color:Color.fromRGBO(0, 125, 190, 100),
+                border: Border.all(
+                  color: Colors.transparent,
+                  width: 5,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              height: getAltura(context) * .2,
+              width: getLargura(context) * .4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(width: 60, height: 60,child: Icon(FontAwesomeIcons.user, color: Colors.yellowAccent,size: 40),),
+                  hText('Lista de\nUsuários', context, color:  Colors.white, textaling: TextAlign.center)
                 ],
               ),
             ),
           ),
 
 
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ListaUsuarioPage(user: widget.user,)));
-          },
-          child: Container(
-            color: Colors.lightBlue[50],
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-
-            height: getAltura(context) * .2,
-            width: getLargura(context)*.4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Icon(MdiIcons.accountBox, size: 55, color: Colors.lightBlue[700]), hText('Lista de Usuários', context)
-              ],
-            ),
-          ),
-        ),
         ],
       ),
-        Row(children: <Widget>[   GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ListaCarroUserPage(carro: widget.carro, user: widget.user,campanha: widget.campanha, )));
-          },
-          child: Container(
-            color: Colors.lightBlue[50],
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        Row(children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ListaCarroUserPage(carro: widget.carro, user: widget.user,campanha: widget.campanha, )));
+            },
+            child: Container(
 
-            height: getAltura(context) * .2,
-            width: getLargura(context)*.4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Icon(MdiIcons.car, size: 55, color: Colors.lightBlue[700]), hText('Lista de Carros', context)
-              ],
+              decoration: BoxDecoration(
+                color:Color.fromRGBO(0, 125, 190, 100),
+                border: Border.all(
+                  color: Colors.transparent,
+                  width: 5,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              height: getAltura(context) * .2,
+              width: getLargura(context) * .4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(width: 60, height: 60,child:  Icon(FontAwesomeIcons.carSide, color: Colors.yellowAccent,size: 40),),
+                  hText('Lista de\nCarros', context, color:  Colors.white, textaling: TextAlign.center)
+                ],
+              ),
             ),
           ),
-        ),
+
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => ListaCampanhaPage(campanha: widget.campanha,carro: widget.carro, user: widget.user)));
             },
             child: Container(
-              color: Colors.lightBlue[50],
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
 
+              decoration: BoxDecoration(
+                color:Color.fromRGBO(0, 125, 190, 100),
+                border: Border.all(
+                  color: Colors.transparent,
+                  width: 5,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               height: getAltura(context) * .2,
-              width: getLargura(context)*.4,
+              width: getLargura(context) * .4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Icon(MdiIcons.appleSafari, size: 55, color: Colors.lightBlue[700]), hText('Editar Campanha', context)
+                  Container(width: 60, height: 60,child: Image.asset('assets/Campanhas.png', fit: BoxFit.fill),),
+                  hText('Editar\nCampanha', context, color:  Colors.white, textaling: TextAlign.center)
                 ],
               ),
             ),
           ),
 
-        ],),
-        Row(children: <Widget>[  GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => EstatisticaPage(carro: widget.carro, user: widget.user,campanha: widget.campanha, corrida: widget.corrida,)));
-          },
-          child: Container(
-            color: Colors.lightBlue[50],
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
 
-            height: getAltura(context) * .2,
-            width: getLargura(context)*.4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Icon(MdiIcons.chartAreaspline, size: 55, color: Colors.lightBlue[700]), hText('Estatísticas', context)
-              ],
+        ],),
+
+        Row(children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => EstatisticaPage(carro: widget.carro, user: widget.user,campanha: widget.campanha, corrida: widget.corrida,)));
+            },
+            child: Container(
+
+              decoration: BoxDecoration(
+                color:Color.fromRGBO(0, 125, 190, 100),
+                border: Border.all(
+                  color: Colors.transparent,
+                  width: 5,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              height: getAltura(context) * .2,
+              width: getLargura(context) * .4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(width: 60, height: 60,child: Icon(FontAwesomeIcons.chartPie, color: Colors.yellowAccent,size: 40),),
+                  hText('Estatísticas', context, color:  Colors.white, textaling: TextAlign.center)
+                ],
+              ),
             ),
           ),
-        ),],)
+
+
+         ],)
       ]),
 
       ),

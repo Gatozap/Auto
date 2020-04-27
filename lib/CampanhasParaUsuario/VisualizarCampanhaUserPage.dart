@@ -9,7 +9,7 @@ import 'package:autooh/Objetos/Bairro.dart';
 import 'package:autooh/Objetos/Zona.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 import 'package:autooh/Objetos/Campanha.dart';
 
@@ -391,7 +391,7 @@ class _VisualizarCampanhaUserPageState extends State<VisualizarCampanhaUserPage>
                               Divider(color: corPrimaria),sb,
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: hText('Preferências de onde colocar o anúncia nesta Campanha', context),
+                                child: hText('Preferências de onde colocar o anúncio desta Campanha', context),
                               ),sb,
                               Divider(color: corPrimaria),
 

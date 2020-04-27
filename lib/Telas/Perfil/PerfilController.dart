@@ -147,6 +147,8 @@ class PerfilController extends BlocBase {
   @override
   void dispose() {
     userController.close();
+    usersController.close();
+    userSelecionadoController.close();
     // TODO: implement dispose
   }
 }

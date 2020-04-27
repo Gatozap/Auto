@@ -101,22 +101,7 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: margem,
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .3,
-                      height: MediaQuery.of(context).size.height * .12,
-                      child: Container(
-                        padding: EdgeInsets.all(1),
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width * .3,
-                        height: MediaQuery.of(context).size.height * .12,
-                        color: Colors.transparent,
-                        child: Image(
-                          image: AssetImage('assets/images/nutrannoLogo.png'),
-                          width: MediaQuery.of(context).size.width * .7,
-                          height: MediaQuery.of(context).size.height * .7,
-                        ),
-                      ),
-                    ),
+
                     SizedBox(
                       height: margem,
                     ),
@@ -188,7 +173,7 @@ class _LoginState extends State<Login> {
                         CupertinoButton(
                           child: (Image(
                             image: AssetImage(
-                              "graphics/google-logo.png",
+                              "assets/icone_google.png",
                               package: "flutter_auth_buttons",
                             ),
                             height: 40.0,

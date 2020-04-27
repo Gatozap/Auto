@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:autooh/Helpers/Styles.dart';
 
 import 'card_controller.dart';
-import 'card_create.dart';
+
 
 class CardType extends StatelessWidget {
   nutrannoLogo(context, m1, m2) {
@@ -11,17 +11,7 @@ class CardType extends StatelessWidget {
       width: MediaQuery.of(context).size.width * m1,
       height: MediaQuery.of(context).size.height * m2,
       child: Container(
-        padding: EdgeInsets.all(1),
-        alignment: Alignment.center,
-        width: MediaQuery.of(context).size.width * m1,
-        height: MediaQuery.of(context).size.height * m2,
-        color: Colors.transparent,
-        child: Image(
-          image: AssetImage('assets/images/nutrannoLogo.png'),
-          width: MediaQuery.of(context).size.width * m1,
-          height: MediaQuery.of(context).size.height * m2,
-        ),
-      ),
+   ),
     );
   }
 
@@ -126,7 +116,7 @@ class CardType extends StatelessWidget {
         onPressed: () {
           var blocProviderCardCreate = BlocProvider(
             bloc: CardController(),
-            child: CardCreate(),
+
           );
           blocProviderCardCreate.bloc.Incard_type(buttonText);
           Navigator.push(context,

@@ -126,9 +126,8 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                     ? Image(
                         image: CachedNetworkImageProvider(p.foto),
                       )
-                    : Image(
-                        image: CachedNetworkImageProvider(
-                            'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                    : Image.asset(
+                            'assets/carro_foto.png',
                       )),
             Container(
               width: getLargura(context) * .4,
