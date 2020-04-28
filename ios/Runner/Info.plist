@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,17 +17,74 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb398962010710618</string>
+				<string>com.googleusercontent.apps.26885386881-9g50ghuauginmc5qn3bnj1gnlj0ckvag</string>
+				<string>autooh.page.link</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>739776986454357</string>
+	<key>FacebookDisplayName</key>
+	<string>autooh</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+		<string>comgooglemaps</string>
+		<string>waze</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Caso permitido, usado para facilitar acesso ao calendário.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Caso permitido, será utilizado para editar sua foto e scanear QRCode de Coaches</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Caso permitido, usado para facilitar acesso aos contatos.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Sua localização será utilizada na orientação de destino ao utilizar o módulo Localizar Coaches.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Sua localização será utilizada na orientação de destino ao utilizar o módulo Localizar Coaches.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Sua localização será utilizada na orientação de destino ao utilizar o módulo Localizar Coaches.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Caso permitido, será utilizado para o envio de áudio para o Coach.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Será utilizado para alterar sua foto de perfil.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Será utilizado para caso de lembrete de atividade pelo aplicativo.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>UIStatusBarHidden</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -41,5 +100,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

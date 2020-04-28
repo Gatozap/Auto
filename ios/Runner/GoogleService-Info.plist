@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>623468197680-1r719v3451iimn9r8tj09uvhpvjhe060.apps.googleusercontent.com</string>
+	<string>833154723346-g2hic79e36jdbs3bhvkdto1rsic10vku.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.623468197680-1r719v3451iimn9r8tj09uvhpvjhe060</string>
+	<string>com.googleusercontent.apps.833154723346-g2hic79e36jdbs3bhvkdto1rsic10vku</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>623468197680-nnrtliq5fogfucn663942n5a3c6a73l5.apps.googleusercontent.com</string>
+	<string>833154723346-euivn24rutr1fgbbsgpij25c6lsqrlrj.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC5YeA2DyC6j1d4bZRRF3K8Fgxd9RzSozg</string>
+	<string>AIzaSyC62ERmwhPCUj5w9yQMtT8ptUkkRGiOTq8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>623468197680</string>
+	<string>833154723346</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>br.com.avanti.divulcars</string>
+	<string>com.rbsoftware.autoo</string>
 	<key>PROJECT_ID</key>
-	<string>novo-boca-a-boca</string>
+	<string>avanticar-34239</string>
 	<key>STORAGE_BUCKET</key>
-	<string>novo-boca-a-boca.appspot.com</string>
+	<string>avanticar-34239.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:623468197680:ios:09eca9f9d4cca36b</string>
+	<string>1:833154723346:ios:4894ba15c171f207b9f2cb</string>
 	<key>DATABASE_URL</key>
-	<string>https://novo-boca-a-boca.firebaseio.com</string>
+	<string>https://avanticar-34239.firebaseio.com</string>
 </dict>
 </plist>
