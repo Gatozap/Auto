@@ -59,7 +59,7 @@ Future main() async {
     name: 'db2',
     options: new FirebaseOptions(
       googleAppID: Platform.isIOS
-          ? '1:833154723346:android:ec4788d0894308c7b9f2cb'
+          ? '1:833154723346:ios:4894ba15c171f207b9f2cb'
           : '1:833154723346:android:ec4788d0894308c7b9f2cb',
       gcmSenderID: '833154723346',
       apiKey: 'AIzaSyC1TP3_Egip9wBhskTz2_tNT8sS6enrDNw',
@@ -67,7 +67,7 @@ Future main() async {
       databaseURL: 'https://avanticar-34239.firebaseio.com/',
       storageBucket: 'avanticar-34239.appspot.com',
       clientID: Platform.isIOS
-          ? '833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com'
+          ? '833154723346-g2hic79e36jdbs3bhvkdto1rsic10vku.apps.googleusercontent.com'
           : '833154723346-oap1dblgdcb7qdf7iu21dg2docfu7m08.apps.googleusercontent.com',
       bundleID: 'com.rbsoftware.autooh',
     ),
