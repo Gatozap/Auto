@@ -243,7 +243,7 @@ class _MyAppState extends State<Racing> {
         items.add(
             DropdownMenuItem(value: z, child: Text('${z.modelo} ${z.placa}')));
       }
-      if(items.length== 0){
+      if (items.length == 0) {
         dToast('Você não possui carros aprovados para rodar');
       }
       return items;
