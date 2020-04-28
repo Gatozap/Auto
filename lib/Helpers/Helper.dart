@@ -1001,7 +1001,7 @@ myAppBar(String titulo, context,
       leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.white,
+            color:Colors.yellowAccent,
           ),
           onPressed: () {
             if (close) {
@@ -1039,10 +1039,10 @@ myAppBar(String titulo, context,
               Navigator.of(context).pop();
             }
           }),
-      backgroundColor: corPrimaria,
-      iconTheme: new IconThemeData(color: Colors.white),
+        backgroundColor: Color.fromARGB(255,0,122,154),
+      iconTheme: new IconThemeData(color: Colors.yellowAccent),
       centerTitle: true,
-      actionsIconTheme: new IconThemeData(color: Colors.white),
+      actionsIconTheme: new IconThemeData(color: Colors.yellowAccent),
       actions: actions,
       title: Text(
         titulo,
@@ -1057,9 +1057,9 @@ myAppBar(String titulo, context,
   }
   return AppBar(
     backgroundColor: corPrimaria,
-    iconTheme: new IconThemeData(color: Colors.white),
+    iconTheme: new IconThemeData(color:Colors.yellowAccent),
     centerTitle: true,
-    actionsIconTheme: new IconThemeData(color: Colors.white),
+    actionsIconTheme: new IconThemeData(color:Colors.yellowAccent),
     actions: actions,
     title: Text(
       titulo,

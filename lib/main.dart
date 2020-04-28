@@ -80,8 +80,6 @@ Future main() async {
 }
 
 class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
-
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: Helper.analytics);
   static final navKey = new GlobalKey<NavigatorState>();
