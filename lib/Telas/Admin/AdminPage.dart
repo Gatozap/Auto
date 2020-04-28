@@ -7,6 +7,7 @@ import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/ListaUsuarioPage.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/parceiros_cadastrar_page.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Versao/VersaoPage.dart';
 import 'package:flutter/material.dart';
@@ -217,7 +218,7 @@ class _AdminPageState extends State<AdminPage> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ParceirosListPage()));
+                  MaterialPageRoute(builder: (context) => ParceirosCadastrarPage()));
             },
             child: Container(
 

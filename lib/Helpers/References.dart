@@ -8,7 +8,8 @@ CollectionReference gruposRef = Firestore.instance.collection('Grupo').reference
 CollectionReference personagensRef =
     Firestore.instance.collection('Personagens').reference();
 
-
+CollectionReference parceiroRef =
+Firestore.instance.collection('Parceiro').reference();
 CollectionReference carrosRef =
 Firestore.instance.collection('Carro').reference();
 
