@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'Endereco.dart';
@@ -46,7 +48,8 @@ class Parceiro {
       "sexta": this.sexta,
       "sabado": this.sabado,
       "domingo": this.domingo,
-      "endereco": this.endereco,
+
+      "endereco": this.endereco== null ? null : json.encode(this.endereco),
       "hora_ini": this.hora_ini,
       "hora_fim": this.hora_fim,
       'created_at': this.created_at != null
@@ -74,7 +77,9 @@ class Parceiro {
       sexta: map['sexta'],
       sabado: map['sabado'],
       domingo: map['domingo'],
-      endereco: map['endereco'],
+      endereco: map['endereco']== null
+          ? null
+          : getEndereco(json.decode(map['endereco'])),
       hora_ini: map['hora_ini'],
       hora_fim: map['hora_fim'],
       created_at: map['created_at'] == null
@@ -88,5 +93,16 @@ class Parceiro {
           : DateTime.fromMillisecondsSinceEpoch(map['deleted_at']),
       nome: map['nome'],
     );
+  }
+
+  static getEndereco(decoded) {
+    List<Endereco> enderecos = new List();
+    if (decoded == null) {
+      return null;
+    }
+    for (var i in decoded) {
+      enderecos.add(Endereco.fromJson(i));
+    }
+    return enderecos;
   }
 }

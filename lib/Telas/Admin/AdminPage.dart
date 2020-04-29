@@ -239,7 +239,7 @@ class _AdminPageState extends State<AdminPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(width: 60, height: 60,child: Icon(FontAwesomeIcons.shopware, color: Colors.yellowAccent,size: 40),),
-                  hText('Parceiros', context, color:  Colors.white, textaling: TextAlign.center)
+                  hText('Cadastrar\nParceiros', context, color:  Colors.white, textaling: TextAlign.center)
                 ],
               ),
             ),

@@ -57,6 +57,7 @@ class AddEnderecoController implements BlocBase {
   @override
   void dispose() {
     _controllerEndereco.close();
+
   }
 
     AddEnderecoController(Endereco ue) {

@@ -16,6 +16,7 @@ import 'package:keyboard_actions/keyboard_action.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import 'LocationController.dart';
 import 'addEnderecoController.dart';
 
 class ParceirosCadastrarPage extends StatefulWidget {
@@ -34,16 +35,29 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
     if(pc == null){
       pc = ParceirosBloc(parceiro: widget.parceiro);
     }
-
-
+     if(aec == null){
+       aec =   AddEnderecoController(ue);
+     }
+    if (ue == null) {
+      ue = new Endereco.Empty();
+    }
   }
   AddEnderecoController aec;
   Endereco ue;
+  FocusNode myFocusNode;
   bool isPressed = false;
   bool onLoad = true;
   bool isCadastrarPressed = false;
   ParceirosBloc pc;
   Parceiro parceiro;
+  final _formKey = GlobalKey<FormState>();
+  var controllerCEP = new MaskedTextController(text: '', mask: '00000-000');
+  var controllerCidade = new TextEditingController(text: '');
+  var controllerEstado = new TextEditingController(text: '');
+  var controllerEndereco = new TextEditingController(text: '');
+  var controllerBairro = new TextEditingController(text: '');
+  var controllerNumero = new TextEditingController(text: '');
+  var controllerComplemento = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
   var controlerTelefone = new MaskedTextController( text: '', mask: '(00) 0 0000-0000');
   var controlerHoraIni = new MaskedTextController( text: '', mask: '00:00');
@@ -264,6 +278,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                      children: <Widget>[
                                                        sb,
                                                        sb,
+                                                       Divider(color: corPrimaria),
                                                        sb,
                                                        Text(
                                                          'Cadastre seu endereço',
@@ -272,10 +287,12 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                              fontSize: 20),
                                                        ),
                                                        sb,
+                                                       Divider(color: corPrimaria),
                                                        sb,
                                                        defaultActionButton(
-                                                           'Buscar pela minha localização',
+                                                           'Buscar Localização',
                                                            context, () async {
+                                                             print('apertou');
                                                          aec.inEndereco.add(
                                                              await lc
                                                                  .getEndereco());
@@ -469,10 +486,10 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                            ),
                                                          ),
                                                        ),
-                                                       sb,
+
                                                      ])));
                                        }))),
-                            sb,Divider(color: corPrimaria,),sb,
+                          Divider(color: corPrimaria,),sb,
                            hText('Dias da Semana que Atende', context)
                           , sb,Divider(color: corPrimaria,),sb,
 
@@ -607,6 +624,20 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                              parceiro.hora_ini = controlerHoraIni.text;
                              parceiro.hora_fim = controlerHoraFim.text;
                               parceiro.telefone = controlerTelefone.text;
+                                  parceiro.created_at = DateTime.now();
+                             List<Endereco> end = new List();
+                              Endereco e = new Endereco(
+                               cep: controllerCEP.text,
+                               bairro: controllerBairro.text,
+                               complemento: controllerComplemento.text,
+                               cidade: controllerCidade.text,
+                               created_at: DateTime.now(),
+                               endereco: controllerEndereco.text,
+                                     numero: controllerNumero.text,
+
+                              );
+                             end.add(e);
+                              parceiro.endereco = e;
                              parceirosRef.add(parceiro.toJson()).then((v) {
                                parceiro.id = v.documentID;
                                  parceirosRef.document(parceiro.id).updateData(parceiro.toJson()).then((v){
