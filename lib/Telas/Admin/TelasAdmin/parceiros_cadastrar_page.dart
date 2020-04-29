@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Helpers/Styles.dart';
+import 'package:autooh/Objetos/Endereco.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/ParceirosBloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,6 +15,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_actions/keyboard_action.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import 'addEnderecoController.dart';
 
 class ParceirosCadastrarPage extends StatefulWidget {
   Parceiro parceiro;
@@ -34,6 +37,8 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
 
 
   }
+  AddEnderecoController aec;
+  Endereco ue;
   bool isPressed = false;
   bool onLoad = true;
   bool isCadastrarPressed = false;
@@ -41,6 +46,8 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
   Parceiro parceiro;
   var controllerNome = new TextEditingController(text: '');
   var controlerTelefone = new MaskedTextController( text: '', mask: '(00) 0 0000-0000');
+  var controlerHoraIni = new MaskedTextController( text: '', mask: '00:00');
+  var controlerHoraFim = new MaskedTextController( text: '', mask: '00:00');
   @override
   Widget build(BuildContext context) {
     var linearGradient = const BoxDecoration(
@@ -89,7 +96,9 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                   }
                  if (onLoad) {
                    controllerNome.text = parceiro.nome;
-
+                     controlerHoraIni.text = parceiro.hora_ini;
+                   controlerHoraFim.text = parceiro.hora_fim;
+                   controlerTelefone.text = parceiro.telefone;
                    onLoad = false;
                  }
 
@@ -203,7 +212,266 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                autovalidate: true,
                              ),
                            ),
+                           Padding(
+                               padding: const EdgeInsets.all(24.0),
+                               child: Container(
+                                   height:
+                                   MediaQuery.of(context).size.height * .85,
+                                   child: StreamBuilder<Endereco>(
+                                       stream: aec.outEndereco,
+                                       builder: (context, snapshot) {
+                                         ue = snapshot.data;
+                                         if (myFocusNode == null) {
+                                           myFocusNode = FocusNode();
+                                         }
 
+                                         if (ue != null) {
+                                           controllerCEP.text =
+                                           ue.cep != null ? ue.cep : '';
+                                           controllerCidade.text =
+                                           ue.cidade != null
+                                               ? ue.cidade
+                                               : '';
+                                           controllerEndereco.text =
+                                           ue.endereco != null
+                                               ? ue.endereco
+                                               : '';
+                                           controllerBairro.text =
+                                           ue.bairro != null
+                                               ? ue.bairro
+                                               : '';
+                                           if (controllerNumero.text.isEmpty) {
+                                             controllerNumero.text =
+                                             ue.numero != null
+                                                 ? ue.numero
+                                                 : '';
+                                           }
+                                           if (controllerComplemento
+                                               .text.isEmpty) {
+                                             controllerComplemento.text =
+                                             ue.complemento != null
+                                                 ? ue.complemento
+                                                 : '';
+                                           }
+                                         }
+                                         return SingleChildScrollView(
+                                             child: Form(
+                                                 key: _formKey,
+                                                 child: Column(
+                                                     mainAxisAlignment:
+                                                     MainAxisAlignment
+                                                         .center,
+                                                     children: <Widget>[
+                                                       sb,
+                                                       sb,
+                                                       sb,
+                                                       Text(
+                                                         'Cadastre seu endereço',
+                                                         style: TextStyle(
+                                                             color: Colors.black,
+                                                             fontSize: 20),
+                                                       ),
+                                                       sb,
+                                                       sb,
+                                                       defaultActionButton(
+                                                           'Buscar pela minha localização',
+                                                           context, () async {
+                                                         aec.inEndereco.add(
+                                                             await lc
+                                                                 .getEndereco());
+                                                         Future.delayed(Duration(seconds:1)).then((v) async {
+                                                           aec.inEndereco.add(
+                                                               await lc
+                                                                   .getEndereco());
+                                                         });
+                                                       }, icon: null),
+                                                       sb,
+                                                       sb,
+                                                       new Padding(
+                                                         padding: ei,
+                                                         child: TextFormField(
+                                                           onFieldSubmitted:
+                                                           aec.FetchCep,
+                                                           controller:
+                                                           controllerCEP,
+                                                           keyboardType:
+                                                           TextInputType
+                                                               .numberWithOptions(),
+                                                           validator: (value) {
+                                                             if (value.isEmpty) {
+                                                               if (isCadastrarPressed) {
+                                                                 return 'É necessário preencher o CEP';
+                                                               }
+                                                             } else {
+                                                               if (value
+                                                                   .length !=
+                                                                   9) {
+                                                                 if (isCadastrarPressed) {
+                                                                   return 'CEP inválido';
+                                                                 }
+                                                               } else {
+                                                                 if (value
+                                                                     .length ==
+                                                                     9) {
+                                                                   if (ue.cep !=
+                                                                       value) {
+                                                                     aec.FetchCep(
+                                                                         value);
+                                                                     ue.cep =
+                                                                         value;
+                                                                     aec.inEndereco
+                                                                         .add(
+                                                                         ue);
+                                                                     FocusScope.of(
+                                                                         context)
+                                                                         .requestFocus(
+                                                                         myFocusNode);
+                                                                   }
+                                                                 }
+                                                               }
+                                                             }
+                                                           },
+                                                           decoration:
+                                                           DefaultInputDecoration(
+                                                             context,
+                                                             icon: Icons
+                                                                 .assistant_photo,
+                                                             hintText:
+                                                             '00000-000',
+                                                             labelText: 'CEP',
+                                                           ),
+                                                           autovalidate: true,
+                                                         ),
+                                                       ),
+                                                       new Padding(
+                                                         padding: ei,
+                                                         child: TextFormField(
+                                                           controller:
+                                                           controllerCidade,
+                                                           validator: (value) {
+                                                             if (value.isEmpty) {
+                                                               return 'É necessário preencher a Cidade';
+                                                             } else {
+                                                               ue.cidade = value;
+                                                               aec.inEndereco
+                                                                   .add(ue);
+                                                             }
+                                                           },
+                                                           decoration:
+                                                           DefaultInputDecoration(
+                                                             context,
+                                                             icon: Icons
+                                                                 .location_city,
+                                                             hintText:
+                                                             'São Paulo',
+                                                             labelText: 'Cidade',
+                                                           ),
+                                                         ),
+                                                       ),
+                                                       new Padding(
+                                                         padding: ei,
+                                                         child: TextFormField(
+                                                           controller:
+                                                           controllerBairro,
+                                                           validator: (value) {
+                                                             if (value.isEmpty) {
+                                                               return 'É necessário preencher o Bairro';
+                                                             } else {
+                                                               ue.bairro = value;
+                                                               aec.inEndereco
+                                                                   .add(ue);
+                                                             }
+                                                           },
+                                                           decoration:
+                                                           DefaultInputDecoration(
+                                                             context,
+                                                             icon: Icons.home,
+                                                             hintText: 'Centro',
+                                                             labelText: 'Bairro',
+                                                           ),
+                                                         ),
+                                                       ),
+                                                       new Padding(
+                                                         padding: ei,
+                                                         child: TextFormField(
+                                                           controller:
+                                                           controllerEndereco,
+                                                           validator: (value) {
+                                                             if (value.isEmpty) {
+                                                               return 'É necessário preencher o Endereço';
+                                                             } else {
+                                                               ue.endereco =
+                                                                   value;
+                                                               aec.inEndereco
+                                                                   .add(ue);
+                                                             }
+                                                           },
+                                                           decoration:
+                                                           DefaultInputDecoration(
+                                                             context,
+                                                             icon: Icons
+                                                                 .add_location,
+                                                             hintText:
+                                                             'Rua da Saúde',
+                                                             labelText:
+                                                             'Endereço',
+                                                           ),
+                                                         ),
+                                                       ),
+                                                       new Padding(
+                                                         padding: ei,
+                                                         child: TextFormField(
+                                                           keyboardType:
+                                                           TextInputType
+                                                               .number,
+                                                           controller:
+                                                           controllerNumero,
+                                                           focusNode:
+                                                           myFocusNode,
+                                                           validator: (value) {
+                                                             if (value.isEmpty) {
+                                                               return 'É necessário preencher o Número';
+                                                             } else {
+                                                               ue.numero = value;
+                                                               aec.inEndereco
+                                                                   .add(ue);
+                                                             }
+                                                           },
+                                                           decoration:
+                                                           DefaultInputDecoration(
+                                                             context,
+                                                             icon:
+                                                             Icons.filter_1,
+                                                             hintText: '3001',
+                                                             labelText: 'Número',
+                                                           ),
+                                                         ),
+                                                       ),
+                                                       new Padding(
+                                                         padding: ei,
+                                                         child: TextFormField(
+                                                           controller:
+                                                           controllerComplemento,
+                                                           validator: (value) {
+                                                             ue.complemento =
+                                                                 value;
+                                                             aec.inEndereco
+                                                                 .add(ue);
+                                                           },
+                                                           decoration:
+                                                           DefaultInputDecoration(
+                                                             context,
+                                                             icon: Icons.home,
+                                                             hintText:
+                                                             'Apto. 163',
+                                                             labelText:
+                                                             'Complemento',
+                                                           ),
+                                                         ),
+                                                       ),
+                                                       sb,
+                                                     ])));
+                                       }))),
                             sb,Divider(color: corPrimaria,),sb,
                            hText('Dias da Semana que Atende', context)
                           , sb,Divider(color: corPrimaria,),sb,
@@ -294,23 +562,58 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                            ),
                           sb, Divider(color: corPrimaria),sb, hText('Hora de funcionamento', context)
                                , sb, Divider(color: corPrimaria),sb,
-
+                           DefaultField(
+                               padding: EdgeInsets.only(left: 100, right: 120),
+                               controller: controlerHoraIni,
+                               hint: '08:00',
+                               context: context,
+                               label: 'Hora Inicial',
+                               expands: false,
+                               validator: (value) {
+                                 if (value.isEmpty) {
+                                   if (isCadastrarPressed) {
+                                     return 'É necessário preencher a Hora Inicial';
+                                   }
+                                 }
+                               },
+                               icon: FontAwesomeIcons.clock,
+                               keyboardType: TextInputType.number),
+                           sb,
+                           DefaultField(
+                               padding: EdgeInsets.only(left: 100, right: 120),
+                               controller: controlerHoraFim,
+                               hint: '17:00',
+                               context: context,
+                               label: 'Hora Fim',
+                               expands: false,
+                               validator: (value) {
+                                 if (value.isEmpty) {
+                                   if (isCadastrarPressed) {
+                                     return 'É necessário preencher a Hora Fim';
+                                   }
+                                 }
+                               },
+                               icon: FontAwesomeIcons.clock,
+                               keyboardType: TextInputType.number),sb,sb,
 
                            MaterialButton( child: Padding(
-                             padding:  EdgeInsets.only(left: 15.0, right:  15),
+                             padding:  EdgeInsets.only(left: 30.0, right:  30, top: 5 , bottom: 5),
                              child: hText('Cadastrar', context, color: corPrimaria, weight: FontWeight.bold, size: 80),
                            ),      color: Colors.yellowAccent,
                              shape: RoundedRectangleBorder(
                                  borderRadius:
                                  BorderRadius.circular(60)), onPressed: () async{
                              parceiro.nome = controllerNome.text;
+                             parceiro.hora_ini = controlerHoraIni.text;
+                             parceiro.hora_fim = controlerHoraFim.text;
                               parceiro.telefone = controlerTelefone.text;
                              parceirosRef.add(parceiro.toJson()).then((v) {
                                parceiro.id = v.documentID;
                                  parceirosRef.document(parceiro.id).updateData(parceiro.toJson()).then((v){
                                    dToast('Parceiro Criado com sucesso');
+                                      
                                  });
-
+                               Navigator.of(context).pop();
                                  });
                              
                              },)

@@ -6,7 +6,7 @@ class Parceiro {
 
   bool segunda, terca, quarta, quinta, sexta, sabado, domingo;
   Endereco endereco;
-  TimeOfDay hora_ini, hora_fim;
+  String hora_ini, hora_fim;
   DateTime created_at, updated_at, deleted_at;
   String nome, id, foto, telefone;
 

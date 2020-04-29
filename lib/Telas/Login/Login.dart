@@ -4,6 +4,7 @@ import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Telas/Cadastro/CadastroPage.dart';
 import 'package:autooh/Telas/Home/Home.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -174,10 +175,10 @@ class _LoginState extends State<Login> {
                           child: (Image(
                             image: AssetImage(
                               "assets/icone_google.png",
-                              package: "flutter_auth_buttons",
+                              
                             ),
                             height: 40.0,
-                            width: 40.0,
+                            width: 50.0,
                           )),
                           onPressed: () {
                             showLoading(context);
@@ -204,7 +205,7 @@ class _LoginState extends State<Login> {
                         isIOS
                             ? CupertinoButton(
                           child: (Image(
-                            image: NetworkImage(
+                            image: CachedNetworkImageProvider(
                                 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/152px-Apple_logo_black.svg.png'),
                             height: 40.0,
                             width: 40.0,
@@ -235,7 +236,7 @@ class _LoginState extends State<Login> {
                         )
                             : Container(),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          padding: EdgeInsets.only(right: 10.0),
                           child: RaisedButton(
 
                             color: Colors.yellowAccent,
@@ -263,7 +264,7 @@ class _LoginState extends State<Login> {
                                 }
                               });
                             },
-                            padding: EdgeInsets.only(top: 15, left: 70, right: 70, bottom: 15),
+                            padding: EdgeInsets.only(top: 15, left: 60, right: 60, bottom: 15),
                             child: Text('Entrar', style: estiloTextoBotao),
                           ),
                         ),
