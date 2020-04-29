@@ -171,7 +171,7 @@ class _LoginState extends State<Login> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        CupertinoButton(
+                        isIOS? Container():CupertinoButton(
                           child: (Image(
                             image: AssetImage(
                               "assets/icone_google.png",
@@ -203,7 +203,7 @@ class _LoginState extends State<Login> {
                           },
                         ),
                         isIOS
-                            ? CupertinoButton(
+                            ? Container()/*CupertinoButton(
                           child: (Image(
                             image: CachedNetworkImageProvider(
                                 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/152px-Apple_logo_black.svg.png'),
@@ -233,7 +233,7 @@ class _LoginState extends State<Login> {
                               print('Erro: ${onError.toString()}');
                             });
                           },
-                        )
+                        )*/
                             : Container(),
                         Padding(
                           padding: EdgeInsets.only(right: 10.0),
