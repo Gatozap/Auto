@@ -12,31 +12,36 @@ class SolicitacoesListController extends BlocBase {
   List<Solicitacao> solicitacoes;
 
   SolicitacoesListController({user, campanha}) {
-    solicitacoes = new List();
+
     if (user == null) {
       if (campanha == null) {
-        solicitacoesRef.getDocuments().then((v) {
+        solicitacoesRef.snapshots().listen((v) {
+          solicitacoes = new List();
           for (var d in v.documents) {
             solicitacoes.add(Solicitacao.fromJson(d.data));
           }
+          solicitacoes.sort((Solicitacao a, Solicitacao b,)=>b.created_at.compareTo(a.created_at));
           inSolicitacoes.add(solicitacoes);
         });
       } else {
         solicitacoesRef
-            .where('campanha', isEqualTo: campanha)
-            .getDocuments()
-            .then((v) {
+            .where('campanha', isEqualTo: campanha.id)
+            .snapshots().listen((v) {
+          solicitacoes = new List();
           for (var d in v.documents) {
             solicitacoes.add(Solicitacao.fromJson(d.data));
           }
+          solicitacoes.sort((Solicitacao a, Solicitacao b,)=>b.created_at.compareTo(a.created_at));
           inSolicitacoes.add(solicitacoes);
         });
       }
     } else {
-      solicitacoesRef.where('user', isEqualTo: user).getDocuments().then((v) {
+      solicitacoesRef.where('usuario', isEqualTo: user.id).snapshots().listen((v) {
+        solicitacoes = new List();
         for (var d in v.documents) {
           solicitacoes.add(Solicitacao.fromJson(d.data));
         }
+        solicitacoes.sort((Solicitacao a, Solicitacao b,)=>b.created_at.compareTo(a.created_at));
         inSolicitacoes.add(solicitacoes);
       });
     }
@@ -44,6 +49,6 @@ class SolicitacoesListController extends BlocBase {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    controllerSolicitacoes.close();
   }
 }

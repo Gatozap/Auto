@@ -1,9 +1,15 @@
 import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListController.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/solicitacao_list_item.dart';
 import 'package:flutter/material.dart';
 
 class SolicitacoesListPage extends StatefulWidget {
-  SolicitacoesListPage({Key key}) : super(key: key);
+  User user;
+  Campanha c;
+  bool isUser;
+  SolicitacoesListPage({Key key, this.user,this.c,this.isUser = false}) : super(key: key);
 
   @override
   _SolicitacoesListPageState createState() {
@@ -27,7 +33,7 @@ class _SolicitacoesListPageState extends State<SolicitacoesListPage> {
   @override
   Widget build(BuildContext context) {
     if (slc == null) {
-      slc = SolicitacoesListController();
+      slc = SolicitacoesListController(user:widget.user,campanha: widget.c);
     }
     // TODO: implement build
     return Scaffold(
@@ -39,9 +45,11 @@ class _SolicitacoesListPageState extends State<SolicitacoesListPage> {
               return LoadingWidget('Nenhuma solicitação encontrada!', 'Procurando Solicitacoes');
             }
             return ListView.builder(itemBuilder: (context,i){
-              return hText(snap.data[i].toString(),context);
+              return SolicitacaoListItem(snap.data[i],isUser:widget.isUser);
             },itemCount: snap.data.length,);
           },
         ));
   }
 }
+
+

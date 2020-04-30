@@ -543,7 +543,7 @@ class _VisualizarCampanhaUserPageState
                                         nome_usuario: Helper.localUser.nome,
                                         campanha: widget.campanha.id,
                                         carro: c,
-                                        isAprovado: false,
+                                        isAprovado: null,
                                       );
                                       solicitacoesRef.add(s.toJson()).then((v) {
                                         s.id = v.documentID;
@@ -556,7 +556,7 @@ class _VisualizarCampanhaUserPageState
                                               '${widget.campanha.nome}',
                                               null,
                                               'Administrador',
-                                              widget.campanha,
+                                              widget.campanha.id,
                                               s.id);
                                           dToast(
                                               'Solicitação enviada com Sucesso! Um Administrador irá analisar e entrará em contato');

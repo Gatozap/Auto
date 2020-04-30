@@ -6,6 +6,7 @@ import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Zona.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListPage.dart';
 import 'package:autooh/Telas/Intro/IntroPage.dart';
 import 'package:autooh/Telas/Corrida/foreground.dart';
 import 'package:autooh/main.dart';
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     if (gc == null) {
       gc = new GruposController();
     }
-    Helper.fbmsg.subscribeToTopic('usuario${Helper.localUser.id}');
+    Helper.fbmsg.subscribeToTopic('user${Helper.localUser.id}');
     if(Helper.localUser.permissao == 10){
       Helper.fbmsg.subscribeToTopic('Administrador');
     }
@@ -261,27 +262,33 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    Container(
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SolicitacoesListPage(user: Helper.localUser,isUser:true,)));
+                      },
+                      child: Container(
 
-                      decoration: BoxDecoration(
-                        color:Color.fromRGBO(0, 125, 190, 100),
-                        border: Border.all(
-                          color: Colors.transparent,
-                          width: 5,
+                        decoration: BoxDecoration(
+                          color:Color.fromRGBO(0, 125, 190, 100),
+                          border: Border.all(
+                            color: Colors.transparent,
+                            width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      margin:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      height: getAltura(context) * .2,
-                      width: getLargura(context) * .4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(width: 60, height: 60,child:  Image.asset('assets/duvidas_icone.png', fit: BoxFit.fill),),
-                          hText('Dúvidas', context, color:  Colors.white, textaling: TextAlign.center)
-                        ],
+                        margin:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        height: getAltura(context) * .2,
+                        width: getLargura(context) * .4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Container(width: 60, height: 60,child:  Image.asset('assets/duvidas_icone.png', fit: BoxFit.fill),),
+                            hText('Solicitacoes', context, color:  Colors.white, textaling: TextAlign.center)
+                          ],
+                        ),
                       ),
                     ),
                   ],

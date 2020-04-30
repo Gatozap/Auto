@@ -1096,7 +1096,7 @@ sendNotificationUsuario(title,text, imageUrl,topic,campanha,solicitacao,{behavio
       sender: 'user${Helper.localUser.id.toString()}',
       topic: topic,
       data: json.encode({
-        'campanha': campanha.id,
+        'campanha': campanha,
         'solicitacao':solicitacao,
         'user': Helper.localUser.toJson(),
         'title': '${title}',
