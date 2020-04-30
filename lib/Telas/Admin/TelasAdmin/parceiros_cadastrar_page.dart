@@ -64,6 +64,20 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
   var controlerHoraFim = new MaskedTextController( text: '', mask: '00:00');
   @override
   Widget build(BuildContext context) {
+    if(widget.parceiro != null) {
+      controllerNome.text = widget.parceiro.nome;
+      controlerHoraIni.text = widget.parceiro.hora_ini;
+      controlerHoraFim.text = widget.parceiro.hora_fim;
+      controlerTelefone.text = widget.parceiro.telefone;
+      controllerCidade.text = widget.parceiro.endereco.cidade;
+       controllerEndereco.text = widget.parceiro.endereco.endereco;
+       controllerBairro.text =  widget.parceiro.endereco.bairro;
+       controllerComplemento.text =  widget.parceiro.endereco.complemento;
+       controllerNumero.text =  widget.parceiro.endereco.numero;
+       
+      parceiro = widget.parceiro;
+      pc.inParceiroSelecionado.add(parceiro);
+    }
     var linearGradient = const BoxDecoration(
       gradient: const LinearGradient(
         begin: FractionalOffset.centerRight,
@@ -75,7 +89,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
       ),
     );
 
-    return Scaffold(appBar: myAppBar('Cadastrar Parceiro', context,showBack: true),
+    return Scaffold(appBar: myAppBar(widget.parceiro == null?'Cadastrar Parceiro': 'Editar Parceiro', context,showBack: true),
            body: Container(width: getLargura(context),  height: getAltura(context),
            decoration: linearGradient,
            padding: EdgeInsets.all(1),
@@ -86,6 +100,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                  if (parceiro == null) {
                  parceiro = new Parceiro();
                  }
+
                   if(parceiro.segunda == null){
                     parceiro.segunda = false;
                   }
@@ -108,13 +123,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                   if(parceiro.domingo == null){
                     parceiro.domingo = false;
                   }
-                 if (onLoad) {
-                   controllerNome.text = parceiro.nome;
-                     controlerHoraIni.text = parceiro.hora_ini;
-                   controlerHoraFim.text = parceiro.hora_fim;
-                   controlerTelefone.text = parceiro.telefone;
-                   onLoad = false;
-                 }
+
 
                  return SingleChildScrollView(
                        child: Padding(
@@ -155,7 +164,9 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                      2) *
                                      .2),
                                  backgroundColor: Colors.transparent,
-                                 child: parceiro.foto != null
+                                 child:
+
+                                 parceiro.foto != null
                                      ? Image(
                                    image: CachedNetworkImageProvider(
                                        parceiro.foto),
@@ -240,20 +251,29 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                          }
 
                                          if (ue != null) {
-                                           controllerCEP.text =
-                                           ue.cep != null ? ue.cep : '';
-                                           controllerCidade.text =
-                                           ue.cidade != null
-                                               ? ue.cidade
-                                               : '';
-                                           controllerEndereco.text =
-                                           ue.endereco != null
-                                               ? ue.endereco
-                                               : '';
-                                           controllerBairro.text =
-                                           ue.bairro != null
-                                               ? ue.bairro
-                                               : '';
+
+                                                         controllerCEP.text =
+                                                         ue.cep != null ? ue
+                                                             .cep : '';
+
+                                           if(controllerCidade.text.isEmpty) {
+                                             controllerCidade.text =
+                                             ue.cidade != null
+                                                 ? ue.cidade
+                                                 : '';
+                                           }
+                                           if(controllerEndereco.text.isEmpty) {
+                                             controllerEndereco.text =
+                                             ue.endereco != null
+                                                 ? ue.endereco
+                                                 : '';
+                                           }
+                                           if(controllerBairro.text.isEmpty) {
+                                             controllerBairro.text =
+                                             ue.bairro != null
+                                                 ? ue.bairro
+                                                 : '';
+                                           }
                                            if (controllerNumero.text.isEmpty) {
                                              controllerNumero.text =
                                              ue.numero != null
@@ -615,7 +635,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
 
                            MaterialButton( child: Padding(
                              padding:  EdgeInsets.only(left: 30.0, right:  30, top: 5 , bottom: 5),
-                             child: hText('Cadastrar', context, color: corPrimaria, weight: FontWeight.bold, size: 80),
+                             child: hText(widget.parceiro == null? 'Cadastrar':'Editar', context, color: corPrimaria, weight: FontWeight.bold, size: 80),
                            ),      color: Colors.yellowAccent,
                              shape: RoundedRectangleBorder(
                                  borderRadius:
@@ -638,15 +658,22 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                               );
                              end.add(e);
                               parceiro.endereco = e;
-                             parceirosRef.add(parceiro.toJson()).then((v) {
+
+                              widget.parceiro == null? parceirosRef.add(parceiro.toJson()).then((v) {
                                parceiro.id = v.documentID;
                                  parceirosRef.document(parceiro.id).updateData(parceiro.toJson()).then((v){
                                    dToast('Parceiro Criado com sucesso');
                                       
                                  });
                                Navigator.of(context).pop();
-                                 });
-                             
+                                 }):
+                              pc.EditarParceiro(
+                                  parceiro)
+                                  .then((v) {
+                                dToast(
+                                    'Parceiro editado com sucesso!');
+                                Navigator.of(context).pop();
+                              });
                              },)
                          ],),
                        ),

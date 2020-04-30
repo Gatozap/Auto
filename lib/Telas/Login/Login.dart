@@ -112,7 +112,7 @@ class _LoginState extends State<Login> {
                       keyboardType: TextInputType.emailAddress,
                       controller: controllerEmail,
                       
-                      style: TextStyle(color: Colors.white70, ),
+                      style: TextStyle(color: Colors.black, ),
                       decoration: InputDecoration(
                                   fillColor: Colors.cyan,
                         filled: true,
@@ -143,7 +143,7 @@ class _LoginState extends State<Login> {
 
                       controller: controllerSenha,
                       obscureText: true,
-                      style: TextStyle(color: Colors.white70),
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         fillColor: Colors.cyan,
                         filled: true,

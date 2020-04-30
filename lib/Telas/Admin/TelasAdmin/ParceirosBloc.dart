@@ -1,5 +1,6 @@
 
 
+import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
 import 'package:autooh/Telas/Card/bloc_provider.dart';
@@ -42,16 +43,31 @@ class ParceirosBloc extends BlocBase {
       });
     }
   }
+
+  Future EditarParceiro(Parceiro parceiro) async {
+
+
+    return parceirosRef.document(parceiro.id).updateData(parceiro.toJson()).then((d) {
+      print('editado com sucesso');
+
+      return parceiro;
+    }).catchError((err) {
+      print('Error: ${err}');
+      return err;
+    });
+
+
+  }
   ParceirosBloc({Parceiro parceiro}){
     parceiroSelecionado = parceiro;
     inParceiroSelecionado.add(parceiroSelecionado);
     parceirosRef
-        .where("id")
+       
         .snapshots()
         .listen((QuerySnapshot snap) {
       parceiros = new List();
 
-      if (snap.documents.length > 0) {
+      if (snap.documents != null) {
         for (DocumentSnapshot ds in snap.documents) {
 
           Parceiro p = Parceiro.fromJson(ds.data);

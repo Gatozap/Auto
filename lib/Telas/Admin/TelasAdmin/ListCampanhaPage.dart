@@ -50,7 +50,7 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar('Filtro por Campanha', context),
+      appBar: myAppBar('Lista de Campanha', context),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -77,9 +77,9 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, index) {
                       Campanha p = snapshot.data[index];
-                         if(p.datafim.isAfter(DateTime.now())) {
+                      
                            return CampanhaListItem(p);
-                         }
+
                     },
                     itemCount: snapshot.data.length,
                   ),
