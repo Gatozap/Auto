@@ -18,8 +18,8 @@ import 'NewsController.dart';
 
 class NotificacoesHelper {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  String iconPath = 'autooh';
-  String largeIconPath = 'autooh';
+  String iconPath = 'auto';
+  String largeIconPath = 'auto';
 
   /*sendNotification(Map<String, dynamic> body) {
     print('Enviando Push');
@@ -50,8 +50,6 @@ class NotificacoesHelper {
       title = title.length > 55 ? title.substring(0, 54) + '...' : title;
       print(title.length);
       print('AQUI' + json.decode(msg['data']).runtimeType.toString());
-      String senderpic = await _downloadAndSaveImage(
-          'http://autooh.com/img/logo/logo.png', 'autooh');
       var data = json.decode(msg['data']);
       int behaiviour;
       var sender;
@@ -59,35 +57,31 @@ class NotificacoesHelper {
       if (json.decode(msg['data']).runtimeType.toString() != 'List<dynamic>') {
         sender = User.fromJson(json.decode(msg['data'])['user']);
         behaiviour = int.parse(data['behaivior'].toString());
-        if (sender.foto != null) {
-          senderpic = await _downloadAndSaveImage(sender.foto, sender.id);
-        }
       } else {
         sender = 'Server';
         behaiviour = int.parse(msg['behaivior'].toString());
       }
 
       print('behaiviour > ' + behaiviour.toString());
-      print('AQUI SENDER PICK ${senderpic}');
       bc.addBadge(behaiviour);
       switch (behaiviour) {
         case 0:
-          ShowChatNotification(sender, senderpic, title, msg, data);
+          ShowChatNotification(sender, iconPath, title, msg, data);
           break;
         case 1:
-          ShowNotification(sender, senderpic, title, msg, data);
+          ShowNotification(sender, iconPath, title, msg, data);
           break;
         case 2:
-          ShowNotification(sender, senderpic, title, msg, data);
+          ShowNotification(sender, iconPath, title, msg, data);
           break;
         case 3:
-          ShowNotification(sender, senderpic, title, msg, data);
+          ShowNotification(sender, iconPath, title, msg, data);
           break;
         case 4:
-          ShowNotification(sender, senderpic, title, msg, data);
+          ShowNotification(sender, iconPath, title, msg, data);
           break;
         case 6:
-          ShowNotification(sender, senderpic, title, msg, data);
+          ShowNotification(sender, iconPath, title, msg, data);
           break;
       }
     } else {

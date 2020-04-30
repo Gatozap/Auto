@@ -21,6 +21,8 @@ CollectionReference parceirosRef =
 Firestore.instance.collection('Parceiros').reference();
 
 
+CollectionReference solicitacoesRef =
+Firestore.instance.collection('Solicitacoes').reference();
 
 CollectionReference zonasRef =
 Firestore.instance.collection('Zonas').reference();

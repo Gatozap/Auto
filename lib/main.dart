@@ -35,9 +35,6 @@ import 'Telas/Compartilhados/WaitScreen.dart';
 import 'Telas/Intro/IntroPage.dart';
 
 FirebaseDatabase database;
-String notificationUrl =
-    'https://us-central1-autooh.cloudfunctions.net/sendNotification';
-//TODO FAzer CLOUD FUNCTIONS
 
 Future main() async {
   runApp(MyApp());
@@ -153,7 +150,7 @@ class _MyAppState extends State<MyApp> {
     fbmsg.configure(
       onLaunch: (Map<String, dynamic> msg) {
         //App Terminated
-        dToast('Aqui push ${msg.toString()}');
+        //dToast('Aqui push ${msg.toString()}');
         NotificacoesHelper().showNotification(msg, context);
         SharedPreferences.getInstance().then((sp) {
           sp.setString('lastpush', json.encode(msg));
@@ -163,7 +160,7 @@ class _MyAppState extends State<MyApp> {
       onResume: (Map<String, dynamic> msg) {
         print('Notificação AQUI RESUME');
         //App in Background
-        dToast('Aqui push ${msg.toString()}');
+        //dToast('Aqui push ${msg.toString()}');
         SharedPreferences.getInstance().then((sp) {
           sp.setString('lastpush', json.encode(msg));
         });
@@ -172,7 +169,7 @@ class _MyAppState extends State<MyApp> {
       onMessage: (Map<String, dynamic> msg) {
         print('Notificação Message');
         //App in Foreground
-        dToast('Aqui push ${msg.toString()}');
+        //dToast('Aqui push ${msg.toString()}');
         SharedPreferences.getInstance().then((sp) {
           sp.setString('lastpush', json.encode(msg));
         });

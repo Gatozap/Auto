@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-
+import 'package:http/http.dart' as http;
+import 'package:autooh/Objetos/Notificacao.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -28,6 +30,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'Cielo/flutter_cielo.dart';
 import 'NotificacoesHelper.dart';
+import 'References.dart';
 import 'Styles.dart';
 
 Err(err, String lugar) {
@@ -1073,6 +1076,105 @@ myAppBar(String titulo, context,
   );
 }
 
+String notificationUrl = 'https://us-central1-avanticar-34239.cloudfunctions.net/sendNotification';
+sendNotificationUsuario(title,text, imageUrl,topic,campanha,solicitacao,{behavior = 1}) async {
+  print('INICIANDO NOTIFICAÇÃO');
+  /* 'title': '${Helpers.user.nome} Apoiou o protocolo ${post.titulo}',
+      'responsavel': json.encode(Helpers.user),
+      'tipo': 0.toString(),
+      'sujeito': post.id.toString(),
+      'topic': 'protocoloteste' + post.id.toString(),
+      'foto': Helpers.user.foto == null
+          ? 'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'
+          : Helpers.user.foto,
+      'data': DateTime.now().millisecondsSinceEpoch.toString(),*/
+  Notificacao n = new Notificacao(
+      title: '${title}',
+      message: '${Helper.localUser.nome} enviou uma mensagem',
+      behaivior: 1,
+      sended_at: DateTime.now(),
+      sender: 'user${Helper.localUser.id.toString()}',
+      topic: topic,
+      data: json.encode({
+        'campanha': campanha.id,
+        'solicitacao':solicitacao,
+        'user': Helper.localUser.toJson(),
+        'title': '${title}',
+        'message': '${text}',
+        'behaivior': behavior,
+        'sended_at': DateTime.now().millisecondsSinceEpoch.toString(),
+        'sender': 'user${Helper.localUser.id.toString()}',
+        //'topic': 'estabelecimento${estabelecimento.mercado_id}';
+      }));
+  n.image = imageUrl == null ? null : imageUrl;
+
+  http.post(notificationUrl, body: n.toJson()).then((v) {
+    //print(v.body);
+    print('ENVIOU NOTIFICAÇÂO ${n.toString()}');
+    notificacoesRef.add(n.toJson());
+  }).catchError((e) {
+    print('Err:' + e.toString());
+  });
+}
+
+
+LoadingWidget(text,loadingText){
+  return FutureBuilder(
+      future: Future.delayed(Duration(seconds: 5)).then((v) {
+        return true;
+      }),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          return Container(
+              width: getLargura(context),
+              height: getAltura(context) * .7,
+              child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                            child: Text(
+                                text,
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal))),
+                      ],
+                    ),
+                  )));
+        }
+        return Container(
+            width: getLargura(context),
+            height: getAltura(context) * .7,
+            child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    progressDialog(context),
+                    sb,
+                    Text(loadingText,
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal)),
+                  ],
+                )));
+      });
+}
+
+Widget progressDialog(BuildContext context) {
+  return SpinKitFadingCircle(
+    itemBuilder: (_, int index) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: index.isEven ? corPrimaria : Colors.green,
+        ),
+      );
+    },
+  );
+}
 
 class Helper {
   final FirebaseAuth _auth = FirebaseAuth.instance;

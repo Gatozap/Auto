@@ -40,6 +40,10 @@ class _HomePageState extends State<HomePage> {
     if (gc == null) {
       gc = new GruposController();
     }
+    Helper.fbmsg.subscribeToTopic('usuario${Helper.localUser.id}');
+    if(Helper.localUser.permissao == 10){
+      Helper.fbmsg.subscribeToTopic('Administrador');
+    }
   }
 
   @override

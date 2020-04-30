@@ -81,7 +81,7 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                     children: <Widget>[
                      Container(width: 100, height: 100, child:  Helper
                          .localUser.foto !=
-                         null ? Image(image: CachedNetworkImageProvider(Helper.localUser.foto )): AssetImage('assets/foto_perfil.png')),
+                         null ? Image(image: CachedNetworkImageProvider(Helper.localUser.foto )): Image.asset('assets/foto_perfil.png')),
                       /*CircleAvatar(
                         radius: 30,
                         backgroundImage: CachedNetworkImageProvider(Helper
