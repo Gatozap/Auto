@@ -49,7 +49,7 @@ class Parceiro {
       "sabado": this.sabado,
       "domingo": this.domingo,
 
-      "endereco": this.endereco== null ? null : json.encode(this.endereco),
+      "endereco": this.endereco== null ? null : this.endereco.toJson(),
       "hora_ini": this.hora_ini,
       "hora_fim": this.hora_fim,
       'created_at': this.created_at != null
@@ -79,7 +79,7 @@ class Parceiro {
       domingo: map['domingo'],
       endereco: map['endereco']== null
           ? null
-          : getEndereco(json.decode(map['endereco'])),
+          : Endereco.fromJson(map['endereco']),
       hora_ini: map['hora_ini'],
       hora_fim: map['hora_fim'],
       created_at: map['created_at'] == null
