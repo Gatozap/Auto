@@ -19,7 +19,8 @@ CollectionReference corridasRef =
 Firestore.instance.collection('Corridas').reference();
 CollectionReference parceirosRef =
 Firestore.instance.collection('Parceiros').reference();
-
+CollectionReference instalacoesRef =
+Firestore.instance.collection('Instalacoes').reference();
 
 CollectionReference solicitacoesRef =
 Firestore.instance.collection('Solicitacoes').reference();

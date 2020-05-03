@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:autooh/Helpers/DateSelector.dart';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Helpers/Styles.dart';
@@ -64,17 +65,30 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
   var controlerHoraFim = new MaskedTextController( text: '', mask: '00:00');
   @override
   Widget build(BuildContext context) {
+    BasicTimeField horaIniField =  BasicTimeField(text: 'Hora Inicial',  icon: FontAwesomeIcons.solidCalendarPlus,controller: controlerHoraIni, );
+    BasicTimeField horaFimField =  BasicTimeField(text: 'Hora Fim',  icon: FontAwesomeIcons.solidCalendarPlus, controller: controlerHoraFim, );
+     TimeOfDay horaini;
+     TimeOfDay horafim;
     if(widget.parceiro != null) {
       controllerNome.text = widget.parceiro.nome;
-      controlerHoraIni.text = widget.parceiro.hora_ini;
-      controlerHoraFim.text = widget.parceiro.hora_fim;
+      controlerHoraIni.text = widget.parceiro.hora_ini.toString();
+      controlerHoraFim.text = widget.parceiro.hora_fim.toString();
       controlerTelefone.text = widget.parceiro.telefone;
       controllerCidade.text = widget.parceiro.endereco.cidade;
        controllerEndereco.text = widget.parceiro.endereco.endereco;
        controllerBairro.text =  widget.parceiro.endereco.bairro;
        controllerComplemento.text =  widget.parceiro.endereco.complemento;
        controllerNumero.text =  widget.parceiro.endereco.numero;
-       
+             if(widget.parceiro.hora_ini != null){
+                horaini = widget.parceiro.hora_ini;
+                horaIniField =   BasicTimeField( text: 'Hora Inicial',
+                  icon: FontAwesomeIcons.solidCalendarPlus,controller: controlerHoraIni,);
+             }
+      if(widget.parceiro.hora_fim != null){
+        horaini = widget.parceiro.hora_fim;
+        horaIniField =   BasicTimeField( text: 'Hora Fim',
+          icon: FontAwesomeIcons.solidCalendarPlus,controller: controlerHoraFim,);
+      }
       parceiro = widget.parceiro;
       pc.inParceiroSelecionado.add(parceiro);
     }
@@ -599,7 +613,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                            ),
                           sb, Divider(color: corPrimaria),sb, hText('Hora de funcionamento', context)
                                , sb, Divider(color: corPrimaria),sb,
-                           DefaultField(
+                          /* DefaultField(
                                padding: EdgeInsets.only(left: 100, right: 120),
                                controller: controlerHoraIni,
                                hint: '08:00',
@@ -614,24 +628,10 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                  }
                                },
                                icon: FontAwesomeIcons.clock,
-                               keyboardType: TextInputType.number),
-                           sb,
-                           DefaultField(
-                               padding: EdgeInsets.only(left: 100, right: 120),
-                               controller: controlerHoraFim,
-                               hint: '17:00',
-                               context: context,
-                               label: 'Hora Fim',
-                               expands: false,
-                               validator: (value) {
-                                 if (value.isEmpty) {
-                                   if (isCadastrarPressed) {
-                                     return 'É necessário preencher a Hora Fim';
-                                   }
-                                 }
-                               },
-                               icon: FontAwesomeIcons.clock,
-                               keyboardType: TextInputType.number),sb,sb,
+                               keyboardType: TextInputType.number),  */
+                          horaIniField,
+                           horaFimField
+                       ,sb,sb,
 
                            MaterialButton( child: Padding(
                              padding:  EdgeInsets.only(left: 30.0, right:  30, top: 5 , bottom: 5),
@@ -641,10 +641,13 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                  borderRadius:
                                  BorderRadius.circular(60)), onPressed: () async{
                              parceiro.nome = controllerNome.text;
-                             parceiro.hora_ini = controlerHoraIni.text;
-                             parceiro.hora_fim = controlerHoraFim.text;
+                             print('aqui controler hora ini ${controlerHoraIni.text}');
+                             parceiro.hora_ini = TimeOfDay(hour: int.parse(controlerHoraIni.text.split(":")[0]), minute: int.parse(controlerHoraIni.text.split(":")[1]));
+
+                             parceiro.hora_fim = TimeOfDay(hour: int.parse(controlerHoraFim.text.split(":")[0]), minute: int.parse(controlerHoraFim.text.split(":")[1]));
                               parceiro.telefone = controlerTelefone.text;
                                   parceiro.created_at = DateTime.now();
+                                
                              List<Endereco> end = new List();
                               Endereco e = new Endereco(
                                cep: controllerCEP.text,

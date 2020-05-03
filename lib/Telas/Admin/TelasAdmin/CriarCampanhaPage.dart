@@ -81,6 +81,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
       if (widget.campanha.dataini != null) {
         dataini = widget.campanha.dataini;
         datainiField = BasicDateTimeField(
+
             label: 'Data de Início',
             icon: FontAwesomeIcons.solidCalendarPlus,
             startingdate:
@@ -580,7 +581,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                           Navigator.of(context).pop();
                                         });
                                       }
-                                    }),
+                                    }, icon: null),
                                   ),
                                 ],
                               )
@@ -618,7 +619,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
             children: <Widget>[
               Container(
                 child: hText(
-                    'Áreas que você quer disponibilizar para os anúncios',
+                    'Prioridade de Anúncios',
                     context,
                     textaling: TextAlign.center),
               ),

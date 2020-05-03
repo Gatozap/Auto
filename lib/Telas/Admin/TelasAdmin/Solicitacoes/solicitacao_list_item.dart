@@ -1,13 +1,17 @@
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Parceiro.dart';
 import 'package:autooh/Objetos/Solicitacao.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../ParceirosListPage.dart';
+
 class SolicitacaoListItem extends StatefulWidget {
   Solicitacao s;
   bool isUser;
-  SolicitacaoListItem(this.s, {this.isUser = false});
+  Parceiro parceiro;
+  SolicitacaoListItem(this.s, {this.isUser = false, this.parceiro});
 
   @override
   _SolicitacaoListItemState createState() => _SolicitacaoListItemState();
@@ -20,26 +24,37 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
       onTap: () {
         if (widget.isUser) {
           if (widget.s.isAprovado != null) {
-
+            if(widget.s.isAprovado){
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ParceirosListPage(parceiro: widget.parceiro)));
+            }else{
+              dToast('É Necessario aguardar aprovação');
+            }
           } else {
-            dToast('É Nescessario aguardar aprovação');
+            dToast('É Necessario aguardar aprovação');
           }
         } else {
           showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: hText('Aprovar ou Negar?', context),
+                  title: Center(child: hText('Aprovar Solicitação?', context)),
                   actions: <Widget>[
+
                     Row(
+                          mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        defaultActionButton('Negar', context, () {}, icon: null),
-                        defaultActionButton('Aprovar', context, () {
+                        defaultActionButton('Não', context, () {
+                          Navigator.of(context).pop();
+                        }, icon: null),
+                        defaultActionButton('Sim', context, () {
                           widget.s.isAprovado = true;
                          solicitacoesRef.document(widget.s.id).updateData(widget.s.toJson()).then((v){
                            sendNotificationUsuario('Sua Solicitação para ${widget.s.nome_campanha} foi aprovada', 'Agora é só agendar um horario', null, 'user${widget.s.usuario}',widget.s.campanha, widget.s.id);
                            dToast('Solicitação Aprovada');
+                           
                            Navigator.of(context).pop();
+
                          });
                         }, icon: null),
                       ],
@@ -61,25 +76,35 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
                         context)
                     : Container()
                 : Container(),
-            hText(
-                'Status: ${widget.s.isAprovado == null ? 'Aguardando' : widget.s.isAprovado ? 'Aprovado' : 'Negado'}',
-                context,
-                color: widget.s.isAprovado == null
-                    ? Colors.red
-                    : widget.s.isAprovado ? Colors.green : Colors.red),
-            hText('Usuario:${widget.s.nome_usuario}', context),
-            hText('Campanha: ${widget.s.nome_campanha}', context),
-            hText('Modelo: ${widget.s.carro.modelo}', context),
-            hText('Cor: ${widget.s.carro.cor}', context),
-            hText('Ano: ${widget.s.carro.ano}', context),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                hText('Placa: ${widget.s.carro.placa}', context),
-                hText(Helper().readTimestamp(widget.s.created_at), context,
-                    color: Colors.grey, size: 30),
-              ],
+
+            Container(
+              
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  hText(
+                      'Status: ${widget.s.isAprovado == null ? 'Aguardando' : widget.s.isAprovado ? 'Aprovado' : 'Negado'}',
+                      context,
+                      color: widget.s.isAprovado == null
+                          ? Colors.red
+                          : widget.s.isAprovado ? Colors.green : Colors.red),
+                  hText('Usuario:${widget.s.nome_usuario}', context),
+                  hText('Campanha: ${widget.s.nome_campanha}', context),
+                  hText('Modelo: ${widget.s.carro.modelo}', context),
+                  hText('Cor: ${widget.s.carro.cor}', context),
+                  hText('Ano: ${widget.s.carro.ano}', context),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      hText('Placa: ${widget.s.carro.placa}', context),
+                      hText(Helper().readTimestamp(widget.s.created_at), context,
+                          color: Colors.grey, size: 30),
+                    ],
+                  ),
+                ],
+              ),
             ),
+
           ],
         ),
       ),

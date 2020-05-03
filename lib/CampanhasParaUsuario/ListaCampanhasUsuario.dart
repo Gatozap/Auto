@@ -31,7 +31,7 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
   void initState() {
     super.initState();
      if(pc == null){
-       pc = new ListaCampanhaController();
+       pc = new ListaCampanhaController(campanha: widget.campanha);
      }
   }
 
@@ -56,9 +56,11 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
           children: <Widget>[
             StreamBuilder<List<Campanha>>(
               builder: (context, AsyncSnapshot<List<Campanha>> snapshot) {
+
                 if (snapshot.data == null) {
                   return Loading(completed: Text('Erro ao Buscar Campanha'));
                 }
+                
                 if (snapshot.data.length == 0) {
                   return Loading(completed: Text('Nenhum Campanha encontrada'));
                 }
@@ -66,10 +68,13 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
+
                       Campanha p = snapshot.data[index];
-      if(p.datafim.isAfter(DateTime.now())) {
+
+
         return CampanhaListItem(p);
-      }
+
+      
                     },
                     itemCount: snapshot.data.length,
                   ),

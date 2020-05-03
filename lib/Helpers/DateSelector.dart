@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:autooh/Helpers/Styles.dart';
 
+import 'Helper.dart';
+
 class BasicDateField extends StatelessWidget {
   final format = DateFormat("yyyy-MM-dd");
   @override
@@ -27,17 +29,47 @@ class BasicDateField extends StatelessWidget {
 }
 
 class BasicTimeField extends StatelessWidget {
-  final format = DateFormat("hh:mm a");
+
+  TextEditingController controller = TextEditingController();
+  String text;
+  DateTime selectedDate;
+
+  var icon;
+  BasicTimeField({this.text, this.icon= FontAwesomeIcons.calendarAlt, this.controller});
+  final format = DateFormat("HH:mm");
+  bool hasBeenPressed = false;
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      Text('Basic time field (${format.pattern})'),
+      hText('${text}',context,  color: corPrimaria, ),
       DateTimeField(
+
+        controller: controller,
+           decoration: InputDecoration(
+      hintText: 'hh:mm',
+    labelText: text,
+    icon: Icon(
+    icon,
+    color: corPrimaria,
+    ),
+    hintStyle: TextStyle(
+    color: Colors.grey,
+    fontSize: 14.0,
+    fontStyle: FontStyle.italic)),
         format: format,
         onShowPicker: (context, currentValue) async {
           final time = await showTimePicker(
             context: context,
             initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+            builder: (context, child) => MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(alwaysUse24HourFormat: true),
+                child: child),
           );
           return DateTimeField.convert(time);
         },
@@ -45,7 +77,149 @@ class BasicTimeField extends StatelessWidget {
     ]);
   }
 }
+class BasicTimeField2 extends StatefulWidget {
+  String label;
+  var icon;
+  DateTime selectedDate;
+  bool enable;
+  String startingdate;
+  BasicTimeField2(
+      {this.label = 'Data',
+        this.icon = FontAwesomeIcons.calendarAlt,this.startingdate,
+        this.enable = true});
 
+  _BasicTimeField2State myAppState = new _BasicTimeField2State();
+  @override
+  _BasicTimeField2State createState() => myAppState;
+  bool Validate() {
+    return myAppState.Validate();
+  }
+}
+
+typedef ValidCallback2 = void Function();
+
+class _BasicTimeField2State extends State<BasicTimeField2> {
+  final format = DateFormat("hh:mm a");
+  TextEditingController controller = TextEditingController();
+
+  bool hasBeenPressed = false;
+
+  bool Validate() {
+    if (controller.text != null) {
+      try {
+        DateTime v = format.parse(controller.text);
+        print('AQUI ${v.toIso8601String()}');
+        if (v.millisecondsSinceEpoch != null) {
+          // print('Retornou AQUI');
+          widget.selectedDate =
+              DateTime.fromMillisecondsSinceEpoch(v.millisecondsSinceEpoch);
+          return true;
+        } else {
+          setState(() {
+            hasBeenPressed = true;
+          });
+          return false;
+        }
+      } catch (err) {
+        print('Erro: ${err.toString()}');
+        setState(() {
+          hasBeenPressed = true;
+        });
+        return false;
+      }
+    } else {
+      setState(() {
+        hasBeenPressed = true;
+      });
+      return false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    controller = TextEditingController(text: widget.startingdate == null? '':widget.startingdate,);
+    return Column(children: <Widget>[
+      DateTimeField(
+        controller: controller,
+        format: format,
+        autovalidate: true,
+        enabled: widget.enable,
+        onChanged: (v) {
+          if (hasBeenPressed) {
+            if (controller.text.isEmpty) {
+              return 'É necessário selecionar a data';
+            }
+            if (v != null) {
+              if (v.millisecondsSinceEpoch != null) {
+                widget.selectedDate = DateTime.fromMillisecondsSinceEpoch(
+                    v.millisecondsSinceEpoch);
+              } else {
+                return 'Erro: Data Invalida';
+              }
+            } else {
+              return 'Erro: Data Invalida';
+            }
+          }
+        },
+        validator: (v) {
+          if (hasBeenPressed) {
+            if (controller.text.isEmpty) {
+              return 'É necessário selecionar a data';
+            }
+            if (v != null) {
+              if (v.millisecondsSinceEpoch != null) {
+                widget.selectedDate = DateTime.fromMillisecondsSinceEpoch(
+                    v.millisecondsSinceEpoch);
+              } else {
+                return 'Erro: Data Invalida';
+              }
+            } else {
+              return 'Erro: Data Invalida';
+            }
+          }
+        },
+        decoration: InputDecoration(
+            hintText: 'hh:mm',
+            labelText: widget.label,
+            icon: Icon(
+              widget.icon,
+              color: corPrimaria,
+            ),
+            hintStyle: TextStyle(
+                color: Colors.grey,
+                fontSize: 14.0,
+                fontStyle: FontStyle.italic)),
+        onShowPicker: (context, currentValue) async {
+          hasBeenPressed = true;
+          final date = await showDatePicker(
+              context: context,
+              firstDate: DateTime(2020),
+              initialDate: currentValue ?? DateTime.now(),
+              lastDate: DateTime(2100));
+          if (date != null) {
+            final time = await showTimePicker(
+              context: context,
+              initialTime:
+              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+            );
+
+            widget.selectedDate = DateTime.utc(
+              time.hour, time.minute);
+            print('AQUI ' + widget.selectedDate.toIso8601String());
+            print('AQUI MES ${widget.selectedDate.month}');
+            return DateTimeField.combine(date, time);
+          } else {
+            return currentValue;
+          }
+        },
+      ),
+    ]);
+  }
+}
+
+
+
+//TODO
 class BasicDateTimeField extends StatefulWidget {
   String label;
   var icon;
@@ -296,11 +470,14 @@ class _ComplexDateTimeFieldState extends State<ComplexDateTimeField> {
 
 class Clock24Example extends StatelessWidget {
   final format = DateFormat("HH:mm");
+
   @override
   Widget build(BuildContext context) {
+
     return Column(children: <Widget>[
       Text('24 hour clock'),
       DateTimeField(
+
         format: format,
         onShowPicker: (context, currentValue) async {
           final time = await showTimePicker(

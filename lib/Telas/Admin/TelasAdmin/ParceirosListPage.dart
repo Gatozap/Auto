@@ -2,7 +2,11 @@
 
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
+import 'package:autooh/Objetos/User.dart';
+import 'package:autooh/Telas/Admin/Agendamento/AgendamentoPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/parceiros_cadastrar_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +17,11 @@ import 'ParceirosBloc.dart';
 class ParceirosListPage extends StatefulWidget {
 
   Parceiro parceiro;
-  ParceirosListPage({Key key,  this.parceiro})
+  Campanha campanha;
+  Carro carro;
+  User user;
+
+  ParceirosListPage({Key key,  this.parceiro, this.carro, this.user, this.campanha})
       : super(key: key);
 
   @override
@@ -25,6 +33,10 @@ class ParceirosListPage extends StatefulWidget {
 class ParceirosListPageState extends State<ParceirosListPage> {
   ParceirosBloc pc;
     Parceiro parceiro;
+  Campanha id_campanha;
+
+  User id_usuario;
+  Carro id_carro;
   @override
   void initState() {
     super.initState();
@@ -141,13 +153,15 @@ class ParceirosListPageState extends State<ParceirosListPage> {
                         context,
                         size: 44,
                       ), sb,
+                      hText('Endereço: ${p.endereco.endereco}', context, size: 40) ,
+
                       hText(
-                        'abre: ${p.hora_ini}',
+                        'Abre: ${p.hora_ini.hour}:${p.hora_ini.minute}',
                         context,
                         size: 44,
-                      ),  sb,
+                      ), 
                       hText(
-                        'Fecha: ${p.hora_fim}',
+                        'Fecha: ${p.hora_fim.hour}:${p.hora_fim.minute}',
                         context,
                         size: 44,
                       ),
@@ -155,9 +169,11 @@ class ParceirosListPageState extends State<ParceirosListPage> {
                     ],
                   ),
                 ),
-                PopupMenuButton<String>(
+
+              Helper.localUser.permissao == 10 ? PopupMenuButton<String>(
                     onSelected: (String s){
                       switch(s){
+
                         case 'editar':
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ParceirosCadastrarPage(parceiro: p)));
@@ -193,6 +209,28 @@ class ParceirosListPageState extends State<ParceirosListPage> {
                       return itens;
                     },
                     icon: Icon(Icons.more_vert))
+                  :
+              PopupMenuButton<String>(
+                  onSelected: (String s){
+                    switch(s){
+                      case 'agendar':
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AgendamentoPage(parceiro: p, campanha: widget.campanha, carro: widget.carro, usuario: widget.user,)));
+                        break;
+                        
+                    }
+                  },
+                  itemBuilder: (context) {
+                    List<PopupMenuItem<String>> itens = new List();
+
+                    itens.add(PopupMenuItem(
+                      child: hText('Agendar', context),
+                      value: 'agendar',
+                    ));
+
+                    return itens;
+                  },
+                  icon: Icon(Icons.more_vert,))
               ],
             ),
           ),

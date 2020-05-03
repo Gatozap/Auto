@@ -8,7 +8,7 @@ class Parceiro {
 
   bool segunda, terca, quarta, quinta, sexta, sabado, domingo;
   Endereco endereco;
-  String hora_ini, hora_fim;
+  TimeOfDay hora_ini, hora_fim;
   DateTime created_at, updated_at, deleted_at;
   String nome, id, foto, telefone;
 
@@ -36,6 +36,35 @@ class Parceiro {
     return 'Parceiros{segunda: $segunda,id: $id, telefone: $telefone, foto: $foto, terca: $terca, quarta: $quarta, quinta: $quinta, sexta: $sexta, sabado: $sabado, domingo: $domingo, endereco: $endereco, hora_ini: $hora_ini, hora_fim: $hora_fim, created_at: $created_at, updated_at: $updated_at, deleted_at: $deleted_at, nome: $nome}';
   }
 
+  Parceiro.fromJson( j)
+      : segunda = j['segunda'],
+        terca = j['terca'],
+        quarta = j['quarta'],
+        quinta = j['quinta'],
+        sexta = j['sexta'],
+        sabado = j['sabado'],
+        domingo = j['domingo'],
+        endereco = j['endereco']== null
+            ? null
+            : Endereco.fromJson(j['endereco']),
+        hora_ini = j['hora_ini'] == null ? null :TimeOfDay(hour: j['hora_ini']['hour'], minute: j['hora_ini']['minute']),
+        hora_fim = j['hora_fim']== null ? null :TimeOfDay(hour: j['hora_fim']['hour'], minute: j['hora_fim']['minute']),
+        created_at = j['created_at']== null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(j['created_at']),
+        updated_at = j['updated_at']== null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(j['updated_at']),
+        deleted_at = j['deleted_at']== null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(j['deleted_at']),
+        nome = j['nome'],
+        id = j['id'],
+        foto = j['foto'],
+        telefone = j['telefone'];
+
+
+
   Map<String, dynamic> toJson() {
     return {
       'id': this.id,
@@ -50,8 +79,8 @@ class Parceiro {
       "domingo": this.domingo,
 
       "endereco": this.endereco== null ? null : this.endereco.toJson(),
-      "hora_ini": this.hora_ini,
-      "hora_fim": this.hora_fim,
+      'hora_ini': {'hour': this.hora_ini.hour,'minute': this.hora_ini.minute} ,
+      'hora_fim': {'hour': this.hora_fim.hour,'minute': this.hora_fim.minute},
       'created_at': this.created_at != null
           ? this.created_at.millisecondsSinceEpoch
           : null,
@@ -65,35 +94,7 @@ class Parceiro {
     };
   }
 
-  factory Parceiro.fromJson(Map<String, dynamic> map) {
-    return new Parceiro(
-      telefone: map['telefone'],
-      id: map['id'],
-      segunda: map['segunda'],
-      terca: map['terca'],
-      foto: map['foto'],
-      quarta: map['quarta'],
-      quinta: map['quinta'],
-      sexta: map['sexta'],
-      sabado: map['sabado'],
-      domingo: map['domingo'],
-      endereco: map['endereco']== null
-          ? null
-          : Endereco.fromJson(map['endereco']),
-      hora_ini: map['hora_ini'],
-      hora_fim: map['hora_fim'],
-      created_at: map['created_at'] == null
-          ? null
-          : DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      updated_at: map['updated_at'] == null
-          ? null
-          : DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
-      deleted_at: map['deleted_at'] == null
-          ? null
-          : DateTime.fromMillisecondsSinceEpoch(map['deleted_at']),
-      nome: map['nome'],
-    );
-  }
+
 
   static getEndereco(decoded) {
     List<Endereco> enderecos = new List();

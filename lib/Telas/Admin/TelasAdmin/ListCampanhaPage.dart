@@ -56,7 +56,9 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             StreamBuilder<List<Campanha>>(
+              stream: pc.outCampanhas,
               builder: (context, AsyncSnapshot<List<Campanha>> snapshot) {
+
                 if (snapshot.data == null) {
                   return Loading(completed: Text('Erro ao Buscar Campanhas'));
                 }
@@ -77,15 +79,15 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, index) {
                       Campanha p = snapshot.data[index];
-                      
-                           return CampanhaListItem(p);
+                        
+                               return CampanhaListItem(p);
 
                     },
                     itemCount: snapshot.data.length,
                   ),
                 );
               },
-              stream: pc.outCampanhas,
+
             )
           ],
         ),

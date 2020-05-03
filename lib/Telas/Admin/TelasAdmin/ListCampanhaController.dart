@@ -30,7 +30,7 @@ class ListaCampanhaController extends BlocBase {
     campanhaSelecionado = campanha;
     inCampanhaSelecionado.add(campanhaSelecionado);
     campanhasRef
-        .where("id")
+         .where('id')
         .snapshots()
         .listen((QuerySnapshot snap) {
       campanhas = new List();
@@ -43,7 +43,7 @@ class ListaCampanhaController extends BlocBase {
           campanhas.add(p);
         }
         campanhas.sort(
-                (Campanha a, Campanha b) => b.dataini.compareTo(a.dataini));
+                (Campanha a, Campanha b) => b.id.compareTo(a.id));
         campanhasmain = campanhas;
         inCampanhas.add(campanhas);
       } else {
