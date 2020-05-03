@@ -6,7 +6,7 @@ import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Endereco.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
-import 'package:autooh/Telas/Admin/TelasAdmin/ParceirosBloc.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/Parceiros/ParceirosBloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +17,8 @@ import 'package:keyboard_actions/keyboard_action.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import 'LocationController.dart';
-import 'addEnderecoController.dart';
+import '../LocationController.dart';
+import '../addEnderecoController.dart';
 
 class ParceirosCadastrarPage extends StatefulWidget {
   Parceiro parceiro;

@@ -49,13 +49,13 @@ class Solicitacao {
     };
   }
 
-  factory Solicitacao.fromJson(Map<String, dynamic> json) {
+  factory Solicitacao.fromJson(json) {
     return Solicitacao(
       isAprovado: json["isAprovado"],
       usuario: json["usuario"],
       id: json['id'],
       campanha: json["campanha"],
-      carro: Carro.fromJson(json["carro"]),
+      carro: json["carro"] == null? null: Carro.fromJson(json["carro"]),
       nome_campanha: json['nome_campanha'],
       nome_usuario: json['nome_usuario'],
       created_at: json["created_at"] == null

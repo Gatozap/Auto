@@ -201,14 +201,14 @@ class _VisualizarCampanhaUserPageState
                                                                   campanha.fotos[
                                                                       0]))))
                                               : Image.asset(
-                                                  'assets/images/autooh.png',
+                                                  'assets/autooh.png',
                                                   height: 200,
                                                   width: MediaQuery.of(context)
                                                       .size
                                                       .width,
                                                 )
                                           : Image.asset(
-                                              'assets/images/autooh.png',
+                                              'assets/autooh.png',
                                               height: 200,
                                               width: MediaQuery.of(context)
                                                   .size

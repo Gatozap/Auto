@@ -38,6 +38,10 @@ Err(err, String lugar) {
   return 'Error';
 }
 
+FormatarHora(DateTime d) {
+  return ('${d.day < 10 ? '0${d.day}' : d.day}/${d.month < 10 ? '0${d.month}' : d.month} ${d.hour < 10 ? '0${d.hour}' : d.hour}:${d.minute < 10 ? '0${d.minute}' : d.minute} ');
+}
+
 Future<String> uploadPicture(String filepath,
     {String filename, String ref}) async {
   File imageFile = File(filepath);
@@ -155,38 +159,39 @@ void whatsAppOpen() async {
   }
 }
 
-Widget defaultCheckBox(bool isChecked, text, context, onTap, {color: corPrimaria,size }) {
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: <Widget>[
-         
-
-          Container(
-            decoration: BoxDecoration(
-                color: isChecked ? color : Colors.white,
-                borderRadius: BorderRadius.circular(60),
-                border: Border.all(color: color, width: 2)),
-            child: Icon(
-              Icons.done,
-              color: Colors.white,
-              size: 35,
-            ),
-            height: 40,
-            width: 40,
-          ),sb,
-          hText(text, context, size: 45, color: corPrimaria),
-        ],
-      ),
-    );
-
+Widget defaultCheckBox(bool isChecked, text, context, onTap,
+    {color: corPrimaria, size}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Row(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+              color: isChecked ? color : Colors.white,
+              borderRadius: BorderRadius.circular(60),
+              border: Border.all(color: color, width: 2)),
+          child: Icon(
+            Icons.done,
+            color: Colors.white,
+            size: 35,
+          ),
+          height: 40,
+          width: 40,
+        ),
+        sb,
+        hText(text, context, size: 45, color: corPrimaria),
+      ],
+    ),
+  );
 }
 
 Widget defaultActionButton(String text, context, Function onPressed,
-    {var icon = Icons.add,color = Colors.yellowAccent, textColor = Colors.blue,size= 50}) {
+    {var icon = Icons.add,
+    color = Colors.yellowAccent,
+    textColor = Colors.blue,
+    size = 50}) {
   return Padding(
-    padding:  EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+    padding: EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
     child: MaterialButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
       color: color,
@@ -196,12 +201,13 @@ Widget defaultActionButton(String text, context, Function onPressed,
           icon == null
               ? Container()
               : Icon(
-                  icon,size:ScreenUtil.instance.setSp(size),
+                  icon,
+                  size: ScreenUtil.instance.setSp(size),
                   color: textColor,
                 ),
           icon == null ? Container() : sb,
           Padding(
-            padding:  EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+            padding: EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
             child: hText(
               text,
               context,
@@ -664,10 +670,11 @@ bool isNumeric(String s) {
 InputDecoration DefaultInputDecoration(
   context, {
   var icon,
-  var hintText= corPrimaria,
-      hintColor= corPrimaria,
+  var hintText = corPrimaria,
+  hintColor = corPrimaria,
   error,
-  var labelText, borderColor = corPrimaria,
+  var labelText,
+  borderColor = corPrimaria,
 }) {
   double fontsize = 14;
   FontStyle fontStyle = FontStyle.italic;
@@ -753,7 +760,6 @@ DefaultField(
     String label = '',
     Function validator,
     var keyboardType,
-
     var controller,
     Function onSubmited,
     TextCapitalization capitalization,
@@ -762,19 +768,20 @@ DefaultField(
     onChange,
     int maxLines = 1,
     TextStyle style,
-      borderColor = corPrimaria,
+    borderColor = corPrimaria,
     context,
     bool enabled = true,
-     icon,
-      var color,
+    icon,
+    var color,
     padding = const EdgeInsets.all(8),
-    int maxLength, Color hintColor = Colors.grey, error = null}) {
+    int maxLength,
+    Color hintColor = Colors.grey,
+    error = null}) {
   if (style == null) {
     ScreenUtil.instance = ScreenUtil(allowFontScaling: true)..init(context);
     style = TextStyle(
       fontSize: ScreenUtil.getInstance().setSp(36),
       color: color,
-
       fontWeight: FontWeight.normal,
       fontStyle: FontStyle.normal,
     );
@@ -801,7 +808,12 @@ DefaultField(
       textAlign: TextAlign.start,
       autocorrect: true,
       decoration: DefaultInputDecoration(context,
-          icon: icon, hintText: hint, labelText: label,borderColor: borderColor,hintColor:hintColor,error: error),
+          icon: icon,
+          hintText: hint,
+          labelText: label,
+          borderColor: borderColor,
+          hintColor: hintColor,
+          error: error),
       autovalidate: true,
     ),
   );
@@ -858,13 +870,12 @@ Widget TextFieldChange(String label, String content, function, context,
 String capitalize(String s) {
   String result = '';
   var a = s.split(' ');
-  for(var i in a){
-    result+=i[0].toUpperCase() + i.substring(1).toLowerCase()+' ';
+  for (var i in a) {
+    result += i[0].toUpperCase() + i.substring(1).toLowerCase() + ' ';
   }
   print('Resultado = ${result}');
   return result;
 }
-
 
 Widget Loading({
   int duration = 3,
@@ -878,7 +889,7 @@ Widget Loading({
         if (future.data != null) {
           return completed;
         }
-       return Container();
+        return Container();
       },
       future: Future.delayed(Duration(seconds: duration)).then((v) {
         return true;
@@ -987,6 +998,7 @@ dToast(String msg, {int timeInSecForIoss, String cor}) {
       textColor: Colors.white,
       fontSize: 16.0);
 }
+
 var linearGradient = const BoxDecoration(
   gradient: const LinearGradient(
     begin: FractionalOffset.topLeft,
@@ -1004,7 +1016,7 @@ myAppBar(String titulo, context,
       leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color:Colors.yellowAccent,
+            color: Colors.yellowAccent,
           ),
           onPressed: () {
             if (close) {
@@ -1042,7 +1054,7 @@ myAppBar(String titulo, context,
               Navigator.of(context).pop();
             }
           }),
-        backgroundColor: Color.fromARGB(255,0,122,154),
+      backgroundColor: Color.fromARGB(255, 0, 122, 154),
       iconTheme: new IconThemeData(color: Colors.yellowAccent),
       centerTitle: true,
       actionsIconTheme: new IconThemeData(color: Colors.yellowAccent),
@@ -1060,9 +1072,9 @@ myAppBar(String titulo, context,
   }
   return AppBar(
     backgroundColor: corPrimaria,
-    iconTheme: new IconThemeData(color:Colors.yellowAccent),
+    iconTheme: new IconThemeData(color: Colors.yellowAccent),
     centerTitle: true,
-    actionsIconTheme: new IconThemeData(color:Colors.yellowAccent),
+    actionsIconTheme: new IconThemeData(color: Colors.yellowAccent),
     actions: actions,
     title: Text(
       titulo,
@@ -1076,8 +1088,10 @@ myAppBar(String titulo, context,
   );
 }
 
-String notificationUrl = 'https://us-central1-avanticar-34239.cloudfunctions.net/sendNotification';
-sendNotificationUsuario(title,text, imageUrl,topic,campanha,solicitacao,{behavior = 1}) async {
+String notificationUrl =
+    'https://us-central1-avanticar-34239.cloudfunctions.net/sendNotification';
+sendNotificationUsuario(title, text, imageUrl, topic, campanha, solicitacao,
+    {behavior = 1}) async {
   print('INICIANDO NOTIFICAÇÃO');
   /* 'title': '${Helpers.user.nome} Apoiou o protocolo ${post.titulo}',
       'responsavel': json.encode(Helpers.user),
@@ -1097,7 +1111,7 @@ sendNotificationUsuario(title,text, imageUrl,topic,campanha,solicitacao,{behavio
       topic: topic,
       data: json.encode({
         'campanha': campanha,
-        'solicitacao':solicitacao,
+        'solicitacao': solicitacao,
         'user': Helper.localUser.toJson(),
         'title': '${title}',
         'message': '${text}',
@@ -1117,8 +1131,7 @@ sendNotificationUsuario(title,text, imageUrl,topic,campanha,solicitacao,{behavio
   });
 }
 
-
-LoadingWidget(text,loadingText){
+LoadingWidget(text, loadingText) {
   return FutureBuilder(
       future: Future.delayed(Duration(seconds: 5)).then((v) {
         return true;
@@ -1130,37 +1143,36 @@ LoadingWidget(text,loadingText){
               height: getAltura(context) * .7,
               child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                            child: Text(
-                                text,
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal))),
-                      ],
-                    ),
-                  )));
+                padding: const EdgeInsets.all(25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                        child: Text(text,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal))),
+                  ],
+                ),
+              )));
         }
         return Container(
             width: getLargura(context),
             height: getAltura(context) * .7,
             child: Center(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    progressDialog(context),
-                    sb,
-                    Text(loadingText,
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal)),
-                  ],
-                )));
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                progressDialog(context),
+                sb,
+                Text(loadingText,
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal)),
+              ],
+            )));
       });
 }
 

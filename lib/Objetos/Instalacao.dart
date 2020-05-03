@@ -28,12 +28,12 @@ class Instalacao{
   }
 
   Instalacao.fromJson(j)
-      : isAprovado = Solicitacao.fromJson(j['isAprovado']),
-        id_parceiro = Parceiro.fromJson(j['id_parceiro']),
-        id_campanha = Solicitacao.fromJson(j['id_campanha']),
-        id_usuario = User.fromJson(j['id_usuario']),
+      : isAprovado = j['isAprovado'] == null? null:Solicitacao.fromJson(j['isAprovado']),
+        id_parceiro = j['id_parceiro'] == null? null:Parceiro.fromJson(j['id_parceiro']),
+        id_campanha = j['id_campanha'] == null? null:Solicitacao.fromJson(j['id_campanha']),
+        id_usuario = j['id_usuario'] == null? null:User.fromJson(j['id_usuario']),
         id = j['id'],
-        id_carro =  Carro.fromJson(j['id_carro']),
+        id_carro =  j['id_carro'] == null? null: Carro.fromJson(j['id_carro']),
         hora_agendada = j['hora_agendada']== null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['hora_agendada']),
@@ -54,6 +54,7 @@ class Instalacao{
         'id_campanha': id_campanha== null ? null : this.id_campanha.toJson(),
         'id_usuario': id_usuario== null ? null : this.id_usuario.toJson(),
         'id_carro': id_carro== null ? null : this.id_carro.toJson(),
+        'parceiro_query' :this.id_parceiro.id,
         'id' : id,
         'hora_agendada': hora_agendada!= null
             ? this.hora_agendada.millisecondsSinceEpoch

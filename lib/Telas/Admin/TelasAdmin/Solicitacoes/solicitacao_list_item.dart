@@ -1,11 +1,12 @@
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
 import 'package:autooh/Objetos/Solicitacao.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../ParceirosListPage.dart';
+import '../Parceiros/ParceirosListPage.dart';
 
 class SolicitacaoListItem extends StatefulWidget {
   Solicitacao s;
@@ -25,8 +26,12 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
         if (widget.isUser) {
           if (widget.s.isAprovado != null) {
             if(widget.s.isAprovado){
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ParceirosListPage(parceiro: widget.parceiro)));
+              campanhasRef.document(widget.s.campanha).get().then((v){
+                Campanha c = Campanha.fromJson(v.data);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ParceirosListPage(campanha: c,)));
+              });
+
             }else{
               dToast('É Necessario aguardar aprovação');
             }

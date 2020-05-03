@@ -9,16 +9,17 @@ import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/ListaUsuarioPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListPage.dart';
-import 'package:autooh/Telas/Admin/TelasAdmin/parceiros_cadastrar_page.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/Parceiros/parceiros_cadastrar_page.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Versao/VersaoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import 'Agendamento/agendamento_list_page.dart';
 import 'TelasAdmin/CriarCampanhaPage.dart';
 import 'TelasAdmin/ListCampanhaPage.dart';
-import 'TelasAdmin/ParceirosListPage.dart';
+import 'TelasAdmin/Parceiros/ParceirosListPage.dart';
 
 class AdminPage extends StatefulWidget {
   User user;
@@ -318,7 +319,7 @@ class _AdminPageState extends State<AdminPage> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ParceirosListPage(parceiro: widget.parceiro)));
+                        builder: (context) => ParceirosListPage()));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -349,6 +350,43 @@ class _AdminPageState extends State<AdminPage> {
                   ),
                 ),
               ],
+            ),
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AgendamentoListPage()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(0, 125, 190, 100),
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    height: getAltura(context) * .2,
+                    width: getLargura(context) * .4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                          height: 60,
+                          child: Icon(FontAwesomeIcons.calendar,
+                              color: Colors.yellowAccent, size: 40),
+                        ),
+                        hText('Agendamentos', context,
+                            color: Colors.white, textaling: TextAlign.center)
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             )
           ]),
         ),
@@ -356,3 +394,5 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 }
+
+
