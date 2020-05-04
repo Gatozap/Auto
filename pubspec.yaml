@@ -97,7 +97,6 @@ dependencies:
   url_launcher: 5.1.4
   flutter_circular_chart: ^0.1.0
   sqflite: 1.1.6+5
-  #keyboard_visibility: 0.5.6
   intro_views_flutter: ^2.8.0
   image_crop: ^0.3.1
   flutter_charts: ^0.1.10

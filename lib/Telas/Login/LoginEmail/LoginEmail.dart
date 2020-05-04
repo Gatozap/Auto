@@ -16,22 +16,19 @@ class _LoginEmailState extends State<LoginEmail> {
 
   @override
   Widget build(BuildContext context) {
-    final logo = Hero(
-      tag: 'hero',
-      child: SizedBox(
+    final logo = SizedBox(
+      width: MediaQuery.of(context).size.width * .3,
+      height: MediaQuery.of(context).size.height * .12,
+      child: Container(
+        padding: EdgeInsets.all(1),
+        alignment: Alignment.center,
         width: MediaQuery.of(context).size.width * .3,
         height: MediaQuery.of(context).size.height * .12,
-        child: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .12,
-          color: Colors.transparent,
-          child: Image(
-            image: AssetImage('assets/logo_nutranno.png'),
-            width: MediaQuery.of(context).size.width * .7,
-            height: MediaQuery.of(context).size.height * .7,
-          ),
+        color: Colors.transparent,
+        child: Image(
+          image: AssetImage('assets/logo_nutranno.png'),
+          width: MediaQuery.of(context).size.width * .7,
+          height: MediaQuery.of(context).size.height * .7,
         ),
       ),
     );

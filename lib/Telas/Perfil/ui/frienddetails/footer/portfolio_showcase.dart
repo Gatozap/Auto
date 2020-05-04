@@ -54,7 +54,7 @@ class PortfolioShowcase extends StatelessWidget {
         }
 
       }
-      return Hero( tag: fotos[0],child: PhotoScroller(fotos, largura: 340.0, altura: 270.0, fractionsize: 1,));
+      return PhotoScroller(fotos, largura: 340.0, altura: 270.0, fractionsize: 1,);
     }
 
 }

@@ -49,20 +49,18 @@ class ChatMessageIndividual extends StatelessWidget {
           children: <Widget>[
             new GestureDetector(
               onTap: () {},
-              child: new Hero(
-                  tag: r,
-                  child: new Padding(
-                      padding: EdgeInsets.only(
-                          bottom: 10.00, right: 10.0, top: 3.0, left: 5.0),
-                      child: new Container(
-                          width: 35.0,
-                          height: 35.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: new CachedNetworkImageProvider(
-                                      snapshot.value['senderFoto'])))))),
+              child: new Padding(
+                  padding: EdgeInsets.only(
+                      bottom: 10.00, right: 10.0, top: 3.0, left: 5.0),
+                  child: new Container(
+                      width: 35.0,
+                      height: 35.0,
+                      decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: new DecorationImage(
+                              fit: BoxFit.fill,
+                              image: new CachedNetworkImageProvider(
+                                  snapshot.value['senderFoto']))))),
             ),
             new Expanded(
               child: new Column(

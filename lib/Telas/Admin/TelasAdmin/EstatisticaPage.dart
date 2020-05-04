@@ -16,6 +16,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:random_color/random_color.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 class EstatisticaPage extends StatefulWidget {
   Carro carro;
@@ -34,7 +35,7 @@ class EstatisticaPage extends StatefulWidget {
 
 class _EstatisticaPageState extends State<EstatisticaPage> {
   EstatisticaController estController;
-  DateTime dataini = DateTime.now().subtract(Duration(days: 30));
+  DateTime dataini = DateTime.now().subtract(Duration(days: 365));
   DateTime datafim = DateTime.now();
   @override
   void initState() {
@@ -49,13 +50,48 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
   @override
   Widget build(BuildContext context) {
     if (estController == null) {
-      estController = new EstatisticaController(widget.campanha, widget.carro,widget.user);
+      estController = new EstatisticaController(
+          widget.campanha, widget.carro, widget.user, dataini, datafim);
     }
     // TODO: implement build
     return Scaffold(
       appBar: myAppBar(
-          '${widget.campanha != null ? widget.campanha.nome : widget.carro != null ? widget.carro.placa : widget.user == null? 'Estatisticas Gerais': widget.user.nome}',
-          context),
+          '${widget.campanha != null ? widget.campanha.nome : widget.carro != null ? widget.carro.placa : widget.user == null ? 'Estatisticas Gerais' : widget.user.nome}',
+          context,
+          actions: [
+            Theme(
+                data: Theme.of(context).copyWith(
+                    accentColor: Colors.yellowAccent,
+                    primaryColor: corPrimaria,
+                    buttonColor: Colors.yellowAccent,
+                    buttonTheme: ButtonThemeData(
+                        highlightColor: Colors.yellowAccent,
+                        buttonColor: Colors.yellowAccent,
+                        colorScheme: Theme.of(context).colorScheme.copyWith(
+                            secondary: Colors.yellowAccent,
+                            background: Colors.white,
+                            primary: corPrimaria,
+                            primaryVariant: Colors.yellowAccent,
+                            onBackground: corPrimaria),
+                        textTheme: ButtonTextTheme.accent)),
+                child: Builder(
+                    builder: (context) => IconButton(
+                        color: Colors.yellowAccent,
+                        onPressed: () async {
+                          final List<DateTime> picked =
+                              await DateRagePicker.showDatePicker(
+                                  context: context,
+                                  initialFirstDate: new DateTime.now(),
+                                  initialLastDate: new DateTime.now()
+                                      .add(new Duration(days: 7)),
+                                  firstDate: new DateTime(2018),
+                                  lastDate: new DateTime(2030));
+                          if (picked != null && picked.length == 2) {
+                            estController.FilterCorridas(picked[0], picked[1]);
+                          }
+                        },
+                        icon: Icon(FontAwesomeIcons.calendarDay))))
+          ]),
       body: Container(
         child: StreamBuilder(
             stream: estController.outCorridas,
@@ -78,8 +114,8 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
   bool isMapOpen = false;
   ExpandableController expController = ExpandableController();
   getEstatisticasWidget(List<Corrida> corridas) {
-    if(corridas.length == 0){
-      return Center(child: Container(child:hText('Sem Corridas',context)));
+    if (corridas.length == 0) {
+      return Center(child: Container(child: hText('Sem Corridas', context)));
     }
     double visualizacoes = 0;
     double dist = 0;
@@ -127,7 +163,6 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-            
               sb,
               GestureDetector(
                 onTap: () {},
@@ -137,22 +172,27 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Row(
                         children: <Widget>[
-                          Icon(FontAwesomeIcons.mapSigns, color: corPrimaria,),sb,
-                          hText('  Mapa', context, ),
+                          Icon(
+                            FontAwesomeIcons.mapSigns,
+                            color: corPrimaria,
+                          ),
+                          sb,
+                          hText(
+                            '  Mapa',
+                            context,
+                          ),
                         ],
                       ),
                     ),
                     expanded: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                      height: getAltura(context) * .5,
-                      child: GoogleMap(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: getAltura(context) * .5,
+                        child: GoogleMap(
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
-                            target: LatLng(
-                                -16.68045,-49.2686895
-                            ),
+                            target: LatLng(-16.68045, -49.2686895),
                             zoom: 11,
                           ),
                           zoomGesturesEnabled: true,
@@ -160,28 +200,36 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                           onMapCreated: (GoogleMapController controller) {
                             _controller = controller;
                           },
+                        ),
                       ),
-                    ),
-                        ))),
+                    ))),
               ),
-              sb,sb,
+              sb, sb,
               Padding(
-                padding:  EdgeInsets.only(left:15.0),
+                padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
-                    Icon(FontAwesomeIcons.user, color: corPrimaria,) ,sb,
+                    Icon(
+                      FontAwesomeIcons.user,
+                      color: corPrimaria,
+                    ),
+                    sb,
                     hText(
                         'Total de visualizações: ${visualizacoes.toStringAsFixed(0)}',
                         context),
                   ],
                 ),
               ),
-              sb,sb,
+              sb, sb,
               Padding(
-                padding:  EdgeInsets.only(left:15.0),
+                padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
-                    Icon(FontAwesomeIcons.route, color: corPrimaria,) ,sb,
+                    Icon(
+                      FontAwesomeIcons.route,
+                      color: corPrimaria,
+                    ),
+                    sb,
                     hText(
                         'Distancia percorrida: Km ${(dist / 1000).toStringAsFixed(2)}',
                         context),
@@ -190,21 +238,30 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
               ),
               sb, sb,
               Padding(
-                padding:  EdgeInsets.only(left:15.0),
+                padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
-                    Icon(FontAwesomeIcons.clock, color: corPrimaria,) ,sb,
-                    hText('Tempo na Rua: ${(tempoNaRua / 60).toStringAsFixed(0)} min',
+                    Icon(
+                      FontAwesomeIcons.clock,
+                      color: corPrimaria,
+                    ),
+                    sb,
+                    hText(
+                        'Tempo na Rua: ${(tempoNaRua / 60).toStringAsFixed(0)} min',
                         context),
                   ],
                 ),
               ),
-              sb,  sb,
+              sb, sb,
               Padding(
-                padding:  EdgeInsets.only(left:15.0),
+                padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
-                    Icon(FontAwesomeIcons.truck, color: corPrimaria,) ,sb,
+                    Icon(
+                      FontAwesomeIcons.truck,
+                      color: corPrimaria,
+                    ),
+                    sb,
                     hText('Corridas: ${countCorridas}', context),
                   ],
                 ),
@@ -212,21 +269,24 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
               sb,
               widget.carro == null
                   ? Padding(
-                padding:  EdgeInsets.only(left:15.0),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(FontAwesomeIcons.car, color: corPrimaria,) ,sb,
-                        hText('Carros:${carros}', context),
-                      ],
-                    ),
-                  )
+                      padding: EdgeInsets.only(left: 15.0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            FontAwesomeIcons.car,
+                            color: corPrimaria,
+                          ),
+                          sb,
+                          hText('Carros:${carros}', context),
+                        ],
+                      ),
+                    )
                   : Container(),
               sb, sb,
               Padding(
-                padding:  EdgeInsets.only(left:15.0),
+                padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
-                    
                     hText(
                         'Ultima Corrida:${corridas.last.hora_ini.day.toString().length == 1 ? '0' + corridas.last.hora_ini.day.toString() : corridas.last.hora_ini.day}/${corridas.last.hora_ini.month.toString().length == 1 ? '0' + corridas.last.hora_ini.month.toString() : corridas.last.hora_ini.month}/${corridas.last.hora_ini.year} ${corridas.last.hora_ini.hour.toString().length == 1 ? '0' + corridas.last.hora_ini.hour.toString() : corridas.last.hora_ini.hour.toString()}:${corridas.last.hora_ini.minute.toString().length == 1 ? '0' + corridas.last.hora_ini.minute.toString() : corridas.last.hora_ini.minute.toString()}  \nFeita por ${corridas.last.carro.placa}',
                         context),
@@ -242,7 +302,9 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                           size: 70, weight: FontWeight.bold))
                   : Container(),
               sb,
-              Divider(color: corPrimaria,),
+              Divider(
+                color: corPrimaria,
+              ),
               sb,
               widget.carro == null
                   ? ListView.builder(
@@ -281,7 +343,12 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
-                                    children: <Widget>[    Icon(FontAwesomeIcons.eye, color: corPrimaria,),sb,
+                                    children: <Widget>[
+                                      Icon(
+                                        FontAwesomeIcons.eye,
+                                        color: corPrimaria,
+                                      ),
+                                      sb,
                                       hText(
                                           'Total de visualizações: ${vizualizacoesCarro.toStringAsFixed(0)}',
                                           context),
@@ -291,7 +358,12 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                                   //hText('Corridas: ${countCorridastemp}', context),
                                   sb,
                                   Row(
-                                    children: <Widget>[   Icon(FontAwesomeIcons.route, color: corPrimaria,),sb,
+                                    children: <Widget>[
+                                      Icon(
+                                        FontAwesomeIcons.route,
+                                        color: corPrimaria,
+                                      ),
+                                      sb,
                                       hText(
                                           'Distancia percorrida: Km ${(distCarro / 1000).toStringAsFixed(2)}',
                                           context),

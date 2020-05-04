@@ -41,20 +41,17 @@ class _FriendDetailHeaderState extends State<FriendDetailHeader> {
     for (String word in words) {
       initials += word.split('')[0].toUpperCase();
     }
-    return new Hero(
-      tag: widget.user.id,
-      child: widget.user.foto != null
-          ? CircleAvatar(
-              radius: ScreenUtil.getInstance()
-                  .setSp(150),
-              backgroundColor: Colors.purple,
-              backgroundImage: CachedNetworkImageProvider(widget.user.foto))
-          : CircleAvatar(
-              radius: ScreenUtil.getInstance()
-                  .setSp(150),
-              backgroundColor: Colors.purple,
-              child: hText(initials, context, size:150,color: Colors.white)),
-    );
+    return widget.user.foto != null
+        ? CircleAvatar(
+            radius: ScreenUtil.getInstance()
+                .setSp(150),
+            backgroundColor: Colors.purple,
+            backgroundImage: CachedNetworkImageProvider(widget.user.foto))
+        : CircleAvatar(
+            radius: ScreenUtil.getInstance()
+                .setSp(150),
+            backgroundColor: Colors.purple,
+            child: hText(initials, context, size:150,color: Colors.white));
   }
 
   Widget _buildFollowerInfo(TextTheme textTheme) {

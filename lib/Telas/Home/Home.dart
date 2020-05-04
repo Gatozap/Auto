@@ -35,8 +35,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 5)).then((v) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => IntroPage()));
+     /* Navigator.push(
+          context, MaterialPageRoute(builder: (context) => IntroPage()));*/
     });
     if (gc == null) {
       gc = new GruposController();

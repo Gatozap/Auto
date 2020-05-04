@@ -35,7 +35,6 @@ import 'package:autooh/Objetos/Prestador.dart';
 import 'package:autooh/Objetos/Endereco.dart';
 import 'package:autooh/Telas/Dialogs/addEnderecoController.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
 import '../../main.dart';
 import 'CadastroController.dart';
 import 'Estabelecimento/CadastrarEstabelecimentoPage.dart';
@@ -1067,7 +1066,7 @@ class _CadastroState extends State<Cadastro> {
                                                               2) *
                                                               .2),
                                                           backgroundColor: Colors.transparent,
-                                                          child: snapshot.data.foto != null
+                                                          child: snapshot.data == null? Container():snapshot.data.foto != null
                                                               ? Stack(
                                                             children: <Widget>[
                                                               Positioned(
@@ -1297,6 +1296,9 @@ class _CadastroState extends State<Cadastro> {
                                                                             if (value
                                                                                 .length ==
                                                                                 9) {
+                                                                              if(ue == null){
+                                                                                  ue = new Endereco.Empty();
+                                                                              }
                                                                               if (ue.cep !=
                                                                                   value) {
                                                                                 aec.FetchCep(

@@ -1,3 +1,4 @@
+import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
@@ -10,44 +11,66 @@ import 'package:geolocator/geolocator.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:rxdart/rxdart.dart';
 
-class EstatisticaController extends BlocBase{
-  BehaviorSubject<List<Corrida>> corridasController = BehaviorSubject<List<Corrida>>();
+class EstatisticaController extends BlocBase {
+  BehaviorSubject<List<Corrida>> corridasController =
+      BehaviorSubject<List<Corrida>>();
   Stream<List<Corrida>> get outCorridas => corridasController.stream;
   Sink<List<Corrida>> get inCorridas => corridasController.sink;
   List<Corrida> corridas;
+  List<Corrida> corridasOriginais;
 
   BehaviorSubject<double> visualizacoesController = BehaviorSubject<double>();
   Stream<double> get outVisualizacoes => visualizacoesController.stream;
   Sink<double> get inVisualizacoes => visualizacoesController.sink;
   double visualizacoes;
 
+  EstatisticaController(Campanha campanha, Carro carro, User user,
+      DateTime dataini, DateTime datafim) {
+    if (user == null) {
+      if (carro == null) {
+        if (campanha == null) {
+          corridasRef.getDocuments().then((v) {
+            corridas = new List();
+            corridasOriginais = new List();
 
-  EstatisticaController(Campanha campanha, Carro carro, User user){
-    if(user == null){
-    if(carro == null) {
-      if (campanha == null) {
-        corridasRef
-            .getDocuments()
-            .then((v) {
-          corridas = new List();
+            for (var i in v.documents) {
+              print('aqui corrida ${corridas.length} ');
+              Corrida p = Corrida.fromJsonFirestore(i.data);
+              p.id = i.documentID;
 
-          for (var i in v.documents) {
-            print('aqui corrida ${corridas.length} ');
-            Corrida p = Corrida.fromJsonFirestore(i.data);
-            p.id = i.documentID;
+              corridas.add(p);
+            }
+            corridasOriginais = corridas;
 
-            corridas.add(p);
-          }
+            FilterCorridas(dataini, datafim);
+          });
+        } else {
+          corridasRef
+              .where('campanha', isEqualTo: campanha.id)
+              .getDocuments()
+              .then((v) {
+            corridas = new List();
+            corridasOriginais = new List();
 
-          corridas.sort(
-                  (Corrida a, Corrida b) => b.id.compareTo(a.id));
-          inCorridas.add(corridas);
-        });
+            for (var i in v.documents) {
+              print('aqui corrida ${corridas.length} ');
+              Corrida p = Corrida.fromJsonFirestore(i.data);
+              p.id = i.documentID;
+
+              corridas.add(p);
+            }
+            corridasOriginais = corridas;
+
+            FilterCorridas(dataini, datafim);
+          });
+        }
       } else {
-        corridasRef.where('campanha', isEqualTo: campanha.id)
+        corridasRef
+            .where('carro.id', isEqualTo: carro.id)
             .getDocuments()
             .then((v) {
           corridas = new List();
+          corridasOriginais = new List();
 
           for (var i in v.documents) {
             print('aqui corrida ${corridas.length} ');
@@ -56,18 +79,14 @@ class EstatisticaController extends BlocBase{
 
             corridas.add(p);
           }
-
-          corridas.sort(
-                  (Corrida a, Corrida b) => b.id.compareTo(a.id));
-          inCorridas.add(corridas);
+          corridasOriginais = corridas;
+          FilterCorridas(dataini, datafim);
         });
       }
-    }else{
-      corridasRef.where('carro.id', isEqualTo: carro.id)
-          .getDocuments()
-          .then((v) {
+    } else {
+      corridasRef.where('user', isEqualTo: user.id).getDocuments().then((v) {
         corridas = new List();
-
+        corridasOriginais = new List();
         for (var i in v.documents) {
           print('aqui corrida ${corridas.length} ');
           Corrida p = Corrida.fromJsonFirestore(i.data);
@@ -76,36 +95,46 @@ class EstatisticaController extends BlocBase{
           corridas.add(p);
         }
 
-        corridas.sort(
-                (Corrida a, Corrida b) => b.id.compareTo(a.id));
-        inCorridas.add(corridas);
-      });
-    }}else{
-      corridasRef.where('user', isEqualTo: user.id)
-          .getDocuments()
-          .then((v) {
-        corridas = new List();
-
-        for (var i in v.documents) {
-          print('aqui corrida ${corridas.length} ');
-          Corrida p = Corrida.fromJsonFirestore(i.data);
-          p.id = i.documentID;
-
-          corridas.add(p);
-        }
-
-        corridas.sort(
-                (Corrida a, Corrida b) => b.id.compareTo(a.id));
-        inCorridas.add(corridas);
+        corridasOriginais = corridas;
+        FilterCorridas(dataini, datafim);
       });
     }
   }
 
-
   @override
   void dispose() {
     corridasController.close();
-       visualizacoesController.close();
+    visualizacoesController.close();
   }
 
+  void FilterCorridas(DateTime dataini, DateTime datafim) {
+    List<Corrida> corridasTemp = new List();
+    for (Corrida c in corridasOriginais) {
+      bool contains = false;
+      for (Corrida c1 in corridasTemp) {
+        if (c.id == c1.id) {
+          contains = true;
+        }
+      }
+      if (datafim != null && dataini != null) {
+        if (!contains) {
+          print('ENTROU AQUI ${dataini.isBefore(c.hora_ini)} ${datafim.isAfter(c.hora_fim)}');
+          if (dataini.isBefore(c.hora_ini) && datafim.isAfter(c.hora_fim)) {
+            corridasTemp.add(c);
+          }
+        }
+      } else {
+        if (!contains) {
+          corridasTemp.add(c);
+        }
+      }
+    }
+    corridas = corridasTemp;
+    print('COrridas ${corridas.length}');
+    if(corridas.length == 0){
+      dToast('Sem corridas neste periodo');
+    }
+    corridas.sort((Corrida a, Corrida b) => b.id.compareTo(a.id));
+    inCorridas.add(corridas);
+  }
 }

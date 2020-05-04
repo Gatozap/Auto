@@ -152,36 +152,23 @@ class _MyAppState extends State<Racing> {
             });
             dToast('Corrida Finalizada');
           } else {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: CarSelectorWidget(),
-                    actions: <Widget>[
-                      defaultActionButton('Cancelar', context, () async {
-                        Navigator.of(context).pop();
-                      }, icon: null),
-                      defaultActionButton('Iniciar', context, () async {
-                        if (carroSelecionado != null) {
-                          startForegroundService(carroSelecionado).then((v) {
-                            if (v != null) {
-                              mapController.updateCorridaId(v);
-                              setState(() {
-                                started = !started;
-                              });
-                              Navigator.of(context).pop();
-                              dToast('Corrida iniciado com sucesso!');
-                            }
-                          });
-                        } else {
-                          dToast('Selecione um Carro');
-                        }
-                      }, icon: null)
-                    ],
-                  );
-                });
+            carroSelecionado = (await getDropdownCarros())[0];
+            if (carroSelecionado != null) {
+              startForegroundService(carroSelecionado).then((v) {
+                if (v != null) {
+                  mapController.updateCorridaId(v);
+                  setState(() {
+                    started = !started;
+                  });
+                  Navigator.of(context).pop();
+                  dToast('Corrida iniciado com sucesso!');
+                }
+              });
+            } else {
+              dToast('Você não possui nenhum carro aprovado!');
+            }
           }
-        },
+        }
       ),
     );
   }
@@ -226,27 +213,19 @@ class _MyAppState extends State<Racing> {
     );
   }
 
-  Future<List<DropdownMenuItem<Carro>>> getDropdownCarros() {
-    List<DropdownMenuItem<Carro>> items = List();
+  Future<List<Carro>> getDropdownCarros() {
     return carrosRef
         .where('dono', isEqualTo: Helper.localUser.id)
         .getDocuments()
         .then((v) {
-      List carros = new List();
+      List<Carro> carros = new List<Carro>();
       for (var d in v.documents) {
         Carro c = Carro.fromJson(d.data);
         if (c.isAprovado) {
           carros.add(c);
         }
       }
-      for (Carro z in carros) {
-        items.add(
-            DropdownMenuItem(value: z, child: Text('${z.modelo} ${z.placa}')));
-      }
-      if (items.length == 0) {
-        dToast('Você não possui carros aprovados para rodar');
-      }
-      return items;
+      return carros;
     }).catchError((err) {
       print('aqui erro 1 ${err}');
       return null;

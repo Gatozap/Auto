@@ -49,24 +49,21 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Hero(
-                    tag: widget.user.id,
-                    child: widget.user.foto != null
-                        ? CircleAvatar(
-                            radius: ScreenUtil.getInstance().setSp(200),
-                            backgroundColor: Colors.purple,
-                            backgroundImage:
-                                CachedNetworkImageProvider(widget.user.foto))
-                        : Container(
-                      height: 200,
-                          width: 200,
-                          child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                          'assets/editar_perfil.png',
-                      ),),
-                        ),
-                  )
+                  widget.user.foto != null
+                      ? CircleAvatar(
+                          radius: ScreenUtil.getInstance().setSp(200),
+                          backgroundColor: Colors.purple,
+                          backgroundImage:
+                              CachedNetworkImageProvider(widget.user.foto))
+                      : Container(
+                    height: 200,
+                        width: 200,
+                        child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                        'assets/editar_perfil.png',
+                    ),),
+                      )
                 ],
               ),
               Padding(

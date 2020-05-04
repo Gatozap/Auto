@@ -202,7 +202,6 @@ class _BasicTimeField2State extends State<BasicTimeField2> {
               initialTime:
               TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
             );
-
             widget.selectedDate = DateTime.utc(
               time.hour, time.minute);
             print('AQUI ' + widget.selectedDate.toIso8601String());
@@ -242,7 +241,7 @@ class BasicDateTimeField extends StatefulWidget {
 typedef ValidCallback = void Function();
 
 class _BasicDateTimeFieldState extends State<BasicDateTimeField> {
-  final format = DateFormat("dd/MM/yyyy HH:mm");
+  final format = DateFormat("dd/MM/yyyy HH:00");
   TextEditingController controller = TextEditingController();
 
   bool hasBeenPressed = false;

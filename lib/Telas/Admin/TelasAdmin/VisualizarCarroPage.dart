@@ -57,22 +57,19 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Hero(
-                          tag: widget.carro.id,
-                          child: widget.carro.foto != null
-                              ? CircleAvatar(
-                                  radius: ScreenUtil.getInstance().setSp(200),
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      widget.carro.foto))
-                              : CircleAvatar(
-                                  radius: ScreenUtil.getInstance().setSp(200),
-                                  backgroundColor: Colors.transparent,
-                                  child: Image(
-                                    image: CachedNetworkImageProvider(
-                                        'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
-                                  )),
-                        ),
+                        widget.carro.foto != null
+                            ? CircleAvatar(
+                                radius: ScreenUtil.getInstance().setSp(200),
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    widget.carro.foto))
+                            : CircleAvatar(
+                                radius: ScreenUtil.getInstance().setSp(200),
+                                backgroundColor: Colors.transparent,
+                                child: Image(
+                                  image: CachedNetworkImageProvider(
+                                      'https://images.vexels.com/media/users/3/155395/isolated/preview/3ced49c3448bede9f79d9d57bff35586-silhueta-de-vista-frontal-de-carro-esporte-by-vexels.png'),
+                                )),
                       ],
                     ),
                   ),

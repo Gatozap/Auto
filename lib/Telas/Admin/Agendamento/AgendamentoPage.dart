@@ -455,7 +455,7 @@ class _AgendamentoPageState extends State<AgendamentoPage> {
             .getDocuments()
             .then((v) {
               print("AQUI DOCUMENTS LALALA ${v.documents.length}");
-          return v.documents.length == 0;
+          return v.documents.length < 3;
         });
       } else {
         return Future.delayed(Duration(milliseconds: 300)).then((v) {

@@ -177,12 +177,8 @@ class CadastroController extends BlocBase {
             }
             carro.created_at = DateTime.now();
             carro.updated_at = DateTime.now();
-
-
             Helper.localUser.carros.add(carro);
-
           }
-
           if(documento != null){
             if(Helper.localUser.documentos ==null){
               Helper.localUser.documentos = new List<Documento>();
@@ -195,37 +191,6 @@ class CadastroController extends BlocBase {
             }
             Helper.localUser.documentos.add(documento);
           }
-
-
-
-          Helper.localUser.data_nascimento = DateTime.utc(
-              int.parse(datanascimento.split('/')[2]),
-              int.parse(datanascimento.split('/')[1]),
-              int.parse(datanascimento.split('/')[0]));
-          print("AQUI LENGTH ${'99-9999999'.length} e ${codigo.length}");
-          print(
-              'AQUI DATA NASICMENTO ${Helper.localUser.data_nascimento.toIso8601String()}');
-
-          if (DateTime.now().year - Helper.localUser.data_nascimento.year <
-                  12 ||
-              DateTime.now().year - Helper.localUser.data_nascimento.year >
-                  120) {
-            if (DateTime.now().year - Helper.localUser.data_nascimento.year <
-                12) {
-              print(
-                  'AQUI IDADE DEMONIO ${Helper.localUser.data_nascimento.year - DateTime.now().year}');
-              dToastTop(
-                  'Infelizmente você não tem a idade minima(12) para participar do autooh =/');
-              return;
-            }
-            if (DateTime.now().year - Helper.localUser.data_nascimento.year >
-                120) {
-              print(
-                  'AQUI IDADE DEMONIO ${Helper.localUser.data_nascimento.year - DateTime.now().year}');
-              dToastTop('Data de Nascimento Invalida');
-            }
-            return;
-          } else {
             if (isPrestador) {
               userRef
                   .where('prestador', isEqualTo: codigo)
@@ -287,7 +252,6 @@ class CadastroController extends BlocBase {
                       builder: (context) =>
                           HomePage()));
             }
-          }
         } else {
           sc.move(isPrestador == null ? 0 : 1);
           dToast('Por Favor Preencha Selecione uma das opções');
