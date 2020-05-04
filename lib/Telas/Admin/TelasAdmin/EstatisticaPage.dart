@@ -270,12 +270,16 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                   ),
                 ),
                 collapsed: Container(),
-                expanded: FutureBuilder(future:ZonasWidget(zonas, context),builder: (context,snap){
-                  if(snap.data == null){
-                    return LoadingWidget('Erro Ao Calcular','Carregando dados');
-                  }
-                  return snap.data;
-                },),
+                expanded: FutureBuilder(
+                  future: ZonasWidget(zonas, context),
+                  builder: (context, snap) {
+                    if (snap.data == null) {
+                      return LoadingWidget(
+                          'Erro Ao Calcular', 'Carregando dados');
+                    }
+                    return snap.data;
+                  },
+                ),
               ),
 
               sb, sb,
@@ -574,7 +578,8 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
     return polylines;
   }
 
-  Future<Widget> ZonasWidget(Map<String, List<Localizacao>> zonas, BuildContext context) async {
+  Future<Widget> ZonasWidget(
+      Map<String, List<Localizacao>> zonas, BuildContext context) async {
     var textos = <Widget>[];
 
     zonas.forEach((k, v) async {
@@ -597,18 +602,29 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       print('Zona:$k');
       print('Distancia Percorrida:$dist');
 
-      textos.add(hText('Zona: ${k[0].toUpperCase()}${k.substring(1).toLowerCase()}', context),);
+      textos.add(
+        hText('Zona: ${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',
+            context),
+      );
 
-      textos.add( hText('Distancia Percorrida: ${
-          (dist/1000).toStringAsFixed(2)}Km', context),);
-      textos.add(Divider(),);
-
+      textos.add(
+        hText('Distancia Percorrida: ${(dist / 1000).toStringAsFixed(2)}Km',
+            context),
+      );
+      textos.add(
+        Divider(),
+      );
     });
-    return Future.delayed(Duration(seconds:5)).then((v){return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,mainAxisSize: MainAxisSize.min,children: textos,),
-    );
+    return Future.delayed(Duration(seconds: 5)).then((v) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: textos,
+        ),
+      );
     });
-
   }
 }
