@@ -3,13 +3,15 @@ class Localizacao {
   var longitude;
   var altitude;
   var accuracy;
+  var zona;
+  var bairro;
   bool isInRange;
   DateTime timestamp;
 
   Localizacao({this.latitude, this.longitude, this.altitude, this.accuracy,
       this.timestamp});
 
-  Localizacao.FromPoint(p) {
+  Localizacao.FromPoint(p ,{this.bairro, this.zona}) {
     this.latitude = p.latitude;
     this.longitude = p.longitude;
     this.altitude = p.altitude;
@@ -22,6 +24,8 @@ class Localizacao {
         longitude = json['longitude'],
         altitude = json['altitude'],
         accuracy = json['accuracy'],
+  bairro = json['bairro'] == null? null: json['bairro'],
+  zona = json['zona'] == null? null:json['zona'],
         timestamp = DateTime.fromMillisecondsSinceEpoch(json['timestamp']);
 
   Map<String, dynamic> toJson() =>
@@ -30,6 +34,8 @@ class Localizacao {
         'longitude': longitude,
         'altitude': altitude,
         'accuracy': accuracy,
+        'zona':zona,
+        'bairro':bairro,
         'timestamp': timestamp.millisecondsSinceEpoch,
       };
 

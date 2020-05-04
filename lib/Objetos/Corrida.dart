@@ -16,6 +16,8 @@ class Corrida {
   bool isRunning;
   DateTime last_seen;
   int vizualizacoes;
+  int vizualizacoes_por_distancia;
+  int vizualizacoes_por_tempo;
   String user;
   String campanha;
   int duracao;
@@ -70,6 +72,8 @@ class Corrida {
         id_carro = j['id_carro'],
         anuncio= j['anuncio'] == null? null: Campanha.fromJson(j['anuncio']),
         vizualizacoes = j['vizualizacoes'],
+        vizualizacoes_por_distancia = j['vizualizacoes_por_distancia'] == null? null: j['vizualizacoes_por_distancia'],
+        vizualizacoes_por_tempo = j['vizualizacoes_por_tempo'] == null? null: j['vizualizacoes_por_tempo'],
 
         hora_ini = j['hora_ini'] == null
             ? null
@@ -124,6 +128,7 @@ class Corrida {
             deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
         'hora_ini': hora_ini == null ? null : hora_ini.millisecondsSinceEpoch,
         'hora_fim': hora_fim == null ? null : hora_fim.millisecondsSinceEpoch,
+
         'isRunning': isRunning,
         'id_carro': id_carro,
         'dist': dist,
@@ -147,6 +152,8 @@ class Corrida {
             deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
         'hora_ini': hora_ini == null ? null : hora_ini.millisecondsSinceEpoch,
         'hora_fim': hora_fim == null ? null : hora_fim.millisecondsSinceEpoch,
+    'vizualizacoes_por_distancia': this.vizualizacoes_por_distancia== null? null:vizualizacoes_por_distancia,
+    'vizualizacoes_por_tempo': this.vizualizacoes_por_tempo== null? null:vizualizacoes_por_tempo,
         'duracao': duracao,
         'isRunning': isRunning,
         'vizualizacoes': vizualizacoes,
