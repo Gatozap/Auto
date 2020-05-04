@@ -883,6 +883,7 @@ class _CadastroState extends State<Cadastro> {
                                                                             controllerAgencia.text;
                                                                         Helper.localUser.numero_conta =
                                                                             controllerNumero_conta.text;
+                                                                        Helper.localUser.endereco = e;
 
                                                                         Helper.localUser.tipo_conta = selectTipo;
                                                                         Helper.localUser.kmmin =
