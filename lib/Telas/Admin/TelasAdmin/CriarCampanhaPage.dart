@@ -33,6 +33,9 @@ class CriarCampanhaPage extends StatefulWidget {
 
 class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
+  var controllerDuracaoMinima = new TextEditingController(text: '');
+  var controllerKmMinimo = new TextEditingController(text: '');
+  var controllerPrecoMes = new MaskedTextController(text: '', mask: 'R\$ 00.000.00');
   var controllerEmpresa = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
   var controllerCNPJ =
@@ -72,7 +75,9 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
 
     if (widget.campanha != null) {
-
+           controllerDuracaoMinima.text = widget.campanha.duracaoMinima.toString();
+           controllerKmMinimo.text = widget.campanha.kmMinima.toString();
+           controllerPrecoMes.text = widget.campanha.precomes.toString();
          controllerSobre.text = widget.campanha.sobre;
       controllerEmpresa.text = widget.campanha.empresa;
       controllerNome.text = widget.campanha.nome;
