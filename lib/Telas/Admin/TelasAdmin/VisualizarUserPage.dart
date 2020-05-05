@@ -94,6 +94,116 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
                   ),
               sb,
               Divider(color: corPrimaria),sb,
+              hText('   Endereço', context, size: 60),
+              sb,
+              Divider(color: corPrimaria),
+
+              sb,
+
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons
+                        .assistant_photo, color: corPrimaria),sb,
+                    Column(
+                      children: <Widget>[
+                        hText(
+                            'CEP: ${widget.user.endereco.cep}', context),
+                      ],
+                    ),
+                  ],
+                ),
+              ),sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.location_city, color: corPrimaria),sb,
+                    Column(
+                      children: <Widget>[
+                        hText(
+                            'Estado: ${widget.user.endereco.estado}', context),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons
+                        .location_city, color: corPrimaria),sb,
+                    Column(
+                      children: <Widget>[
+                        hText(
+                            'Cidade: ${widget.user.endereco.cidade}', context),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+               
+                    hText(
+                        'Endereço: ${widget.user.endereco.endereco}', context),
+                  ],
+                ),
+              ),
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.home, color: corPrimaria),sb,
+                    Column(
+                      children: <Widget>[
+                        hText(
+                            'Bairro: ${widget.user.endereco.bairro}', context),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.filter_1, color: corPrimaria),sb,
+                    Column(
+                      children: <Widget>[
+                        hText(
+                            'Número: ${widget.user.endereco.numero}', context),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              sb,
+              Padding(
+                padding:  EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.home, color: corPrimaria),sb,
+                    Column(
+                      children: <Widget>[
+                        hText(
+                            'Complemento: ${widget.user.endereco.complemento}', context),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              sb,
+              Divider(color: corPrimaria),sb,
               hText('   Dados Bancarios', context, size: 60),
               sb,
               Divider(color: corPrimaria),
@@ -101,9 +211,10 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
               sb,
               widget.user.conta_bancaria == null
                   ? hText('Não informou Banco', context)
-                  : Row(
+                  : Column(
+
                     children: <Widget>[
-                      Icon(FontAwesomeIcons.university, color: corPrimaria),sb,
+
                       hText('Banco: ${widget.user.conta_bancaria}', context),
                     ],
                   ),sb,

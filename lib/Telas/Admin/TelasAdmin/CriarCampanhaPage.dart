@@ -35,7 +35,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
   var controllerDuracaoMinima = new TextEditingController(text: '');
   var controllerKmMinimo = new TextEditingController(text: '');
-  var controllerPrecoMes = new MaskedTextController(text: '', mask: 'R\$ 00.000.00');
+  var controllerPrecoMes = new MaskedTextController(text: '', mask: '000.000.00');
   var controllerEmpresa = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
   var controllerCNPJ =
@@ -71,7 +71,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
     BasicDateTimeField datainiField = BasicDateTimeField(
         label: 'Data de Início', icon: FontAwesomeIcons.solidCalendarPlus);
     BasicDateTimeField datafimField = BasicDateTimeField(
-        label: 'Data de Fim', icon: FontAwesomeIcons.solidCalendarPlus);
+        label: 'Data de Fim', icon: FontAwesomeIcons.solidCalendarPlus, );
 
 
     if (widget.campanha != null) {
@@ -307,6 +307,11 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.text,
                                   onSubmited: (s) {}),
+                              sb,Divider(color: corPrimaria,),sb,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: hText('Data Inicial e Data Final da Campanha', context),
+                              ),sb,Divider(color: corPrimaria,),sb,
                               datainiField,
                               datafimField,
                               DefaultField(
@@ -324,6 +329,53 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.number,
                                   onSubmited: (s) {}),
+                              DefaultField(
+                                  controller: controllerPrecoMes,
+                                  hint: 'R\$300.00',
+                                  context: context,
+                                  label: 'Valor da Campanha ao Mês',
+                                  icon: FontAwesomeIcons.moneyBillAlt,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher Valor da Campanha';
+                                      }
+                                    }
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  onSubmited: (s) {}),
+                              DefaultField(
+                                  controller: controllerKmMinimo,
+                                  hint: '4000',
+                                  context: context,
+                                  label: "Km's minimos para atingir valor mês",
+                                  icon: FontAwesomeIcons.route,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher Valor da Campanha';
+                                      }
+                                    }
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  onSubmited: (s) {}),
+
+                              DefaultField(
+                                  controller: controllerDuracaoMinima,
+                                  hint: '40',
+                                  context: context,
+                                  label: "Horas mínimas da campanha",
+                                  icon: FontAwesomeIcons.clock,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      if (isCadastrarPressed) {
+                                        return 'É necessário preencher as Horas mínimas';
+                                      }
+                                    }
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  onSubmited: (s) {}),
+
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -400,7 +452,11 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   ),
                                 ),
                               ),
-
+                              sb,Divider(color: corPrimaria,),sb,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: hText('Zonas da Campanha', context, textaling: TextAlign.center),
+                              ),sb,Divider(color: corPrimaria,),sb,
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
@@ -528,12 +584,17 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       if (campanha == null) {
                                         campanha = new Campanha();
                                       }
+
                                       campanha.atende_festas == null? false: campanha.atende_festas;
                                       campanha.manha == null? false: campanha.manha;
                                       campanha.tarde == null? false: campanha.tarde;
                                       campanha.noite == null? false: campanha.noite;
+                                      campanha.precomes = double.parse(controllerPrecoMes.text);
+                                      campanha.kmMinima = double.parse(controllerKmMinimo.text);
+                                      campanha.duracaoMinima = double.parse(controllerDuracaoMinima.text);
 
-                                       campanha.anuncio_bancos == null? false: campanha.anuncio_bancos;
+
+                                      campanha.anuncio_bancos == null? false: campanha.anuncio_bancos;
                                       campanha.anuncio_laterais == null? false: campanha.anuncio_laterais;
                                       campanha.anuncio_traseira_completa == null? false: campanha.anuncio_traseira_completa;
                                       campanha.anuncio_vidro_traseiro == null? false: campanha.anuncio_vidro_traseiro;
@@ -542,11 +603,10 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       campanha.final_de_semana == null? false: campanha.final_de_semana;
                                       campanha.empresa = controllerEmpresa.text;
                                       campanha.cnpj = controllerCNPJ.text;
-                                        campanha.limite = int.parse(controllerLimite.text);
-                                      campanha.dataini =
-                                          datainiField.selectedDate;
-                                      campanha.datafim =
-                                          datafimField.selectedDate;
+                                      campanha.limite = int.parse(controllerLimite.text);
+                                        print('aqui data ${datafimField.selectedDate}');
+                                      campanha.dataini = datainiField.selectedDate;
+                                      campanha.datafim = datafimField.selectedDate;
 
                                       campanha.nome = controllerNome.text;
                                       campanha.updated_at = DateTime.now();

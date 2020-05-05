@@ -79,9 +79,9 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, index) {
                       Campanha p = snapshot.data[index];
-                        
-                               return CampanhaListItem(p);
-
+                                 if(p.datafim.isBefore(DateTime.now())) {
+                                   return CampanhaListItem(p);
+                                 }
                     },
                     itemCount: snapshot.data.length,
                   ),
