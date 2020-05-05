@@ -251,6 +251,9 @@ class NavigationBloc extends BlocBase {
                     .subLocality
                     .toLowerCase()
                     .contains(z.nome.toLowerCase())) {
+              points[i].bairro =             enderecos[i]
+                  .subLocality;
+              points[i].zona = z.nome;
               localizacoes.add(points[i]);
               if (i != 0) {
                 duracao += localizacoes[i]
@@ -302,6 +305,8 @@ class NavigationBloc extends BlocBase {
     var distInKM = ((c.dist == null ? 0 : c.dist) / 1000);
     c.vizualizacoes =
         ((distInKM * 15) + ((c.duracao / 60) * (15 / 60))).floor();
+    c.vizualizacoes_por_distancia = (distInKM * 15).floor();
+    c.vizualizacoes_por_tempo = ((c.duracao / 60) * (15 / 60)).ceil();
     corridasRef.add(c.toJsonFirestore()).then((v) {
       c.id = v.documentID;
       corridasRef

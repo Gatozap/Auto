@@ -7,12 +7,14 @@ import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Corrida.dart';
 import 'package:autooh/Objetos/Distancia.dart';
+import 'package:autooh/Objetos/Localizacao.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Estatisticas/EstatisticasController.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:random_color/random_color.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -118,15 +120,22 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       return Center(child: Container(child: hText('Sem Corridas', context)));
     }
     double visualizacoes = 0;
+    double visualizacoesTempo = 0;
+    double visualizacoesKm = 0;
     double dist = 0;
     List<Carro> carroIds = new List();
-
     String id_corrida = '';
     int countCorridas = 0;
+    Map<String, List<Localizacao>> zonas = Map();
     countCorridas = corridas.length;
     var tempoNaRua = 0.0;
     for (Corrida c in corridas) {
       visualizacoes += c.vizualizacoes == null ? 0 : c.vizualizacoes;
+      visualizacoesTempo +=
+          c.vizualizacoes_por_tempo == null ? 0 : c.vizualizacoes_por_tempo;
+      visualizacoesKm += c.vizualizacoes_por_distancia == null
+          ? 0
+          : c.vizualizacoes_por_distancia;
       dist += c.dist == null ? 0 : c.dist;
       tempoNaRua += c.duracao;
       bool containsCarro = false;
@@ -134,6 +143,13 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
         if (s.placa == c.carro.placa) {
           containsCarro = true;
         }
+      }
+      for (Localizacao p in c.points) {
+        if (zonas[p.zona] == null) {
+          zonas[p.zona] = new List();
+          ;
+        }
+        zonas[p.zona].add(p);
       }
       if (!containsCarro) {
         carroIds.add(c.carro);
@@ -215,6 +231,68 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                     ),
                     sb,
                     hText(
+                        'Visualizações Rodando: ${visualizacoesKm.toStringAsFixed(0)}',
+                        context),
+                  ],
+                ),
+              ),
+              sb, sb,
+              Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      FontAwesomeIcons.user,
+                      color: corPrimaria,
+                    ),
+                    sb,
+                    hText(
+                        'Visualizações por tempo: ${visualizacoesTempo.toStringAsFixed(0)}',
+                        context),
+                  ],
+                ),
+              ),
+              sb, sb,
+
+              ExpandablePanel(
+                controller: ExpandableController(),
+                header: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        FontAwesomeIcons.mapMarkedAlt,
+                        color: corPrimaria,
+                      ),
+                      sb,
+                      hText('Zonas:', context),
+                    ],
+                  ),
+                ),
+                collapsed: Container(),
+                expanded: FutureBuilder(
+                  future: ZonasWidget(zonas, context),
+                  builder: (context, snap) {
+                    if (snap.data == null) {
+                      return LoadingWidget(
+                          'Erro Ao Calcular', 'Carregando dados');
+                    }
+                    return snap.data;
+                  },
+                ),
+              ),
+
+              sb, sb,
+              Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      FontAwesomeIcons.user,
+                      color: corPrimaria,
+                    ),
+                    sb,
+                    hText(
                         'Total de visualizações: ${visualizacoes.toStringAsFixed(0)}',
                         context),
                   ],
@@ -253,7 +331,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                 ),
               ),
               sb, sb,
-              Padding(
+              /* Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
@@ -265,7 +343,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                     hText('Corridas: ${countCorridas}', context),
                   ],
                 ),
-              ),
+              ),*/
               sb,
               widget.carro == null
                   ? Padding(
@@ -498,5 +576,55 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       ));
     }
     return polylines;
+  }
+
+  Future<Widget> ZonasWidget(
+      Map<String, List<Localizacao>> zonas, BuildContext context) async {
+    var textos = <Widget>[];
+
+    zonas.forEach((k, v) async {
+      Localizacao lastPoint;
+      double dist = 0;
+      for (Localizacao p in v) {
+        if (lastPoint != null) {
+          var distTemp = await Geolocator().distanceBetween(
+            p.latitude,
+            p.longitude,
+            lastPoint.latitude,
+            lastPoint.longitude,
+          );
+          if (distTemp < 300) {
+            dist += distTemp;
+          }
+        }
+        lastPoint = p;
+      }
+      print('Zona:$k');
+      print('Distancia Percorrida:$dist');
+
+      textos.add(
+        hText('Zona: ${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',
+            context),
+      );
+
+      textos.add(
+        hText('Distancia Percorrida: ${(dist / 1000).toStringAsFixed(2)}Km',
+            context),
+      );
+      textos.add(
+        Divider(),
+      );
+    });
+    return Future.delayed(Duration(seconds: 5)).then((v) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: textos,
+        ),
+      );
+    });
   }
 }
