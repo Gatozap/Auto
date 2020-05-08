@@ -874,6 +874,7 @@ class _CadastroState extends State<Cadastro> {
                                                                           numero: controllerNumero.text,
 
                                                                         );
+                                                                        end.add(e);
                                                                         Helper.localUser.carros = carros;
                                                                         print(
                                                                             'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
@@ -1183,6 +1184,31 @@ class _CadastroState extends State<Cadastro> {
                                                   });
                                                 },
                                                 controller: dataNascimento);
+                                          }),sb,
+                                      StreamBuilder<String>(
+                                          stream: cc.outCPF,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.data != null &&
+                                                controllercpf.text.isEmpty) {
+                                              controllercpf.text =
+                                                  snapshot.data;
+                                            }
+                                            return TextField(
+                                                onChanged: (value) {
+                                                  cc.updateCPF(value);
+                                                },
+                                                decoration: InputDecoration(
+                                                    labelText: 'CPF/CNPJ',
+                                                    hintText: '000.000.000-00',
+
+                                                    icon: Icon(
+                                                        Icons.perm_identity, color: corPrimaria)),
+                                                keyboardType:
+                                                TextInputType.number,
+                                                onSubmitted: (tel) {
+                                                  cc.updateCPF(tel);
+                                                },
+                                                controller: CPF);
                                           }),
                                       Padding(
                                           padding: const EdgeInsets.all(24.0),
@@ -1198,11 +1224,11 @@ class _CadastroState extends State<Cadastro> {
                                                     }
 
                                                     if (ue != null) {
-
-                                                      controllerCEP.text =
-                                                      ue.cep != null ? ue
-                                                          .cep : '';
-
+                                                       if(controllerCEP.text.isEmpty) {
+                                                         controllerCEP.text =
+                                                         ue.cep != null ? ue
+                                                             .cep : '';
+                                                       }
                                                       if(controllerCidade.text.isEmpty) {
                                                         controllerCidade.text =
                                                         ue.cidade != null
@@ -1257,6 +1283,7 @@ class _CadastroState extends State<Cadastro> {
                                                                   Divider(color: corPrimaria),
                                                                   sb,
                                                                   defaultActionButton(
+
                                                                       'Buscar Localização',
                                                                       context, () async {
                                                                     print('apertou');
@@ -1268,7 +1295,7 @@ class _CadastroState extends State<Cadastro> {
                                                                           await lc
                                                                               .getEndereco());
                                                                     });
-                                                                  }, icon: null),
+                                                                  }, icon: null, size: 45),
                                                                   sb,
                                                                   sb,
                                                                   new Padding(
@@ -1808,31 +1835,7 @@ class _CadastroState extends State<Cadastro> {
                                               ],
                                             );
                                           }),
-                                      StreamBuilder<String>(
-                                          stream: cc.outCPF,
-                                          builder: (context, snapshot) {
-                                            if (snapshot.data != null &&
-                                                controllercpf.text.isEmpty) {
-                                              controllercpf.text =
-                                                  snapshot.data;
-                                            }
-                                            return TextField(
-                                                onChanged: (value) {
-                                                  cc.updateCPF(value);
-                                                },
-                                                decoration: InputDecoration(
-                                                    labelText: 'CPF/CNPJ',
-                                                    hintText: '000.000.000-00',
-                                                    
-                                                    icon: Icon(
-                                                        Icons.perm_identity, color: corPrimaria)),
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                onSubmitted: (tel) {
-                                                  cc.updateCPF(tel);
-                                                },
-                                                controller: CPF);
-                                          }),
+
                                       sb,
                                       Column(
                                         mainAxisAlignment:

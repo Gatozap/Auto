@@ -4,6 +4,7 @@ import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/ListaEquipamentos.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Corrida.dart';
 import 'package:autooh/Objetos/Zona.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListPage.dart';
@@ -22,7 +23,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class HomePage extends StatefulWidget {
   Campanha campanha;
-  HomePage({Key key,this.campanha }) : super(key: key);
+  Corrida corrida;
+  HomePage({Key key,this.campanha, this.corrida }) : super(key: key);
 
   @override
   _HomePageState createState() {
@@ -126,6 +128,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       )),
+
                   Card(
                       margin: EdgeInsets.zero,
                       color: Colors.yellowAccent,
@@ -140,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                             hText('Km\'s Atuais', context,
                                 color: Colors.black),
                             SizedBox(height: 5),
-                            hText('Km\'s: 0', context,
+                            hText('Km\'s: ${widget.corrida.vizualizacoes_por_distancia == null? 0: widget.corrida.vizualizacoes_por_distancia}', context,
                                 color: corPrimaria,
                                 style: FontStyle.normal,
                                 weight: FontWeight.bold)
@@ -285,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(width: 60, height: 60,child:  Image.asset('assets/duvidas_icone.png', fit: BoxFit.fill),),
+                            Container(width: 60, height: 60,child: Icon(MdiIcons.redhat, color: Colors.yellowAccent, size:40),),
                             hText('Solicitacoes', context, color:  Colors.white, textaling: TextAlign.center)
                           ],
                         ),

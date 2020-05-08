@@ -89,5 +89,7 @@ class ParceirosBloc extends BlocBase {
   void dispose() {
     parceiroController.close();
     parceiroSelecionadoController.close();
+
+
   }
 }

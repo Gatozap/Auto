@@ -47,115 +47,103 @@ class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
       appBar: myAppBar('Lista de Campanhas', context,actions: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-
         ),
       ],),
-      body: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            StreamBuilder<List<Campanha>>(
-              builder: (context, AsyncSnapshot<List<Campanha>> snapshot) {
+      body: StreamBuilder<List<Campanha>>(
+        builder: (context, AsyncSnapshot<List<Campanha>> snapshot) {
 
-                if (snapshot.data == null) {
-                  return Loading(completed: Text('Erro ao Buscar Campanha'));
-                }
-                
-                if (snapshot.data.length == 0) {
-                  return Loading(completed: Text('Nenhum Campanha encontrada'));
-                }
-                return Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
+          if (snapshot.data == null) {
+            return Loading(completed: Text('Erro ao Buscar Campanha'));
+          }
 
-                      Campanha p = snapshot.data[index];
+          if (snapshot.data.length == 0) {
+            return Loading(completed: Text('Nenhum Campanha encontrada'));
+          }
+          return ListView.builder(
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+                  print('aqui ${snapshot.data[index].datafim}');
+                  print("AQUI LOLOLOLO ${snapshot.data[index].datafim.isBefore(DateTime.now())}");
+              if(snapshot.data[index].datafim.isAfter(DateTime.now())) {
 
+                return CampanhaListItem(snapshot.data[index]);
+              }           else{
+                return Container();
+              }
+            },
 
-        return CampanhaListItem(p);
+            itemCount: snapshot.data.length,
 
-      
-                    },
-                    itemCount: snapshot.data.length,
-                  ),
-                );
-              },
-              stream: pc.outCampanhas,
-            )
-          ],
-        ),
+          );
+        },
+        stream: pc.outCampanhas,
       ),
     );
   }
 
   Widget CampanhaListItem(Campanha p, {User pp}) {
-    return GestureDetector(
-      onTap: () {
-        
-      },
-      child: Card(
-        shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.transparent,
-                child: p.fotos != null
-                    ? Container(
-                  width: 70, height: 70,
-                      child: Image(
-                  image: CachedNetworkImageProvider(p.fotos[0]),
-                fit: BoxFit.fill,),
-                    )
-                    : Container(
-                  width: 70, height: 70,
-                      child: Image.asset('assets/campanha_sem_foto.png', fit: BoxFit.fill,
-                ),
-                    )),
-            Container(
-              width: getLargura(context) * .4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    child: hText('${p.nome}', context,
-                        size: 44, weight: FontWeight.bold),
-                  ),
-                  hText('Empresa: ${p.empresa}', context, size: 44),
-                  hText(
-                    'CNPJ: ${p.cnpj}',
-                    context,
-                    size: 44,
-                  ),
-                ],
+    return Card(
+      shape:
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.transparent,
+              child: p.fotos != null
+                  ? Container(
+                width: 70, height: 70,
+                    child: Image(
+                image: CachedNetworkImageProvider(p.fotos[0]),
+              fit: BoxFit.fill,),
+                  )
+                  : Container(
+                width: 70, height: 70,
+                    child: Image.asset('assets/campanha_sem_foto.png', fit: BoxFit.fill,
               ),
+                  )),
+          Container(
+            width: getLargura(context) * .4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  child: hText('${p.nome}', context,
+                      size: 44, weight: FontWeight.bold),
+                ),
+                hText('Empresa: ${p.empresa}', context, size: 44),
+                hText(
+                  'CNPJ: ${p.cnpj}',
+                  context,
+                  size: 44,
+                ),
+              ],
             ),
-            PopupMenuButton<String>(
-                onSelected: (String s){
-                  switch(s){
-                    case 'visualizar':
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => VisualizarCampanhaUserPage(campanha: p)));
-                      break;
+          ),
+          PopupMenuButton<String>(
+              onSelected: (String s){
+                switch(s){
+                  case 'visualizar':
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => VisualizarCampanhaUserPage(campanha: p)));
+                    break;
 
 
-                  }
-                },
-                itemBuilder: (context) {
-                  List<PopupMenuItem<String>> itens = new List();
-                  itens.add(PopupMenuItem(
-                    child: hText('Visualizar Campanha', context),
-                    value: 'visualizar',
-                  ));
-                
-                  return itens;
-                },
-                icon: Icon(Icons.more_vert))
-          ],
-        ),
+                }
+              },
+              itemBuilder: (context) {
+                List<PopupMenuItem<String>> itens = new List();
+                itens.add(PopupMenuItem(
+                  child: hText('Visualizar Campanha', context),
+                  value: 'visualizar',
+                ));
+
+                return itens;
+              },
+              icon: Icon(Icons.more_vert))
+        ],
       ),
     );
   }

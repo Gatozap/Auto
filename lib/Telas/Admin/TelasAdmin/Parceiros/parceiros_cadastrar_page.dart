@@ -79,15 +79,29 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
     TimeOfDay horaini;
     TimeOfDay horafim;
     if (widget.parceiro != null) {
+      if(controllerCEP.text.isEmpty) {
+        controllerCEP.text = widget.parceiro.endereco.cep;
+      }
       controllerNome.text = widget.parceiro.nome;
       controlerHoraIni.text = widget.parceiro.hora_ini.toString();
       controlerHoraFim.text = widget.parceiro.hora_fim.toString();
       controlerTelefone.text = widget.parceiro.telefone;
-      controllerCidade.text = widget.parceiro.endereco.cidade;
-      controllerEndereco.text = widget.parceiro.endereco.endereco;
-      controllerBairro.text = widget.parceiro.endereco.bairro;
-      controllerComplemento.text = widget.parceiro.endereco.complemento;
-      controllerNumero.text = widget.parceiro.endereco.numero;
+       if(controllerCidade.text.isEmpty) {
+         controllerCidade.text = widget.parceiro.endereco.cidade;
+       }
+      if(controllerEndereco.text.isEmpty) {
+        controllerEndereco.text = widget.parceiro.endereco.endereco;
+      }
+      if(controllerBairro.text.isEmpty) {
+        controllerBairro.text = widget.parceiro.endereco.bairro;
+      }
+      if(controllerComplemento.text.isEmpty) {
+        controllerComplemento.text = widget.parceiro.endereco.complemento;
+      }
+
+      if(controllerNumero.text.isEmpty) {
+        controllerNumero.text = widget.parceiro.endereco.numero;
+      }
       if (widget.parceiro.hora_ini != null) {
         horaini = widget.parceiro.hora_ini;
         horaIniField = BasicTimeField(
@@ -97,8 +111,8 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
         );
       }
       if (widget.parceiro.hora_fim != null) {
-        horaini = widget.parceiro.hora_fim;
-        horaIniField = BasicTimeField(
+        horafim = widget.parceiro.hora_fim;
+        horaFimField = BasicTimeField(
           text: 'Hora Fim',
           icon: FontAwesomeIcons.solidCalendarPlus,
           controller: controlerHoraFim,
@@ -281,9 +295,10 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                     }
 
                                     if (ue != null) {
+    if (controllerCEP.text.isEmpty) {
                                       controllerCEP.text =
                                           ue.cep != null ? ue.cep : '';
-
+    }
                                       if (controllerCidade.text.isEmpty) {
                                         controllerCidade.text =
                                             ue.cidade != null ? ue.cidade : '';
@@ -334,10 +349,9 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                       context, () async {
                                                     print('apertou');
                                                     aec.inEndereco.add(
-                                                        await lc.getEndereco());
-                                                    Future.delayed(Duration(
-                                                            seconds: 1))
-                                                        .then((v) async {
+                                                        await lc
+                                                            .getEndereco());
+                                                    Future.delayed(Duration(seconds:1)).then((v) async {
                                                       aec.inEndereco.add(
                                                           await lc
                                                               .getEndereco());
@@ -349,9 +363,11 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                     padding: ei,
                                                     child: TextFormField(
                                                       onFieldSubmitted:
-                                                          aec.FetchCep,
-                                                      controller: controllerCEP,
-                                                      keyboardType: TextInputType
+                                                      aec.FetchCep,
+                                                      controller:
+                                                      controllerCEP,
+                                                      keyboardType:
+                                                      TextInputType
                                                           .numberWithOptions(),
                                                       validator: (value) {
                                                         if (value.isEmpty) {
@@ -359,40 +375,44 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                             return 'É necessário preencher o CEP';
                                                           }
                                                         } else {
-                                                          if (value.length !=
+                                                          if (value
+                                                              .length !=
                                                               9) {
                                                             if (isCadastrarPressed) {
                                                               return 'CEP inválido';
                                                             }
                                                           } else {
-                                                            if (value.length ==
+                                                            if (value
+                                                                .length ==
                                                                 9) {
-                                                              if (ue == null) {
-                                                                ue = Endereco
-                                                                    .Empty();
+                                                              if(ue == null){
+                                                                ue = new Endereco.Empty();
                                                               }
                                                               if (ue.cep !=
                                                                   value) {
                                                                 aec.FetchCep(
                                                                     value);
-                                                                ue.cep = value;
+                                                                ue.cep =
+                                                                    value;
                                                                 aec.inEndereco
-                                                                    .add(ue);
+                                                                    .add(
+                                                                    ue);
                                                                 FocusScope.of(
-                                                                        context)
+                                                                    context)
                                                                     .requestFocus(
-                                                                        myFocusNode);
+                                                                    myFocusNode);
                                                               }
                                                             }
                                                           }
                                                         }
                                                       },
                                                       decoration:
-                                                          DefaultInputDecoration(
+                                                      DefaultInputDecoration(
                                                         context,
                                                         icon: Icons
                                                             .assistant_photo,
-                                                        hintText: '00000-000',
+                                                        hintText:
+                                                        '00000-000',
                                                         labelText: 'CEP',
                                                       ),
                                                       autovalidate: true,
@@ -402,7 +422,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                     padding: ei,
                                                     child: TextFormField(
                                                       controller:
-                                                          controllerCidade,
+                                                      controllerCidade,
                                                       validator: (value) {
                                                         if (value.isEmpty) {
                                                           return 'É necessário preencher a Cidade';
@@ -413,11 +433,12 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                         }
                                                       },
                                                       decoration:
-                                                          DefaultInputDecoration(
+                                                      DefaultInputDecoration(
                                                         context,
-                                                        icon:
-                                                            Icons.location_city,
-                                                        hintText: 'São Paulo',
+                                                        icon: Icons
+                                                            .location_city,
+                                                        hintText:
+                                                        'São Paulo',
                                                         labelText: 'Cidade',
                                                       ),
                                                     ),
@@ -426,7 +447,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                     padding: ei,
                                                     child: TextFormField(
                                                       controller:
-                                                          controllerBairro,
+                                                      controllerBairro,
                                                       validator: (value) {
                                                         if (value.isEmpty) {
                                                           return 'É necessário preencher o Bairro';
@@ -437,7 +458,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                         }
                                                       },
                                                       decoration:
-                                                          DefaultInputDecoration(
+                                                      DefaultInputDecoration(
                                                         context,
                                                         icon: Icons.home,
                                                         hintText: 'Centro',
@@ -449,24 +470,26 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                     padding: ei,
                                                     child: TextFormField(
                                                       controller:
-                                                          controllerEndereco,
+                                                      controllerEndereco,
                                                       validator: (value) {
                                                         if (value.isEmpty) {
                                                           return 'É necessário preencher o Endereço';
                                                         } else {
-                                                          ue.endereco = value;
+                                                          ue.endereco =
+                                                              value;
                                                           aec.inEndereco
                                                               .add(ue);
                                                         }
                                                       },
                                                       decoration:
-                                                          DefaultInputDecoration(
+                                                      DefaultInputDecoration(
                                                         context,
-                                                        icon:
-                                                            Icons.add_location,
+                                                        icon: Icons
+                                                            .add_location,
                                                         hintText:
-                                                            'Rua da Saúde',
-                                                        labelText: 'Endereço',
+                                                        'Rua da Saúde',
+                                                        labelText:
+                                                        'Endereço',
                                                       ),
                                                     ),
                                                   ),
@@ -474,10 +497,12 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                     padding: ei,
                                                     child: TextFormField(
                                                       keyboardType:
-                                                          TextInputType.number,
+                                                      TextInputType
+                                                          .number,
                                                       controller:
-                                                          controllerNumero,
-                                                      focusNode: myFocusNode,
+                                                      controllerNumero,
+                                                      focusNode:
+                                                      myFocusNode,
                                                       validator: (value) {
                                                         if (value.isEmpty) {
                                                           return 'É necessário preencher o Número';
@@ -488,9 +513,10 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                         }
                                                       },
                                                       decoration:
-                                                          DefaultInputDecoration(
+                                                      DefaultInputDecoration(
                                                         context,
-                                                        icon: Icons.filter_1,
+                                                        icon:
+                                                        Icons.filter_1,
                                                         hintText: '3001',
                                                         labelText: 'Número',
                                                       ),
@@ -500,18 +526,21 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                     padding: ei,
                                                     child: TextFormField(
                                                       controller:
-                                                          controllerComplemento,
+                                                      controllerComplemento,
                                                       validator: (value) {
-                                                        ue.complemento = value;
-                                                        aec.inEndereco.add(ue);
+                                                        ue.complemento =
+                                                            value;
+                                                        aec.inEndereco
+                                                            .add(ue);
                                                       },
                                                       decoration:
-                                                          DefaultInputDecoration(
+                                                      DefaultInputDecoration(
                                                         context,
                                                         icon: Icons.home,
-                                                        hintText: 'Apto. 163',
+                                                        hintText:
+                                                        'Apto. 163',
                                                         labelText:
-                                                            'Complemento',
+                                                        'Complemento',
                                                       ),
                                                     ),
                                                   ),

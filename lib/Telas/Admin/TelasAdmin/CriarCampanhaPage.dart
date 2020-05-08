@@ -307,13 +307,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.text,
                                   onSubmited: (s) {}),
-                              sb,Divider(color: corPrimaria,),sb,
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: hText('Data Inicial e Data Final da Campanha', context),
-                              ),sb,Divider(color: corPrimaria,),sb,
-                              datainiField,
-                              datafimField,
+
                               DefaultField(
                                   controller: controllerLimite,
                                   hint: '50',
@@ -502,6 +496,8 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                 ),
                               ),
+
+
                               snap.data == null
                                   ? Container()
                                   : snap.data.zonas == null
@@ -572,6 +568,13 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                             )
                                           : Container(),
                               sb,
+                              sb,Divider(color: corPrimaria,),sb,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: hText('Data Inicial e Data Final da Campanha', context),
+                              ),sb,Divider(color: corPrimaria,),sb,
+                              datainiField,
+                              datafimField,
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
