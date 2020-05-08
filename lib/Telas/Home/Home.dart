@@ -1,4 +1,3 @@
-
 import 'package:autooh/CampanhasParaUsuario/ListaCampanhasUsuario.dart';
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/ListaEquipamentos.dart';
@@ -24,7 +23,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class HomePage extends StatefulWidget {
   Campanha campanha;
   Corrida corrida;
-  HomePage({Key key,this.campanha, this.corrida }) : super(key: key);
+  HomePage({Key key, this.campanha, this.corrida}) : super(key: key);
 
   @override
   _HomePageState createState() {
@@ -37,14 +36,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 5)).then((v) {
-     /* Navigator.push(
+      /* Navigator.push(
           context, MaterialPageRoute(builder: (context) => IntroPage()));*/
     });
     if (gc == null) {
       gc = new GruposController();
     }
     Helper.fbmsg.subscribeToTopic('user${Helper.localUser.id}');
-    if(Helper.localUser.permissao == 10){
+    if (Helper.localUser.permissao == 10) {
       Helper.fbmsg.subscribeToTopic('Administrador');
     }
   }
@@ -100,12 +99,13 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              sb,sb,sb,
+              sb,
+              sb,
+              sb,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Card(
-
                       margin: EdgeInsets.zero,
                       color: Colors.yellowAccent,
                       shape: RoundedRectangleBorder(
@@ -116,8 +116,7 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            hText('Saldo Atual', context,
-                                color: Colors.black),
+                            hText('Saldo Atual', context, color: Colors.black),
                             SizedBox(height: 5),
                             Center(
                               child: hText('R\$: 0.00', context,
@@ -128,7 +127,6 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       )),
-
                   Card(
                       margin: EdgeInsets.zero,
                       color: Colors.yellowAccent,
@@ -138,12 +136,13 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment. center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            hText('Km\'s Atuais', context,
-                                color: Colors.black),
+                            hText('Km\'s Atuais', context, color: Colors.black),
                             SizedBox(height: 5),
-                            hText('Km\'s: ${widget.corrida.vizualizacoes_por_distancia == null? 0: widget.corrida.vizualizacoes_por_distancia}', context,
+                            hText(
+                                'Km\'s: ${widget.corrida == null ? 0 : widget.corrida.vizualizacoes_por_distancia == null ? 0 : widget.corrida.vizualizacoes_por_distancia}',
+                                context,
                                 color: corPrimaria,
                                 style: FontStyle.normal,
                                 weight: FontWeight.bold)
@@ -151,9 +150,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       )),
                 ],
-              ),sb,
-              Divider(color: Colors.blue,),
-
+              ),
+              sb,
+              Divider(
+                color: Colors.blue,
+              ),
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -161,28 +162,27 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                     children: <Widget>[
                       hText('Atividades', context,
-                          color: Colors.blue, size: 100, weight: FontWeight.bold)
+                          color: Colors.blue,
+                          size: 100,
+                          weight: FontWeight.bold)
                     ],
                   )),
                 ),
               ),
               Container(
-
                 margin: EdgeInsets.all(10),
-
                 child: Row(
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Racing()));
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Racing()));
                       },
                       child: Container(
-
                         decoration: BoxDecoration(
-                          color:Color.fromRGBO(0, 125, 190, 100),
+                          color: Color.fromRGBO(0, 125, 190, 100),
                           border: Border.all(
-                               color: Colors.transparent,
+                            color: Colors.transparent,
                             width: 5,
                           ),
                           borderRadius: BorderRadius.circular(20),
@@ -195,20 +195,28 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                                Container(width: 60, height: 60,child:  Image.asset('assets/iniciar_percurso.png', fit: BoxFit.fill),),
-                            hText('Iniciar\nPercurso', context, color:  Colors.white, textaling: TextAlign.center)
+                            Container(
+                              width: 60,
+                              height: 60,
+                              child: Image.asset('assets/iniciar_percurso.png',
+                                  fit: BoxFit.fill),
+                            ),
+                            hText('Iniciar\nPercurso', context,
+                                color: Colors.white,
+                                textaling: TextAlign.center)
                           ],
                         ),
                       ),
                     ),
-                    GestureDetector(onTap:(){
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EstatisticaPage(user: Helper.localUser)));
-                    },
-                      child:  Container(
-
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                EstatisticaPage(user: Helper.localUser)));
+                      },
+                      child: Container(
                         decoration: BoxDecoration(
-                          color:Color.fromRGBO(0, 125, 190, 100),
+                          color: Color.fromRGBO(0, 125, 190, 100),
                           border: Border.all(
                             color: Colors.transparent,
                             width: 5,
@@ -216,15 +224,22 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         margin:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         height: getAltura(context) * .2,
                         width: getLargura(context) * .4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(width: 60, height: 60,child:  Image.asset('assets/meus_percursos.png', fit: BoxFit.fill),),
-                            hText('Meus\nPercursos', context, color:  Colors.white, textaling: TextAlign.center)
+                            Container(
+                              width: 60,
+                              height: 60,
+                              child: Image.asset('assets/meus_percursos.png',
+                                  fit: BoxFit.fill),
+                            ),
+                            hText('Meus\nPercursos', context,
+                                color: Colors.white,
+                                textaling: TextAlign.center)
                           ],
                         ),
                       ),
@@ -237,14 +252,16 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: <Widget>[
                     GestureDetector(
-                      onTap:(){
+                      onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ListaCampanhasUsuarioPage(user: Helper.localUser, campanha: widget.campanha,)));
+                            builder: (context) => ListaCampanhasUsuarioPage(
+                                  user: Helper.localUser,
+                                  campanha: widget.campanha,
+                                )));
                       },
-                      child:  Container(
-
+                      child: Container(
                         decoration: BoxDecoration(
-                          color:Color.fromRGBO(0, 125, 190, 100),
+                          color: Color.fromRGBO(0, 125, 190, 100),
                           border: Border.all(
                             color: Colors.transparent,
                             width: 5,
@@ -252,28 +269,37 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         margin:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         height: getAltura(context) * .2,
                         width: getLargura(context) * .4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(width: 60, height: 60,child:  Image.asset('assets/Campanhas.png', fit: BoxFit.fill),),
-                            hText('Campanhas', context, color:  Colors.white, textaling: TextAlign.center)
+                            Container(
+                              width: 60,
+                              height: 60,
+                              child: Image.asset('assets/Campanhas.png',
+                                  fit: BoxFit.fill),
+                            ),
+                            hText('Campanhas', context,
+                                color: Colors.white,
+                                textaling: TextAlign.center)
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SolicitacoesListPage(user: Helper.localUser,isUser:true,)));
+                            builder: (context) => SolicitacoesListPage(
+                                  user: Helper.localUser,
+                                  isUser: true,
+                                )));
                       },
                       child: Container(
-
                         decoration: BoxDecoration(
-                          color:Color.fromRGBO(0, 125, 190, 100),
+                          color: Color.fromRGBO(0, 125, 190, 100),
                           border: Border.all(
                             color: Colors.transparent,
                             width: 5,
@@ -281,15 +307,22 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         margin:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         height: getAltura(context) * .2,
                         width: getLargura(context) * .4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(width: 60, height: 60,child: Icon(MdiIcons.redhat, color: Colors.yellowAccent, size:40),),
-                            hText('Solicitacoes', context, color:  Colors.white, textaling: TextAlign.center)
+                            Container(
+                              width: 60,
+                              height: 60,
+                              child: Icon(MdiIcons.redhat,
+                                  color: Colors.yellowAccent, size: 40),
+                            ),
+                            hText('Solicitacoes', context,
+                                color: Colors.white,
+                                textaling: TextAlign.center)
                           ],
                         ),
                       ),
