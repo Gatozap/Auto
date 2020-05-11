@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:autooh/Helpers/ExpandableContainer.dart';
 import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
@@ -113,6 +114,84 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
 
   GoogleMapController _controller;
 
+
+  List<Campanha> campanhasList;
+  Future<Widget> ganhosWidget(corridas) async {
+    if (corridas.length == 0) {
+      return Center(child: Container(child: hText('Sem Corridas', context)));
+    }
+    Map<String, List<Localizacao>> zonas = Map();
+    double valor = 0;
+    List<String> campanhas = new List();
+    for (Corrida c in corridas) {
+      bool contains = false;
+      for (String s in campanhas) {
+        if (s == c.campanha) {
+          contains = true;
+        }
+      }
+      if (!contains && c.campanha != null) {
+        campanhas.add(c.campanha);
+      }
+    }
+    if (campanhasList == null) {
+      List<Campanha> campanhasList = new List();
+      for (String s in campanhas) {
+        print('BUSCANDO CAMPANHA LALAL');
+        Campanha c = Campanha.fromJson((await campanhasRef.document(s).get()).data);
+        campanhasList.add(c);
+        print('AQUI CAMPANHAS ${campanhasList.length}');
+      }
+      for (Campanha c in campanhasList) {
+        double dist = 0;
+        double valorTemp = 0;
+        for (Corrida cor in corridas) {
+          if (c.id == cor.campanha) {
+            dist += cor.dist == null ? 0 : cor.dist;
+          }
+        }
+        if (c.precomes != null && c.kmMinima != null) {
+          if(c.kmMinima != 0) {
+            valorTemp += ((dist/1000) /c.kmMinima);
+            print('AQUI LOL $valorTemp e ${dist/1000} e ${c.kmMinima} ');
+          }
+        }
+        print('Porcentagem ${valorTemp}');
+        if (valorTemp > 100) {
+          valorTemp = c.precomes;
+        } else {
+          valorTemp = c.precomes*valorTemp;
+        }
+        if(valorTemp > c.precomes){
+          valorTemp = c.precomes;
+        }
+        valor += valorTemp;
+      }
+
+      print('AQUI CAMPANHAS ${campanhasList} ${campanhasList.length}');
+      print("AQUI LOLOLOLO ${valor}");
+
+      return  Padding(
+        padding: EdgeInsets.only(left: 15.0),
+        child: Row(
+          children: <Widget>[
+            Icon(
+              FontAwesomeIcons.moneyCheck,
+              color: corPrimaria,
+            ),
+            sb,
+            hText(
+                'Valor: R\$: ${valor.toStringAsFixed(2)}',
+                context),
+          ],
+        ),
+      );
+    }
+    else{
+      return Container();
+    }
+
+  }
   bool isMapOpen = false;
   ExpandableController expController = ExpandableController();
   getEstatisticasWidget(List<Corrida> corridas) {
@@ -298,6 +377,16 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                   ],
                 ),
               ),
+             sb,sb,
+               FutureBuilder(
+                      builder: (context, snap) {
+                        if (snap.data == null) {
+                          return Container();
+                        }
+                        return snap.data;
+                      },
+                      future: ganhosWidget(corridas),
+                    ),
               sb, sb,
               Padding(
                 padding: EdgeInsets.only(left: 15.0),

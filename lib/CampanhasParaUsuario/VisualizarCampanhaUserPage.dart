@@ -336,6 +336,34 @@ class _VisualizarCampanhaUserPageState
                                     Icon(FontAwesomeIcons.carSide,
                                         color: corPrimaria),
                                     sb,
+                                    hText('Minimo Mensal: ', context,
+                                        color: corPrimaria),
+                                    hText('${campanha.kmMinima == null? 0:campanha.kmMinima.toStringAsFixed(0)} Km', context)
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 40, right: 8, top: 20),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.carSide,
+                                        color: corPrimaria),
+                                    sb,
+                                    hText('Valor: ', context,
+                                        color: corPrimaria),
+                                    hText('R\$${campanha.precomes==null? 0:campanha.precomes.toStringAsFixed(2)}', context)
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 40, right: 8, top: 20),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(FontAwesomeIcons.carSide,
+                                        color: corPrimaria),
+                                    sb,
                                     hText('Limite de carros: ', context,
                                         color: corPrimaria),
                                     hText('${campanha.limite}', context)

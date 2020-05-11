@@ -53,9 +53,9 @@ class Campanha{
      anuncio_traseira_completa: j['anuncio_traseira_completa'] == null ? false : j["anuncio_traseira_completa"],
      anuncio_vidro_traseiro: j['anuncio_vidro_traseiro'] == null ? false : j["anuncio_vidro_traseiro"],
 
-     duracaoMinima: j['duracaoMinima'] == null ? null : j["duracaoMinima"],
-     precomes:  j['precomes'] == null ? null : j["precomes"],
-     kmMinima:  j['kmMinima'] == null ? null : j["kmMinima"],
+     duracaoMinima: j['duracaoMinima'] == null ? 0.0 : double.parse(j["duracaoMinima"].toString()),
+     precomes:  j['precomes'] == null ? 0.0 : double.parse(j["precomes"].toString()),
+     kmMinima:  j['kmMinima'] == null ? 0.0 : double.parse(j["kmMinima"].toString()),
 
 
     manha: j['manha'] == null ? false : j["manha"],
@@ -113,9 +113,9 @@ class Campanha{
      'nome': this.nome == null ? null : this.nome,
      'empresa': this.empresa == null ? null : this.empresa,
      'cnpj': this.cnpj == null ? null : this.cnpj,
-     'kmMinima': this.kmMinima == null ? null : this.kmMinima,
-     'precomes': this.precomes == null ? null : this.precomes,
-     'duracaoMinima': this.duracaoMinima == null ? null : this.duracaoMinima,
+     'kmMinima': this.kmMinima == null ? 0.0 : this.kmMinima,
+     'precomes': this.precomes == null ? 0.0 : this.precomes,
+     'duracaoMinima': this.duracaoMinima == null ? 0.0 : this.duracaoMinima,
        'tarde':  this.tarde == null ? false : this.tarde,
      'noite':  this.noite == null ? false : this.noite,
      'manha':  this.manha == null ? false : this.manha,
