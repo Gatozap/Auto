@@ -35,11 +35,10 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
 
   var controllerDuracaoMinima = new TextEditingController(text: '');
   var controllerKmMinimo = new TextEditingController(text: '');
-  var controllerPrecoMes = new MaskedTextController(text: '', mask: '000.000.00');
+  var controllerPrecoMes = new TextEditingController(text: '');
   var controllerEmpresa = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
-  var controllerCNPJ =
-      new MaskedTextController(text: '', mask: '00.000.000/0000-00');
+  var controllerCNPJ = new MaskedTextController(text: '', mask: '00.000.000/0000-00');
   var controllerSobre = new TextEditingController(text: '');
   var controllerLimite = new TextEditingController(text: '');
   Campanha campanha;
@@ -102,8 +101,10 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
             startingdate:
             '${widget.campanha.datafim.day.toString().length == 1 ? '0' + widget.campanha.datafim.day.toString() : widget.campanha.datafim.day}/${widget.campanha.datafim.month.toString().length == 1 ? '0' + widget.campanha.datafim.month.toString() : widget.campanha.datafim.month}/${widget.campanha.datafim.year} ${widget.campanha.datafim.hour.toString().length == 1?'0'+widget.campanha.datafim.hour.toString():widget.campanha.datafim.hour.toString() }:${widget.campanha.datafim.minute.toString().length == 1?'0'+widget.campanha.datafim.minute.toString():widget.campanha.datafim.minute.toString() }');
       }
+      
       campanha = widget.campanha;
       campanhaController.inCampanha.add(campanha);
+
     }
 
     // TODO: implement build
