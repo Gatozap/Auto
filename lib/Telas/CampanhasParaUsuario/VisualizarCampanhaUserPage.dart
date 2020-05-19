@@ -308,7 +308,7 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: 40, right: 8, top: 10),
-                                child: hText(' ${campanha.dataini}', context),
+                                child: hText(' ${FormatarHora(campanha.dataini)}', context),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -326,7 +326,7 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: 40, right: 8, top: 10),
-                                child: hText(' ${campanha.datafim}', context),
+                                child: hText(' ${FormatarHora(campanha.datafim)}', context),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -480,7 +480,7 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: hText(
-                                    'Zonas que a Campanha Abrangê ', context),
+                                    'Zonas que a Campanha Abrange ', context),
                               ),
                               sb,
                               Divider(color: corPrimaria),
@@ -505,7 +505,7 @@ class _VisualizarCampanhaUserPageState
                                                             .symmetric(
                                                         horizontal: 8.0),
                                                     child: MaterialButton(
-                                                      onLongPress: () {
+                                                      onLongPress: () { 
                                                         String s = 'Zonas: ';
                                                         for (Bairro b in snap
                                                             .data

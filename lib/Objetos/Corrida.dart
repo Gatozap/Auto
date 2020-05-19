@@ -43,8 +43,7 @@ class Corrida {
       this.user,
       this.dist,
       this.duracao,
-        this.anuncio,
-
+      this.anuncio,
       this.vizualizacoes,
       this.carro,
       this.points,
@@ -66,15 +65,18 @@ class Corrida {
         deleted_at = j['deleted_at'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['deleted_at']),
-        dist = j['dist'] ,
+        dist = j['dist'],
         campanha = j['campanha'],
         id_corrida = j['id_corrida'],
         id_carro = j['id_carro'],
-        anuncio= j['anuncio'] == null? null: Campanha.fromJson(j['anuncio']),
+        anuncio = j['anuncio'] == null ? null : Campanha.fromJson(j['anuncio']),
         vizualizacoes = j['vizualizacoes'],
-        vizualizacoes_por_distancia = j['vizualizacoes_por_distancia'] == null? null: j['vizualizacoes_por_distancia'],
-        vizualizacoes_por_tempo = j['vizualizacoes_por_tempo'] == null? null: j['vizualizacoes_por_tempo'],
-
+        vizualizacoes_por_distancia = j['vizualizacoes_por_distancia'] == null
+            ? null
+            : j['vizualizacoes_por_distancia'],
+        vizualizacoes_por_tempo = j['vizualizacoes_por_tempo'] == null
+            ? null
+            : j['vizualizacoes_por_tempo'],
         hora_ini = j['hora_ini'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['hora_ini']),
@@ -88,7 +90,9 @@ class Corrida {
         isRunning = j['isRunning'],
         user = j['user'],
         carro = j['carro'] == null ? null : Carro.fromJson(j['carro']),
-        points = j['points'] == null ? null : getLocalizacoes(json.decode(j['points']));
+        points = j['points'] == null
+            ? null
+            : getLocalizacoes(json.decode(j['points']));
 
   Corrida.fromJson(j)
       : id = j['id'],
@@ -102,7 +106,6 @@ class Corrida {
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['deleted_at']),
         dist = j['dist'],
-
         hora_ini = j['hora_ini'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(j['hora_ini']),
@@ -137,7 +140,6 @@ class Corrida {
             last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,
 
-
         'carro': carro == null ? null : carro.toJson(),
         //'points': json.encode(points),
       };
@@ -152,19 +154,22 @@ class Corrida {
             deleted_at == null ? null : deleted_at.millisecondsSinceEpoch,
         'hora_ini': hora_ini == null ? null : hora_ini.millisecondsSinceEpoch,
         'hora_fim': hora_fim == null ? null : hora_fim.millisecondsSinceEpoch,
-    'vizualizacoes_por_distancia': this.vizualizacoes_por_distancia== null? null:vizualizacoes_por_distancia,
-    'vizualizacoes_por_tempo': this.vizualizacoes_por_tempo== null? null:vizualizacoes_por_tempo,
+        'vizualizacoes_por_distancia': this.vizualizacoes_por_distancia == null
+            ? null
+            : vizualizacoes_por_distancia,
+        'vizualizacoes_por_tempo': this.vizualizacoes_por_tempo == null
+            ? null
+            : vizualizacoes_por_tempo,
         'duracao': duracao,
         'isRunning': isRunning,
         'vizualizacoes': vizualizacoes,
         'campanha': campanha,
         'id_corrida': id_corrida,
         'dist': dist,
-    'anuncio':anuncio.toJson(),
+        'anuncio': anuncio.toJson(),
         'last_seen':
             last_seen == null ? null : last_seen.millisecondsSinceEpoch,
         'user': user,
-
         'carro': carro == null ? null : carro.toJsonSemCampanha(),
         'points': json.encode(points),
       };
@@ -175,7 +180,7 @@ class Corrida {
     if (decoded == null) {
       return null;
     }
-    for(var v in points){
+    for (var v in points) {
       localizacoes.add(Localizacao.fromJson(v));
     }
     return localizacoes;

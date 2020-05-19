@@ -4,6 +4,7 @@ import 'package:autooh/Objetos/Corrida.dart';
 import 'package:autooh/Objetos/Distancia.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Admin/AdminPage.dart';
+import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Card/cartoes_page.dart';
 import 'package:autooh/Telas/Carro/CadastrarNovoCarroPage.dart';
 import 'package:autooh/Telas/Carro/EditarCarroPage.dart';
@@ -147,6 +148,11 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                       builder: (context) => ListaCarroPage(
                        carro: widget.carro
                       )));
+                }),
+                menuButton(context, 'Meus Percursos', FontAwesomeIcons.route, true, () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          EstatisticaPage(user: Helper.localUser)));
                 }),
                 /*menuButton(context, 'Cadastrar Novos Carros', Icons.directions_car, true, () {
                   Navigator.of(context).push(MaterialPageRoute(

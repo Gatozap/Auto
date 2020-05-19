@@ -20,6 +20,7 @@ import 'Agendamento/agendamento_list_page.dart';
 import 'TelasAdmin/CriarCampanhaPage.dart';
 import 'TelasAdmin/ListCampanhaPage.dart';
 import 'TelasAdmin/Parceiros/ParceirosListPage.dart';
+import 'Ativos/ativos_page.dart';
 
 class AdminPage extends StatefulWidget {
   User user;
@@ -386,6 +387,39 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AtivosPage()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(0, 125, 190, 100),
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    height: getAltura(context) * .2,
+                    width: getLargura(context) * .4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                          height: 60,
+                          child: Icon(FontAwesomeIcons.map,
+                              color: Colors.yellowAccent, size: 40),
+                        ),
+                        hText('Carros Ativos', context,
+                            color: Colors.white, textaling: TextAlign.center)
+                      ],
+                    ),
+                  ),
+                ),
               ],
             )
           ]),
@@ -393,6 +427,8 @@ class _AdminPageState extends State<AdminPage> {
       ),
     );
   }
+
+
 }
 
 

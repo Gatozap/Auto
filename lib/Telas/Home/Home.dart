@@ -1,4 +1,5 @@
-import 'package:autooh/CampanhasParaUsuario/ListaCampanhasUsuario.dart';
+import 'dart:io';
+
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/ListaEquipamentos.dart';
 import 'package:autooh/Helpers/References.dart';
@@ -10,9 +11,12 @@ import 'package:autooh/Objetos/Zona.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Estatisticas/EstatisticasController.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListPage.dart';
+import 'package:autooh/Telas/CampanhasParaUsuario/ListaCampanhasUsuario.dart';
 import 'package:autooh/Telas/Intro/IntroPage.dart';
 import 'package:autooh/Telas/Corrida/foreground.dart';
 import 'package:autooh/main.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:autooh/Helpers/Helper.dart';
@@ -21,8 +25,11 @@ import 'package:autooh/Objetos/Grupo.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Grupo/Chat/ChatList/ChatListPage.dart';
 import 'package:autooh/Telas/Home/GruposController.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:googleapis/classroom/v1.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -37,6 +44,56 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   EstatisticaController ec;
+
+  ProgressDialog pr;
+  Future getImageCamera(Carro carro, {bool isConfirmacao = false}) async {
+    if (!isConfirmacao) {
+      File image = await ImagePicker.pickImage(source: ImageSource.camera);
+      pr = new ProgressDialog(context,
+          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+      pr.style(
+          message: 'Salvando',
+          borderRadius: 10.0,
+          backgroundColor: Colors.white,
+          progressWidget: Container(
+            padding: EdgeInsets.all(1),
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width * .3,
+            height: MediaQuery.of(context).size.height * .15,
+            color: Colors.transparent,
+          ));
+      pr.show();
+      carro.foto = await uploadPicture(
+        image.path,
+      );
+      carrosRef.document(carro.id).updateData(carro.toJson());
+      pr.dismiss();
+      dToast('Salvando Foto!');
+    } else {
+      File image = await ImagePicker.pickImage(source: ImageSource.camera);
+      pr = new ProgressDialog(context,
+          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+      pr.style(
+          message: 'Salvando',
+          borderRadius: 10.0,
+          backgroundColor: Colors.white,
+          progressWidget: Container(
+            padding: EdgeInsets.all(1),
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width * .3,
+            height: MediaQuery.of(context).size.height * .15,
+            color: Colors.transparent,
+          ));
+      pr.show();
+      carro.confirmacao = await uploadPicture(
+        image.path,
+      );
+      carro.ultima_confirmacao = DateTime.now();
+      carrosRef.document(carro.id).updateData(carro.toJson());
+      pr.dismiss();
+      dToast('Salvando Foto!');
+    }
+  }
 
   @override
   void initState() {
@@ -56,6 +113,17 @@ class _HomePageState extends State<HomePage> {
     if (Helper.localUser.permissao == 10) {
       Helper.fbmsg.subscribeToTopic('Administrador');
     }
+    carrosRef
+        .where('dono', isEqualTo: Helper.localUser.id)
+        .getDocuments()
+        .then((v) {
+      if (v.documents != null) {
+        if (v.documents.length != 0) {
+          Carro c = Carro.fromJson(v.documents[0].data);
+          isAprovado(c);
+        }
+      }
+    });
   }
 
   @override
@@ -240,42 +308,73 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                EstatisticaPage(user: Helper.localUser)));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 125, 190, 100),
-                          border: Border.all(
-                            color: Colors.transparent,
-                            width: 5,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        height: getAltura(context) * .2,
-                        width: getLargura(context) * .4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                              width: 60,
-                              height: 60,
-                              child: Image.asset('assets/meus_percursos.png',
-                                  fit: BoxFit.fill),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: carrosRef
+                            .where('dono', isEqualTo: Helper.localUser.id)
+                            .snapshots(),
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          Carro c;
+                          if (snapshot.data != null) {
+                            if (snapshot.data.documents != null) {
+                              if (snapshot.data.documents.length != 0) {
+                                c = Carro.fromJson(
+                                    snapshot.data.documents[0].data);
+                              }
+                            }
+                          }
+                          return GestureDetector(
+                            onTap: () {
+                              getImageCamera(c, isConfirmacao: true);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(0, 125, 190, 100),
+                                border: Border.all(
+                                  color: Colors.transparent,
+                                  width: 5,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              height: getAltura(context) * .2,
+                              width: getLargura(context) * .4,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Container(
+                                      width: 60,
+                                      height: 60,
+                                      child: c == null
+                                          ? Icon(FontAwesomeIcons.camera,
+                                              color: Colors.yellowAccent,
+                                              size: 50)
+                                          : c.confirmacao == null
+                                              ? Icon(FontAwesomeIcons.camera,
+                                                  color: Colors.yellowAccent,
+                                                  size: 50)
+                                              : c.ultima_confirmacao.isBefore(
+                                                      DateTime.now().subtract(
+                                                          Duration(days: 7)))
+                                                  ? Icon(
+                                                      FontAwesomeIcons.camera,
+                                                      color:
+                                                          Colors.yellowAccent,
+                                                      size: 50)
+                                                  : CachedNetworkImage(
+                                                      imageUrl: c.confirmacao,
+                                                    )),
+                                  hText('Foto', context,
+                                      color: Colors.white,
+                                      textaling: TextAlign.center)
+                                ],
+                              ),
                             ),
-                            hText('Meus\nPercursos', context,
-                                color: Colors.white,
-                                textaling: TextAlign.center)
-                          ],
-                        ),
-                      ),
-                    )
+                          );
+                        })
                   ],
                 ),
               ),
@@ -285,10 +384,29 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ListaCampanhasUsuarioPage(
-                                  user: Helper.localUser,
-                                )));
+                        carrosRef
+                            .where('dono', isEqualTo: Helper.localUser.id)
+                            .getDocuments()
+                            .then((v) {
+                          if (v.documents != null) {
+                            if (v.documents.length != 0) {
+                              Carro c = Carro.fromJson(v.documents[0].data);
+                              if (!isAprovado(c)) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ListaCampanhasUsuarioPage(
+                                          user: Helper.localUser,
+                                        )));
+                              } else {
+                                dToast('Você ja possui uma campanha ativa!');
+                              }
+                            } else {
+                              print('Carro não encontrado');
+                            }
+                          } else {
+                            print('Carro não encontrado');
+                          }
+                        });
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -412,7 +530,7 @@ class _HomePageState extends State<HomePage> {
       return a.hora_ini.compareTo(b.hora_ini);
     });
 
-    dist = dist/1000;
+    dist = dist / 1000;
     return hText('Km\'s: ${dist.toStringAsFixed(2)}', context,
         color: corPrimaria, style: FontStyle.normal, weight: FontWeight.bold);
   }
@@ -452,10 +570,9 @@ class _HomePageState extends State<HomePage> {
     if (campanhasList == null) {
       List<Campanha> campanhasList = new List();
       for (String s in campanhas) {
-        print('BUSCANDO CAMPANHA LALAL');
-        Campanha c = Campanha.fromJson((await campanhasRef.document(s).get()).data);
+        Campanha c =
+            Campanha.fromJson((await campanhasRef.document(s).get()).data);
         campanhasList.add(c);
-        print('AQUI CAMPANHAS ${campanhasList.length}');
       }
       for (Campanha c in campanhasList) {
         double dist = 0;
@@ -466,34 +583,75 @@ class _HomePageState extends State<HomePage> {
           }
         }
         if (c.precomes != null && c.kmMinima != null) {
-          if(c.kmMinima != 0) {
-            valorTemp += ((dist/1000) /c.kmMinima);
-            print('AQUI LOL $valorTemp e ${dist/1000} e ${c.kmMinima} ');
+          if (c.kmMinima != 0) {
+            valorTemp += ((dist / 1000) / c.kmMinima);
           }
         }
-        print('Porcentagem ${valorTemp}');
         if (valorTemp > 100) {
           valorTemp = c.precomes;
         } else {
-          valorTemp = c.precomes*valorTemp;
+          valorTemp = c.precomes * valorTemp;
         }
-        if(valorTemp > c.precomes){
+        if (valorTemp > c.precomes) {
           valorTemp = c.precomes;
         }
         valor += valorTemp;
       }
-
-      print('AQUI CAMPANHAS ${campanhasList} ${campanhasList.length}');
-      print("AQUI LOLOLOLO ${valor}");
-
       return Center(
         child: hText('R\$: ${valor.toStringAsFixed(2)}', context,
-            color: corPrimaria, style: FontStyle.normal, weight: FontWeight.bold),
+            color: corPrimaria,
+            style: FontStyle.normal,
+            weight: FontWeight.bold),
       );
-    }
-    else{
+    } else {
       return Container();
     }
+  }
 
+  bool isAprovado(Carro c) {
+    if (c.anuncio_traseira_completa == null &&
+        c.anuncio_laterais == null &&
+        c.anuncio_bancos == null &&
+        c.anuncio_vidro_traseiro == null) {
+      return true;
+    } else {
+      bool result = false;
+      if (c.anuncio_traseira_completa != null) {
+        if (c.anuncio_traseira_completa.datafim.isBefore(DateTime.now())) {
+          print(
+              'DATAS ${c.anuncio_traseira_completa.datafim} ${DateTime.now()}');
+          c.anuncio_traseira_completa = null;
+          result = true;
+        }
+      }
+
+      if (c.anuncio_laterais != null) {
+        if (c.anuncio_laterais.datafim.isBefore(DateTime.now())) {
+          print('DATAS ${c.anuncio_laterais.datafim} ${DateTime.now()}');
+          c.anuncio_laterais = null;
+        }
+      }
+
+      if (c.anuncio_bancos != null) {
+        if (c.anuncio_bancos.datafim.isBefore(DateTime.now())) {
+          c.anuncio_bancos = null;
+        }
+      }
+      if (c.anuncio_vidro_traseiro != null) {
+        if (c.anuncio_vidro_traseiro.datafim.isBefore(DateTime.now())) {
+          c.anuncio_vidro_traseiro = null;
+        }
+      }
+      if (c.anuncio_traseira_completa == null &&
+          c.anuncio_laterais == null &&
+          c.anuncio_bancos == null &&
+          c.anuncio_vidro_traseiro == null) {
+        carrosRef.document(c.id).updateData(c.toJson());
+      }
+      return c.anuncio_traseira_completa == null &&
+          c.anuncio_laterais == null &&
+          c.anuncio_bancos == null &&
+          c.anuncio_vidro_traseiro == null;
+    }
   }
 }

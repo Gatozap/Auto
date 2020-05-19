@@ -162,7 +162,7 @@ class _AgendamentoPageState extends State<AgendamentoPage> {
                           Icon(FontAwesomeIcons.clock, color: corPrimaria),
                           sb,
                           hText(
-                              'Abre: ${parceiros.hora_ini.hour}:${parceiros.hora_ini.minute}',
+                              'Abre: ${parceiros.hora_ini.hour< 10 ?'0${parceiros.hora_ini.hour}':parceiros.hora_ini.hour}:${parceiros.hora_ini.minute< 10?'0${parceiros.hora_ini.minute}':parceiros.hora_ini.minute}',
                               context),
                         ],
                       ),
@@ -175,7 +175,7 @@ class _AgendamentoPageState extends State<AgendamentoPage> {
                           Icon(FontAwesomeIcons.clock, color: corPrimaria),
                           sb,
                           hText(
-                              'Fecha: ${parceiros.hora_fim.hour}:${parceiros.hora_fim.minute}',
+                              'Fecha: ${parceiros.hora_fim.hour< 10 ?'0${parceiros.hora_fim.hour}':parceiros.hora_fim.hour}:${parceiros.hora_fim.minute< 10?'0${parceiros.hora_fim.minute}':parceiros.hora_fim.minute}',
                               context),
                         ],
                       ),

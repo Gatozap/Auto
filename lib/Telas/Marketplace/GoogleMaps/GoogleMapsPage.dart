@@ -2,7 +2,8 @@ import 'dart:core';
 
 import 'package:autooh/Objetos/User.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
+
 import 'package:googleapis/appengine/v1.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

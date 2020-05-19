@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:autooh/Objetos/Ativo.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
@@ -106,6 +107,33 @@ class NavigationBloc extends BlocBase {
     SharedPreferences.getInstance().then((v) {
       v.setString('corrida', corrida.id);
     });
+
+    Campanha c = carroSelecionado.anuncio_bancos != null
+        ? carroSelecionado.anuncio_bancos
+        : carroSelecionado.anuncio_vidro_traseiro != null
+            ? carroSelecionado.anuncio_vidro_traseiro
+            : carroSelecionado.anuncio_laterais != null
+                ? carroSelecionado.anuncio_laterais
+                : carroSelecionado.anuncio_traseira_completa != null
+                    ? carroSelecionado.anuncio_traseira_completa
+                    : null;
+    Ativo ativo = Ativo(
+        id: corrida.id,
+        id_corrida: corrida.id,
+        campanha: c,
+        id_campanha: c.id,
+        carro: carroSelecionado,
+        usuario: Helper.localUser,
+        dataFim: null,
+        dataIni: DateTime.now(),
+        isActive: true,
+        id_usuario: Helper.localUser.id);
+    await ativosRef
+        .document(corrida.id)
+        .setData(ativo.toJson())
+        .catchError((err) {
+      print('Erro ao salvar Ativo');
+    });
     return corrida.id;
   }
 
@@ -165,6 +193,7 @@ class NavigationBloc extends BlocBase {
           var addresses = await Geocoder.local.findAddressesFromCoordinates(
               Coordinates(location.latitude, location.longitude));
           var first = addresses.first;
+
           inUltimoEndereco.add('${first.subLocality}');
           corrida.dist = dist;
           print('CORRIDA ${corrida.id}');
@@ -177,6 +206,7 @@ class NavigationBloc extends BlocBase {
             pointsRef = corridaRef.child('points');
           }
           corridaRef.update(corrida.toJson());
+          loc.bairro = '${first.subLocality}';
           points.add(loc);
           print('POINT LALALA ${loc.toJson()}');
           print('POINTS LALALA ${points.length}');
@@ -197,6 +227,10 @@ class NavigationBloc extends BlocBase {
     Future.delayed(Duration(seconds: 5)).then((vo) async {
       corrida.hora_fim = DateTime.now();
       corrida.last_seen = DateTime.now();
+      ativosRef.document(corrida.id).updateData(
+          {'dataFim': DateTime.now().millisecondsSinceEpoch, 'isActive': false}).catchError((err) {
+        print('Erro ao salvar Ativo');
+      });
       print('CORRIDA ${corrida.carro.toString()}');
       if (corrida.carro.anuncio_vidro_traseiro != null) {
         await gravarCorridaFirestore(corrida.carro.anuncio_vidro_traseiro);
@@ -210,8 +244,10 @@ class NavigationBloc extends BlocBase {
       if (corrida.carro.anuncio_traseira_completa != null) {
         await gravarCorridaFirestore(corrida.carro.anuncio_traseira_completa);
       }
+
       Future.delayed(Duration(seconds: 10)).then((v) {
         // pointsRef.push().set(location.toJson());
+
         corridaRef.update(corrida.toJson());
         points = new List();
         corridaRef = null;
@@ -228,46 +264,47 @@ class NavigationBloc extends BlocBase {
 
   Future<void> gravarCorridaFirestore(Campanha anuncio) async {
     print("GRAVANDO CORRIDA FIRESTORE");
+    print('ANUNCIO ${anuncio}');
     Corrida c = corrida;
     List enderecos = new List();
     List<Localizacao> localizacoes = new List();
     for (Localizacao l in points) {
-      var addresses = await Geocoder.local
-          .findAddressesFromCoordinates(Coordinates(l.latitude, l.longitude));
-      enderecos.add(addresses.first);
+      enderecos.add(l.bairro);
     }
+    print('ENDEREÇOS ${enderecos}');
 
     int duracao = 0;
     for (Zona z in anuncio.zonas) {
-      try {
-        if (z != null) {
-          for (int i = 0; i < points.length; i++) {
-            if ((z.nome.toLowerCase().contains('CENTRAL'.toLowerCase()) ||
-                    enderecos[i]
-                        .subLocality
-                        .toLowerCase()
-                        .contains('CENTRAL'.toLowerCase())) ||
-                enderecos[i]
-                    .subLocality
-                    .toLowerCase()
-                    .contains(z.nome.toLowerCase())) {
-              points[i].bairro =             enderecos[i]
-                  .subLocality;
-              points[i].zona = z.nome;
-              localizacoes.add(points[i]);
-              if (i != 0) {
-                duracao += localizacoes[i]
-                    .timestamp
-                    .difference(localizacoes[i - 1].timestamp)
-                    .inSeconds;
-              }
+      if (z != null) {
+        for (int i = 0; i < points.length; i++) {
+          bool contains = false;
+          contains = z.nome.toLowerCase().contains('CENTRAL'.toLowerCase()) ||
+              (enderecos[i].toLowerCase().contains('CENTRAL'.toLowerCase())) ||
+              enderecos[i].toLowerCase().contains(z.nome.toLowerCase());
+          for (var s in z.bairros) {
+            String s1 =
+                s['bairro'].replaceAll('ST.', '').replaceAll('Setor', '');
+            String e1 =
+                enderecos[i].replaceAll('Setor', '').replaceAll('ST.', '');
+            if (s1.toLowerCase().contains(e1.toLowerCase())) {
+              contains = true;
+            }
+          }
+          if (contains) {
+            points[i].bairro = enderecos[i];
+            points[i].zona = z.nome;
+            localizacoes.add(points[i]);
+            if (i != 0) {
+              duracao += localizacoes[i]
+                  .timestamp
+                  .difference(localizacoes[i - 1].timestamp)
+                  .inSeconds;
             }
           }
         }
-      } catch (err) {
-        print('Erro ${err.toString()}');
       }
     }
+    print('LOCALIZAÇÔES ${localizacoes.length}');
     List<Localizacao> localizacoesTemp = new List();
     for (Localizacao l in localizacoes) {
       bool contains = false;
@@ -315,7 +352,11 @@ class NavigationBloc extends BlocBase {
           .then((d) {
         dToast(
             'Corrida Finalizada com Sucesso! Suas Vizualizações na campanha ${anuncio.nome} foram ${c.vizualizacoes}');
+      }).catchError((err) {
+        print('ERRO AO SALVAR CORRIDA ${err.toString()}');
       });
+    }).catchError((err) {
+      print('ERRO AO SALVAR CORRIDA ${err.toString()}');
     });
   }
 }

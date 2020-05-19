@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:autooh/Objetos/Endereco.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
 

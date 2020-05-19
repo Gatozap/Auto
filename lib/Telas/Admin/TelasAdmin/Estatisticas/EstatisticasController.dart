@@ -34,10 +34,9 @@ class EstatisticaController extends BlocBase {
             corridasOriginais = new List();
 
             for (var i in v.documents) {
-              print('aqui corrida ${corridas.length} ');
               Corrida p = Corrida.fromJsonFirestore(i.data);
               p.id = i.documentID;
-
+  
               corridas.add(p);
             }
             corridasOriginais = corridas;
@@ -53,7 +52,6 @@ class EstatisticaController extends BlocBase {
             corridasOriginais = new List();
 
             for (var i in v.documents) {
-              print('aqui corrida ${corridas.length} ');
               Corrida p = Corrida.fromJsonFirestore(i.data);
               p.id = i.documentID;
 
@@ -73,7 +71,6 @@ class EstatisticaController extends BlocBase {
           corridasOriginais = new List();
 
           for (var i in v.documents) {
-            print('aqui corrida ${corridas.length} ');
             Corrida p = Corrida.fromJsonFirestore(i.data);
             p.id = i.documentID;
 
@@ -84,11 +81,10 @@ class EstatisticaController extends BlocBase {
         });
       }
     } else {
-      corridasRef.where('user', isEqualTo: user.id).getDocuments().then((v) {
+      corridasRef.where('user', isEqualTo: user.id).snapshots().listen((v) {
         corridas = new List();
         corridasOriginais = new List();
         for (var i in v.documents) {
-          print('aqui corrida ${corridas.length} ');
           Corrida p = Corrida.fromJsonFirestore(i.data);
           p.id = i.documentID;
 
@@ -118,7 +114,6 @@ class EstatisticaController extends BlocBase {
       }
       if (datafim != null && dataini != null) {
         if (!contains) {
-          print('ENTROU AQUI ${dataini.isBefore(c.hora_ini)} ${datafim.isAfter(c.hora_fim)}');
           if (dataini.isBefore(c.hora_ini) && datafim.isAfter(c.hora_fim)) {
             corridasTemp.add(c);
           }

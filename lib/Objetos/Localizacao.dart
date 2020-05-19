@@ -11,6 +11,11 @@ class Localizacao {
   Localizacao({this.latitude, this.longitude, this.altitude, this.accuracy,
       this.timestamp});
 
+  @override
+  String toString() {
+    return 'Localizacao{latitude: $latitude, longitude: $longitude, altitude: $altitude, accuracy: $accuracy, zona: $zona, bairro: $bairro, isInRange: $isInRange, timestamp: $timestamp}';
+  }
+
   Localizacao.FromPoint(p ,{this.bairro, this.zona}) {
     this.latitude = p.latitude;
     this.longitude = p.longitude;
@@ -18,7 +23,6 @@ class Localizacao {
     this.accuracy = p.accuracy;
     this.timestamp = p.timestamp;
   }
-
   Localizacao.fromJson( json)
       : latitude = json['latitude'],
         longitude = json['longitude'],
@@ -38,8 +42,5 @@ class Localizacao {
         'bairro':bairro,
         'timestamp': timestamp.millisecondsSinceEpoch,
       };
-
-
-
 
 }

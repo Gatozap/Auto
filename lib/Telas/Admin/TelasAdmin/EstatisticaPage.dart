@@ -16,7 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:random_color/random_color.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
@@ -48,6 +48,42 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Set<Heatmap> _heatmaps;
+  void _addHeatmap(List localizacoes){
+    print('INICIANDO HEATMAPS ${localizacoes.length} ');
+    List<WeightedLatLng> points = List<WeightedLatLng>();
+    _heatmaps ={};
+    for(int i = 0; i< localizacoes.length ;i++) {
+      var l = localizacoes[i];
+      points.add(WeightedLatLng(point:LatLng(l.latitude,l.longitude), intensity: 1));
+      
+    }
+    _heatmaps.add(
+        Heatmap(
+            heatmapId: HeatmapId('heatmap'),
+            points: points,
+            radius: 20,
+            visible: true,
+            gradient: HeatmapGradient(
+                colors: <Color>[Colors.green, Colors.red],
+                startPoints: <double>[0.2, 0.8]
+            )
+        )
+    );
+  }
+
+  List<WeightedLatLng> _createPoints(LatLng location) {
+    final List<WeightedLatLng> points = <WeightedLatLng>[];
+    //Can create multiple points here
+    points.add(_createWeightedLatLng(location.latitude,location.longitude, 1));
+    points.add(_createWeightedLatLng(location.latitude-1,location.longitude, 1));
+    return points;
+  }
+
+  WeightedLatLng _createWeightedLatLng(double lat, double lng, int weight) {
+    return WeightedLatLng(point: LatLng(lat, lng), intensity: weight);
   }
 
   @override
@@ -114,7 +150,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
 
   GoogleMapController _controller;
 
-
+  List localizacoes;
   List<Campanha> campanhasList;
   Future<Widget> ganhosWidget(corridas) async {
     if (corridas.length == 0) {
@@ -195,6 +231,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
   bool isMapOpen = false;
   ExpandableController expController = ExpandableController();
   getEstatisticasWidget(List<Corrida> corridas) {
+    print('Montando estatisticas');
     if (corridas.length == 0) {
       return Center(child: Container(child: hText('Sem Corridas', context)));
     }
@@ -208,6 +245,8 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
     Map<String, List<Localizacao>> zonas = Map();
     countCorridas = corridas.length;
     var tempoNaRua = 0.0;
+
+    localizacoes = new List();
     for (Corrida c in corridas) {
       visualizacoes += c.vizualizacoes == null ? 0 : c.vizualizacoes;
       visualizacoesTempo +=
@@ -233,8 +272,10 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       if (!containsCarro) {
         carroIds.add(c.carro);
       }
+        localizacoes.addAll(c.points);
     }
     int carros = carroIds.length;
+
     corridas.sort((Corrida a, Corrida b) {
       return a.hora_ini.compareTo(b.hora_ini);
     });
@@ -246,6 +287,12 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
         });
       }
     });
+
+    if(widget.user == null) {
+      if (_heatmaps == null && localizacoes.length != 0) {
+        _addHeatmap(localizacoes);
+      }
+    }
     return Container(
       height: getAltura(context),
       child: SingleChildScrollView(
@@ -284,7 +331,8 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         height: getAltura(context) * .5,
-                        child: GoogleMap(
+                        child: widget.user != null? GoogleMap(
+                          //heatmaps: _heatmaps,
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
                             target: LatLng(-16.68045, -49.2686895),
@@ -292,6 +340,18 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                           ),
                           zoomGesturesEnabled: true,
                           polylines: getPolyLines(corridas).toSet(),
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller = controller;
+                          },
+                        ):GoogleMap(
+                          heatmaps: _heatmaps,
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(-16.68045, -49.2686895),
+                            zoom: 11,
+                          ),
+                          zoomGesturesEnabled: true,
+                          //polylines: getPolyLines(corridas).toSet(),
                           onMapCreated: (GoogleMapController controller) {
                             _controller = controller;
                           },
