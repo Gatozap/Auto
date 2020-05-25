@@ -923,7 +923,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       String text = r2['text'];
       List<String> plavras = text.split('\n');
       String sequencial = text.replaceAll('\n', ' ');
-      var s = sequencial.validarDocumento;
+      var s = validarDocumento(sequencial);
       if (s != null) {
         switch (s) {
           case documentos.RG:
@@ -935,9 +935,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
             break;
           case documentos.CPF:
-            u.cpf = sequencial.getCPF;
+            u.cpf = getCPF(sequencial);
             d.tipo = 'CPF';
-            print("AQUI CPF${sequencial.getCPF}");
+            print("AQUI CPF${getCPF(sequencial)}");
 
             d.isValid = true;
             d.data = sequencial;
@@ -1038,7 +1038,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       String text = r2['text'];
       List<String> plavras = text.split('\n');
       String sequencial = text.replaceAll('\n', ' ');
-      var s = sequencial.validarDocumento;
+      var s = validarDocumento(sequencial);
       if (s != null) {
         switch (s) {
           case documentos.RG:
@@ -1050,9 +1050,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
             break;
           case documentos.CPF:
-            u.cpf = sequencial.getCPF;
+            u.cpf = getCPF(sequencial);
             d.tipo = 'CPF';
-            print("AQUI CPF${sequencial.getCPF}");
+            print("AQUI CPF${getCPF(sequencial)}");
 
             d.isValid = true;
             d.data = sequencial;

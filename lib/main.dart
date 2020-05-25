@@ -32,7 +32,6 @@ import 'Objetos/Notificacao.dart';
 import 'Objetos/Zona.dart';
 import 'Telas/Cadastro/CadastroPage.dart';  
 import 'Telas/Compartilhados/WaitScreen.dart';
-import 'Telas/Intro/IntroPage.dart';
 
 FirebaseDatabase database;
 
@@ -103,14 +102,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 4)).then((V) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => IntroPage()));
-      SharedPreferences.getInstance().then((sp) {
-        bool intro = sp.getBool('intro');
-        isIntroOpen = true;
-      });
-    });
   }
 
   final userRef = Firestore.instance.collection('Users').reference();

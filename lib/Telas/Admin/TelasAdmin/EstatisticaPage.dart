@@ -18,7 +18,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:random_color/random_color.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 class EstatisticaPage extends StatefulWidget {
@@ -679,7 +678,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
     );
   }  */
 
-  List<ColumnSeries<Corrida, DateTime>> getLineSeries(List<Corrida> corrida) {}
+ /* List<ColumnSeries<Corrida, DateTime>> getLineSeries(List<Corrida> corrida) {}
   GraficosWidget(List<Corrida> corrida, List<Campanha> campanha,
       DateTime dataini, DateTime datafim) {
     return Column(
@@ -696,7 +695,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
         ),
       ],
     );
-  }
+  }*/
 
   getPolyLines(List<Corrida> corridas) {
     List<Polyline> polylines = new List();

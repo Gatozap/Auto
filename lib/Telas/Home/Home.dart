@@ -12,7 +12,6 @@ import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Estatisticas/EstatisticasController.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListPage.dart';
 import 'package:autooh/Telas/CampanhasParaUsuario/ListaCampanhasUsuario.dart';
-import 'package:autooh/Telas/Intro/IntroPage.dart';
 import 'package:autooh/Telas/Corrida/foreground.dart';
 import 'package:autooh/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -613,7 +612,7 @@ class _HomePageState extends State<HomePage> {
         c.anuncio_laterais == null &&
         c.anuncio_bancos == null &&
         c.anuncio_vidro_traseiro == null) {
-      return true;
+      return false;
     } else {
       bool result = false;
       if (c.anuncio_traseira_completa != null) {

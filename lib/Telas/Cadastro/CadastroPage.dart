@@ -204,7 +204,7 @@ class _CadastroState extends State<Cadastro> {
       String text = r2['text'];
       List<String> plavras = text.split('\n');
       String sequencial = text.replaceAll('\n', ' ');
-      var s = sequencial.validarDocumento;
+      var s = validarDocumento(sequencial);
       if (s != null) {
         switch (s) {
           case documentos.RG:
@@ -214,9 +214,9 @@ class _CadastroState extends State<Cadastro> {
             cc.inDocumento.add(cc.documento);
             break;
           case documentos.CPF:
-            cc.CPF = sequencial.getCPF;
+            cc.CPF = getCPF(sequencial);
             cc.documento.tipo = 'CPF';
-            print("AQUI CPF${sequencial.getCPF}");
+            print("AQUI CPF${getCPF(sequencial)}");
             cc.inCPF.add(cc.CPF);
             cc.documento.isValid = true;
             cc.documento.data = sequencial;
@@ -312,7 +312,7 @@ class _CadastroState extends State<Cadastro> {
       String text = r2['text'];
       List<String> plavras = text.split('\n');
       String sequencial = text.replaceAll('\n', ' ');
-      var s = sequencial.validarDocumento;
+      var s =validarDocumento( sequencial);
       if (s != null) {
         switch (s) {
           case documentos.RG:
@@ -322,9 +322,9 @@ class _CadastroState extends State<Cadastro> {
             cc.inDocumento.add(cc.documento);
             break;
           case documentos.CPF:
-            cc.CPF = sequencial.getCPF;
+            cc.CPF = getCPF(sequencial);
             cc.documento.tipo = 'CPF';
-            print("AQUI CPF${sequencial.getCPF}");
+            print("AQUI CPF${getCPF(sequencial)}");
             cc.inCPF.add(cc.CPF);
             cc.documento.isValid = true;
             cc.documento.data = sequencial;
