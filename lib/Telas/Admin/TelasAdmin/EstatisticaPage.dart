@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
-
-import 'package:autooh/Helpers/ExpandableContainer.dart';
+import 'dart:typed_data';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:native_screenshot/native_screenshot.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_extend/share_extend.dart';
+import 'package:autooh/Helpers/GeradorPdf.dart';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Helpers/Styles.dart';
@@ -14,11 +20,16 @@ import 'package:autooh/Telas/Admin/TelasAdmin/Estatisticas/EstatisticasControlle
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:random_color/random_color.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
+import 'dart:ui' as ui;
+import 'package:permission/permission.dart';
+
 
 class EstatisticaPage extends StatefulWidget {
   Carro carro;
@@ -44,45 +55,103 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
     super.initState();
   }
 
+  GlobalKey _globalKey = new GlobalKey();
+  Future<Uint8List> _capturePng() async {
+    RenderRepaintBoundary boundary = _globalKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage();
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    print(pngBytes);
+    return pngBytes;
+  }
+
   @override
   void dispose() {
     super.dispose();
   }
 
   Set<Heatmap> _heatmaps;
-  void _addHeatmap(List localizacoes){
+  void _addHeatmap(List localizacoes) {
     print('INICIANDO HEATMAPS ${localizacoes.length} ');
     List<WeightedLatLng> points = List<WeightedLatLng>();
-    _heatmaps ={};
-    for(int i = 0; i< localizacoes.length ;i++) {
+    _heatmaps = {};
+    for (int i = 0; i < localizacoes.length; i++) {
       var l = localizacoes[i];
-      points.add(WeightedLatLng(point:LatLng(l.latitude,l.longitude), intensity: 1));
-      
+      points.add(
+          WeightedLatLng(point: LatLng(l.latitude, l.longitude), intensity: 1));
     }
-    _heatmaps.add(
-        Heatmap(
-            heatmapId: HeatmapId('heatmap'),
-            points: points,
-            radius: 20,
-            visible: true,
-            gradient: HeatmapGradient(
-                colors: <Color>[Colors.green, Colors.red],
-                startPoints: <double>[0.2, 0.8]
-            )
-        )
-    );
+    _heatmaps.add(Heatmap(
+        heatmapId: HeatmapId('heatmap'),
+        points: points,
+        radius: 20,
+        visible: true,
+        gradient: HeatmapGradient(
+            colors: <Color>[Colors.green, Colors.red],
+            startPoints: <double>[0.2, 0.8])));
   }
 
   List<WeightedLatLng> _createPoints(LatLng location) {
     final List<WeightedLatLng> points = <WeightedLatLng>[];
     //Can create multiple points here
-    points.add(_createWeightedLatLng(location.latitude,location.longitude, 1));
-    points.add(_createWeightedLatLng(location.latitude-1,location.longitude, 1));
+    points.add(_createWeightedLatLng(location.latitude, location.longitude, 1));
+    points.add(
+        _createWeightedLatLng(location.latitude - 1, location.longitude, 1));
     return points;
   }
 
   WeightedLatLng _createWeightedLatLng(double lat, double lng, int weight) {
     return WeightedLatLng(point: LatLng(lat, lng), intensity: weight);
+  }
+
+  void gerarExtratoMensal(corridas) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: hText('Gerar relatorio', context),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                defaultActionButton('Cancelar', context, () {
+                  Navigator.of(context).pop();
+                }, icon: null),
+                sb,
+                sb,
+                defaultActionButton('Gerar PDF', context, () async {
+                  ProgressDialog pr = ProgressDialog(context);
+                  pr.show();
+
+                //  pr.hide();
+                  final Directory appDocDir =
+                  await getApplicationDocumentsDirectory();
+                  final String appDocPath = appDocDir.path;
+                  final File file = File(appDocPath + '/' + 'relatorio.png');
+                  print('Save as file ${file.path} ...');
+                  await file.writeAsBytes((await _controller.takeSnapshot()));
+
+                  GeradorPDF()
+                      .GerarPDF(corridas,file, dataini.millisecondsSinceEpoch,
+                      datafim.millisecondsSinceEpoch)
+                      .then((v) async {
+                    pr.hide();
+                    print("AQUI VOLTOU ${v}");
+                    final Directory appDocDir =
+                    await getApplicationDocumentsDirectory();
+                    final String appDocPath = appDocDir.path;
+                    final File file = File(appDocPath + '/' + 'relatorio.pdf');
+                    print('Save as file ${file.path} ...');
+                    await file.writeAsBytes(v);
+                    ShareExtend.share(file.path, "file");
+                  });/*.catchError((err) {
+                    print('Erro ao gerar relatorio ${err}');
+                    dToast('Erro ao gerar relatorio ${err}');
+                    pr.hide();
+                  });*/
+                }, icon: null)
+              ],
+            ),
+          );
+        });
   }
 
   @override
@@ -97,6 +166,12 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
           '${widget.campanha != null ? widget.campanha.nome : widget.carro != null ? widget.carro.placa : widget.user == null ? 'Estatisticas Gerais' : widget.user.nome}',
           context,
           actions: [
+            IconButton(
+                color: Colors.yellowAccent,
+                onPressed: () {
+                  gerarExtratoMensal(estController.corridas);
+                },
+                icon: Icon(FontAwesomeIcons.filePdf)),
             Theme(
                 data: Theme.of(context).copyWith(
                     accentColor: Colors.yellowAccent,
@@ -173,7 +248,8 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       List<Campanha> campanhasList = new List();
       for (String s in campanhas) {
         print('BUSCANDO CAMPANHA LALAL');
-        Campanha c = Campanha.fromJson((await campanhasRef.document(s).get()).data);
+        Campanha c =
+            Campanha.fromJson((await campanhasRef.document(s).get()).data);
         campanhasList.add(c);
         print('AQUI CAMPANHAS ${campanhasList.length}');
       }
@@ -186,18 +262,18 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
           }
         }
         if (c.precomes != null && c.kmMinima != null) {
-          if(c.kmMinima != 0) {
-            valorTemp += ((dist/1000) /c.kmMinima);
-            print('AQUI LOL $valorTemp e ${dist/1000} e ${c.kmMinima} ');
+          if (c.kmMinima != 0) {
+            valorTemp += ((dist / 1000) / c.kmMinima);
+            print('AQUI LOL $valorTemp e ${dist / 1000} e ${c.kmMinima} ');
           }
         }
         print('Porcentagem ${valorTemp}');
         if (valorTemp > 100) {
           valorTemp = c.precomes;
         } else {
-          valorTemp = c.precomes*valorTemp;
+          valorTemp = c.precomes * valorTemp;
         }
-        if(valorTemp > c.precomes){
+        if (valorTemp > c.precomes) {
           valorTemp = c.precomes;
         }
         valor += valorTemp;
@@ -206,7 +282,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       print('AQUI CAMPANHAS ${campanhasList} ${campanhasList.length}');
       print("AQUI LOLOLOLO ${valor}");
 
-      return  Padding(
+      return Padding(
         padding: EdgeInsets.only(left: 15.0),
         child: Row(
           children: <Widget>[
@@ -215,20 +291,18 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
               color: corPrimaria,
             ),
             sb,
-            hText(
-                'Valor: R\$: ${valor.toStringAsFixed(2)}',
-                context),
+            hText('Valor: R\$: ${valor.toStringAsFixed(2)}', context),
           ],
         ),
       );
-    }
-    else{
+    } else {
       return Container();
     }
-
   }
+
   bool isMapOpen = false;
   ExpandableController expController = ExpandableController();
+  Widget map;
   getEstatisticasWidget(List<Corrida> corridas) {
     print('Montando estatisticas');
     if (corridas.length == 0) {
@@ -271,7 +345,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       if (!containsCarro) {
         carroIds.add(c.carro);
       }
-        localizacoes.addAll(c.points);
+      localizacoes.addAll(c.points);
     }
     int carros = carroIds.length;
 
@@ -287,199 +361,209 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       }
     });
 
-    if(widget.user == null) {
+    if (widget.user == null) {
       if (_heatmaps == null && localizacoes.length != 0) {
         _addHeatmap(localizacoes);
       }
     }
-    return Container(
-      height: getAltura(context),
-      child: SingleChildScrollView(
-        physics: isMapOpen
-            ? NeverScrollableScrollPhysics()
-            : AlwaysScrollableScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              sb,
-              GestureDetector(
-                onTap: () {},
-                child: ExpandablePanel(
-                    controller: expController,
+    if(map == null){
+      map = Container(
+        height: getAltura(context) * .5,
+        child: widget.user != null
+            ? GoogleMap(buildingsEnabled: true,
+          //heatmaps: _heatmaps,
+          mapType: MapType.normal,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(-16.68045, -49.2686895),
+            zoom: 11,
+          ),
+          zoomGesturesEnabled: true,
+          polylines: getPolyLines(corridas).toSet(),
+          onMapCreated:
+              (GoogleMapController controller) {
+            _controller = controller;
+          },
+        )
+            : GoogleMap(
+          heatmaps: _heatmaps,
+          mapType: MapType.normal,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(-16.68045, -49.2686895),
+            zoom: 11,
+          ),
+          zoomGesturesEnabled: true,
+          //polylines: getPolyLines(corridas).toSet(),
+          onMapCreated:
+              (GoogleMapController controller) {
+            _controller = controller;
+          },
+        ),
+      );
+    }
+    return RepaintBoundary(
+        key: _globalKey,
+        child: Container(
+          color: Colors.white,
+          height: getAltura(context),
+          child: SingleChildScrollView(
+            physics: isMapOpen
+                ? NeverScrollableScrollPhysics()
+                : AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  sb,
+                  GestureDetector(
+                    onTap: () {},
+                    child: ExpandablePanel(
+                        controller: expController,
+                        header: Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                FontAwesomeIcons.mapSigns,
+                                color: corPrimaria,
+                              ),
+                              sb,
+                              hText(
+                                '  Mapa',
+                                context,
+                              ),
+                            ],
+                          ),
+                        ),
+                        expanded: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: map
+                        ))),
+                  ),
+                  sb, sb,
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.user,
+                          color: corPrimaria,
+                        ),
+                        sb,
+                        hText(
+                            'Visualizações Rodando: ${visualizacoesKm.toStringAsFixed(0)}',
+                            context),
+                      ],
+                    ),
+                  ),
+                  sb, sb,
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.user,
+                          color: corPrimaria,
+                        ),
+                        sb,
+                        hText(
+                            'Visualizações por tempo: ${visualizacoesTempo.toStringAsFixed(0)}',
+                            context),
+                      ],
+                    ),
+                  ),
+                  sb, sb,
+
+                  ExpandablePanel(
+                    controller: ExpandableController(),
                     header: Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
+                      padding: EdgeInsets.only(left: 15.0),
                       child: Row(
                         children: <Widget>[
                           Icon(
-                            FontAwesomeIcons.mapSigns,
+                            FontAwesomeIcons.mapMarkedAlt,
                             color: corPrimaria,
                           ),
                           sb,
-                          hText(
-                            '  Mapa',
-                            context,
-                          ),
+                          hText('Zonas:', context),
                         ],
                       ),
                     ),
-                    expanded: Center(
-                        child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: getAltura(context) * .5,
-                        child: widget.user != null? GoogleMap(
-                          //heatmaps: _heatmaps,
-                          mapType: MapType.normal,
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(-16.68045, -49.2686895),
-                            zoom: 11,
-                          ),
-                          zoomGesturesEnabled: true,
-                          polylines: getPolyLines(corridas).toSet(),
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller = controller;
-                          },
-                        ):GoogleMap(
-                          heatmaps: _heatmaps,
-                          mapType: MapType.normal,
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(-16.68045, -49.2686895),
-                            zoom: 11,
-                          ),
-                          zoomGesturesEnabled: true,
-                          //polylines: getPolyLines(corridas).toSet(),
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller = controller;
-                          },
-                        ),
-                      ),
-                    ))),
-              ),
-              sb, sb,
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FontAwesomeIcons.user,
-                      color: corPrimaria,
-                    ),
-                    sb,
-                    hText(
-                        'Visualizações Rodando: ${visualizacoesKm.toStringAsFixed(0)}',
-                        context),
-                  ],
-                ),
-              ),
-              sb, sb,
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FontAwesomeIcons.user,
-                      color: corPrimaria,
-                    ),
-                    sb,
-                    hText(
-                        'Visualizações por tempo: ${visualizacoesTempo.toStringAsFixed(0)}',
-                        context),
-                  ],
-                ),
-              ),
-              sb, sb,
-
-              ExpandablePanel(
-                controller: ExpandableController(),
-                header: Padding(
-                  padding: EdgeInsets.only(left: 15.0),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        FontAwesomeIcons.mapMarkedAlt,
-                        color: corPrimaria,
-                      ),
-                      sb,
-                      hText('Zonas:', context),
-                    ],
-                  ),
-                ),
-                collapsed: Container(),
-                expanded: FutureBuilder(
-                  future: ZonasWidget(zonas, context),
-                  builder: (context, snap) {
-                    if (snap.data == null) {
-                      return LoadingWidget(
-                          'Erro Ao Calcular', 'Carregando dados');
-                    }
-                    return snap.data;
-                  },
-                ),
-              ),
-
-              sb, sb,
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FontAwesomeIcons.user,
-                      color: corPrimaria,
-                    ),
-                    sb,
-                    hText(
-                        'Total de visualizações: ${visualizacoes.toStringAsFixed(0)}',
-                        context),
-                  ],
-                ),
-              ),
-             sb,sb,
-               FutureBuilder(
+                    collapsed: Container(),
+                    expanded: FutureBuilder(
+                      future: ZonasWidget(zonas, context),
                       builder: (context, snap) {
                         if (snap.data == null) {
-                          return Container();
+                          return LoadingWidget(
+                              'Erro Ao Calcular', 'Carregando dados');
                         }
                         return snap.data;
                       },
-                      future: ganhosWidget(corridas),
                     ),
-              sb, sb,
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FontAwesomeIcons.route,
-                      color: corPrimaria,
+                  ),
+
+                  sb, sb,
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.user,
+                          color: corPrimaria,
+                        ),
+                        sb,
+                        hText(
+                            'Total de visualizações: ${visualizacoes.toStringAsFixed(0)}',
+                            context),
+                      ],
                     ),
-                    sb,
-                    hText(
-                        'Distancia percorrida: Km ${(dist / 1000).toStringAsFixed(2)}',
-                        context),
-                  ],
-                ),
-              ),
-              sb, sb,
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FontAwesomeIcons.clock,
-                      color: corPrimaria,
+                  ),
+                  sb, sb,
+                  FutureBuilder(
+                    builder: (context, snap) {
+                      if (snap.data == null) {
+                        return Container();
+                      }
+                      return snap.data;
+                    },
+                    future: ganhosWidget(corridas),
+                  ),
+                  sb, sb,
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.route,
+                          color: corPrimaria,
+                        ),
+                        sb,
+                        hText(
+                            'Distancia percorrida: Km ${(dist / 1000).toStringAsFixed(2)}',
+                            context),
+                      ],
                     ),
-                    sb,
-                    hText(
-                        'Tempo na Rua: ${(tempoNaRua / 60).toStringAsFixed(0)} min',
-                        context),
-                  ],
-                ),
-              ),
-              sb, sb,
-              /* Padding(
+                  ),
+                  sb, sb,
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.clock,
+                          color: corPrimaria,
+                        ),
+                        sb,
+                        hText(
+                            'Tempo na Rua: ${(tempoNaRua / 60).toStringAsFixed(0)} min',
+                            context),
+                      ],
+                    ),
+                  ),
+                  sb, sb,
+                  /* Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
@@ -492,124 +576,126 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                   ],
                 ),
               ),*/
-              sb,
-              widget.carro == null
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 15.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.car,
-                            color: corPrimaria,
-                          ),
-                          sb,
-                          hText('Carros:${carros}', context),
-                        ],
-                      ),
-                    )
-                  : Container(),
-              sb, sb,
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    hText(
-                        'Ultima Corrida:${corridas.last.hora_ini.day.toString().length == 1 ? '0' + corridas.last.hora_ini.day.toString() : corridas.last.hora_ini.day}/${corridas.last.hora_ini.month.toString().length == 1 ? '0' + corridas.last.hora_ini.month.toString() : corridas.last.hora_ini.month}/${corridas.last.hora_ini.year} ${corridas.last.hora_ini.hour.toString().length == 1 ? '0' + corridas.last.hora_ini.hour.toString() : corridas.last.hora_ini.hour.toString()}:${corridas.last.hora_ini.minute.toString().length == 1 ? '0' + corridas.last.hora_ini.minute.toString() : corridas.last.hora_ini.minute.toString()}  \nFeita por ${corridas.last.carro.placa}',
-                        context),
-                  ],
-                ),
-              ),
-              sb,
-              Divider(color: corPrimaria),
-              sb,
-              widget.carro == null
-                  ? Center(
-                      child: hText('Carros', context,
-                          size: 70, weight: FontWeight.bold))
-                  : Container(),
-              sb,
-              Divider(
-                color: corPrimaria,
-              ),
-              sb,
-              widget.carro == null
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (context, i) {
-                        List<Corrida> corridasPorCarro = new List();
-                        var vizualizacoesCarro = 0.0;
-                        var distCarro = 0.0;
-                        int countCorridastemp = 0;
-                        for (Corrida c in corridas) {
-                          bool contains = false;
-                          if (carroIds[i].placa != c.carro.placa) {
-                            contains = true;
-                          }
-                          for (Corrida s in corridasPorCarro) {
-                            if (s.id == c.id) {
-                              contains = true;
-                            }
-                          }
-                          if (!contains) {
-                            vizualizacoesCarro +=
-                                c.vizualizacoes == null ? 0 : c.vizualizacoes;
-                            distCarro += c.dist == null ? 0 : c.dist;
-                            corridasPorCarro.add(c);
-                          }
-                        }
-                        countCorridastemp = corridasPorCarro.length;
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ExpandablePanel(
-                              header: hText(
-                                  '${carroIds[i].modelo} - ${carroIds[i].cor} - ${carroIds[i].placa}',
-                                  context),
-                              expanded: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        FontAwesomeIcons.eye,
-                                        color: corPrimaria,
-                                      ),
-                                      sb,
-                                      hText(
-                                          'Total de visualizações: ${vizualizacoesCarro.toStringAsFixed(0)}',
-                                          context),
-                                    ],
-                                  ),
-                                  sb,
-                                  //hText('Corridas: ${countCorridastemp}', context),
-                                  sb,
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        FontAwesomeIcons.route,
-                                        color: corPrimaria,
-                                      ),
-                                      sb,
-                                      hText(
-                                          'Distancia percorrida: Km ${(distCarro / 1000).toStringAsFixed(2)}',
-                                          context),
-                                    ],
-                                  ),
-                                  sb,
-                                ],
+                  sb,
+                  widget.carro == null
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 15.0),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                FontAwesomeIcons.car,
+                                color: corPrimaria,
                               ),
-                            ),
+                              sb,
+                              hText('Carros:${carros}', context),
+                            ],
                           ),
-                        );
-                      },
-                      itemCount: carroIds.length,
-                    )
-                  : Container() //TODO LISTAR CAMPANHASS,
-            ],
+                        )
+                      : Container(),
+                  sb, sb,
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: <Widget>[
+                        hText(
+                            'Ultima Corrida:${corridas.last.hora_ini.day.toString().length == 1 ? '0' + corridas.last.hora_ini.day.toString() : corridas.last.hora_ini.day}/${corridas.last.hora_ini.month.toString().length == 1 ? '0' + corridas.last.hora_ini.month.toString() : corridas.last.hora_ini.month}/${corridas.last.hora_ini.year} ${corridas.last.hora_ini.hour.toString().length == 1 ? '0' + corridas.last.hora_ini.hour.toString() : corridas.last.hora_ini.hour.toString()}:${corridas.last.hora_ini.minute.toString().length == 1 ? '0' + corridas.last.hora_ini.minute.toString() : corridas.last.hora_ini.minute.toString()}  \nFeita por ${corridas.last.carro.placa}',
+                            context),
+                      ],
+                    ),
+                  ),
+                  sb,
+                  Divider(color: corPrimaria),
+                  sb,
+                  widget.carro == null
+                      ? Center(
+                          child: hText('Carros', context,
+                              size: 70, weight: FontWeight.bold))
+                      : Container(),
+                  sb,
+                  Divider(
+                    color: corPrimaria,
+                  ),
+                  sb,
+                  widget.carro == null
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, i) {
+                            List<Corrida> corridasPorCarro = new List();
+                            var vizualizacoesCarro = 0.0;
+                            var distCarro = 0.0;
+                            int countCorridastemp = 0;
+                            for (Corrida c in corridas) {
+                              bool contains = false;
+                              if (carroIds[i].placa != c.carro.placa) {
+                                contains = true;
+                              }
+                              for (Corrida s in corridasPorCarro) {
+                                if (s.id == c.id) {
+                                  contains = true;
+                                }
+                              }
+                              if (!contains) {
+                                vizualizacoesCarro += c.vizualizacoes == null
+                                    ? 0
+                                    : c.vizualizacoes;
+                                distCarro += c.dist == null ? 0 : c.dist;
+                                corridasPorCarro.add(c);
+                              }
+                            }
+                            countCorridastemp = corridasPorCarro.length;
+                            return Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ExpandablePanel(
+                                  header: hText(
+                                      '${carroIds[i].modelo} - ${carroIds[i].cor} - ${carroIds[i].placa}',
+                                      context),
+                                  expanded: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            FontAwesomeIcons.eye,
+                                            color: corPrimaria,
+                                          ),
+                                          sb,
+                                          hText(
+                                              'Total de visualizações: ${vizualizacoesCarro.toStringAsFixed(0)}',
+                                              context),
+                                        ],
+                                      ),
+                                      sb,
+                                      //hText('Corridas: ${countCorridastemp}', context),
+                                      sb,
+                                      Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            FontAwesomeIcons.route,
+                                            color: corPrimaria,
+                                          ),
+                                          sb,
+                                          hText(
+                                              'Distancia percorrida: Km ${(distCarro / 1000).toStringAsFixed(2)}',
+                                              context),
+                                        ],
+                                      ),
+                                      sb,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          itemCount: carroIds.length,
+                        )
+                      : Container() //TODO LISTAR CAMPANHASS,
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   getMediaWidget(List<Campanha> campanhas) {
@@ -678,7 +764,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
     );
   }  */
 
- /* List<ColumnSeries<Corrida, DateTime>> getLineSeries(List<Corrida> corrida) {}
+  /* List<ColumnSeries<Corrida, DateTime>> getLineSeries(List<Corrida> corrida) {}
   GraficosWidget(List<Corrida> corrida, List<Campanha> campanha,
       DateTime dataini, DateTime datafim) {
     return Column(
@@ -726,6 +812,9 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
     return polylines;
   }
 
+  //Create an instance of ScreenshotController
+  ScreenshotController screenshotController = ScreenshotController();
+
   Future<Widget> ZonasWidget(
       Map<String, List<Localizacao>> zonas, BuildContext context) async {
     var textos = <Widget>[];
@@ -735,7 +824,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
       double dist = 0;
       for (Localizacao p in v) {
         if (lastPoint != null) {
-          var distTemp = await Geolocator().distanceBetween(
+          var distTemp = calculateDistance(
             p.latitude,
             p.longitude,
             lastPoint.latitude,
@@ -747,8 +836,6 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
         }
         lastPoint = p;
       }
-      print('Zona:$k');
-      print('Distancia Percorrida:$dist');
 
       textos.add(
         hText('Zona: ${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',

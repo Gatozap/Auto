@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:autooh/Objetos/Notificacao.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -1684,6 +1684,14 @@ final defaultDiacriticsRemovalap = [
 ];
 final diacriticsMap = {};
 
+double calculateDistance(lat1, lon1, lat2, lon2){
+  var p = 0.017453292519943295;
+  var c = cos;
+  var a = 0.5 - c((lat2 - lat1) * p)/2 +
+      c(lat1 * p) * c(lat2 * p) *
+          (1 - c((lon2 - lon1) * p))/2;
+  return 12742 * asin(sqrt(a));
+}
 final diacriticsRegExp = new RegExp('[^\u0000-\u007E]', multiLine: true);
 
 //extension StringExtension on String {

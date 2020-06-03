@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:autooh/Helpers/Helper.dart';
@@ -15,7 +13,7 @@ import 'package:rxdart/rxdart.dart';
 
 class LoginController implements BlocBase {
   BehaviorSubject<User> _UserController = new BehaviorSubject<User>();
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
+  //static final FacebookLogin facebookSignIn = new FacebookLogin();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     signInOption: SignInOption.standard,
@@ -38,7 +36,7 @@ class LoginController implements BlocBase {
   onError(err) {
     print('Error: ${err.toString()}');
   }
-
+/*
   Future logInApple() async {
     final AuthorizationResult result = await AppleSignIn.performRequests([
       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
@@ -107,7 +105,7 @@ class LoginController implements BlocBase {
         return 1;
         break;
     }
-  }
+  }*/
 
   Future LoginGoogle() async {
     return _googleSignIn.signIn().then((googleUser) async {
@@ -151,7 +149,7 @@ class LoginController implements BlocBase {
     });
   }
 
-  Future LoginInstagram() async {
+  /*Future LoginInstagram() async {
     Token t = await getToken();
     Helper().setUserType('Instagram');
     return _auth
@@ -268,7 +266,7 @@ class LoginController implements BlocBase {
     data.isAlowed = true;
 
     return data;
-  }
+  }*/
 
   /*Future LoginTwitter() async {
     var twitterLogin = new TwitterLogin(
@@ -341,7 +339,7 @@ class LoginController implements BlocBase {
     });
   }
 
-  Future LoginFacebook() async {
+  /*Future LoginFacebook() async {
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
 
     switch (result.status) {
@@ -374,7 +372,7 @@ class LoginController implements BlocBase {
             'Here\'s the error Facebook gave us: ${result.errorMessage}';
         break;
     }
-  }
+  }*/
 
   @override
   void dispose() {

@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:autooh/Helpers/Bancos.dart';
 import 'package:autooh/Helpers/References.dart';
-import 'package:autooh/Helpers/Rekonizer.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Documento.dart';
@@ -20,7 +19,6 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -139,7 +137,7 @@ class _CadastroState extends State<Cadastro> {
   var controllerAgencia = new TextEditingController(text: '');
 
   ProgressDialog pr;
-  Future getDocumentoCamera() async {
+  /*Future getDocumentoCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
@@ -353,7 +351,7 @@ class _CadastroState extends State<Cadastro> {
     pr.dismiss();
     dToast('Salvando Foto!');
   }
-
+*/
   AddEnderecoController aec;
   final _formKey = GlobalKey<FormState>();
   FocusNode myFocusNode;
@@ -1950,7 +1948,7 @@ class _CadastroState extends State<Cadastro> {
     });
   }
 
-  Future scan() async {
+  /*Future scan() async {
     print('INICIOU SCAN');
     try {
       barcode = await FlutterBarcodeScanner.scanBarcode(
@@ -1966,7 +1964,7 @@ class _CadastroState extends State<Cadastro> {
     } catch (e) {
       this.barcode = 'Erro desconhecido: $e';
     }
-  }
+  }*/
 
   Future getImageCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);

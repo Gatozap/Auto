@@ -16,6 +16,7 @@ import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Home/Home.dart';
 import 'package:autooh/Telas/Login/Login.dart';
+import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Telas/Login/LoginEmail/CadastroEmail/cadastroemail.dart';
 import 'package:autooh/Telas/Login/LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
 import 'package:autooh/Telas/Login/LoginEmail/LoginEmail.dart';
@@ -177,6 +178,8 @@ class _MyAppState extends State<MyApp> {
     Helper.fbmsg = fbmsg;
     print('Buscando user');
     Helper.analytics.logAppOpen();
+
+    //registrarZonas();
     return MaterialApp(
         navigatorKey: MyApp.navKey,
         title: 'Autooh',
@@ -249,5 +252,19 @@ class _MyAppState extends State<MyApp> {
       sp.setString('lastpush', json.encode(payload));
     });
     print('Notificação AQUI Launch');
+  }
+
+  void registrarZonas() {
+    zonasRef.getDocuments().then((value){
+      for(var d in value.documents) {
+        Zona z = Zona.fromJson(d.data);
+        for(Zona z1 in zonas){
+          if(z1.nome == z.nome){
+            zonasRef.document(d.documentID).updateData(z1.toJson());
+          }
+        }
+      }
+    });
+    zonasRef.add(aparecida.toJson());
   }
 }

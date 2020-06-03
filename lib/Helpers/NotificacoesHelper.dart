@@ -12,7 +12,7 @@ import 'package:autooh/Objetos/News.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'BadgerController.dart';
+//import 'BadgerController.dart';
 import 'Helper.dart';
 import 'NewsController.dart';
 
@@ -63,7 +63,7 @@ class NotificacoesHelper {
       }
 
       print('behaiviour > ' + behaiviour.toString());
-      bc.addBadge(behaiviour);
+      //bc.addBadge(behaiviour);
       switch (behaiviour) {
         case 0:
           ShowChatNotification(sender, iconPath, title, msg, data);
@@ -113,7 +113,7 @@ class NotificacoesHelper {
 
       print('behaiviour > ' + behaiviour.toString());
       print('AQUI SENDER PICK ${senderpic}');
-      bc.addBadge(behaiviour);
+      //bc.addBadge(behaiviour);
       switch (behaiviour) {
         case 0:
           ShowChatNotification(sender, senderpic, title, msg, data);

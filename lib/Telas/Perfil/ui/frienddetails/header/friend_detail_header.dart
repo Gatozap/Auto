@@ -1,6 +1,6 @@
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Marketplace/GoogleMaps/GoogleMapsPage.dart';
+
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -86,9 +86,9 @@ class _FriendDetailHeaderState extends State<FriendDetailHeader> {
         children: <Widget>[
 
 
-          IconButton(onPressed: (){
+        /* IconButton(onPressed: (){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> GoogleMapsPage(user: widget.user,)));
-          }, icon: Icon(Icons.place), iconSize: 50, color: Colors.red,)
+          }, icon: Icon(Icons.place), iconSize: 50, color: Colors.red,)*/
         ],
       ),
 

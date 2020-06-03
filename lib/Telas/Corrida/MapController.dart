@@ -6,10 +6,9 @@ import 'package:autooh/Objetos/Localizacao.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapController extends BlocBase{
   DatabaseReference corridaRef;
   DatabaseReference pointsRef;

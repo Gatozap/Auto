@@ -2,7 +2,6 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Documento.dart';
-import 'package:autooh/Telas/Grupo/Chat/ChatScreen/ChatController.dart';
 import 'package:autooh/Telas/Home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';

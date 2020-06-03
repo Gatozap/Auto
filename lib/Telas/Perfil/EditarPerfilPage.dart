@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:autooh/Helpers/Bancos.dart';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/PhotoScroller.dart';
-import 'package:autooh/Helpers/Rekonizer.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Documento.dart';
 import 'package:autooh/Objetos/Endereco.dart';
@@ -15,7 +14,7 @@ import 'package:autooh/Telas/Perfil/PerfilController.dart';
 import 'package:autooh/Telas/Perfil/addEndereco.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';  
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -895,17 +894,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       );
       List<int> imageBytes = image.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
-      vision.BatchAnnotateImagesResponse result =
-          await RekognizeProvider().search(base64Image);
-      print('AQUI RECONHECIMENTO ${result.toJson()}');
-
-      List<Map<String, Object>> r = result.toJson()['responses'];
-      Map<String, Object> r2 = r[0]['fullTextAnnotation'];
-      String text = r2['text'];
-      List<String> plavras = text.split('\n');
-      for (String s in plavras) {
-        print(text);
-      }
     }
 
     if (d.frente == null) {
@@ -914,56 +902,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       );
       List<int> imageBytes = image.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
-      vision.BatchAnnotateImagesResponse result =
-          await RekognizeProvider().search(base64Image);
-      print('AQUI RECONHECIMENTO ${result.toJson()}');
-
-      List<Map<String, Object>> r = result.toJson()['responses'];
-      Map<String, Object> r2 = r[0]['fullTextAnnotation'];
-      String text = r2['text'];
-      List<String> plavras = text.split('\n');
-      String sequencial = text.replaceAll('\n', ' ');
-      var s = validarDocumento(sequencial);
-      if (s != null) {
-        switch (s) {
-          case documentos.RG:
-            d.tipo = 'RG';
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-
-            break;
-          case documentos.CPF:
-            u.cpf = getCPF(sequencial);
-            d.tipo = 'CPF';
-            print("AQUI CPF${getCPF(sequencial)}");
-
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-            break;
-          case documentos.CNH:
-            d.tipo = 'CNH';
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-            break;
-          case documentos.PASSAPORTE:
-            d.tipo = 'PASSAPORTE';
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-            break;
-        }
-      } else {
         d.isValid = true;
         u.documentos.add(d);
         perfilController.updateUser(u);
-      }
     }
 
     u.documentos.add(d);
@@ -1010,18 +951,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       );
       List<int> imageBytes = image.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
-      vision.BatchAnnotateImagesResponse result =
-          await RekognizeProvider().search(base64Image);
-      print('AQUI RECONHECIMENTO ${result.toJson()}');
-
-      List<Map<String, Object>> r = result.toJson()['responses'];
-      Map<String, Object> r2 = r[0]['fullTextAnnotation'];
-      String text = r2['text'];
-      List<String> plavras = text.split('\n');
-      for (String s in plavras) {
-        print(text);
-      }
-    }
 
     if (d.frente == null) {
       d.frente = await uploadPicture(
@@ -1029,51 +958,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       );
       List<int> imageBytes = image.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
-      vision.BatchAnnotateImagesResponse result =
-          await RekognizeProvider().search(base64Image);
-      print('AQUI RECONHECIMENTO ${result.toJson()}');
-
-      List<Map<String, Object>> r = result.toJson()['responses'];
-      Map<String, Object> r2 = r[0]['fullTextAnnotation'];
-      String text = r2['text'];
-      List<String> plavras = text.split('\n');
-      String sequencial = text.replaceAll('\n', ' ');
-      var s = validarDocumento(sequencial);
-      if (s != null) {
-        switch (s) {
-          case documentos.RG:
-            d.tipo = 'RG';
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-
-            break;
-          case documentos.CPF:
-            u.cpf = getCPF(sequencial);
-            d.tipo = 'CPF';
-            print("AQUI CPF${getCPF(sequencial)}");
-
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-            break;
-          case documentos.CNH:
-            d.tipo = 'CNH';
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-            break;
-          case documentos.PASSAPORTE:
-            d.tipo = 'PASSAPORTE';
-            d.isValid = true;
-            d.data = sequencial;
-            u.documentos.add(d);
-            perfilController.updateUser(u);
-            break;
-        }
       } else {
         d.isValid = true;
         u.documentos.add(d);

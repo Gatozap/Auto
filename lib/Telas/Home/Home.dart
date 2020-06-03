@@ -22,7 +22,6 @@ import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Grupo.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
-import 'package:autooh/Telas/Grupo/Chat/ChatList/ChatListPage.dart';
 import 'package:autooh/Telas/Home/GruposController.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:googleapis/classroom/v1.dart';
@@ -93,6 +92,7 @@ class _HomePageState extends State<HomePage> {
       dToast('Salvando Foto!');
     }
   }
+
 
   @override
   void initState() {
@@ -541,7 +541,7 @@ class _HomePageState extends State<HomePage> {
         pageChanged(index);
       },
       children: <Widget>[
-        ChatListPage(),
+        //ChatListPage(),
         //Yellow(),
       ],
     );
