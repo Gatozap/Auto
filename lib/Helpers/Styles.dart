@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 const corPrimaria = const Color.fromARGB(255,0,122,154);
 
 // verde customizado secundário (bom para gradientes com myGreen)
-const corSecundaria = const Color(0xFF67BC2A);
+const corSecundaria =Colors.yellowAccent;
 
 // cinza claro customizado
 const corTerciaria = const Color(0xFFDDDDDD);

@@ -17,6 +17,7 @@ import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -32,6 +33,7 @@ import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Prestador.dart';
 import 'package:autooh/Objetos/Endereco.dart';
 import 'package:autooh/Telas/Dialogs/addEnderecoController.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../main.dart';
 import 'CadastroController.dart';
@@ -74,14 +76,15 @@ class _CadastroState extends State<Cadastro> {
 
     super.initState();
 
+
     if (cc == null) {
       cc = CadastroController();
     }
     if (carroController == null) {
       carroController = CarroController(carro: widget.carro);
     }
-
   }
+
   Endereco ue;
 
   var linearGradient = const BoxDecoration(
@@ -126,7 +129,11 @@ class _CadastroState extends State<Cadastro> {
   var controllerSenha = new TextEditingController(text: '');
   EdgeInsets ei = EdgeInsets.fromLTRB(10.0, 3.0, 15.0, 3.0);
 
+
+
   var controllerConta_bancaria = new TextEditingController(text: '');
+  var controllerNomeBanco = new TextEditingController(text: '');
+  var controllerCPFBanco = new TextEditingController(text: '');
   var controllerTipocarro = new TextEditingController(text: '');
   var controllerCor = new TextEditingController(text: '');
   var controllerPlaca = new TextEditingController(text: '');
@@ -362,7 +369,6 @@ class _CadastroState extends State<Cadastro> {
     }
     int duracao = 300;
     return Scaffold(
-
         body: StreamBuilder(
             stream: carroController.outCarroSelecionado,
             builder: (context, isPrestador) {
@@ -377,13 +383,21 @@ class _CadastroState extends State<Cadastro> {
                     case 2:
                       return Stack(
                         children: <Widget>[
+                          Container(
+                            child: Image.asset(
+                              'assets/cor_autooh.png',
+                              fit: BoxFit.fill,
+                            ),
+                            height: getAltura(context),
+                            width: getLargura(context),
+                          ),
                           Positioned(
                             child: MaterialButton(
                                 child: Icon(
                                   Icons.arrow_forward,
                                   color: Colors.white,
                                 ),
-                                color: corPrimaria,
+                                color: corSecundaria,
                                 onPressed: index != null
                                     ? index < 4 - 1
                                         ? () {
@@ -392,7 +406,7 @@ class _CadastroState extends State<Cadastro> {
                                         : null
                                     : null,
                                 shape: new CircleBorder(
-                                    side: BorderSide(color: corPrimaria))),
+                                    side: BorderSide(color: corSecundaria))),
                             bottom: 5,
                             right: 10,
                           ),
@@ -402,130 +416,187 @@ class _CadastroState extends State<Cadastro> {
                                   Icons.arrow_back,
                                   color: Colors.white,
                                 ),
-                                color: corPrimaria,
+                                color: corSecundaria,
                                 onPressed: index != 0
                                     ? () {
                                         sc.previous(animation: true);
                                       }
                                     : null,
                                 shape: new CircleBorder(
-                                    side: BorderSide(color: corPrimaria))),
+                                    side: BorderSide(color: corSecundaria))),
                             bottom: 5,
                             left: 10,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(height: 60
-                              ),
-
-                              hText('Insira os dados de sua conta Bancaria',
-                                  context),
-                              sb, Divider(color: Colors.grey,),sb,
-                              Padding(
-                                padding: EdgeInsets.only(left: 40, right: 20),
-                                child: TypeAheadField(
-                                  textFieldConfiguration:
-                                      TextFieldConfiguration(
-                                          controller: controllerConta_bancaria,
-                                          style: TextStyle(color: Colors.black),
-                                          decoration: DefaultInputDecoration(
-                                              context,
-                                              icon: MdiIcons.bank,
-                                              labelText: 'Banco',
-                                              hintText:
-                                                  'Caixa Economica Federal')),
-                                  suggestionsCallback: (pattern) async {
-                                    return await Banco.getSuggestions(pattern);
-                                  },
-                                  itemBuilder: (context, suggestion) {
-                                    return ListTile(
-                                      title: Text(suggestion.nome),
-                                    );
-                                  },
-                                  onSuggestionSelected: (Banco suggestion) {
-                                    bancoSelecionado = suggestion;
-                                    controllerConta_bancaria.text =
-                                        suggestion.nome;
-                                  },
+                          SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 60),
+                                hText('Insira os dados de sua conta Bancaria',
+                                    context),
+                                sb,
+                                Divider(
+                                  color: Colors.grey,
                                 ),
-                              ), SizedBox(height: 20),
-                              new Padding(
-                                padding: EdgeInsets.only(left: 40, right: 20),
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: controllerAgencia,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      if (isCadastrarPressed) {
-                                        return 'É necessário preencher Agencia';
-                                      }
-                                    }
-                                  },
-                                  decoration: DefaultInputDecoration(
-                                    context,
-                                    icon: MdiIcons.creditCard,
-                                    hintText: '0999-9',
-                                    labelText: 'Número da Agência com dígito',
+                                sb,
+                                Padding(
+                                  padding: EdgeInsets.only(left: 40, right: 20),
+                                  child: TypeAheadField(
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                            controller: controllerConta_bancaria,
+                                            style: TextStyle(color: Colors.white),
+                                            decoration: DefaultInputDecoration(
+                                                context,
+                                                icon: MdiIcons.bank,labelColor: corSecundaria,hintColor: corSecundaria,iconColor: corSecundaria,
+                                                labelText: 'Banco',
+                                                hintText:
+                                                    'Caixa Economica Federal')),
+                                    suggestionsCallback: (pattern) async {
+                                      return await Banco.getSuggestions(pattern);
+                                    },
+                                    itemBuilder: (context, suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion.nome),
+                                      );
+                                    },
+                                    onSuggestionSelected: (Banco suggestion) {
+                                      bancoSelecionado = suggestion;
+                                      controllerConta_bancaria.text =
+                                          suggestion.nome;
+                                    },
                                   ),
-                                  autovalidate: true,
                                 ),
-                              ),
-                              SizedBox(height: 20),
-                              new Padding(
-                                padding: EdgeInsets.only(left: 40, right: 20),
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: controllerNumero_conta,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      if (isCadastrarPressed) {
-                                        return 'É necessário preencher Conta Bancaria';
+                                SizedBox(height: 20),
+                                new Padding(
+                                  padding: EdgeInsets.only(left: 40, right: 20),
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    controller: controllerAgencia,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        if (isCadastrarPressed) {
+                                          return 'É necessário preencher Agencia';
+                                        }
                                       }
-                                    }
-                                  },
-                                  decoration: DefaultInputDecoration(
-                                    context,
-                                    icon: MdiIcons.creditCard,
-                                    hintText: '36.356-93',
-                                    labelText: 'Número da conta',
-
-
-                                  ),
-                                  autovalidate: true,
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: EdgeInsets.only(left: 40, right: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    hText('Tipo de conta: ', context,
-                                        color: corPrimaria, size: 40),
-                                    sb,
-                                    DropdownButton(
-                                      style: TextStyle(
-                                          color: corPrimaria,
-                                          fontSize:
-                                              ScreenUtil.getInstance().setSp(40),
-                                          fontWeight: FontWeight.bold),
-                                      icon: Icon(Icons.arrow_drop_down,
-                                          color: corPrimaria),
-                                      value: selectTipo,
-                                      items: _dropDownMenuItemsTipoConta,
-                                      onChanged: onChangeDropDownItens,
+                                    },
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: DefaultInputDecoration(
+                                      context,labelColor: corSecundaria,hintColor: corSecundaria,
+                                      icon: MdiIcons.creditCard,iconColor: corSecundaria,
+                                      hintText: '0999-9',
+                                      labelText: 'Número da Agência com dígito',
                                     ),
-                                  ],
+                                    autovalidate: true,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 20),
+                                new Padding(
+                                  padding: EdgeInsets.only(left: 40, right: 20),
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    controller: controllerNumero_conta,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        if (isCadastrarPressed) {
+                                          return 'É necessário preencher Conta Bancaria';
+                                        }
+                                      }
+                                    },
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: DefaultInputDecoration(
+                                      context,labelColor: corSecundaria,hintColor: corSecundaria,
+                                      icon: MdiIcons.creditCard,iconColor: corSecundaria,
+                                      hintText: '36.356-93',
+                                      labelText: 'Número da conta',
+                                    ),
+                                    autovalidate: true,
+                                  ),
+                                ),          SizedBox(height: 20),
+                                new Padding(
+                                  padding: EdgeInsets.only(left: 40, right: 20),
+                                  child: TextFormField(
+                                    controller: controllerNomeBanco,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        if (isCadastrarPressed) {
+                                          return 'É necessário o Nome';
+                                        }
+                                      }
+                                    },
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: DefaultInputDecoration(
+                                      context,labelColor: corSecundaria,hintColor: corSecundaria,
+                                      icon: MdiIcons.account,iconColor: corSecundaria,
+                                      hintText: 'Joao da Silva',
+                                      labelText: 'Nome do Titular',
+                                    ),
+                                    autovalidate: true,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                new Padding(
+                                  padding: EdgeInsets.only(left: 40, right: 20),
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    controller: controllerCPFBanco,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        if (isCadastrarPressed) {
+                                          return 'É necessário o CPF do Titular';
+                                        }
+                                      }
+                                    },
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: DefaultInputDecoration(
+                                      context,labelColor: corSecundaria,hintColor: corSecundaria,
+                                      icon: MdiIcons.account,iconColor: corSecundaria,
+                                      hintText: '000.000.000-00',
+                                      labelText: 'CPF do Titular',
+                                    ),
+                                    autovalidate: true,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 40, right: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      hText('Tipo de conta: ', context,
+                                          color: corSecundaria, size: 40),
+                                      sb,
+                                      DropdownButton(
+                                        style: TextStyle(
+                                            color: corSecundaria,
+                                            fontSize: ScreenUtil.getInstance()
+                                                .setSp(40),
+                                            fontWeight: FontWeight.bold),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: corSecundaria),
+                                        value: selectTipo,
+                                        items: _dropDownMenuItemsTipoConta,
+                                        onChanged: onChangeDropDownItens,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       );
 
                     case 3:
                       return Stack(children: <Widget>[
+                        Container(
+                          child: Image.asset(
+                            'assets/cor_autooh.png',
+                            fit: BoxFit.fill,
+                          ),
+                          height: getAltura(context),
+                          width: getLargura(context),
+                        ),
                         Padding(
                             padding: const EdgeInsets.all(24.0),
                             child: Container(
@@ -540,13 +611,11 @@ class _CadastroState extends State<Cadastro> {
                                             children: <Widget>[
                                               sb,
                                               sb,
-
                                               sb,
-
                                               Text(
                                                 'Cadastre seu Carro',
                                                 style: TextStyle(
-                                                    color: Colors.black,
+                                                    color: Colors.white,
                                                     fontSize: 20),
                                               ),
                                               sb,
@@ -564,9 +633,14 @@ class _CadastroState extends State<Cadastro> {
                                                       }
                                                     }
                                                   },
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                   decoration:
                                                       DefaultInputDecoration(
                                                     context,
+                                                    hintColor: corSecundaria,
+                                                    labelColor: corSecundaria,
+                                                    iconColor: corSecundaria,
                                                     icon: Icons.directions_car,
                                                     hintText: 'Prisma',
                                                     labelText:
@@ -586,10 +660,15 @@ class _CadastroState extends State<Cadastro> {
                                                       }
                                                     }
                                                   },
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                   decoration:
                                                       DefaultInputDecoration(
                                                     context,
                                                     icon: Icons.color_lens,
+                                                        hintColor: corSecundaria,
+                                                        labelColor: corSecundaria,
+                                                        iconColor: corSecundaria,
                                                     hintText: 'Azul',
                                                     labelText: 'Cor do veículo',
                                                   ),
@@ -600,7 +679,6 @@ class _CadastroState extends State<Cadastro> {
                                                 padding: ei,
                                                 child: TextFormField(
                                                   controller: controllerPlaca,
-
                                                   validator: (value) {
                                                     if (value.isEmpty) {
                                                       if (isCadastrarPressed) {
@@ -608,9 +686,14 @@ class _CadastroState extends State<Cadastro> {
                                                       }
                                                     }
                                                   },
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                   decoration:
                                                       DefaultInputDecoration(
                                                     context,
+                                                        hintColor: corSecundaria,
+                                                        labelColor: corSecundaria,
+                                                        iconColor: corSecundaria,
                                                     icon: MdiIcons.carBack,
                                                     hintText: 'AAA-9999',
                                                     labelText: 'Placa do carro',
@@ -618,7 +701,6 @@ class _CadastroState extends State<Cadastro> {
                                                   autovalidate: true,
                                                 ),
                                               ),
-
                                               new Padding(
                                                 padding: ei,
                                                 child: TextFormField(
@@ -632,9 +714,14 @@ class _CadastroState extends State<Cadastro> {
                                                       }
                                                     }
                                                   },
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                   decoration:
                                                       DefaultInputDecoration(
                                                     context,
+                                                        hintColor: corSecundaria,
+                                                        labelColor: corSecundaria,
+                                                        iconColor: corSecundaria,
                                                     icon: Icons.today,
                                                     hintText: '2000',
                                                     labelText: 'Ano',
@@ -642,13 +729,16 @@ class _CadastroState extends State<Cadastro> {
                                                 ),
                                               ),
                                               sb,
-                                              Divider(color: Colors.blue),sb,
+                                              Divider(color: corSecundaria),
+                                              sb,
                                               hText(
                                                   'Quanto quilometros você em média anda por mês?',
                                                   context,
-
+                                                  color: Colors.white,
                                                   size: 50),
-                                              sb, Divider(color: Colors.blue),sb,
+                                              sb,
+                                              Divider(color: corSecundaria),
+                                              sb,
                                               Column(
                                                 children: <Widget>[
                                                   Padding(
@@ -665,9 +755,14 @@ class _CadastroState extends State<Cadastro> {
                                                           }
                                                         }
                                                       },
+                                                      style: TextStyle(
+                                                          color: Colors.white),
                                                       decoration:
                                                           DefaultInputDecoration(
                                                         context,
+                                                            hintColor: corSecundaria,
+                                                            labelColor: corSecundaria,
+                                                            iconColor: corSecundaria,
                                                         icon: MdiIcons.runFast,
                                                         hintText: '400',
                                                         labelText: 'Km Mínimo',
@@ -688,9 +783,14 @@ class _CadastroState extends State<Cadastro> {
                                                           }
                                                         }
                                                       },
+                                                      style: TextStyle(
+                                                          color: Colors.white),
                                                       decoration:
                                                           DefaultInputDecoration(
                                                         context,
+                                                            hintColor: corSecundaria,
+                                                            labelColor: corSecundaria,
+                                                            iconColor: corSecundaria,
                                                         icon: MdiIcons.runFast,
                                                         hintText: '1500',
                                                         labelText: 'Km Máximo',
@@ -699,15 +799,17 @@ class _CadastroState extends State<Cadastro> {
                                                   ),
                                                 ],
                                               ),
-
-                                              sb, Divider(color: Colors.blue),sb,
-
+                                              sb,
+                                              Divider(color: corSecundaria),
+                                              sb,
                                               hText(
                                                   'Marque qual atendimento você pode executar',
                                                   context,
-                                               
+                                                  color: corSecundaria,
                                                   size: 50),
-                                              sb,Divider(color: Colors.blue),sb,
+                                              sb,
+                                              Divider(color: corSecundaria),
+                                              sb,
                                               Padding(
                                                 padding: ei,
                                                 child: StreamBuilder(
@@ -730,7 +832,9 @@ class _CadastroState extends State<Cadastro> {
                                                                 .localUser;
                                                             cc.inUser
                                                                 .add(cc.user);
-                                                          }),
+                                                          },
+                                                              color:
+                                                                  corSecundaria,textColor: corSecundaria),
                                                           sb,
                                                           defaultCheckBox(
                                                               Helper.localUser
@@ -746,31 +850,42 @@ class _CadastroState extends State<Cadastro> {
                                                                 .localUser;
                                                             cc.inUser
                                                                 .add(cc.user);
-                                                          }),
+                                                          },
+                                                              color:
+                                                                  corSecundaria,textColor: corSecundaria),
                                                           sb,
-                                                           Divider(color: Colors.blue),sb,
-
+                                                          Divider(
+                                                              color:
+                                                                  corSecundaria),
+                                                          sb,
                                                           hText(
                                                               'Marque qual periodo costuma trabalhar',
                                                               context,
-
+                                                              color:
+                                                                  corSecundaria,
                                                               size: 50),
-                                                          sb,Divider(color: Colors.blue),sb,
+                                                          sb,
+                                                          Divider(
+                                                              color:
+                                                                  corSecundaria),
+                                                          sb,
                                                           defaultCheckBox(
                                                               Helper.localUser
                                                                   .manha,
                                                               'Circula na parte da manhã',
                                                               context, () {
                                                             Helper.localUser
-                                                                .manha =
-                                                            !Helper
-                                                                .localUser
-                                                                .manha;
+                                                                    .manha =
+                                                                !Helper
+                                                                    .localUser
+                                                                    .manha;
                                                             cc.user = Helper
                                                                 .localUser;
                                                             cc.inUser
                                                                 .add(cc.user);
-                                                          }),
+                                                          },
+                                                              color:
+                                                                  corSecundaria,textColor: corSecundaria),
                                                           sb,
                                                           defaultCheckBox(
                                                               Helper.localUser
@@ -778,15 +893,17 @@ class _CadastroState extends State<Cadastro> {
                                                               'Circula na parte da tarde',
                                                               context, () {
                                                             Helper.localUser
-                                                                .tarde =
-                                                            !Helper
-                                                                .localUser
-                                                                .tarde;
+                                                                    .tarde =
+                                                                !Helper
+                                                                    .localUser
+                                                                    .tarde;
                                                             cc.user = Helper
                                                                 .localUser;
                                                             cc.inUser
                                                                 .add(cc.user);
-                                                          }),
+                                                          },
+                                                              color:
+                                                                  corSecundaria,textColor: corSecundaria),
                                                           sb,
                                                           defaultCheckBox(
                                                               Helper.localUser
@@ -794,129 +911,186 @@ class _CadastroState extends State<Cadastro> {
                                                               'Circula na parte da noite',
                                                               context, () {
                                                             Helper.localUser
-                                                                .noite =
-                                                            !Helper
-                                                                .localUser
-                                                                .noite;
+                                                                    .noite =
+                                                                !Helper
+                                                                    .localUser
+                                                                    .noite;
                                                             cc.user = Helper
                                                                 .localUser;
                                                             cc.inUser
                                                                 .add(cc.user);
-                                                          }),
+                                                          },
+                                                              color:
+                                                                  corSecundaria,textColor: corSecundaria),
                                                           sb,
-                                                          sb,sb,
+                                                          sb,
+                                                          sb,
                                                           StreamBuilder<Carro>(
-                                                              stream: carroController.outCarroSelecionado,
-                                                              builder: (context, car) {
-                                                                Carro carro = car.data;
-                                                                if (car.data == null) {
-                                                                  carro = new Carro();
+                                                              stream: carroController
+                                                                  .outCarroSelecionado,
+                                                              builder: (context,
+                                                                  car) {
+                                                                Carro carro =
+                                                                    car.data;
+                                                                if (car.data ==
+                                                                    null) {
+                                                                  carro =
+                                                                      new Carro();
                                                                 }
-                                                              return Row(
-                                                                mainAxisAlignment:
-                                                                MainAxisAlignment.center,
-                                                                children: <Widget>[
-                                                                  MaterialButton(
+                                                                return Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    MaterialButton(
+                                                                      color: Colors
+                                                                          .yellowAccent,
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(60)),
+                                                                      onPressed:
+                                                                          () async {
+                                                                        if (int.parse(controllerKmsmin.text) >
+                                                                            4000) {
+                                                                          List<Carro>
+                                                                              carros =
+                                                                              new List();
+                                                                          Carro
+                                                                              ccc =
+                                                                              new Carro(
+                                                                            created_at:
+                                                                                DateTime.now(),
+                                                                            dono_nome:
+                                                                                Helper.localUser.nome,
+                                                                            updated_at:
+                                                                                DateTime.now(),
+                                                                            cor:
+                                                                                controllerCor.text,
+                                                                            ano:
+                                                                                int.parse(controllerAno.text),
+                                                                            placa:
+                                                                                controllerPlaca.text.toUpperCase(),
+                                                                            dono:
+                                                                                Helper.localUser.id,
+                                                                            modelo:
+                                                                                controllerTipocarro.text,
+                                                                            is_anuncio_bancos: carro == null
+                                                                                ? false
+                                                                                : carro.is_anuncio_bancos,
+                                                                            is_anuncio_vidro_traseiro: carro == null
+                                                                                ? false
+                                                                                : carro.is_anuncio_vidro_traseiro,
+                                                                            is_anuncio_traseira_completa: carro == null
+                                                                                ? false
+                                                                                : carro.is_anuncio_traseira_completa,
+                                                                            is_anuncio_laterais: carro == null
+                                                                                ? false
+                                                                                : carro.is_anuncio_laterais,
+                                                                            anuncio_bancos: carro == null
+                                                                                ? null
+                                                                                : carro.anuncio_bancos,
+                                                                            anuncio_vidro_traseiro: carro == null
+                                                                                ? null
+                                                                                : carro.anuncio_vidro_traseiro,
+                                                                            anuncio_traseira_completa: carro == null
+                                                                                ? null
+                                                                                : carro.anuncio_traseira_completa,
+                                                                            anuncio_laterais: carro == null
+                                                                                ? null
+                                                                                : carro.anuncio_laterais,
+                                                                          );
+                                                                          carros
+                                                                              .add(ccc);
+                                                                          List<Endereco>
+                                                                              end =
+                                                                              new List();
+                                                                          Endereco
+                                                                              e =
+                                                                              new Endereco(
+                                                                            cep:
+                                                                                controllerCEP.text,
+                                                                            bairro:
+                                                                                controllerBairro.text,
+                                                                            complemento:
+                                                                                controllerComplemento.text,
+                                                                            cidade:
+                                                                                controllerCidade.text,
+                                                                            created_at:
+                                                                                DateTime.now(),
+                                                                            endereco:
+                                                                                controllerEndereco.text,
+                                                                            numero:
+                                                                                controllerNumero.text,
+                                                                          );
+                                                                          end.add(
+                                                                              e);
+                                                                          Helper
+                                                                              .localUser
+                                                                              .carros = carros;
+                                                                          print(
+                                                                              'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
+                                                                          Helper
+                                                                              .localUser
+                                                                              .conta_bancaria = controllerConta_bancaria.text;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .cpf_conta = controllerCPFBanco.text;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .nome_conta = controllerNomeBanco.text;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .agencia = controllerAgencia.text;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .numero_conta = controllerNumero_conta.text;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .endereco = e;
 
-                                                                    color: Colors.yellowAccent,
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                        BorderRadius.circular(60)),
-                                                                    onPressed: () async {
-                                                                      if (int.parse(controllerKmsmin.text) > 4000) {
-                                                                        List<Carro> carros = new List();
-                                                                        Carro ccc = new Carro(
-                                                                          created_at: DateTime.now(),
-                                                                          dono_nome: Helper.localUser.nome,
-                                                                          updated_at: DateTime.now(),
-                                                                          cor: controllerCor.text,
-                                                                          ano: int.parse(controllerAno.text),
-                                                                          placa: controllerPlaca.text.toUpperCase(),
-                                                                          dono: Helper.localUser.id,
-                                                                          modelo: controllerTipocarro.text,
-                                                                          is_anuncio_bancos: carro == null
-                                                                              ? false
-                                                                              : carro.is_anuncio_bancos,
-                                                                          is_anuncio_vidro_traseiro: carro == null
-                                                                              ? false
-                                                                              : carro.is_anuncio_vidro_traseiro,
-                                                                          is_anuncio_traseira_completa: carro ==
-                                                                              null
-                                                                              ? false
-                                                                              : carro.is_anuncio_traseira_completa,
-                                                                          is_anuncio_laterais: carro == null
-                                                                              ? false
-                                                                              : carro.is_anuncio_laterais,
-                                                                          anuncio_bancos: carro == null
-                                                                              ? null
-                                                                              : carro.anuncio_bancos,
-                                                                          anuncio_vidro_traseiro: carro == null
-                                                                              ? null
-                                                                              : carro.anuncio_vidro_traseiro,
-                                                                          anuncio_traseira_completa: carro == null
-                                                                              ? null
-                                                                              : carro.anuncio_traseira_completa,
-                                                                          anuncio_laterais: carro == null
-                                                                              ? null
-                                                                              : carro.anuncio_laterais,
-                                                                        );
-                                                                        carros.add(ccc);
-                                                                        List<Endereco> end = new List();
-                                                                        Endereco e = new Endereco(
-                                                                          cep: controllerCEP.text,
-                                                                          bairro: controllerBairro.text,
-                                                                          complemento: controllerComplemento.text,
-                                                                          cidade: controllerCidade.text,
-                                                                          created_at: DateTime.now(),
-                                                                          endereco: controllerEndereco.text,
-                                                                          numero: controllerNumero.text,
-
-                                                                        );
-                                                                        end.add(e);
-                                                                        Helper.localUser.carros = carros;
-                                                                        print(
-                                                                            'gravou conta_bancaria aqui ${controllerConta_bancaria.text}');
-                                                                        Helper.localUser.conta_bancaria =
-                                                                            controllerConta_bancaria.text;
-                                                                        Helper.localUser.agencia =
-                                                                            controllerAgencia.text;
-                                                                        Helper.localUser.numero_conta =
-                                                                            controllerNumero_conta.text;
-                                                                        Helper.localUser.endereco = e;
-
-                                                                        Helper.localUser.tipo_conta = selectTipo;
-                                                                        Helper.localUser.kmmin =
-                                                                            int.parse(controllerKmsmin.text);
-                                                                        Helper.localUser.kmmax =
-                                                                            int.parse(controllerKmsmax.text);
-                                                                        userRef
-                                                                            .document(Helper.localUser.id)
-                                                                            .updateData(Helper.localUser.toJson())
-                                                                            .then((v) {
-                                                                          dToast('Banco salvo com sucesso !');
-                                                                          sc.next(animation: true);
-                                                                        });
-                                                                        carroController.CriarCarros(ccc);
-                                                                        cc.atualizarDados(sc, context, 1);
-                                                                      } else {
-                                                                        dToast(
-                                                                            'Kilometragem minima precisa ser superior a 4 mil!');
-                                                                      }
-                                                                    },
-                                                                    child: Text(
-                                                                      'Concluir Cadastro',
-                                                                      style: estiloTextoBotao,
+                                                                          Helper
+                                                                              .localUser
+                                                                              .tipo_conta = selectTipo;
+                                                                          Helper
+                                                                              .localUser
+                                                                              .kmmin = int.parse(controllerKmsmin.text);
+                                                                          Helper
+                                                                              .localUser
+                                                                              .kmmax = int.parse(controllerKmsmax.text);
+                                                                          userRef
+                                                                              .document(Helper.localUser.id)
+                                                                              .updateData(Helper.localUser.toJson())
+                                                                              .then((v) {
+                                                                            dToast('Banco salvo com sucesso !');
+                                                                            sc.next(animation: true);
+                                                                          });
+                                                                          carroController.CriarCarros(
+                                                                              ccc);
+                                                                          cc.atualizarDados(
+                                                                              sc,
+                                                                              context,
+                                                                              1);
+                                                                        } else {
+                                                                          dToast(
+                                                                              'Kilometragem minima precisa ser superior a 4 mil!');
+                                                                        }
+                                                                      },
+                                                                      child:
+                                                                          Text(
+                                                                        'Concluir Cadastro',
+                                                                        style:
+                                                                            estiloTextoBotao,
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            }
-                                                          ),
-                                                          sb,sb,
+                                                                  ],
+                                                                );
+                                                              }),
+                                                          sb,
+                                                          sb,
                                                         ],
                                                       );
                                                     }),
-
                                               )
                                             ]))))),
                         Positioned(
@@ -925,23 +1099,29 @@ class _CadastroState extends State<Cadastro> {
                                 Icons.arrow_back,
                                 color: Colors.white,
                               ),
-                              color: corPrimaria,
+                              color: corSecundaria,
                               onPressed: index != 0
                                   ? () {
                                       sc.previous(animation: true);
                                     }
                                   : null,
                               shape: new CircleBorder(
-                                  side: BorderSide(color: corPrimaria))),
+                                  side: BorderSide(color: corSecundaria))),
                           bottom: 5,
                           left: 10,
                         ),
-
                       ]);
                     case 1:
                       return Stack(
                         children: <Widget>[
-
+                          Container(
+                            child: Image.asset(
+                              'assets/cor_autooh.png',
+                              fit: BoxFit.fill,
+                            ),
+                            height: getAltura(context),
+                            width: getLargura(context),
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(28.0),
                             child: SingleChildScrollView(
@@ -950,21 +1130,20 @@ class _CadastroState extends State<Cadastro> {
                               ),
                             ),
                           ),
-
                           Positioned(
                             child: MaterialButton(
                                 child: Icon(
                                   Icons.arrow_back,
                                   color: Colors.white,
                                 ),
-                                color: corPrimaria,
+                                color: corSecundaria,
                                 onPressed: index != 0
                                     ? () {
                                         sc.previous(animation: true);
                                       }
                                     : null,
                                 shape: new CircleBorder(
-                                    side: BorderSide(color: corPrimaria))),
+                                    side: BorderSide(color: corSecundaria))),
                             bottom: 5,
                             left: 10,
                           ),
@@ -974,27 +1153,28 @@ class _CadastroState extends State<Cadastro> {
                                   Icons.arrow_forward,
                                   color: Colors.white,
                                 ),
-                                color: corPrimaria,
+                                color: corSecundaria,
                                 onPressed: index != null
                                     ? index < 5 - 1
-                                    ? () {
-                                  sc.next(animation: true);
-                                }
-                                    : null
+                                        ? () {
+                                            sc.next(animation: true);
+                                          }
+                                        : null
                                     : null,
                                 shape: new CircleBorder(
-                                    side: BorderSide(color: corPrimaria))),
+                                    side: BorderSide(color: corSecundaria))),
                             bottom: 5,
                             right: 10,
                           ),
                         ],
                       );
                     case 0:
-                      if(aec == null){
-                        aec =   AddEnderecoController(ue);
+                      if (aec == null) {
+                        aec = AddEnderecoController(ue);
                       }
 
-                      var controllerCEP = new MaskedTextController(text: '', mask: '00000-000');
+                      var controllerCEP =
+                          new MaskedTextController(text: '', mask: '00000-000');
                       var CPF = MaskedTextController(
                           text: cc.CPF, mask: '000.000.000-00');
                       var telefone = MaskedTextController(
@@ -1005,6 +1185,14 @@ class _CadastroState extends State<Cadastro> {
 
                       return Stack(
                         children: <Widget>[
+                          Container(
+                            child: Image.asset(
+                              'assets/cor_autooh.png',
+                              fit: BoxFit.fill,
+                            ),
+                            height: getAltura(context),
+                            width: getLargura(context),
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(28.0),
                             child: SingleChildScrollView(
@@ -1018,110 +1206,144 @@ class _CadastroState extends State<Cadastro> {
                                       sb,
                                       sb,
                                       sb,
-                                      hText('Foto do seu Perfil', context),
-                                      sb, Divider(color: corPrimaria), sb,
+                                      hText('Foto do seu Perfil', context,
+                                          color: corSecundaria),
+                                      sb,
+                                      Divider(color: corSecundaria),
+                                      sb,
                                       Container(
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-
-                                             GestureDetector(
-                                                  onTap: () => showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return Padding(
-                                                          padding: const EdgeInsets.all(15.0),
-                                                          child: AlertDialog(
-                                                            title:
-                                                            hText("Selecione uma opção", context),
-                                                            content: SingleChildScrollView(
-                                                              child: ListBody(
-                                                                children: <Widget>[
-                                                                  defaultActionButton(
-                                                                      'Galeria', context, () {
-                                                                    getImage();
-                                                                    Navigator.of(context).pop();
-                                                                  }, icon: MdiIcons.face),
-                                                                  sb,
-                                                                  defaultActionButton(
-                                                                      'Camera', context, () {
-                                                                    getImageCamera();
-                                                                    Navigator.of(context).pop();
-                                                                  }, icon: MdiIcons.camera)
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      ),
-                                                  child: StreamBuilder<User>(
-                                                    stream: perfilController.outUser,
-                                                    builder: (context, snapshot) {
-
-                                                      return CircleAvatar(
-                                                          radius: (((getAltura(context) +
-                                                              getLargura(context)) /
-                                                              2) *
-                                                              .2),
-                                                          backgroundColor: Colors.transparent,
-                                                          child: snapshot.data == null? Container():snapshot.data.foto != null
-                                                              ? Stack(
+                                            GestureDetector(
+                                              onTap: () => showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              15.0),
+                                                      child: AlertDialog(
+                                                        title: hText(
+                                                            "Selecione uma opção",
+                                                            context),
+                                                        content:
+                                                            SingleChildScrollView(
+                                                          child: ListBody(
                                                             children: <Widget>[
-                                                              Positioned(
-                                                                child:
-
-                                                                CircleAvatar(
-                                                                  radius: 75,
-                                                                  backgroundColor: Colors.transparent,
-                                                                  backgroundImage: 
-                                                                    CachedNetworkImageProvider(
-                                                                        snapshot.data.foto),
-                                                                  
-                                                                ),
-                                                              ),
-                                                              Positioned(
-                                                                top: 140,
-                                                                left: 160,
-                                                                child: Center(
-                                                                  child: CircleAvatar(
-                                                                    radius: 15,
-                                                                    backgroundColor: Colors.black,
-                                                                    child: Icon(
-                                                                      MdiIcons.cameraOutline,
-                                                                      color: Colors.white,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                              defaultActionButton(
+                                                                  'Galeria',
+                                                                  context, () {
+                                                                getImage();
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                                  icon: MdiIcons
+                                                                      .face),
+                                                              sb,
+                                                              defaultActionButton(
+                                                                  'Camera',
+                                                                  context, () {
+                                                                getImageCamera();
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                                  icon: MdiIcons
+                                                                      .camera)
                                                             ],
-                                                          )
-                                                              : Stack(children: <Widget>[
-                                                            Positioned(
-                                                              child: Image(
-                                                                  image: AssetImage(
-                                                                      'assets/editar_perfil.png')),
-                                                            ),
-                                                            Positioned(
-                                                              top: 150,
-                                                              left: 175,
-                                                              child: Center(
-                                                                child: CircleAvatar(
-                                                                  radius: 15,
-                                                                  backgroundColor: Colors.black12,
-                                                                  child: Icon(
-                                                                    MdiIcons.cameraOutline,
-                                                                    color: Colors.white,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ]));
-                                                    }
-                                                  ),
-                                                ),
-
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }),
+                                              child: StreamBuilder<User>(
+                                                  stream:
+                                                      perfilController.outUser,
+                                                  builder: (context, snapshot) {
+                                                    return CircleAvatar(
+                                                        radius: (((getAltura(
+                                                                        context) +
+                                                                    getLargura(
+                                                                        context)) /
+                                                                2) *
+                                                            .2),
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        child: snapshot.data ==
+                                                                null
+                                                            ? Container()
+                                                            : snapshot.data
+                                                                        .foto !=
+                                                                    null
+                                                                ? Stack(
+                                                                    children: <
+                                                                        Widget>[
+                                                                      Positioned(
+                                                                        child:
+                                                                            CircleAvatar(
+                                                                          radius:
+                                                                              75,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          backgroundImage: CachedNetworkImageProvider(snapshot
+                                                                              .data
+                                                                              .foto),
+                                                                        ),
+                                                                      ),
+                                                                      Positioned(
+                                                                        top:
+                                                                            140,
+                                                                        left:
+                                                                            160,
+                                                                        child:
+                                                                            Center(
+                                                                          child:
+                                                                              CircleAvatar(
+                                                                            radius:
+                                                                                15,
+                                                                            backgroundColor:
+                                                                                Colors.black,
+                                                                            child:
+                                                                                Icon(
+                                                                              MdiIcons.cameraOutline,
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : Stack(
+                                                                    children: <
+                                                                        Widget>[
+                                                                        Positioned(
+                                                                          child:
+                                                                              Image(image: AssetImage('assets/editar_perfil.png')),
+                                                                        ),
+                                                                        Positioned(
+                                                                          top:
+                                                                              150,
+                                                                          left:
+                                                                              175,
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                CircleAvatar(
+                                                                              radius: 15,
+                                                                              backgroundColor: Colors.black12,
+                                                                              child: Icon(
+                                                                                MdiIcons.cameraOutline,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ]));
+                                                  }),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -1134,12 +1356,19 @@ class _CadastroState extends State<Cadastro> {
                                                   cc.updateTelefone(value);
                                                 },
                                                 decoration: InputDecoration(
-
                                                     labelText: 'Telefone',
+                                                    labelStyle: TextStyle(
+                                                        color: Colors.white),
                                                     hintText:
                                                         '(11) 9 9999-9999 (Oom WhatsApp)',
+                                                    hintStyle: TextStyle(
+                                                        color: Colors.white),
                                                     icon: Icon(
-                                                        Icons.phone_iphone, color: corPrimaria,)),
+                                                      Icons.phone_iphone,
+                                                      color: corSecundaria,
+                                                    )),
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 onSubmitted: (tel) {
@@ -1168,10 +1397,16 @@ class _CadastroState extends State<Cadastro> {
                                                     labelText:
                                                         'Data de Nascimento',
                                                     hintText: '29/01/1990',
-                                                    icon:
-                                                        Icon(Icons.date_range,color: corPrimaria)),
+                                                    hintStyle: TextStyle(
+                                                        color: Colors.white),
+                                                    labelStyle: TextStyle(
+                                                        color: Colors.white),
+                                                    icon: Icon(Icons.date_range,
+                                                        color: corSecundaria)),
                                                 keyboardType:
                                                     TextInputType.number,
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                                 onSubmitted: (data) {
                                                   cc.updateDataNascimento(data);
                                                   Future.delayed(Duration(
@@ -1182,7 +1417,8 @@ class _CadastroState extends State<Cadastro> {
                                                   });
                                                 },
                                                 controller: dataNascimento);
-                                          }),sb,
+                                          }),
+                                      sb,
                                       StreamBuilder<String>(
                                           stream: cc.outCPF,
                                           builder: (context, snapshot) {
@@ -1195,14 +1431,20 @@ class _CadastroState extends State<Cadastro> {
                                                 onChanged: (value) {
                                                   cc.updateCPF(value);
                                                 },
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                                 decoration: InputDecoration(
                                                     labelText: 'CPF/CNPJ',
+                                                    labelStyle: TextStyle(
+                                                        color: Colors.white),
+                                                    hintStyle: TextStyle(
+                                                        color: Colors.white),
                                                     hintText: '000.000.000-00',
-
                                                     icon: Icon(
-                                                        Icons.perm_identity, color: corPrimaria)),
+                                                        Icons.perm_identity,
+                                                        color: corSecundaria)),
                                                 keyboardType:
-                                                TextInputType.number,
+                                                    TextInputType.number,
                                                 onSubmitted: (tel) {
                                                   cc.updateCPF(tel);
                                                 },
@@ -1211,8 +1453,10 @@ class _CadastroState extends State<Cadastro> {
                                       Padding(
                                           padding: const EdgeInsets.all(24.0),
                                           child: Container(
-                                              height:
-                                              MediaQuery.of(context).size.height * .85,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  .85,
                                               child: StreamBuilder<Endereco>(
                                                   stream: aec.outEndereco,
                                                   builder: (context, snapshot) {
@@ -1222,41 +1466,50 @@ class _CadastroState extends State<Cadastro> {
                                                     }
 
                                                     if (ue != null) {
-                                                       if(controllerCEP.text.isEmpty) {
-                                                         controllerCEP.text =
-                                                         ue.cep != null ? ue
-                                                             .cep : '';
-                                                       }
-                                                      if(controllerCidade.text.isEmpty) {
+                                                      if (controllerCEP
+                                                          .text.isEmpty) {
+                                                        controllerCEP.text =
+                                                            ue.cep != null
+                                                                ? ue.cep
+                                                                : '';
+                                                      }
+                                                      if (controllerCidade
+                                                          .text.isEmpty) {
                                                         controllerCidade.text =
-                                                        ue.cidade != null
-                                                            ? ue.cidade
-                                                            : '';
+                                                            ue.cidade != null
+                                                                ? ue.cidade
+                                                                : '';
                                                       }
-                                                      if(controllerEndereco.text.isEmpty) {
-                                                        controllerEndereco.text =
-                                                        ue.endereco != null
-                                                            ? ue.endereco
-                                                            : '';
+                                                      if (controllerEndereco
+                                                          .text.isEmpty) {
+                                                        controllerEndereco
+                                                                .text =
+                                                            ue.endereco != null
+                                                                ? ue.endereco
+                                                                : '';
                                                       }
-                                                      if(controllerBairro.text.isEmpty) {
+                                                      if (controllerBairro
+                                                          .text.isEmpty) {
                                                         controllerBairro.text =
-                                                        ue.bairro != null
-                                                            ? ue.bairro
-                                                            : '';
+                                                            ue.bairro != null
+                                                                ? ue.bairro
+                                                                : '';
                                                       }
-                                                      if (controllerNumero.text.isEmpty) {
+                                                      if (controllerNumero
+                                                          .text.isEmpty) {
                                                         controllerNumero.text =
-                                                        ue.numero != null
-                                                            ? ue.numero
-                                                            : '';
+                                                            ue.numero != null
+                                                                ? ue.numero
+                                                                : '';
                                                       }
                                                       if (controllerComplemento
                                                           .text.isEmpty) {
-                                                        controllerComplemento.text =
-                                                        ue.complemento != null
-                                                            ? ue.complemento
-                                                            : '';
+                                                        controllerComplemento
+                                                                .text =
+                                                            ue.complemento !=
+                                                                    null
+                                                                ? ue.complemento
+                                                                : '';
                                                       }
                                                     }
                                                     return SingleChildScrollView(
@@ -1264,152 +1517,198 @@ class _CadastroState extends State<Cadastro> {
                                                             key: _formKey,
                                                             child: Column(
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                                children: <Widget>[
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: <
+                                                                    Widget>[
                                                                   sb,
                                                                   sb,
-                                                                  Divider(color: corPrimaria),
+                                                                  Divider(
+                                                                      color:
+                                                                          corSecundaria),
                                                                   sb,
                                                                   Text(
                                                                     'Cadastre seu endereço',
                                                                     style: TextStyle(
-                                                                        color: Colors.black,
-                                                                        fontSize: 20),
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            20),
                                                                   ),
                                                                   sb,
-                                                                  Divider(color: corPrimaria),
+                                                                  Divider(
+                                                                      color:
+                                                                          corSecundaria),
                                                                   sb,
                                                                   defaultActionButton(
-
                                                                       'Buscar Localização',
-                                                                      context, () async {
-                                                                    print('apertou');
+                                                                      context,
+                                                                      () async {
+                                                                    print(
+                                                                        'apertou');
                                                                     aec.inEndereco.add(
                                                                         await lc
                                                                             .getEndereco());
-                                                                    Future.delayed(Duration(seconds:1)).then((v) async {
+                                                                    Future.delayed(Duration(
+                                                                            seconds:
+                                                                                1))
+                                                                        .then(
+                                                                            (v) async {
                                                                       aec.inEndereco.add(
                                                                           await lc
                                                                               .getEndereco());
                                                                     });
-                                                                  }, icon: null, size: 45),
+                                                                  },
+                                                                      icon:
+                                                                          null,
+                                                                      size: 45),
                                                                   sb,
                                                                   sb,
                                                                   new Padding(
                                                                     padding: ei,
-                                                                    child: TextFormField(
+                                                                    child:
+                                                                        TextFormField(
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.white),
                                                                       onFieldSubmitted:
-                                                                      aec.FetchCep,
+                                                                          aec.FetchCep,
                                                                       controller:
-                                                                      controllerCEP,
+                                                                          controllerCEP,
                                                                       keyboardType:
-                                                                      TextInputType
-                                                                          .numberWithOptions(),
-                                                                      validator: (value) {
-                                                                        if (value.isEmpty) {
+                                                                          TextInputType
+                                                                              .numberWithOptions(),
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value
+                                                                            .isEmpty) {
                                                                           if (isCadastrarPressed) {
                                                                             return 'É necessário preencher o CEP';
                                                                           }
                                                                         } else {
-                                                                          if (value
-                                                                              .length !=
+                                                                          if (value.length !=
                                                                               9) {
                                                                             if (isCadastrarPressed) {
                                                                               return 'CEP inválido';
                                                                             }
                                                                           } else {
-                                                                            if (value
-                                                                                .length ==
+                                                                            if (value.length ==
                                                                                 9) {
-                                                                              if(ue == null){
-                                                                                  ue = new Endereco.Empty();
+                                                                              if (ue == null) {
+                                                                                ue = new Endereco.Empty();
                                                                               }
-                                                                              if (ue.cep !=
-                                                                                  value) {
-                                                                                aec.FetchCep(
-                                                                                    value);
-                                                                                ue.cep =
-                                                                                    value;
-                                                                                aec.inEndereco
-                                                                                    .add(
-                                                                                    ue);
-                                                                                FocusScope.of(
-                                                                                    context)
-                                                                                    .requestFocus(
-                                                                                    myFocusNode);
+                                                                              if (ue.cep != value) {
+                                                                                aec.FetchCep(value);
+                                                                                ue.cep = value;
+                                                                                aec.inEndereco.add(ue);
+                                                                                FocusScope.of(context).requestFocus(myFocusNode);
                                                                               }
                                                                             }
                                                                           }
                                                                         }
                                                                       },
                                                                       decoration:
-                                                                      DefaultInputDecoration(
+                                                                          DefaultInputDecoration(
                                                                         context,
+                                                                        iconColor:
+                                                                            corSecundaria,
+                                                                        labelColor:
+                                                                            corSecundaria,
+                                                                        hintColor:
+                                                                            Colors.white,
                                                                         icon: Icons
                                                                             .assistant_photo,
                                                                         hintText:
-                                                                        '00000-000',
-                                                                        labelText: 'CEP',
+                                                                            '00000-000',
+                                                                        labelText:
+                                                                            'CEP',
                                                                       ),
-                                                                      autovalidate: true,
+                                                                      autovalidate:
+                                                                          true,
                                                                     ),
                                                                   ),
                                                                   new Padding(
                                                                     padding: ei,
-                                                                    child: TextFormField(
+                                                                    child:
+                                                                        TextFormField(
                                                                       controller:
-                                                                      controllerCidade,
-                                                                      validator: (value) {
-                                                                        if (value.isEmpty) {
+                                                                          controllerCidade,
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value
+                                                                            .isEmpty) {
                                                                           return 'É necessário preencher a Cidade';
                                                                         } else {
-                                                                          ue.cidade = value;
+                                                                          ue.cidade =
+                                                                              value;
                                                                           aec.inEndereco
                                                                               .add(ue);
                                                                         }
-                                                                      },
+                                                                      },style: TextStyle(color:Colors.white),
                                                                       decoration:
-                                                                      DefaultInputDecoration(
+                                                                          DefaultInputDecoration(
                                                                         context,
+                                                                            iconColor:
+                                                                            corSecundaria,
+                                                                            labelColor:
+                                                                            corSecundaria,
+                                                                            hintColor:
+                                                                            Colors.white,
                                                                         icon: Icons
                                                                             .location_city,
                                                                         hintText:
-                                                                        'São Paulo',
-                                                                        labelText: 'Cidade',
+                                                                            'São Paulo',
+                                                                        labelText:
+                                                                            'Cidade',
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   new Padding(
                                                                     padding: ei,
-                                                                    child: TextFormField(
+                                                                    child:
+                                                                        TextFormField(
                                                                       controller:
-                                                                      controllerBairro,
-                                                                      validator: (value) {
-                                                                        if (value.isEmpty) {
+                                                                          controllerBairro,
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value
+                                                                            .isEmpty) {
                                                                           return 'É necessário preencher o Bairro';
                                                                         } else {
-                                                                          ue.bairro = value;
+                                                                          ue.bairro =
+                                                                              value;
                                                                           aec.inEndereco
                                                                               .add(ue);
                                                                         }
-                                                                      },
+                                                                      },style: TextStyle(color:Colors.white),
                                                                       decoration:
-                                                                      DefaultInputDecoration(
+                                                                          DefaultInputDecoration(
                                                                         context,
-                                                                        icon: Icons.home,
-                                                                        hintText: 'Centro',
-                                                                        labelText: 'Bairro',
+                                                                            iconColor:
+                                                                            corSecundaria,
+                                                                            labelColor:
+                                                                            corSecundaria,
+                                                                            hintColor:
+                                                                            Colors.white,
+                                                                        icon: Icons
+                                                                            .home,
+                                                                        hintText:
+                                                                            'Centro',
+                                                                        labelText:
+                                                                            'Bairro',
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   new Padding(
                                                                     padding: ei,
-                                                                    child: TextFormField(
+                                                                    child:
+                                                                        TextFormField(
                                                                       controller:
-                                                                      controllerEndereco,
-                                                                      validator: (value) {
-                                                                        if (value.isEmpty) {
+                                                                          controllerEndereco,
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value
+                                                                            .isEmpty) {
                                                                           return 'É necessário preencher o Endereço';
                                                                         } else {
                                                                           ue.endereco =
@@ -1417,71 +1716,97 @@ class _CadastroState extends State<Cadastro> {
                                                                           aec.inEndereco
                                                                               .add(ue);
                                                                         }
-                                                                      },
+                                                                      },style: TextStyle(color:Colors.white),
                                                                       decoration:
-                                                                      DefaultInputDecoration(
+                                                                          DefaultInputDecoration(
                                                                         context,
+                                                                            iconColor:
+                                                                            corSecundaria,
+                                                                            labelColor:
+                                                                            corSecundaria,
+                                                                            hintColor:
+                                                                            Colors.white,
                                                                         icon: Icons
                                                                             .add_location,
                                                                         hintText:
-                                                                        'Rua da Saúde',
+                                                                            'Rua da Saúde',
                                                                         labelText:
-                                                                        'Endereço',
+                                                                            'Endereço',
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   new Padding(
                                                                     padding: ei,
-                                                                    child: TextFormField(
+                                                                    child:
+                                                                        TextFormField(
                                                                       keyboardType:
-                                                                      TextInputType
-                                                                          .number,
+                                                                          TextInputType
+                                                                              .number,
                                                                       controller:
-                                                                      controllerNumero,
+                                                                          controllerNumero,
                                                                       focusNode:
-                                                                      myFocusNode,
-                                                                      validator: (value) {
-                                                                        if (value.isEmpty) {
+                                                                          myFocusNode,
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value
+                                                                            .isEmpty) {
                                                                           return 'É necessário preencher o Número';
                                                                         } else {
-                                                                          ue.numero = value;
+                                                                          ue.numero =
+                                                                              value;
                                                                           aec.inEndereco
                                                                               .add(ue);
                                                                         }
-                                                                      },
+                                                                      },style: TextStyle(color:Colors.white),
                                                                       decoration:
-                                                                      DefaultInputDecoration(
+                                                                          DefaultInputDecoration(
                                                                         context,
-                                                                        icon:
-                                                                        Icons.filter_1,
-                                                                        hintText: '3001',
-                                                                        labelText: 'Número',
+                                                                            iconColor:
+                                                                            corSecundaria,
+                                                                            labelColor:
+                                                                            corSecundaria,
+                                                                            hintColor:
+                                                                            Colors.white,
+                                                                        icon: Icons
+                                                                            .filter_1,
+                                                                        hintText:
+                                                                            '3001',
+                                                                        labelText:
+                                                                            'Número',
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   new Padding(
                                                                     padding: ei,
-                                                                    child: TextFormField(
+                                                                    child:
+                                                                        TextFormField(
                                                                       controller:
-                                                                      controllerComplemento,
-                                                                      validator: (value) {
+                                                                          controllerComplemento,
+                                                                      validator:
+                                                                          (value) {
                                                                         ue.complemento =
                                                                             value;
                                                                         aec.inEndereco
                                                                             .add(ue);
-                                                                      },
+                                                                      },style: TextStyle(color:Colors.white),
                                                                       decoration:
-                                                                      DefaultInputDecoration(
+                                                                          DefaultInputDecoration(
                                                                         context,
-                                                                        icon: Icons.home,
+                                                                            iconColor:
+                                                                            corSecundaria,
+                                                                            labelColor:
+                                                                            corSecundaria,
+                                                                            hintColor:
+                                                                            Colors.white,
+                                                                        icon: Icons
+                                                                            .home,
                                                                         hintText:
-                                                                        'Apto. 163',
+                                                                            'Apto. 163',
                                                                         labelText:
-                                                                        'Complemento',
+                                                                            'Complemento',
                                                                       ),
                                                                     ),
                                                                   ),
-
                                                                 ])));
                                                   }))),
                                       sb,
@@ -1655,33 +1980,35 @@ class _CadastroState extends State<Cadastro> {
                                                                 ),
                                                               );
                                                             }),
-                                                        child: StreamBuilder<User>(
-                                                          stream: perfilController.outUser,
-                                                          builder: (context, snapshot) {
-                                                            return CircleAvatar(
-                                                                radius: (((getAltura(
-                                                                                context) +
-                                                                            getLargura(
-                                                                                context)) /
-                                                                        2) *
-                                                                    .2),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .transparent,
-                                                                child: snapshot.data
-                                                                            .foto !=
-                                                                        null
-                                                                    ? Image(
-                                                                        image: CachedNetworkImageProvider(snapshot.data
-                                                                            .foto),
-                                                                      )
-                                                                    : Image(
-                                                                        image: CachedNetworkImageProvider(
-                                                                            'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
-                                                                      )
-                                                            );
-                                                          }
-                                                        ),
+                                                        child: StreamBuilder<
+                                                                User>(
+                                                            stream:
+                                                                perfilController
+                                                                    .outUser,
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              return CircleAvatar(
+                                                                  radius:
+                                                                      (((getAltura(context) + getLargura(context)) /
+                                                                              2) *
+                                                                          .2),
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  child: snapshot
+                                                                              .data
+                                                                              .foto !=
+                                                                          null
+                                                                      ? Image(
+                                                                          image: CachedNetworkImageProvider(snapshot
+                                                                              .data
+                                                                              .foto),
+                                                                        )
+                                                                      : Image(
+                                                                          image:
+                                                                              CachedNetworkImageProvider('https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png'),
+                                                                        ));
+                                                            }),
                                                       ),
                                                     ],
                                                   ),
@@ -1833,7 +2160,6 @@ class _CadastroState extends State<Cadastro> {
                                               ],
                                             );
                                           }),
-
                                       sb,
                                       Column(
                                         mainAxisAlignment:
@@ -1870,16 +2196,16 @@ class _CadastroState extends State<Cadastro> {
                                   Icons.arrow_forward,
                                   color: Colors.white,
                                 ),
-                                color: corPrimaria,
+                                color: corSecundaria,
                                 onPressed: index != null
                                     ? index < 5 - 1
-                                    ? () {
-                                  sc.next(animation: true);
-                                }
-                                    : null
+                                        ? () {
+                                            sc.next(animation: true);
+                                          }
+                                        : null
                                     : null,
                                 shape: new CircleBorder(
-                                    side: BorderSide(color: corPrimaria))),
+                                    side: BorderSide(color: corSecundaria))),
                             bottom: 5,
                             right: 10,
                           ),
@@ -1889,14 +2215,14 @@ class _CadastroState extends State<Cadastro> {
                                   Icons.arrow_back,
                                   color: Colors.white,
                                 ),
-                                color: corPrimaria,
+                                color: corSecundaria,
                                 onPressed: index != 0
                                     ? () {
                                         sc.previous(animation: true);
                                       }
                                     : null,
                                 shape: new CircleBorder(
-                                    side: BorderSide(color: corPrimaria))),
+                                    side: BorderSide(color: corSecundaria))),
                             bottom: 5,
                             left: 10,
                           ),
@@ -1920,7 +2246,7 @@ class _CadastroState extends State<Cadastro> {
                     alignment: Alignment.bottomCenter,
                     builder: FractionPaginationBuilder(
                       color: Colors.grey[400],
-                      activeColor: corPrimaria,
+                      activeColor: corSecundaria,
                       fontSize: 22,
                       activeFontSize: 26,
                     )),
@@ -1983,17 +2309,16 @@ class _CadastroState extends State<Cadastro> {
         ));
     pr.show();
 
-      Helper.localUser.foto = await uploadPicture(
-        image.path,
-      );
-      print('Helper ${Helper.localUser}');
-      if(perfilController == null){
-        perfilController = new PerfilController(Helper.localUser);
-      }
-      perfilController.updateUser(Helper.localUser);
+    Helper.localUser.foto = await uploadPicture(
+      image.path,
+    );
+    print('Helper ${Helper.localUser}');
+    if (perfilController == null) {
+      perfilController = new PerfilController(Helper.localUser);
+    }
+    perfilController.updateUser(Helper.localUser);
 
     pr.dismiss();
-
   }
 
   Future getImage() async {
@@ -2012,13 +2337,13 @@ class _CadastroState extends State<Cadastro> {
           color: Colors.transparent,
         ));
     pr.show();
-      Helper.localUser.foto = await uploadPicture(
-        image.path,
-      );
-    if(perfilController == null){
+    Helper.localUser.foto = await uploadPicture(
+      image.path,
+    );
+    if (perfilController == null) {
       perfilController = new PerfilController(Helper.localUser);
     }
-      perfilController.updateUser(Helper.localUser);
+    perfilController.updateUser(Helper.localUser);
     pr.dismiss();
   }
 
@@ -2064,8 +2389,7 @@ class _CadastroState extends State<Cadastro> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://cdn.shopify.com/s/files/1/2809/6686/products/sz10523_grande.jpg?v=1533527533'),
+                          image: AssetImage('assets/bancos.jpeg'),
                           fit: BoxFit.cover),
                       border: carro.is_anuncio_bancos == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -2091,7 +2415,7 @@ class _CadastroState extends State<Cadastro> {
                               carroController.inCarroSelecionado
                                   .add(carroController.carroSelecionado);
                               print('anuncio ${carro.is_anuncio_bancos}');
-                            }, size: 10),
+                            }, size: 10,color: corSecundaria,textColor: corSecundaria),
                           ),
                         ],
                       ),
@@ -2109,8 +2433,7 @@ class _CadastroState extends State<Cadastro> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://images.vexels.com/media/users/3/145586/isolated/preview/8f11dbfb5ce1e294f79a0f9aea6b36bf-silhueta-de-vista-lateral-de-carro-de-cidade-by-vexels.png'),
+                          image: AssetImage('assets/lateral.jpg'),
                           fit: BoxFit.cover),
                       border: carro.is_anuncio_laterais == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -2127,7 +2450,7 @@ class _CadastroState extends State<Cadastro> {
                         carroController.carroSelecionado = carro;
                         carroController.inCarroSelecionado
                             .add(carroController.carroSelecionado);
-                      }, size: 10),
+                      }, size: 10,color: corSecundaria,textColor: corSecundaria),
                     ),
                   ),
                 ],
@@ -2142,8 +2465,7 @@ class _CadastroState extends State<Cadastro> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
+                          image: AssetImage('assets/traseira_completa.png'),
                           fit: BoxFit.cover),
                       border: carro.is_anuncio_traseira_completa == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -2161,7 +2483,7 @@ class _CadastroState extends State<Cadastro> {
                         carroController.carroSelecionado = carro;
                         carroController.inCarroSelecionado
                             .add(carroController.carroSelecionado);
-                      }, size: 10),
+                      }, size: 10,color: corSecundaria,textColor: corSecundaria),
                     ),
                   ),
                 ],
@@ -2176,8 +2498,7 @@ class _CadastroState extends State<Cadastro> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
+                          image: AssetImage('assets/vidro_traseiro.jpg'),
                           fit: BoxFit.cover),
                       border: carro.is_anuncio_vidro_traseiro == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -2195,13 +2516,11 @@ class _CadastroState extends State<Cadastro> {
                         carroController.carroSelecionado = carro;
                         carroController.inCarroSelecionado
                             .add(carroController.carroSelecionado);
-                      }, size: 10),
+                      }, size: 10,color: corSecundaria,textColor: corSecundaria),
                     ),
                   ),
-
                 ],
               )
-
             ],
           ),
         );
@@ -2218,7 +2537,7 @@ class _CadastroState extends State<Cadastro> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: corPrimaria,
+              color: corSecundaria,
               width: 8,
             ),
           ),

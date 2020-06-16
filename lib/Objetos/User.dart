@@ -19,7 +19,7 @@ class User {
   String celular;
   String cpf;
   bool isGroupAdm;
-  String email;
+  String email; 
   String responsavel;
   String senha;
   String user_responsavel;
@@ -50,20 +50,22 @@ class User {
   bool isAlowed;
   Endereco endereco;
   bool isAniversario;
- String grupo;
- String tipo_conta;
-   int kmmin;
-   int kmmax;
+  String grupo;
+  String tipo_conta;
+  int kmmin;
+  int kmmax;
   String conta_bancaria;
   List<Carro> carros;
   String telefone;
-   String agencia;
-   String numero_conta;
+  String agencia;
+  String numero_conta;
+  String nome_conta;
+  String cpf_conta;
   bool isBanido;
   bool atende_festa;
-  bool atende_fds ;
+  bool atende_fds;
 
- List<Documento> documentos;
+  List<Documento> documentos;
 
   var example = {
     "id": "124",
@@ -131,62 +133,69 @@ class User {
       this.celular,
       this.cpf,
       this.email,
-        this.saldo,
-        this.kmmin, this.kmmax,
-      this.senha,this.tipo_conta,
-      this.strike,this.numero_conta,this.agencia,
+      this.saldo,
+      this.kmmin,
+      this.kmmax,
+      this.senha,
+      this.tipo_conta,
+      this.strike,
+      this.numero_conta,
+      this.agencia,
       this.identidade,
-        this.manha,this.tarde,this.noite,
+      this.manha,
+      this.tarde,
+      this.noite,
       this.identidade_expedidor,
       this.identidade_data_expedicao,
       this.permissao,
       this.created_at,
       this.updated_at,
       this.deleted_at,
-        this.cartoes,
-        this.responsavel,
+      this.cartoes,
+      this.responsavel,
       this.remember_token,
       this.tipo,
-        this.isEmpresario,
-        this.antecedentes,
+      this.isEmpresario,
+      this.antecedentes,
       this.isPrestador,
       this.genero,
       this.prestador,
       this.isAlowed,
       this.isAdm,
       this.isGroupAdm,
-        this.user_responsavel,
-        this.grupo,
+      this.user_responsavel,
+      this.grupo,
       this.endereco,
-        this.documentos,
-        this.carros,this.telefone,
-
-this.atende_fds,
-        this.atende_festa,
-        this.conta_bancaria,
-        this.isEmailVerified,
+      this.documentos,
+      this.carros,
+      this.telefone,
+      this.atende_fds,
+      this.atende_festa,
+      this.conta_bancaria,
+        this.nome_conta,
+        this.cpf_conta,
+      this.isEmailVerified,
       this.foto}) {
     if (this.data_nascimento != null) {
       DateTime hoje = DateTime.now();
       isAniversario = hoje.day == this.data_nascimento.day &&
           hoje.month == this.data_nascimento.month;
     }
-    if (this.atende_fds == null){
+    if (this.atende_fds == null) {
       this.atende_fds = false;
     }
-    if (this.atende_festa == null){
-    this.atende_festa = false;
+    if (this.atende_festa == null) {
+      this.atende_festa = false;
     }
-     if(this.manha == null){
-       this.manha = false;
-     }
-     if(this.tarde == null){
-       this.tarde = false;
-     }
-     if(this.noite == null){
-       this.noite = false;
-     }
-    
+    if (this.manha == null) {
+      this.manha = false;
+    }
+    if (this.tarde == null) {
+      this.tarde = false;
+    }
+    if (this.noite == null) {
+      this.noite = false;
+    }
   }
 
   User.fromJson(j) {
@@ -196,40 +205,44 @@ this.atende_fds,
     this.kmmin = j['kmmin'] == null ? null : j['kmmin'];
     this.kmmax = j['kmmax'] == null ? null : j['kmmax'];
     this.telefone = j['telefone'] == null ? null : j['telefone'];
-    this.conta_bancaria = j['conta_bancaria'] == null ? null : j['conta_bancaria'];
+    this.conta_bancaria =
+        j['conta_bancaria'] == null ? null : j['conta_bancaria'];
     this.atende_fds = j['atende_fds'] == null ? false : j['atende_fds'];
     this.atende_festa = j['atende_festa'] == null ? false : j['atende_festa'];
-    carros = j['carros'] == null
-        ? null
-        : getCarros(json.decode(j['carros']));
+    carros = j['carros'] == null ? null : getCarros(json.decode(j['carros']));
     this.nome = j['nome'] == null ? null : j['nome'];
     this.agencia = j['agencia'] == null ? null : j['agencia'];
     this.numero_conta = j['numero_conta'] == null ? null : j['numero_conta'];
-    this.isEmpresario = j['isEmpresario'] == null? false: j['isEmpresario'];
-    this.manha = j['manha'] == null? false: j['manha'];
-    this.tarde = j['tarde'] == null? false: j['tarde'];
-    this.noite = j['noite'] == null? false: j['noite'];
+    this.isEmpresario = j['isEmpresario'] == null ? false : j['isEmpresario'];
+    this.manha = j['manha'] == null ? false : j['manha'];
+    this.tarde = j['tarde'] == null ? false : j['tarde'];
+    this.noite = j['noite'] == null ? false : j['noite'];
     this.data_nascimento = j['data_nascimento'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(j['data_nascimento']);
-    this.user_responsavel = j['user_responsavel'] == null? null: j['user_responsavel'];
+    this.user_responsavel =
+        j['user_responsavel'] == null ? null : j['user_responsavel'];
     this.celular = j['celular'] == null ? null : j['celular'];
     this.cpf = j['cpf'] == null ? null : j['cpf'];
     this.email = j['email'] == null ? null : j['email'];
     this.senha = j['senha'] == null ? null : j['senha'];
     this.strike = j['strike'] == null ? null : j['strike'];
     this.antecendete_verificados_em = j['antecendete_verificados_em'] == null
-                      ? null
-                      : DateTime.fromMillisecondsSinceEpoch(j['antecendete_verificados_em']);
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(j['antecendete_verificados_em']);
     this.identidade = j['identidade'] == null ? null : j['identidade'];
-    this.responsavel = j['responsavel'] == null? null: j['responsavel'];
-    this.antecedentes = j['antecedentes'] == null? null:j['antecedentes'];
-    this.documentos = j['documentos'] == null ? null : getDocumentos(json.decode(j['documentos']));
+    this.responsavel = j['responsavel'] == null ? null : j['responsavel'];
+    this.antecedentes = j['antecedentes'] == null ? null : j['antecedentes'];
+    this.nome_conta = j['nome_conta'] == null? this.nome:j['nome_conta'];
+    this.cpf_conta = j['cpf_conta'] == null? this.cpf:j['cpf_conta'];
+    this.documentos = j['documentos'] == null
+        ? null
+        : getDocumentos(json.decode(j['documentos']));
     this.cartoes =
-    /*(j['cartoes'] as List) != null
+        /*(j['cartoes'] as List) != null
         ? (j['cartoes'] as List).map((i) => Cartao.fromJson(i)).toList()
         : */
-    null;
+        null;
     this.identidade_expedidor =
         j['identidade_expedidor'] == null ? null : j['identidade_expedidor'];
     this.identidade_data_expedicao = j['identidade_data_expedicao'] == null
@@ -258,8 +271,8 @@ this.atende_fds,
     this.endereco =
         j['endereco'] == null ? null : Endereco.fromJson(j['endereco']);
     this.foto = j['foto'] == null ? null : j['foto'];
-    this.grupo = j['grupo'] == null? '':j['grupo'];
-    
+    this.grupo = j['grupo'] == null ? '' : j['grupo'];
+
     if (data_nascimento != null) {
       DateTime hoje = DateTime.now();
       isAniversario = hoje.day == this.data_nascimento.day &&
@@ -269,7 +282,7 @@ this.atende_fds,
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['carros']= this.carros == null ?null: json.encode(this.carros);
+    data['carros'] = this.carros == null ? null : json.encode(this.carros);
     data['id'] = this.id;
     data['telefone'] = this.telefone;
     data['tipo_conta'] = this.tipo_conta;
@@ -279,11 +292,12 @@ this.atende_fds,
     data['nome'] = this.nome;
     data['numero_conta'] = this.numero_conta;
     data['agencia'] = this.agencia;
-    data['atende_festa'] = this.atende_festa == null? false: this.atende_festa;
-    data['atende_fds'] = this.atende_fds == null? false: this.atende_fds;
-    data['manha'] = this.manha == null? false: this.manha;
-    data['tarde'] = this.tarde == null? false: this.tarde;
-    data['noite'] = this.noite == null? false: this.noite;
+    data['atende_festa'] =
+        this.atende_festa == null ? false : this.atende_festa;
+    data['atende_fds'] = this.atende_fds == null ? false : this.atende_fds;
+    data['manha'] = this.manha == null ? false : this.manha;
+    data['tarde'] = this.tarde == null ? false : this.tarde;
+    data['noite'] = this.noite == null ? false : this.noite;
 
     data['conta_bancaria'] = this.conta_bancaria;
     data['isEmailVerified'] = this.isEmailVerified;
@@ -291,16 +305,19 @@ this.atende_fds,
         ? this.data_nascimento.millisecondsSinceEpoch
         : null;
     data['celular'] = this.celular;
-    data['user_responsavel'] = this.user_responsavel == null? null: this.user_responsavel;
+    data['user_responsavel'] =
+        this.user_responsavel == null ? null : this.user_responsavel;
     data['cpf'] = this.cpf;
-    data['isEmpresario'] = this.isEmpresario == null? false: this.isEmpresario;
+    data['isEmpresario'] =
+        this.isEmpresario == null ? false : this.isEmpresario;
     data['email'] = this.email;
     data['antecedentes'] = this.antecedentes;
     data['senha'] = this.senha;
     data['permissao'] = this.permissao;
-    data['grupo'] = this.grupo == null? '': this.grupo;
-    data['antecendete_verificados_em'] =
-    this.antecendete_verificados_em != null ? this.antecendete_verificados_em.millisecondsSinceEpoch : null;
+    data['grupo'] = this.grupo == null ? '' : this.grupo;
+    data['antecendete_verificados_em'] = this.antecendete_verificados_em != null
+        ? this.antecendete_verificados_em.millisecondsSinceEpoch
+        : null;
     data['created_at'] =
         this.created_at != null ? this.created_at.millisecondsSinceEpoch : null;
     data['updated_at'] =
@@ -312,20 +329,23 @@ this.atende_fds,
     data['responsavel'] = this.responsavel;
     data['tipo'] = this.tipo;
     data['genero'] = this.genero;
-    data['documentos'] = this.documentos == null? null : json.encode(this.documentos);
+    data['documentos'] =
+        this.documentos == null ? null : json.encode(this.documentos);
     data['isPrestador'] = this.isPrestador;
     data['prestador'] = this.prestador;
+
+    data['nome_conta'] = this.nome_conta;
+    data['cpf_conta'] = this.cpf_conta;
     data['foto'] = this.foto;
     data['cartoes'] = this.cartoes != null
-                      ? this.cartoes.map((i) => i.toJson()).toList()
-                      : null;
+        ? this.cartoes.map((i) => i.toJson()).toList()
+        : null;
     data['isAlowed'] = this.isAlowed;
     data['isAdm'] = this.isAdm == null ? false : this.isAdm;
     data['endereco'] = this.endereco == null ? null : this.endereco.toJson();
 
     return data;
   }
-
 
   @override
   String toString() {
@@ -342,6 +362,7 @@ this.atende_fds,
     }
     return carros;
   }
+
   void Contatar(context) {
     showCupertinoDialog<void>(
       context: context,
@@ -436,7 +457,6 @@ this.atende_fds,
     }
   }
 
-
   static getDocumentos(decoded) {
     print('AQUI DECODED ${decoded}');
     List<Documento> talentos = new List();
@@ -507,7 +527,7 @@ UserWidget(User user, context) {
                   width: 5,
                 ),
                 Text(
-                  '${(((DateTime.now().difference(user.data_nascimento).inDays) / 365)-1).toStringAsFixed(0)} Anos',
+                  '${(((DateTime.now().difference(user.data_nascimento).inDays) / 365) - 1).toStringAsFixed(0)} Anos',
                   style: TextStyle(),
                 ),
               ],

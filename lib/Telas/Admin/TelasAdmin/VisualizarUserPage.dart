@@ -242,6 +242,30 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
                   ),
                 ],
               ),
+              sb,sb,
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding:  EdgeInsets.only(left: 60.0),
+                    child: Column(
+                      children: <Widget>[
+                        hText('Nome', context, color: corPrimaria),sb,
+                        hText('${widget.user.nome_conta == null? widget.user.nome: widget.user.nome_conta}', context)
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding:  EdgeInsets.only(left: 40.0),
+                    child: Column(
+                      children: <Widget>[
+                        hText('CPF da conta', context, color: corPrimaria),sb,
+                        hText('${widget.user.cpf_conta == null? widget.user.cpf: widget.user.cpf_conta}', context)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               sb,
               sb,
               sb,

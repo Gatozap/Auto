@@ -255,8 +255,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                           width: getLargura(context) * .30,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                    'https://cdn.shopify.com/s/files/1/2809/6686/products/sz10523_grande.jpg?v=1533527533'),
+                                image: AssetImage(
+                                    'assets/bancos.jpeg'),
                                 fit: BoxFit.cover),
                             border: carro.is_anuncio_bancos == false
                                 ? Border.all(color: Colors.black, width: 3)
@@ -345,8 +345,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                           width: getLargura(context) * .30,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                    'https://images.vexels.com/media/users/3/145586/isolated/preview/8f11dbfb5ce1e294f79a0f9aea6b36bf-silhueta-de-vista-lateral-de-carro-de-cidade-by-vexels.png'),
+                                image: AssetImage(
+                                    'assets/lateral.jpg'),
                                 fit: BoxFit.cover),
                             border: carro.is_anuncio_laterais == false
                                 ? Border.all(color: Colors.black, width: 3)
@@ -436,8 +436,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                           width: getLargura(context) * .30,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                    'https://images.vexels.com/media/users/3/145707/isolated/preview/d3c27524358f5186c045e7f03d1f8d8e-silhueta-de-vista-traseira-de-hatchback-by-vexels.png'),
+                                image: AssetImage(
+                                    'assets/traseira_completa.png'),
                                 fit: BoxFit.cover),
                             border: carro.is_anuncio_traseira_completa == false
                                 ? Border.all(color: Colors.black, width: 3)
@@ -530,8 +530,8 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                           width: getLargura(context) * .30,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                    'https://images.tcdn.com.br/img/img_prod/372162/112_1_20140325180457.jpg'),
+                                image: AssetImage(
+                                    'assets/vidro_traseiro.jpg'),
                                 fit: BoxFit.cover),
                             border: carro.is_anuncio_vidro_traseiro == false
                                 ? Border.all(color: Colors.black, width: 3)

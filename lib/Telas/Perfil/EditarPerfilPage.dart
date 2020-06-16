@@ -67,6 +67,8 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
   var controllerCEP = new MaskedTextController(text: '', mask: '00000-000');
   var controllerCidade = new TextEditingController(text: '');
   var controllerEstado = new TextEditingController(text: '');
+  var controllerNomeBanco = new TextEditingController(text: '');
+  var controllerCPFBanco = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
   var controllerEndereco = new TextEditingController(text: '');
   var controllerBairro = new TextEditingController(text: '');
@@ -128,6 +130,8 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                       controllerConta_bancaria.text = u.conta_bancaria;
                       controllerAgencia.text = u.agencia;
                       controllerNumero_conta.text = u.numero_conta;
+                      controllerCPFBanco.text = '${(u.cpf_conta == null? u.cpf: u.cpf_conta)}';
+                      controllerNomeBanco.text = '${(u.nome_conta == null? u.nome: u.nome_conta)}';
                       controllerKmmin.text = u.kmmin.toString();
                       controllerKmmax.text = u.kmmax.toString();
                       print("AQUI ENDEREÇO ${u.endereco.toString()}");
@@ -341,6 +345,27 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                               icon: FontAwesomeIcons.creditCard,
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 21),
+                            child: DefaultField(
+                              controller: controllerNomeBanco,
+                              hint: u.agencia,
+                              context: context,
+                              label: 'Nome do Titular',
+                              icon: FontAwesomeIcons.user,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 50, right: 21),
+                            child: DefaultField(
+                              controller: controllerCPFBanco,
+                              hint: '000.000.000-00',
+                              context: context,
+                              label: 'Cpf do Titular',
+                              icon: FontAwesomeIcons.dochub,
+                            ),
+                          ),
+
                           Padding(
                             padding: EdgeInsets.only(left: 50, right: 21),
                             child: DefaultField(

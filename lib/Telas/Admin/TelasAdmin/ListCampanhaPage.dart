@@ -79,11 +79,11 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, index) {
                       Campanha p = snapshot.data[index];
-                                 if(p.datafim.isAfter(DateTime.now())) {
+                                 //if(p.datafim.isAfter(DateTime.now())) {
                                    return CampanhaListItem(p);
-                                 }else{
+                                /* }else{
                                    return Container();
-                                 }
+                                 }*/
                     },
                     itemCount: snapshot.data.length,
                   ),

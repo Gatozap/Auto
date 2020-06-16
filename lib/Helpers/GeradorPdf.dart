@@ -132,6 +132,7 @@ class GeradorPDF {
         print('AQUI LOLOL BAIRRO $k $v');
         Localizacao lastPoint;
         double dist = 0;
+        double tempo = 0;
         for (Localizacao p in v) {
           if (lastPoint != null) {
             var distTemp = calculateDistance(
@@ -143,15 +144,17 @@ class GeradorPDF {
             if (distTemp < 300) {
               dist += distTemp;
             }
+            tempo += p.timestamp.difference(lastPoint.timestamp).inMilliseconds;
           }
           lastPoint = p;
         }
         totalPercorridoBairros+=dist;
-        textosBairros.add(['${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',dist ]);
+        textosBairros.add(['${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',dist ,tempo]);
       });
       zonas.forEach((k, v) {
         Localizacao lastPoint;
         double dist = 0;
+        double tempo =0;
         for (Localizacao p in v) {
           if (lastPoint != null) {
             var distTemp = calculateDistance(
@@ -163,11 +166,13 @@ class GeradorPDF {
             if (distTemp < 300) {
               dist += distTemp;
             }
+            tempo += p.timestamp.difference(lastPoint.timestamp).inMilliseconds;
           }
           lastPoint = p;
+
         }
         totalPercorrido+=dist;
-        textosZonas.add(['${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',dist ]);
+        textosZonas.add(['${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',dist ,tempo]);
 
       });
       textosBairros.sort((var a, var b){
@@ -286,7 +291,7 @@ class GeradorPDF {
               decoration: BoxDecoration(
                   border: BoxBorder(
                       width: 2, color: PdfColor.fromRYB(0, 0, 0))),
-              child: Text('${textosZonas[i][0]}')),
+              child: Text('${textosZonas[i][0]}',style: TextStyle(fontWeight: FontWeight.bold))),
         ]));
         rows.add(Row(children: [
           Container(
@@ -294,8 +299,17 @@ class GeradorPDF {
               decoration: BoxDecoration(
                   border: BoxBorder(
                       width: 2, color: PdfColor.fromRYB(0, 0, 0))),
-              child: Text('Distancia Percorrida: ${textosZonas[i][1].toStringAsFixed(2)}Km, Proporção: %${percentuais[i]}')),
+              child: Text('Distancia Percorrida: ${textosZonas[i][1].toStringAsFixed(2)}Km,\nProporção: %${percentuais[i]}')),
         ]));
+        rows.add(Row(children: [
+          Container(
+              width: 600,
+              decoration: BoxDecoration(
+                  border: BoxBorder(
+                      width: 2, color: PdfColor.fromRYB(0, 0, 0))),
+              child: Text('Tempo: ${((((textosZonas[i][2]/100000)/60))).toStringAsFixed(1)} minutos\n')),
+        ]));
+        rows.add(Row(children: [Container(height: 20)]));
       }
 
       rows.add(Row(children: [Container(height: 20)]));
@@ -316,7 +330,7 @@ class GeradorPDF {
                 decoration: BoxDecoration(
                     border: BoxBorder(
                         width: 2, color: PdfColor.fromRYB(0, 0, 0))),
-                child: Text('${textosBairros[i][0]}')),
+                child: Text('${textosBairros[i][0]}',style: TextStyle(fontWeight: FontWeight.bold))),
           ]));
           rows.add(Row(children: [
             Container(
@@ -326,8 +340,17 @@ class GeradorPDF {
                         width: 2, color: PdfColor.fromRYB(0, 0, 0))),
                 child: Text('Distancia Percorrida: ${textosBairros[i][1]
                     .toStringAsFixed(
-                    2)}Km, Proporção: %${percentuaisBairros[i]}')),
+                    2)}Km,\nProporção: ${percentuaisBairros[i]}')),
           ]));
+          rows.add(Row(children: [
+            Container(
+                width: 600,
+                decoration: BoxDecoration(
+                    border: BoxBorder(
+                        width: 2, color: PdfColor.fromRYB(0, 0, 0))),
+                child: Text('Tempo: ${((((textosBairros[i][2]/100000)/60))).toStringAsFixed(1)} minutos\n')),
+          ]));
+          rows.add(Row(children: [Container(height: 20)]));
         }
       }
 

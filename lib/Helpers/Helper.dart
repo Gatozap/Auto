@@ -160,7 +160,7 @@ void whatsAppOpen() async {
 }
 
 Widget defaultCheckBox(bool isChecked, text, context, onTap,
-    {color: corPrimaria, size}) {
+    {color: corPrimaria, size,textColor: corPrimaria,}) {
   return GestureDetector(
     onTap: onTap,
     child: Row(
@@ -179,7 +179,7 @@ Widget defaultCheckBox(bool isChecked, text, context, onTap,
           width: 40,
         ),
         sb,
-        hText(text, context, size: 45, color: corPrimaria),
+        hText(text, context, size: 45, color: textColor),
       ],
     ),
   );
@@ -671,8 +671,11 @@ InputDecoration DefaultInputDecoration(
   context, {
   var icon,
   var hintText = corPrimaria,
+      iconColor,
   hintColor = corPrimaria,
   error,
+      var labelColor = corPrimaria,
+
   var labelText,
   borderColor = corPrimaria,
 }) {
@@ -687,7 +690,7 @@ InputDecoration DefaultInputDecoration(
   );
   TextStyle labelStyle = TextStyle(
     fontSize: ScreenUtil.getInstance().setSp(36),
-    color: corPrimaria,
+    color: labelColor,
     fontWeight: FontWeight.normal,
     fontStyle: FontStyle.normal,
   );
@@ -727,7 +730,7 @@ InputDecoration DefaultInputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         icon: Icon(
           icon,
-          color: corPrimaria,
+          color: iconColor == null? corPrimaria:iconColor,
         ),
         labelText: labelText,
         focusColor: borderColor,
@@ -738,7 +741,7 @@ InputDecoration DefaultInputDecoration(
   return InputDecoration(
       icon: Icon(
         icon,
-        color: corPrimaria,
+        color: iconColor == null? corPrimaria:iconColor,
       ),
       hintText: hintText,
       contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
