@@ -149,11 +149,11 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                        carro: widget.carro
                       )));
                 }),
-                menuButton(context, 'Meus Percursos', FontAwesomeIcons.route, true, () {
+                Helper.localUser.permissao == 10 ?menuButton(context, 'Meus Percursos', FontAwesomeIcons.route, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           EstatisticaPage(user: Helper.localUser)));
-                }),
+                }):Container(),
                 /*menuButton(context, 'Cadastrar Novos Carros', Icons.directions_car, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CadastrarNovoCarroPage(

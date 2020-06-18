@@ -21,7 +21,6 @@ import 'package:autooh/Telas/Login/LoginEmail/CadastroEmail/cadastroemail.dart';
 import 'package:autooh/Telas/Login/LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
 import 'package:autooh/Telas/Login/LoginEmail/LoginEmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'Helpers/Bairros.dart';
 import 'Helpers/Cielo/src/Environment.dart';
 import 'Helpers/Cielo/src/Merchant.dart';

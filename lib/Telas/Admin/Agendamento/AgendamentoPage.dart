@@ -443,6 +443,7 @@ class _AgendamentoPageState extends State<AgendamentoPage> {
           }
         }
       }
+      print('Hora FIM SIM ${horafim}');
       if (horafim && horaini) {
         return instalacoesRef
             .where('hora_agendada',

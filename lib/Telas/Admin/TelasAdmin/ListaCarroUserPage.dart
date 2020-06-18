@@ -43,44 +43,51 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
   void dispose() {
     super.dispose();
   }
+
   String selectedCategoria = 'Nenhuma';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar('Lista de Carros', context,actions: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: PopupMenuButton(
-            onSelected: (String s) {
+      appBar: myAppBar(
+        'Lista de Carros',
+        context,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PopupMenuButton(
+              onSelected: (String s) {
                 selectedCategoria = s;
                 pc.FilterByCategoria(selectedCategoria);
-            },
-            itemBuilder: (context) {
-              return getCategoriasMenuButton();
-            },
-            initialValue: selectedCategoria,
-            icon: Icon(Icons.filter_list, color: Colors.white),
+              },
+              itemBuilder: (context) {
+                return getCategoriasMenuButton();
+              },
+              initialValue: selectedCategoria,
+              icon: Icon(Icons.filter_list, color: Colors.white),
+            ),
           ),
-        ),
-      ],),
+        ],
+      ),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-        StreamBuilder<List<Carro>>(
-    stream: pc.outCarros,
-            builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
-              if (snapshot.data == null) {
-                return Loading(completed: Text('Erro ao Buscar Carros'));
-              }
+            StreamBuilder<List<Carro>>(
+                stream: pc.outCarros,
+                builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
+                  if (snapshot.data == null) {
+                    return Loading(completed: Text('Erro ao Buscar Carros'));
+                  }
 
-              if (snapshot.data.length == 0) {
-                return Loading(completed: Text('Nenhum Carro encontrado'));
-              }
-              return hText('Total de Carros: ${snapshot.data.length}', context,) ;
-
-            }),
+                  if (snapshot.data.length == 0) {
+                    return Loading(completed: Text('Nenhum Carro encontrado'));
+                  }
+                  return hText(
+                    'Total de Carros: ${snapshot.data.length}',
+                    context,
+                  );
+                }),
             StreamBuilder<List<Carro>>(
               builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
                 if (snapshot.data == null) {
@@ -91,7 +98,7 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                   return Loading(completed: Text('Nenhum Carro encontrado'));
                 }
                 return Expanded(
-                  child:  ListView.builder(
+                  child: ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       Carro p = snapshot.data[index];
@@ -100,7 +107,6 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                     },
                     itemCount: snapshot.data.length,
                   ),
-                 
                 );
               },
               stream: pc.outCarros,
@@ -127,7 +133,7 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                         image: CachedNetworkImageProvider(p.foto),
                       )
                     : Image.asset(
-                            'assets/carro_foto.png',
+                        'assets/carro_foto.png',
                       )),
             Container(
               width: getLargura(context) * .4,
@@ -178,12 +184,20 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                   ));
                   return itens;
                 },
-                icon: Icon(Icons.more_vert))
+                icon: Icon(Icons.more_vert)),
+            IconButton(
+              color: Colors.red,
+              icon: Icon(Icons.remove),
+              onPressed: () {
+                carrosRef.document(p.id).delete();
+              },
+            ),
           ],
         ),
       ),
     ]);
   }
+
   List<PopupMenuItem<String>> getCategoriasMenuButton() {
     {
       List<PopupMenuItem<String>> items = List();
