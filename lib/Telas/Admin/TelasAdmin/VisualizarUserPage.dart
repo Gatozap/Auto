@@ -25,15 +25,19 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
 
   @override
   void dispose() {
-    super.dispose();
+    super.dispose();  
   }
 
   @override
   Widget build(BuildContext context) {
     String initials = '';
-    var words = widget.user.nome.split(' ');
-    for (String word in words) {
-      initials += word.split('')[0].toUpperCase();
+    try {
+      var words = widget.user.nome.split(' ');
+      for (String word in words) {
+        initials += word.split('')[0].toUpperCase();
+      }
+    }catch(err){
+      print("ERROR${err.toString()}");
     }
     // TODO: implement build
     return Scaffold(
@@ -243,28 +247,17 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
                 ],
               ),
               sb,sb,
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding:  EdgeInsets.only(left: 60.0),
-                    child: Column(
-                      children: <Widget>[
-                        hText('Nome', context, color: corPrimaria),sb,
-                        hText('${widget.user.nome_conta == null? widget.user.nome: widget.user.nome_conta}', context)
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                    padding:  EdgeInsets.only(left: 40.0),
-                    child: Column(
-                      children: <Widget>[
-                        hText('CPF da conta', context, color: corPrimaria),sb,
-                        hText('${widget.user.cpf_conta == null? widget.user.cpf: widget.user.cpf_conta}', context)
-                      ],
-                    ),
-                  ),
-                ],
+              Padding(
+                padding:  EdgeInsets.only(left: 8.0),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    hText('Nome', context, color: corPrimaria),sb,
+                    hText('${widget.user.nome_conta == null? widget.user.nome: widget.user.nome_conta}', context),
+                    sb,
+                    hText('CPF da conta', context, color: corPrimaria),sb,
+                    hText('${widget.user.cpf_conta == null? widget.user.cpf: widget.user.cpf_conta}', context)
+                  ],
+                ),
               ),
               sb,
               sb,

@@ -124,6 +124,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                     User u = snapshot.data;
 
                     if (onLoad) {
+                      if(u.endereco == null){
+                        u.endereco = Endereco.Empty();
+                      }
                       controllerNome.text = u.nome;
                       controllerTelefone.text = u.celular;
                       controllerEmail.text = u.email;
@@ -998,6 +1001,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
   Future getImageCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    Helper.localUser.foto = await uploadPicture(
+      image.path,
+    );
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
     pr.style(
@@ -1012,9 +1019,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
           color: Colors.transparent,
         ));
     pr.show();
-    Helper.localUser.foto = await uploadPicture(
-      image.path,
-    );
     perfilController.updateUser(Helper.localUser);
     pr.dismiss();
     dToast('Salvando Foto!');
@@ -1022,6 +1026,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
   Future getImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    Helper.localUser.foto = await uploadPicture(
+      image.path,
+    );
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
     pr.style(
@@ -1036,9 +1044,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
           color: Colors.transparent,
         ));
     pr.show();
-    Helper.localUser.foto = await uploadPicture(
-      image.path,
-    );
     perfilController.updateUser(Helper.localUser);
     pr.dismiss();
     dToast('Salvando Foto!');

@@ -15,6 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'MapController.dart';
 
@@ -146,8 +147,10 @@ class _MyAppState extends State<Racing> {
         onPressed: () async {
           if (started) {
             await FlutterForegroundPlugin.stopForegroundService();
+            Wakelock.disable();
             nb.stopFGS();
             setState(() {
+              Wakelock.disable();
               started = !started;
             });
             dToast('Corrida Finalizada');
@@ -155,9 +158,11 @@ class _MyAppState extends State<Racing> {
             carroSelecionado = (await getDropdownCarros())[0];
             if (carroSelecionado != null) {
               startForegroundService(carroSelecionado).then((v) {
+
                 if (v != null) {
                   mapController.updateCorridaId(v);
                   setState(() {
+
                     started = !started;
                   });
                   Navigator.of(context).pop();
@@ -239,9 +244,10 @@ MapController mapController;
 Future<String> startForegroundService(Carro carroSelecionado) async {
   StreamSubscription subscription;
   String s = await nb.start(carroSelecionado);
+  Wakelock.enable();
   await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
   await FlutterForegroundPlugin.startForegroundService(
-    holdWakeLock: false,
+    holdWakeLock: true,
     onStarted: () {
       final geolocator = Geolocator();
       subscription = geolocator.getPositionStream().listen((v) {

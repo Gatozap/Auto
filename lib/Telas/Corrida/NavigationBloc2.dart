@@ -50,6 +50,7 @@ class NavigationBloc extends BlocBase {
   void dispose() {}
 
   Future<String> start(Carro carroSelecionado, {String id}) async {
+
     FirebaseDatabase.instance.reference().child('Corridas').remove();
     if (id == null) {
       corrida = Corrida(

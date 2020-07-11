@@ -45,51 +45,74 @@ class _HomePageState extends State<HomePage> {
 
   ProgressDialog pr;
   Future getImageCamera(Carro carro, {bool isConfirmacao = false}) async {
-    if (!isConfirmacao) {
-      File image = await ImagePicker.pickImage(source: ImageSource.camera);
-      pr = new ProgressDialog(context,
-          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-      pr.style(
-          message: 'Salvando',
-          borderRadius: 10.0,
-          backgroundColor: Colors.white,
-          progressWidget: Container(
-            padding: EdgeInsets.all(1),
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width * .3,
-            height: MediaQuery.of(context).size.height * .15,
-            color: Colors.transparent,
-          ));
-      pr.show();
-      carro.foto = await uploadPicture(
-        image.path,
-      );
-      carrosRef.document(carro.id).updateData(carro.toJson());
+    try {
+      if (!isConfirmacao) {
+        File image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+        carro.foto = await uploadPicture(
+          image.path,
+        );
+        pr = new ProgressDialog(context,
+            type: ProgressDialogType.Normal,
+            isDismissible: true,
+            showLogs: true);
+        pr.style(
+            message: 'Salvando',
+            borderRadius: 10.0,
+            backgroundColor: Colors.white,
+            progressWidget: Container(
+              padding: EdgeInsets.all(1),
+              alignment: Alignment.center,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * .3,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * .15,
+              color: Colors.transparent,
+            ));
+        pr.show();
+        carrosRef.document(carro.id).updateData(carro.toJson());
+        pr.dismiss();
+        dToast('Salvando Foto!');
+      } else {
+        File image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+        carro.confirmacao = await uploadPicture(
+          image.path,
+        );
+        pr = new ProgressDialog(context,
+            type: ProgressDialogType.Normal,
+            isDismissible: true,
+            showLogs: true);
+        pr.style(
+            message: 'Salvando',
+            borderRadius: 10.0,
+            backgroundColor: Colors.white,
+            progressWidget: Container(
+              padding: EdgeInsets.all(1),
+              alignment: Alignment.center,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * .3,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * .15,
+              color: Colors.transparent,
+            ));
+        pr.show();
+        carro.ultima_confirmacao = DateTime.now();
+        carrosRef.document(carro.id).updateData(carro.toJson());
+        pr.dismiss();
+        dToast('Salvando Foto!');
+      }
+    }catch(err){
+      print('Error:${err.toString()}');
       pr.dismiss();
-      dToast('Salvando Foto!');
-    } else {
-      File image = await ImagePicker.pickImage(source: ImageSource.camera);
-      pr = new ProgressDialog(context,
-          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-      pr.style(
-          message: 'Salvando',
-          borderRadius: 10.0,
-          backgroundColor: Colors.white,
-          progressWidget: Container(
-            padding: EdgeInsets.all(1),
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width * .3,
-            height: MediaQuery.of(context).size.height * .15,
-            color: Colors.transparent,
-          ));
-      pr.show();
-      carro.confirmacao = await uploadPicture(
-        image.path,
-      );
-      carro.ultima_confirmacao = DateTime.now();
-      carrosRef.document(carro.id).updateData(carro.toJson());
-      pr.dismiss();
-      dToast('Salvando Foto!');
     }
   }
 

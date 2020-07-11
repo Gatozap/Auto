@@ -11,7 +11,7 @@ import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Equipamento.dart';
 import 'package:autooh/Objetos/Personagem.dart';
-
+import 'package:autooh/Telas/Admin/TelasAdmin/VisualizarUserPage.dart';
 import 'EstatisticaPage.dart';
 import 'ListaCarroController.dart';
 import 'VisualizarCarroPage.dart';
@@ -46,6 +46,7 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
 
   String selectedCategoria = 'Nenhuma';
 
+  String selectedCidade = 'Todos';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +58,33 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
             padding: const EdgeInsets.all(8.0),
             child: PopupMenuButton(
               onSelected: (String s) {
+                selectedCidade = s;
+                pc.FilterByCidade(selectedCidade);
+              },
+              itemBuilder: (context) {
+                return getCidadesMenuButton();
+              },
+              initialValue: selectedCidade,
+              icon: Icon(MdiIcons.city, color: Colors.yellowAccent),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PopupMenuButton(
+              onSelected: (var s) {
+                pc.FilterByHorarios();
+              },
+              itemBuilder: (context) {
+                return getHorariosMenuButton();
+              },
+              initialValue: {},
+              icon: Icon(MdiIcons.clock, color: Colors.yellowAccent),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PopupMenuButton(
+              onSelected: (String s) {
                 selectedCategoria = s;
                 pc.FilterByCategoria(selectedCategoria);
               },
@@ -64,7 +92,7 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                 return getCategoriasMenuButton();
               },
               initialValue: selectedCategoria,
-              icon: Icon(Icons.filter_list, color: Colors.white),
+              icon: Icon(Icons.filter_list, color: Colors.yellowAccent),
             ),
           ),
         ],
@@ -159,6 +187,17 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
             PopupMenuButton<String>(
                 onSelected: (String s) {
                   switch (s) {
+                    case 'Ver Motorista':
+                      for (User u in pc.users) {
+                        if (u.id == p.dono) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  VisualizarUserPage(
+                                    user: u,
+                                  )));
+                        }
+                      }
+                      break;
                     case 'editar':
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VisualizarCarroPage(
@@ -182,16 +221,20 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                     child: hText('Editar', context),
                     value: 'editar',
                   ));
+                  itens.add(PopupMenuItem(
+                    child: hText('Ver Motorista', context),
+                    value: 'Ver Motorista',
+                  ));
                   return itens;
                 },
                 icon: Icon(Icons.more_vert)),
-            IconButton(
+            /*IconButton(
               color: Colors.red,
               icon: Icon(Icons.remove),
               onPressed: () {
                 carrosRef.document(p.id).delete();
               },
-            ),
+            ),*/
           ],
         ),
       ),
@@ -209,5 +252,60 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
           value: 'vidro_traseiro', child: Text('Vidro Traseiro')));
       return items;
     }
+  }
+
+  List<PopupMenuItem> getHorariosMenuButton() {
+    List<PopupMenuItem> items = List();
+    items.add(PopupMenuItem(
+        value: pc.horarios[0],
+        child: StreamBuilder(
+            stream: pc.outHorarios,
+            builder: (context, horarios) {
+              return defaultCheckBox(
+                  horarios.data[0]['manha'], 'Manha', context, () {
+                print("CLICK LALAL");
+                horarios.data[0]['manha'] = !horarios.data[0]['manha'];
+                pc.horarios = horarios.data;
+                pc.inHorarios.add(horarios.data);
+                pc.FilterByHorarios();
+              });
+            })));
+    items.add(PopupMenuItem(
+        value: pc.horarios[1],
+        child: StreamBuilder(
+            stream: pc.outHorarios,
+            builder: (context, horarios) {
+              return defaultCheckBox(
+                  horarios.data[1]['tarde'], 'Tarde', context, () {
+                print("CLICK LALAL");
+                horarios.data[1]['tarde'] = !horarios.data[1]['tarde'];
+                pc.horarios = horarios.data;
+                pc.inHorarios.add(horarios.data);
+                pc.FilterByHorarios();
+              });
+            })));
+    items.add(PopupMenuItem(
+        value: pc.horarios[2],
+        child: StreamBuilder(
+            stream: pc.outHorarios,
+            builder: (context, horarios) {
+              return defaultCheckBox(
+                  horarios.data[2]['noite'], 'Noite', context, () {
+                print("CLICK LALAL");
+                horarios.data[2]['noite'] = !horarios.data[2]['noite'];
+                pc.horarios = horarios.data;
+                pc.inHorarios.add(horarios.data);
+                pc.FilterByHorarios();
+              });
+            })));
+    return items;
+  }
+
+  List<PopupMenuItem<String>> getCidadesMenuButton() {
+    List<PopupMenuItem<String>> items = List();
+    items.add(PopupMenuItem(value: 'Todos', child: Text('Todos')));
+    items.add(PopupMenuItem(value: 'Aparecida de Goiânia', child: Text('Aparecida de Goiânia')));
+    items.add(PopupMenuItem(value: 'Goiânia', child: Text('Goiânia')));
+    return items;
   }
 }

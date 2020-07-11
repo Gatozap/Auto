@@ -951,7 +951,7 @@ class _CadastroState extends State<Cadastro> {
                                                                               BorderRadius.circular(60)),
                                                                       onPressed:
                                                                           () async {
-                                                                        if (int.parse(controllerKmsmin.text) >
+                                                                        if (int.parse(controllerKmsmin.text) >=
                                                                             4000) {
                                                                           List<Carro>
                                                                               carros =
@@ -2294,6 +2294,11 @@ class _CadastroState extends State<Cadastro> {
 
   Future getImageCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+
+    Helper.localUser.foto = await uploadPicture(
+      image.path,
+    );
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
     pr.style(
@@ -2308,10 +2313,6 @@ class _CadastroState extends State<Cadastro> {
           color: Colors.transparent,
         ));
     pr.show();
-
-    Helper.localUser.foto = await uploadPicture(
-      image.path,
-    );
     print('Helper ${Helper.localUser}');
     if (perfilController == null) {
       perfilController = new PerfilController(Helper.localUser);
@@ -2323,6 +2324,10 @@ class _CadastroState extends State<Cadastro> {
 
   Future getImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    Helper.localUser.foto = await uploadPicture(
+      image.path,
+    );
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
     pr.style(
@@ -2337,9 +2342,6 @@ class _CadastroState extends State<Cadastro> {
           color: Colors.transparent,
         ));
     pr.show();
-    Helper.localUser.foto = await uploadPicture(
-      image.path,
-    );
     if (perfilController == null) {
       perfilController = new PerfilController(Helper.localUser);
     }
