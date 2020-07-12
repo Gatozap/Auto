@@ -888,35 +888,8 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     );
   }
 
-  ProgressDialog pr;
   Future getDocumentoCamera(User u) async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-          child: SpinKitCircle(
-            color: corPrimaria,
-            size: 80,
-          ),
-        ),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
-        progress: 0.0,
-        maxProgress: 100.0,
-        progressTextStyle: TextStyle(
-            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
-        messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600));
-    pr.show();
     if (u.documentos == null) {
       u.documentos = new List();
     }
@@ -942,38 +915,11 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
     u.documentos.add(d);
     perfilController.updateUser(u);
-    pr.dismiss();
     dToast('Salvando Documento!');
   }
 
   Future getDocumento(User u) async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-          child: SpinKitCircle(
-            color: corPrimaria,
-            size: 80,
-          ),
-        ),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
-        progress: 0.0,
-        maxProgress: 100.0,
-        progressTextStyle: TextStyle(
-            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
-        messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600));
-    pr.show();
     if (u.documentos == null) {
       u.documentos = new List();
     }
@@ -1000,7 +946,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
     u.documentos.add(d);
     perfilController.updateUser(u);
-    pr.dismiss();
     dToast('Salvando Documento!');
   }
 
@@ -1010,22 +955,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     Helper.localUser.foto = await uploadPicture(
       image.path,
     );
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-        ));
-    pr.show();
     perfilController.updateUser(Helper.localUser);
-    pr.dismiss();
     dToast('Salvando Foto!');
   }
   Future getImage2() async {
@@ -1034,25 +964,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     Helper.localUser.foto = await uploadPicture(
       image.path,
     );
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-        ));
-    pr.show();
     if (perfilController == null) {
       perfilController = new PerfilController(Helper.localUser);
     }
     perfilController.updateUser(Helper.localUser);
-    pr.dismiss();
   }
 
   Future getImage() async {
@@ -1064,23 +979,8 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     Helper.localUser.foto = await uploadPicture(
       image.path,
     );
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-        ));
-    pr.show();
 
     perfilController.updateUser(Helper.localUser);
-    pr.dismiss();
   }
 
 

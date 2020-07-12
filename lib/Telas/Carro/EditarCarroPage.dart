@@ -562,73 +562,29 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
     });
   }
 
-  ProgressDialog pr;
-
   Future getImageCamera(Carro carro, {bool isConfirmacao = false}) async {
     if (!isConfirmacao) {
       File image = await ImagePicker.pickImage(source: ImageSource.camera);
-      pr = new ProgressDialog(context,
-          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-      pr.style(
-          message: 'Salvando',
-          borderRadius: 10.0,
-          backgroundColor: Colors.white,
-          progressWidget: Container(
-            padding: EdgeInsets.all(1),
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width * .3,
-            height: MediaQuery.of(context).size.height * .15,
-            color: Colors.transparent,
-          ));
-      pr.show();
+
       carro.foto = await uploadPicture(
         image.path,
       );
       carroController.updateCarro(carro);
-      pr.dismiss();
       dToast('Salvando Foto!');
     } else {
       File image = await ImagePicker.pickImage(source: ImageSource.camera);
-      pr = new ProgressDialog(context,
-          type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-      pr.style(
-          message: 'Salvando',
-          borderRadius: 10.0,
-          backgroundColor: Colors.white,
-          progressWidget: Container(
-            padding: EdgeInsets.all(1),
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width * .3,
-            height: MediaQuery.of(context).size.height * .15,
-            color: Colors.transparent,
-          ));
-      pr.show();
       carro.confirmacao = await uploadPicture(
         image.path,
       );
       carro.ultima_confirmacao = DateTime.now();
       carroController.updateCarro(carro);
-      pr.dismiss();
       dToast('Salvando Foto!');
     }
   }
 
   Future getImage(Carro carro) async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-        ));
-    pr.show();
+
     if(carro == null){
       carro = Carro();
     }
@@ -637,7 +593,6 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
     );
 
     carroController.updateCarro(carro);
-    pr.dismiss();
     dToast('Salvando Foto!');
   }
 }

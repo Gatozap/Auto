@@ -43,7 +43,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   EstatisticaController ec;
 
-  ProgressDialog pr;
   Future getImageCamera(Carro carro, {bool isConfirmacao = false}) async {
     try {
       if (!isConfirmacao) {
@@ -52,30 +51,7 @@ class _HomePageState extends State<HomePage> {
         carro.foto = await uploadPicture(
           image.path,
         );
-        pr = new ProgressDialog(context,
-            type: ProgressDialogType.Normal,
-            isDismissible: true,
-            showLogs: true);
-        pr.style(
-            message: 'Salvando',
-            borderRadius: 10.0,
-            backgroundColor: Colors.white,
-            progressWidget: Container(
-              padding: EdgeInsets.all(1),
-              alignment: Alignment.center,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * .3,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * .15,
-              color: Colors.transparent,
-            ));
-        pr.show();
         carrosRef.document(carro.id).updateData(carro.toJson());
-        pr.dismiss();
         dToast('Salvando Foto!');
       } else {
         File image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -83,36 +59,12 @@ class _HomePageState extends State<HomePage> {
         carro.confirmacao = await uploadPicture(
           image.path,
         );
-        pr = new ProgressDialog(context,
-            type: ProgressDialogType.Normal,
-            isDismissible: true,
-            showLogs: true);
-        pr.style(
-            message: 'Salvando',
-            borderRadius: 10.0,
-            backgroundColor: Colors.white,
-            progressWidget: Container(
-              padding: EdgeInsets.all(1),
-              alignment: Alignment.center,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * .3,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * .15,
-              color: Colors.transparent,
-            ));
-        pr.show();
         carro.ultima_confirmacao = DateTime.now();
         carrosRef.document(carro.id).updateData(carro.toJson());
-        pr.dismiss();
         dToast('Salvando Foto!');
       }
     }catch(err){
       print('Error:${err.toString()}');
-      pr.dismiss();
     }
   }
 
@@ -229,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                                         weight: FontWeight.bold);
                                   }
                                   return FutureBuilder(
-                                    builder: (context, snap) {
+                                    builder: (context , snap) {
                                       if (snap.data == null) {
                                         return hText('R\$0.00', context,
                                             color: corPrimaria,

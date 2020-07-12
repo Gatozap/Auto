@@ -2299,27 +2299,11 @@ class _CadastroState extends State<Cadastro> {
     Helper.localUser.foto = await uploadPicture(
       image.path,
     );
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-        ));
-    pr.show();
     print('Helper ${Helper.localUser}');
     if (perfilController == null) {
       perfilController = new PerfilController(Helper.localUser);
     }
     perfilController.updateUser(Helper.localUser);
-
-    pr.dismiss();
   }
 
   Future getImage() async {
@@ -2328,25 +2312,10 @@ class _CadastroState extends State<Cadastro> {
     Helper.localUser.foto = await uploadPicture(
       image.path,
     );
-    pr = new ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Salvando',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: Container(
-          padding: EdgeInsets.all(1),
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * .3,
-          height: MediaQuery.of(context).size.height * .15,
-          color: Colors.transparent,
-        ));
-    pr.show();
     if (perfilController == null) {
       perfilController = new PerfilController(Helper.localUser);
     }
     perfilController.updateUser(Helper.localUser);
-    pr.dismiss();
   }
 
   Widget seletorAnunciosCarro() {
