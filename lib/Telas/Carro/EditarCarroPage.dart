@@ -629,6 +629,9 @@ class _EditarCarroPageState extends State<EditarCarroPage> {
           color: Colors.transparent,
         ));
     pr.show();
+    if(carro == null){
+      carro = Carro();
+    }
     carro.foto = await uploadPicture(
       image.path,
     );

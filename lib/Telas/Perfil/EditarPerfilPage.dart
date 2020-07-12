@@ -132,6 +132,8 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                       controllerEmail.text = u.email;
                       controllerConta_bancaria.text = u.conta_bancaria;
                       controllerAgencia.text = u.agencia;
+                      controllerCEP.text =
+                          ue.cep;
                       controllerNumero_conta.text = u.numero_conta;
                       controllerCPFBanco.text = '${(u.cpf_conta == null? u.cpf: u.cpf_conta)}';
                       controllerNomeBanco.text = '${(u.nome_conta == null? u.nome: u.nome_conta)}';
@@ -139,7 +141,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                       controllerKmmax.text = u.kmmax.toString();
                       print("AQUI ENDEREÇO ${u.endereco.toString()}");
                       if(controllerCEP.text.isEmpty){
-                        controllerCEP.text = u.endereco.cep == null? '0': u.endereco.cep;
+                        controllerCEP.text =
+                        u.endereco.cep != null
+                            ? u.endereco.cep
+                            : '0';
                       }
 
                       if (controllerCidade.text.isEmpty) {
@@ -1023,8 +1028,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     pr.dismiss();
     dToast('Salvando Foto!');
   }
-
-  Future getImage() async {
+  Future getImage2() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     Helper.localUser.foto = await uploadPicture(
@@ -1044,8 +1048,40 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
           color: Colors.transparent,
         ));
     pr.show();
+    if (perfilController == null) {
+      perfilController = new PerfilController(Helper.localUser);
+    }
     perfilController.updateUser(Helper.localUser);
     pr.dismiss();
-    dToast('Salvando Foto!');
   }
+
+  Future getImage() async {
+    if (perfilController == null) {
+      perfilController = new PerfilController(Helper.localUser);
+    }
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    Helper.localUser.foto = await uploadPicture(
+      image.path,
+    );
+    pr = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+    pr.style(
+        message: 'Salvando',
+        borderRadius: 10.0,
+        backgroundColor: Colors.white,
+        progressWidget: Container(
+          padding: EdgeInsets.all(1),
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width * .3,
+          height: MediaQuery.of(context).size.height * .15,
+          color: Colors.transparent,
+        ));
+    pr.show();
+
+    perfilController.updateUser(Helper.localUser);
+    pr.dismiss();
+  }
+
+
 }

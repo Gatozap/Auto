@@ -133,7 +133,7 @@ class _CadastroState extends State<Cadastro> {
 
   var controllerConta_bancaria = new TextEditingController(text: '');
   var controllerNomeBanco = new TextEditingController(text: '');
-  var controllerCPFBanco = new TextEditingController(text: '');
+  var controllerCPFBanco = new MaskedTextController(text: '', mask: '000.000.000-00');
   var controllerTipocarro = new TextEditingController(text: '');
   var controllerCor = new TextEditingController(text: '');
   var controllerPlaca = new TextEditingController(text: '');
