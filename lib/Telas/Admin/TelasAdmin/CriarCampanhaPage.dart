@@ -703,7 +703,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
-                              'assets/bancos.jpeg'),
+                              'assets/bancos.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_bancos == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -748,7 +748,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
-                              'assets/lateral.jpg'),
+                              'assets/lateral.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_laterais == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -815,7 +815,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
-                              'assets/vidro_traseiro.jpg'),
+                              'assets/vidro_traseiro.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_vidro_traseiro == false
                           ? Border.all(color: Colors.black, width: 3)

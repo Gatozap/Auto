@@ -30,7 +30,7 @@ import 'Helpers/NotificacoesHelper.dart';
 import 'Helpers/References.dart';
 import 'Objetos/Notificacao.dart';
 import 'Objetos/Zona.dart';
-import 'Telas/Cadastro/CadastroPage.dart';  
+import 'Telas/Cadastro/CadastroPage.dart';
 import 'Telas/Compartilhados/WaitScreen.dart';
 
 FirebaseDatabase database;
@@ -254,11 +254,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void registrarZonas() {
-    zonasRef.getDocuments().then((value){
-      for(var d in value.documents) {
+    zonasRef.getDocuments().then((value) {
+      for (var d in value.documents) {
         Zona z = Zona.fromJson(d.data);
-        for(Zona z1 in zonas){
-          if(z1.nome == z.nome){
+        for (Zona z1 in zonas) {
+          if (z1.nome == z.nome) {
             zonasRef.document(d.documentID).updateData(z1.toJson());
           }
         }

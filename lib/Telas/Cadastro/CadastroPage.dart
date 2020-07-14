@@ -764,7 +764,7 @@ class _CadastroState extends State<Cadastro> {
                                                             labelColor: corSecundaria,
                                                             iconColor: corSecundaria,
                                                         icon: MdiIcons.runFast,
-                                                        hintText: '400',
+                                                        hintText: '4009',
                                                         labelText: 'Km Mínimo',
                                                       ),
                                                     ),
@@ -792,7 +792,7 @@ class _CadastroState extends State<Cadastro> {
                                                             labelColor: corSecundaria,
                                                             iconColor: corSecundaria,
                                                         icon: MdiIcons.runFast,
-                                                        hintText: '1500',
+                                                        hintText: '7500',
                                                         labelText: 'Km Máximo',
                                                       ),
                                                     ),
@@ -952,7 +952,7 @@ class _CadastroState extends State<Cadastro> {
                                                                       onPressed:
                                                                           () async {
                                                                         if (int.parse(controllerKmsmin.text) >=
-                                                                            4000) {
+                                                                            3999) {
                                                                           List<Carro>
                                                                               carros =
                                                                               new List();
@@ -2360,7 +2360,7 @@ class _CadastroState extends State<Cadastro> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/bancos.jpeg'),
+                          image: AssetImage('assets/bancos.png'),
                           fit: BoxFit.cover),
                       border: carro.is_anuncio_bancos == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -2404,7 +2404,7 @@ class _CadastroState extends State<Cadastro> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/lateral.jpg'),
+                          image: AssetImage('assets/lateral.png'),
                           fit: BoxFit.cover),
                       border: carro.is_anuncio_laterais == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -2469,7 +2469,7 @@ class _CadastroState extends State<Cadastro> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/vidro_traseiro.jpg'),
+                          image: AssetImage('assets/vidro_traseiro.png'),
                           fit: BoxFit.cover),
                       border: carro.is_anuncio_vidro_traseiro == false
                           ? Border.all(color: Colors.black, width: 3)
