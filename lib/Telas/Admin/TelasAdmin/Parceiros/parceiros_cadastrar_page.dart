@@ -420,8 +420,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                   ),
                                                   new Padding(
                                                     padding: ei,
-                                                    child: TextFormField(
-                                                      controller:
+                                                    child: TextFormFieldcontroller:
                                                       controllerCidade,
                                                       validator: (value) {
                                                         if (value.isEmpty) {

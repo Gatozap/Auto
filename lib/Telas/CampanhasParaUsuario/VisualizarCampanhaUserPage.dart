@@ -282,7 +282,7 @@ class _VisualizarCampanhaUserPageState
                                     Column(
                                       children: <Widget>[],
                                     ),
-                                    hText('Sobre a Campanha: ', context,
+                                    hText('Sobre a campanha: ', context,
                                         color: corPrimaria)
                                   ],
                                 ),
@@ -336,7 +336,7 @@ class _VisualizarCampanhaUserPageState
                                     Icon(FontAwesomeIcons.carSide,
                                         color: corPrimaria),
                                     sb,
-                                    hText('Minimo Mensal: ', context,
+                                    hText('Mínimo Mensal: ', context,
                                         color: corPrimaria),
                                     hText('${campanha.kmMinima == null? 0:campanha.kmMinima.toStringAsFixed(0)} Km', context)
                                   ],
@@ -395,7 +395,7 @@ class _VisualizarCampanhaUserPageState
                                             : Icon(MdiIcons.close,
                                                 color: Colors.red),
                                         sb,
-                                        hText('Atende final de semana', context,
+                                        hText('Atende aos finais de semana', context,
                                             color: corPrimaria)
                                       ],
                                     ),
@@ -421,7 +421,7 @@ class _VisualizarCampanhaUserPageState
                                             : Icon(MdiIcons.close,
                                                 color: Colors.red),
                                         sb,
-                                        hText('Atende a Tarde', context,
+                                        hText('Atende à tarde', context,
                                             color: corPrimaria)
                                       ],
                                     ),
@@ -434,7 +434,7 @@ class _VisualizarCampanhaUserPageState
                                             : Icon(MdiIcons.close,
                                                 color: Colors.red),
                                         sb,
-                                        hText('Atende de Manhã', context,
+                                        hText('Atende de manhã', context,
                                             color: corPrimaria)
                                       ],
                                     ),
@@ -447,7 +447,7 @@ class _VisualizarCampanhaUserPageState
                                             : Icon(MdiIcons.close,
                                                 color: Colors.red),
                                         sb,
-                                        hText('Atende de Noite', context,
+                                        hText('Atende à noite', context,
                                             color: corPrimaria)
                                       ],
                                     ),
@@ -460,7 +460,7 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: hText(
-                                    'Preferências de onde colocar o anúncio desta Campanha',
+                                    'Preferências para campanha',
                                     context),
                               ),
                               sb,
@@ -480,7 +480,7 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: hText(
-                                    'Zonas que a Campanha Abrange ', context),
+                                    'Zonas que a campanha abrange', context),
                               ),
                               sb,
                               Divider(color: corPrimaria),
@@ -559,7 +559,7 @@ class _VisualizarCampanhaUserPageState
                                 children: <Widget>[
                                   Container(
                                     child: defaultActionButton(
-                                        'Solicitar Participação', context, () {
+                                        'Solicitar participação', context, () {
                                           carrosRef.where("dono",isEqualTo: Helper.localUser.id).getDocuments().then((carro){
                                             Carro c = Carro.fromJson(carro.documents[0].data);
 

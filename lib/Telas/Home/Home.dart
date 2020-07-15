@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomDrawerWidget(),
-      appBar: myAppBar('Bem vindo, ${Helper.localUser.nome}', context),
+      appBar: myAppBar('Bem-vindo, ${Helper.localUser.nome}', context),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                                   return FutureBuilder(
                                     builder: (context , snap) {
                                       if (snap.data == null) {
-                                        return hText('R\$0.00', context,
+                                        return hText('Saldo atual', context,
                                             color: corPrimaria,
                                             style: FontStyle.normal,
                                             weight: FontWeight.bold);
@@ -207,13 +207,13 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            hText('Km\'s Atuais', context, color: Colors.black),
+                            hText('Quilômetros atuais', context, color: Colors.black),
                             SizedBox(height: 5),
                             StreamBuilder(
                                 stream: ec.outCorridas,
                                 builder: (context, snapshot) {
                                   if (snapshot.data == null) {
-                                    return hText('Km\'s: 0.0', context,
+                                    return hText('Quilômetros atuais\nsem corridas', context,
                                         color: corPrimaria,
                                         style: FontStyle.normal,
                                         weight: FontWeight.bold);
@@ -443,7 +443,7 @@ class _HomePageState extends State<HomePage> {
                               child: Icon(MdiIcons.redhat,
                                   color: Colors.yellowAccent, size: 40),
                             ),
-                            hText('Solicitacoes', context,
+                            hText('Solicitações', context,
                                 color: Colors.white,
                                 textaling: TextAlign.center)
                           ],

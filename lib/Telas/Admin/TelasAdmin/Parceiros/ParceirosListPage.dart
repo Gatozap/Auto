@@ -46,7 +46,7 @@ class ParceirosListPageState extends State<ParceirosListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar('Locais de Instalacao', context),
+      appBar: myAppBar('Locais de instalação', context),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,

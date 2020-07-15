@@ -328,7 +328,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   controller: controllerPrecoMes,
                                   hint: 'R\$300.00',
                                   context: context,
-                                  label: 'Valor da Campanha ao Mês',
+                                  label: 'Valor da campanha ao mês',
                                   icon: FontAwesomeIcons.moneyBillAlt,
                                   validator: (value) {
                                     if (value.isEmpty) {
@@ -378,7 +378,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   defaultCheckBox(
                                          campanha.final_de_semana
                                          ,
-                                      'Campanha no Final de Semana',
+                                      'Atende aos finais de semana',
                                       context, () {
                                     campanha.final_de_semana =
                                     ! campanha.final_de_semana;
@@ -390,7 +390,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   defaultCheckBox(
                                       campanha.atende_festas
                                       ,
-                                      'Campanha para atendimento em festas',
+                                      'Atende em festas',
                                       context, () {
                                     campanha.atende_festas =
                                     ! campanha.atende_festas;
@@ -404,7 +404,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   defaultCheckBox(
                                       campanha.tarde
                                       ,
-                                      'Campanha no perido da Tarde',
+                                      'Atende à tarde',
                                       context, () {
                                     campanha.tarde =
                                     ! campanha.tarde;
@@ -416,7 +416,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   defaultCheckBox(
                                       campanha.manha
                                       ,
-                                      'Campanha no perido da manhã',
+                                      'Atende de manhã',
                                       context, () {
                                     campanha.manha =
                                     ! campanha.manha;
@@ -428,7 +428,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   defaultCheckBox(
                                       campanha.noite
                                       ,
-                                      'Campanha no perido da Noite',
+                                      'Atende à noite',
                                       context, () {
                                     campanha.noite =
                                     ! campanha.noite;
@@ -461,7 +461,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       Icon(Icons.map, color: corPrimaria),
                                       sb,
                                       hText(
-                                        'Selecione as Zonas da Campanha',
+                                        'Zonas que a campanha abrange',
                                         context,
                                         size: 40,
                                         color: corPrimaria,

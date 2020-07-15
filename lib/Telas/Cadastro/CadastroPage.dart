@@ -432,7 +432,7 @@ class _CadastroState extends State<Cadastro> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 SizedBox(height: 60),
-                                hText('Insira os dados de sua conta Bancaria',
+                                hText('Insira os dados de sua conta bancária',
                                     context),
                                 sb,
                                 Divider(
@@ -613,7 +613,7 @@ class _CadastroState extends State<Cadastro> {
                                               sb,
                                               sb,
                                               Text(
-                                                'Cadastre seu Carro',
+                                                'Cadastre seu carro',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 20),
@@ -732,7 +732,7 @@ class _CadastroState extends State<Cadastro> {
                                               Divider(color: corSecundaria),
                                               sb,
                                               hText(
-                                                  'Quanto quilometros você em média anda por mês?',
+                                                  'Quanto quilômetros você anda em média por mês?',
                                                   context,
                                                   color: Colors.white,
                                                   size: 50),
@@ -751,7 +751,7 @@ class _CadastroState extends State<Cadastro> {
                                                       validator: (value) {
                                                         if (value.isEmpty) {
                                                           if (isCadastrarPressed) {
-                                                            return 'É necessário preencher a quantia de Kms rodados';
+                                                            return 'É necessário preencher a quantia de quilômetros rodados';
                                                           }
                                                         }
                                                       },
@@ -765,7 +765,7 @@ class _CadastroState extends State<Cadastro> {
                                                             iconColor: corSecundaria,
                                                         icon: MdiIcons.runFast,
                                                         hintText: '4009',
-                                                        labelText: 'Km Mínimo',
+                                                        labelText: 'Quilometragem mínima',
                                                       ),
                                                     ),
                                                   ),
@@ -779,7 +779,7 @@ class _CadastroState extends State<Cadastro> {
                                                       validator: (value) {
                                                         if (value.isEmpty) {
                                                           if (isCadastrarPressed) {
-                                                            return 'É necessário preencher a quantia de Kms rodados';
+                                                            return 'É necessário preencher a quantia de quilômetros rodados';
                                                           }
                                                         }
                                                       },
@@ -793,7 +793,7 @@ class _CadastroState extends State<Cadastro> {
                                                             iconColor: corSecundaria,
                                                         icon: MdiIcons.runFast,
                                                         hintText: '7500',
-                                                        labelText: 'Km Máximo',
+                                                        labelText: 'Quilometragem máxima',
                                                       ),
                                                     ),
                                                   ),
@@ -821,7 +821,7 @@ class _CadastroState extends State<Cadastro> {
                                                           defaultCheckBox(
                                                               Helper.localUser
                                                                   .atende_fds,
-                                                              'Atende Final de Semana',
+                                                              'Atende aos finais de semana',
                                                               context, () {
                                                             Helper.localUser
                                                                     .atende_fds =
@@ -839,7 +839,7 @@ class _CadastroState extends State<Cadastro> {
                                                           defaultCheckBox(
                                                               Helper.localUser
                                                                   .atende_festa,
-                                                              'Atende em Festas',
+                                                              'Atende festas',
                                                               context, () {
                                                             Helper.localUser
                                                                     .atende_festa =
@@ -859,7 +859,7 @@ class _CadastroState extends State<Cadastro> {
                                                                   corSecundaria),
                                                           sb,
                                                           hText(
-                                                              'Marque qual periodo costuma trabalhar',
+                                                              'Marque qual período costuma trabalhar',
                                                               context,
                                                               color:
                                                                   corSecundaria,
@@ -2379,7 +2379,7 @@ class _CadastroState extends State<Cadastro> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: defaultCheckBox(carro.is_anuncio_bancos,
-                                'Bancos Traseiros', context, () {
+                                'Bancos traseiros', context, () {
                               carro.is_anuncio_bancos =
                                   !carro.is_anuncio_bancos;
                               carroController.carroSelecionado = carro;
@@ -2448,7 +2448,7 @@ class _CadastroState extends State<Cadastro> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
                       child: defaultCheckBox(carro.is_anuncio_traseira_completa,
-                          'Traseira Completa', context, () {
+                          'Traseira completa', context, () {
                         carro.is_anuncio_traseira_completa =
                             !carro.is_anuncio_traseira_completa;
                         carroController.carroSelecionado = carro;
@@ -2481,7 +2481,7 @@ class _CadastroState extends State<Cadastro> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
                       child: defaultCheckBox(carro.is_anuncio_vidro_traseiro,
-                          'Vidro traseira', context, () {
+                          'Vidro da traseira', context, () {
                         carro.is_anuncio_vidro_traseiro =
                             !carro.is_anuncio_vidro_traseiro;
                         carroController.carroSelecionado = carro;
