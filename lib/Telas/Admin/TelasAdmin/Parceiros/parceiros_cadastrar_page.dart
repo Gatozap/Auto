@@ -420,7 +420,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                   ),
                                                   new Padding(
                                                     padding: ei,
-                                                    child: TextFormFieldcontroller:
+                                                    child: TextFormField(controller:
                                                       controllerCidade,
                                                       validator: (value) {
                                                         if (value.isEmpty) {
@@ -428,7 +428,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
                                                         } else {
                                                           ue.cidade = value;
                                                           aec.inEndereco
-                                                              .add(ue);
+                                                                  .add(ue);
                                                         }
                                                       },
                                                       decoration:
