@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'BadgerController.dart';
 import 'Helper.dart';
 import 'NewsController.dart';
+import 'Styles.dart';
 
 class NotificacoesHelper {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -33,6 +34,56 @@ class NotificacoesHelper {
   }*/
 
   final _random = new Random();
+
+
+  Future agendarFimNotificacao(Time time) async {
+    try {
+      var androidPlatformChannelSpecifics =
+      AndroidNotificationDetails('repeatDailyAtTime channel id',
+        'repeatDailyAtTime channel name', 'repeatDailyAtTime description',
+        icon: iconPath,
+        largeIcon: iconPath,
+        largeIconBitmapSource: BitmapSource.FilePath,
+        importance: Importance.Max,
+        priority: Priority.High,);
+      var iOSPlatformChannelSpecifics =
+      IOSNotificationDetails();
+      var platformChannelSpecifics = NotificationDetails(
+          androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+      await flutterLocalNotificationsPlugin.showDailyAtTime(
+          0,
+          'Não esqueca de finalizar sua corrida',
+          'Caso não esteja participando de uma campanha, peça para participar e começe a faturar!',
+          time,
+          platformChannelSpecifics);
+    }catch(err) {
+      print('Error:${err.toString()}');
+    }
+  }
+  Future agendarNotificacao(Time time) async {
+    try {
+      var androidPlatformChannelSpecifics =
+      AndroidNotificationDetails('repeatDailyAtTime channel id',
+        'repeatDailyAtTime channel name', 'repeatDailyAtTime description',
+        icon: iconPath,
+        largeIcon: iconPath,
+        largeIconBitmapSource: BitmapSource.FilePath,
+        importance: Importance.Max,
+        priority: Priority.High,);
+      var iOSPlatformChannelSpecifics =
+      IOSNotificationDetails();
+      var platformChannelSpecifics = NotificationDetails(
+          androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+      await flutterLocalNotificationsPlugin.showDailyAtTime(
+          0,
+          'Não esqueca de iniciar sua corrida',
+          'Caso não esteja participando de uma campanha, peça para participar e começe a faturar!',
+          time,
+          platformChannelSpecifics);
+    }catch(err) {
+      print('Error:${err.toString()}');
+    }
+  }
 
   Future<String> _downloadAndSaveImage(String url, String fileName) async {
     var directory = await getApplicationDocumentsDirectory();

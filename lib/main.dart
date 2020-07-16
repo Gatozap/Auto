@@ -122,7 +122,7 @@ class _MyAppState extends State<MyApp> {
         [SystemUiOverlay.bottom, SystemUiOverlay.top]);
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     var initializationSettingsAndroid =
-        new AndroidInitializationSettings('autooh');
+        new AndroidInitializationSettings('auto');
     var initializationSettingsIOS = new IOSInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
@@ -202,8 +202,9 @@ class _MyAppState extends State<MyApp> {
                       future: userRef.document(future.data.uid).get(),
                       builder: (context, v) {
                         if (v.hasData) {
-                          if (v.data != null) {
-                            if (v.data['id'] != null) {
+                          if (v.data.data != null) {
+                            print('AQUI V ${v.data.data}');
+                            if (v.data.data['id'] != null) {
                               Helper.localUser = User.fromJson(v.data);
                               if (Helper.localUser.isPrestador == null) {
                                 return Cadastro();

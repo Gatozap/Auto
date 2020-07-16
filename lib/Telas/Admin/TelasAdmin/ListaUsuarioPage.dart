@@ -41,6 +41,9 @@ class ListaUsuarioPageState extends State<ListaUsuarioPage> {
     }
   }
 
+  var searchController = TextEditingController();
+  FocusNode myFocusNode;
+
   @override
   void dispose() {
     super.dispose();
@@ -70,6 +73,116 @@ class ListaUsuarioPageState extends State<ListaUsuarioPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+
+          Container(
+          height: 35,
+          child: TextFormField(
+            onTap: () {
+            },
+            onChanged: (s) {
+              pc.inSearchText.add(s);
+              pc.FilterByNome(s);
+            },
+            validator: (s) {
+              return null;
+            },
+            scrollPadding: EdgeInsets.all(5),
+            controller: searchController,
+            focusNode: myFocusNode,
+            onFieldSubmitted: (s) {
+              pc.inSearchText.add(s);
+              pc.FilterByNome(s);
+              myFocusNode.unfocus();
+            },
+            autofocus: false,
+            style: TextStyle(fontSize: 13),
+            decoration: InputDecoration(
+              //isCollapsed: true,
+                hintText: 'Procurando alguém?',
+                contentPadding:
+                new EdgeInsets.fromLTRB(8, 8, 4, 8),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide(
+                      color: Colors.white, width: 0.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide(
+                      color: Colors.white, width: 0.0),
+                ),
+                suffixIcon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    StreamBuilder(
+                        stream: pc.outSearchText,
+                        builder: (context, snapshot) {
+                          if (snapshot.data == '0') {
+                            return Container();
+                          }
+                          return Container(
+                            child: MaterialButton(
+                              onPressed: () {
+                                pc.inSearchText.add('0');
+                                searchController.text = '';
+                                myFocusNode.unfocus();
+                              },
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(60),
+                              ),
+                              elevation: 0,
+                              padding: EdgeInsets.all(0),
+                              child: Icon(
+                                Icons.clear,
+                                color: Colors.grey,
+                                size: 18,
+                              ),
+                            ),
+                            height: 25,
+                            width: 25,
+                          );
+                        }),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      child: MaterialButton(
+                        onPressed: () {
+                          pc.inSearchText.add(searchController.text);
+                          pc.FilterByNome(searchController.text);
+                          myFocusNode.unfocus();
+                        },
+                        color: corPrimaria,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(60),
+                        ),
+                        elevation: 0,
+                        padding: EdgeInsets.all(0),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                      height: 25,
+                      width: 25,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                  ],
+                ),
+                hintStyle: TextStyle(fontSize: 13),
+                fillColor: Colors.white),
+          ),
+        ),
             StreamBuilder<List<User>>(
                 stream: pc.outUsers,
                 builder: (context, AsyncSnapshot<List<User>> snapshot) {

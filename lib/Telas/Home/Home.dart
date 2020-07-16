@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/ListaEquipamentos.dart';
+import 'package:autooh/Helpers/NotificacoesHelper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Carro.dart';
@@ -23,6 +24,7 @@ import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Grupo.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Home/GruposController.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:googleapis/classroom/v1.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,11 +65,10 @@ class _HomePageState extends State<HomePage> {
         carrosRef.document(carro.id).updateData(carro.toJson());
         dToast('Salvando Foto!');
       }
-    }catch(err){
+    } catch (err) {
       print('Error:${err.toString()}');
     }
   }
-
 
   @override
   void initState() {
@@ -76,6 +77,13 @@ class _HomePageState extends State<HomePage> {
       /* Navigator.push(
           context, MaterialPageRoute(builder: (context) => IntroPage()));*/
     });
+
+    NotificacoesHelper().agendarNotificacao(
+      Time(7, 0, 0),
+    );
+    NotificacoesHelper().agendarFimNotificacao(
+      Time(22, 0, 0),
+    );
     if (gc == null) {
       gc = new GruposController();
     }
@@ -181,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                                         weight: FontWeight.bold);
                                   }
                                   return FutureBuilder(
-                                    builder: (context , snap) {
+                                    builder: (context, snap) {
                                       if (snap.data == null) {
                                         return hText('Saldo atual', context,
                                             color: corPrimaria,
@@ -207,13 +215,16 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            hText('Quilômetros atuais', context, color: Colors.black),
+                            hText('Quilômetros atuais', context,
+                                color: Colors.black),
                             SizedBox(height: 5),
                             StreamBuilder(
                                 stream: ec.outCorridas,
                                 builder: (context, snapshot) {
                                   if (snapshot.data == null) {
-                                    return hText('Quilômetros atuais\nsem corridas', context,
+                                    return hText(
+                                        'Quilômetros atuais\nsem corridas',
+                                        context,
                                         color: corPrimaria,
                                         style: FontStyle.normal,
                                         weight: FontWeight.bold);

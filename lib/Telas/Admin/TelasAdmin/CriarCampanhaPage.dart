@@ -176,7 +176,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                                                     .fitHeight,
                                                                 width: 300)
                                                             : Image.file(
-                                                                File(campanha
+                                                                File(campanha 
                                                                         .fotos[
                                                                     index]),
                                                                 height: 200,

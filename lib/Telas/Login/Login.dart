@@ -14,6 +14,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import '../../main.dart';
 import 'LoginController.dart';
 import 'LoginEmail/CadastroEmail/cadastroemail.dart';
+import 'LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -72,7 +73,7 @@ class _LoginState extends State<Login> {
         style: TextStyle(color: Colors.yellowAccent, fontSize: labelsSize),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed('/esqueceusenha');
+        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>EsqueceuSenha()));
       },
     );
 

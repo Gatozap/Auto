@@ -8,6 +8,9 @@ import 'package:rxdart/rxdart.dart';
 
 class PerfilController extends BlocBase {
   BehaviorSubject<User> userController = new BehaviorSubject<User>();
+  BehaviorSubject<String> _controllerSearchText = new BehaviorSubject<String>();
+  Stream<String> get outSearchText => _controllerSearchText.stream;
+  Sink<String> get inSearchText => _controllerSearchText.sink;
 
   Stream<User> get outUser => userController.stream;
 
@@ -150,5 +153,23 @@ class PerfilController extends BlocBase {
     usersController.close();
     userSelecionadoController.close();
     // TODO: implement dispose
+  }
+
+  void FilterByNome(String s) {
+    List<User> userFiltrados = new List();
+    if(s == '0'|| s=='') {
+      userFiltrados = usersmain;
+      users = userFiltrados;
+      inUsers.add(users);
+    }else{
+      for(User c in usersmain) {
+        if(c.toString().contains(s)){
+          userFiltrados.add(c);
+        }
+      }
+      users = userFiltrados;
+      inUsers.add(users);
+    }
+
   }
 }

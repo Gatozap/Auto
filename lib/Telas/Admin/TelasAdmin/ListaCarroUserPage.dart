@@ -146,6 +146,11 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
   }
 
   Widget CarroListItem(Carro p, {User pp}) {
+    for (User u in pc.users) {
+      if (u.id == p.dono) {
+        pp = u;
+      }
+    }
     return Stack(children: <Widget>[
       Card(
         shape:
@@ -174,6 +179,7 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                         size: 44, weight: FontWeight.bold),
                   ),
                   hText('Placa: ${p.placa}', context, size: 44),
+                  pp == null? Container():hText('Dono: ${pp.nome}', context, size: 44),
                   hText(
                     'Cor: ${p.cor}',
                     context,
