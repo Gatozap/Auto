@@ -29,28 +29,49 @@ class ListaCampanhaController extends BlocBase {
   ListaCampanhaController({Campanha campanha}) {
     campanhaSelecionado = campanha;
     inCampanhaSelecionado.add(campanhaSelecionado);
-    campanhasRef
-        .snapshots()
-        .listen((QuerySnapshot snap) {
-      campanhas = new List();
+    if(Helper.localUser.permissao == 5){
+      for(String s in Helper.localUser.campanhas) {
+        campanhasRef
+            .document(s)
+            .get().then((snap) {
+          campanhas = new List();
 
-      if (snap.documents.length > 0) {
-        for (DocumentSnapshot ds in snap.documents) {
-
-          Campanha p = Campanha.fromJson(ds.data);
-          p.id = ds.documentID;
-          campanhas.add(p);
-        }
-        campanhas.sort(
-                (Campanha a, Campanha b) => a.id.compareTo(b.id));
-        campanhasmain = campanhas;
-        inCampanhas.add(campanhas);
-      } else {
-        inCampanhas.add(campanhas);
+          if (snap.data != null) {
+            Campanha p = Campanha.fromJson(snap.data);
+            p.id = snap.documentID;
+            campanhas.add(p);
+            campanhas.sort(
+                    (Campanha a, Campanha b) => b.dataini.compareTo(a.dataini));
+            campanhasmain = campanhas;
+            inCampanhas.add(campanhas);
+          }
+        }).catchError((err) {
+          print('Erro: ${err.toString()}');
+        });
       }
-    }).onError((err) {
-      print('Erro: ${err.toString()}');
-    });
+    }else {
+      campanhasRef
+          .snapshots()
+          .listen((QuerySnapshot snap) {
+        campanhas = new List();
+
+        if (snap.documents.length > 0) {
+          for (DocumentSnapshot ds in snap.documents) {
+            Campanha p = Campanha.fromJson(ds.data);
+            p.id = ds.documentID;
+            campanhas.add(p);
+          }
+          campanhas.sort(
+                  (Campanha a, Campanha b) => b.dataini.compareTo(a.dataini));
+          campanhasmain = campanhas;
+          inCampanhas.add(campanhas);
+        } else {
+          inCampanhas.add(campanhas);
+        }
+      }).onError((err) {
+        print('Erro: ${err.toString()}');
+      });
+    }
   }
 
 

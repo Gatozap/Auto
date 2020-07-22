@@ -64,6 +64,7 @@ class User {
   bool isBanido;
   bool atende_festa;
   bool atende_fds;
+  List campanhas;
 
   List<Documento> documentos;
 
@@ -136,6 +137,7 @@ class User {
       this.saldo,
       this.kmmin,
       this.kmmax,
+        this.campanhas,
       this.senha,
       this.tipo_conta,
       this.strike,
@@ -227,6 +229,7 @@ class User {
     this.email = j['email'] == null ? null : j['email'];
     this.senha = j['senha'] == null ? null : j['senha'];
     this.strike = j['strike'] == null ? null : j['strike'];
+    this.campanhas = j['campanhas'] == null? null: j['campanhas'];
     this.antecendete_verificados_em = j['antecendete_verificados_em'] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(j['antecendete_verificados_em']);
@@ -299,6 +302,7 @@ class User {
     data['tarde'] = this.tarde == null ? false : this.tarde;
     data['noite'] = this.noite == null ? false : this.noite;
 
+    data['campanhas'] = this.campanhas == null? null: this.campanhas;
     data['conta_bancaria'] = this.conta_bancaria;
     data['isEmailVerified'] = this.isEmailVerified;
     data['data_nascimento'] = this.data_nascimento != null

@@ -70,7 +70,31 @@ class _MyAppState extends State<Racing> {
                         stream: mapController.outPosition,
                         builder: (context, position) {
                           if (position.data == null) {
-                            return Container();
+                            return GoogleMap(
+                              mapType: MapType.normal,
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(
+                                    -16.665136, -49.286041
+                                ),
+                                zoom: 11,
+                              ),
+                              onCameraMove: (cp) {  
+                                mapController.zoom = cp.zoom;
+                                mapController.inZoom
+                                    .add(mapController.zoom);
+                              },
+                              zoomGesturesEnabled: true,
+                              markers: markers.data == null
+                                  ? Set<Marker>()
+                                  : markers.data.toSet(),
+                              polylines: polyline.data == null
+                                  ? Set<Polyline>()
+                                  : polyline.data.toSet(),
+                              onMapCreated:
+                                  (GoogleMapController controller) {
+                                _controller = controller;
+                              },
+                            );
                           }
                           return StreamBuilder<double>(
                               stream: mapController.outZoom,

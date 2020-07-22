@@ -24,6 +24,7 @@ import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Grupo.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Home/GruposController.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:googleapis/classroom/v1.dart';
@@ -152,7 +153,38 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              shape: dialogShape,
+              title: new Text('Deseja Sair?'),
+              content: Text('Tem Certeza? finalize sua corrida antes de sair'),
+              actions: <Widget>[
+                MaterialButton(
+                  child: Text(
+                    'Cancelar',
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                MaterialButton(
+                  child: Text(
+                    'Sair',
+                  ),
+                  onPressed: () {
+                    SystemNavigator.pop();
+                  },
+                )
+              ],
+            );
+          });
+    },
+    child: Scaffold(
       drawer: CustomDrawerWidget(),
       appBar: myAppBar('Bem-vindo, ${Helper.localUser.nome}', context),
       body: SingleChildScrollView(
@@ -468,7 +500,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   Widget estatisticasWidget(corridas) {

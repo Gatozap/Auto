@@ -44,6 +44,8 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
     super.dispose();
   }
 
+  var searchController = TextEditingController();
+  FocusNode myFocusNode;
   String selectedCategoria = 'Nenhuma';
 
   String selectedCidade = 'Todos';
@@ -101,6 +103,80 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Container(
+                height: 35,
+                child: TextFormField(
+                    onTap: () {},
+                    onChanged: (s) {
+                      pc.inSearchText.add(s);
+                      pc.FilterByNome(s);
+                    },
+                    validator: (s) {
+                      return null;
+                    },
+                    scrollPadding: EdgeInsets.all(5),
+                    controller: searchController,
+                    focusNode: myFocusNode,
+                    onFieldSubmitted: (s) {
+                      pc.inSearchText.add(s);
+                      pc.FilterByNome(s);
+                      myFocusNode.unfocus();
+                    },
+                    autofocus: false,
+                    style: TextStyle(fontSize: 13),
+                    decoration: InputDecoration(
+                        //isCollapsed: true,
+                        hintText: 'Procurando alguém?',
+                        contentPadding: new EdgeInsets.fromLTRB(8, 8, 4, 8),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 0.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 0.0),
+                        ),
+                        suffixIcon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              StreamBuilder(
+                                  stream: pc.outSearchText,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data == '0') {
+                                      return Container();
+                                    }
+                                    return Container(
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          pc.inSearchText.add('0');
+                                          searchController.text = '';
+                                          myFocusNode.unfocus();
+                                        },
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(60),
+                                        ),
+                                        elevation: 0,
+                                        padding: EdgeInsets.all(0),
+                                        child: Icon(
+                                          Icons.clear,
+                                          color: Colors.grey,
+                                          size: 18,
+                                        ),
+                                      ),
+                                      height: 25,
+                                      width: 25,
+                                    );
+                                  })
+                            ])))),
+            SizedBox(
+              width: 5,
+            ),
             StreamBuilder<List<Carro>>(
                 stream: pc.outCarros,
                 builder: (context, AsyncSnapshot<List<Carro>> snapshot) {
@@ -174,31 +250,32 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Container(
+                  Helper.localUser.permissao == 5? Container():Container(
                     child: hText('${p.modelo}', context,
                         size: 44, weight: FontWeight.bold),
                   ),
                   hText('Placa: ${p.placa}', context, size: 44),
-                  pp == null? Container():hText('Dono: ${pp.nome}', context, size: 44),
-                  hText(
+                  Helper.localUser.permissao == 5? Container():pp == null
+                      ? Container()
+                      : hText('Dono: ${pp.nome}', context, size: 44),
+                  Helper.localUser.permissao == 5? Container():hText(
                     'Cor: ${p.cor}',
                     context,
                     size: 44,
                   ),
-                  hText('Ano: ${p.ano}', context,
+                  Helper.localUser.permissao == 5? Container():hText('Ano: ${p.ano}', context,
                       size: 44, color: Colors.blueAccent),
                 ],
               ),
             ),
-            PopupMenuButton<String>(
+            Helper.localUser.permissao == 5? Container():PopupMenuButton<String>(
                 onSelected: (String s) {
                   switch (s) {
                     case 'Ver Motorista':
                       for (User u in pc.users) {
                         if (u.id == p.dono) {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  VisualizarUserPage(
+                              builder: (context) => VisualizarUserPage(
                                     user: u,
                                   )));
                         }
@@ -310,7 +387,8 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
   List<PopupMenuItem<String>> getCidadesMenuButton() {
     List<PopupMenuItem<String>> items = List();
     items.add(PopupMenuItem(value: 'Todos', child: Text('Todos')));
-    items.add(PopupMenuItem(value: 'Aparecida de Goiânia', child: Text('Aparecida de Goiânia')));
+    items.add(PopupMenuItem(
+        value: 'Aparecida de Goiânia', child: Text('Aparecida de Goiânia')));
     items.add(PopupMenuItem(value: 'Goiânia', child: Text('Goiânia')));
     return items;
   }

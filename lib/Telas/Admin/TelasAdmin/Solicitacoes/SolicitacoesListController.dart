@@ -15,7 +15,7 @@ class SolicitacoesListController extends BlocBase {
 
     if (user == null) {
       if (campanha == null) {
-        solicitacoesRef.snapshots().listen((v) {
+        solicitacoesRef.where('isAprovado',isNull: true).snapshots().listen((v) {
           solicitacoes = new List();
           for (var d in v.documents) {
             solicitacoes.add(Solicitacao.fromJson(d.data));
@@ -25,7 +25,7 @@ class SolicitacoesListController extends BlocBase {
         });
       } else {
         solicitacoesRef
-            .where('campanha', isEqualTo: campanha.id)
+            .where('campanha', isEqualTo: campanha.id).where('isAprovado',isNull: true)
             .snapshots().listen((v) {
           solicitacoes = new List();
           for (var d in v.documents) {
@@ -36,7 +36,7 @@ class SolicitacoesListController extends BlocBase {
         });
       }
     } else {
-      solicitacoesRef.where('usuario', isEqualTo: user.id).snapshots().listen((v) {
+      solicitacoesRef.where('usuario', isEqualTo: user.id).where('isAprovado',isNull: true).snapshots().listen((v) {
         solicitacoes = new List();
         for (var d in v.documents) {
           solicitacoes.add(Solicitacao.fromJson(d.data));

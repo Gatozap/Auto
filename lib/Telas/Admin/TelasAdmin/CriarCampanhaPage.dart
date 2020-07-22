@@ -32,13 +32,13 @@ class CriarCampanhaPage extends StatefulWidget {
 }
 
 class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
-
   var controllerDuracaoMinima = new TextEditingController(text: '');
   var controllerKmMinimo = new TextEditingController(text: '');
   var controllerPrecoMes = new TextEditingController(text: '');
   var controllerEmpresa = new TextEditingController(text: '');
   var controllerNome = new TextEditingController(text: '');
-  var controllerCNPJ = new MaskedTextController(text: '', mask: '00.000.000/0000-00');
+  var controllerCNPJ =
+      new MaskedTextController(text: '', mask: '00.000.000/0000-00');
   var controllerSobre = new TextEditingController(text: '');
   var controllerLimite = new TextEditingController(text: '');
   Campanha campanha;
@@ -46,38 +46,35 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
   bool isCadastrarPressed = false;
   @override
   void initState() {
-
-
-
     super.initState();
-    if(campanhaController == null){
-      campanhaController =  CampanhaController(campanha: widget.campanha);
+    if (campanhaController == null) {
+      campanhaController = CampanhaController(campanha: widget.campanha);
     }
-
   }
+
   CampanhaController campanhaController;
   @override
   void dispose() {
     super.dispose();
   }
+
   DateTime dataini;
   DateTime datafim;
 
   @override
   Widget build(BuildContext context) {
-
-
     BasicDateTimeField datainiField = BasicDateTimeField(
         label: 'Data de Início', icon: FontAwesomeIcons.solidCalendarPlus);
     BasicDateTimeField datafimField = BasicDateTimeField(
-        label: 'Data de Fim', icon: FontAwesomeIcons.solidCalendarPlus, );
-
+      label: 'Data de Fim',
+      icon: FontAwesomeIcons.solidCalendarPlus,
+    );
 
     if (widget.campanha != null) {
-           controllerDuracaoMinima.text = widget.campanha.duracaoMinima.toString();
-           controllerKmMinimo.text = widget.campanha.kmMinima.toString();
-           controllerPrecoMes.text = widget.campanha.precomes.toString();
-         controllerSobre.text = widget.campanha.sobre;
+      controllerDuracaoMinima.text = widget.campanha.duracaoMinima.toString();
+      controllerKmMinimo.text = widget.campanha.kmMinima.toString();
+      controllerPrecoMes.text = widget.campanha.precomes.toString();
+      controllerSobre.text = widget.campanha.sobre;
       controllerEmpresa.text = widget.campanha.empresa;
       controllerNome.text = widget.campanha.nome;
       controllerCNPJ.text = widget.campanha.cnpj;
@@ -85,26 +82,23 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
       if (widget.campanha.dataini != null) {
         dataini = widget.campanha.dataini;
         datainiField = BasicDateTimeField(
-
             label: 'Data de Início',
             icon: FontAwesomeIcons.solidCalendarPlus,
             startingdate:
-                '${widget.campanha.dataini.day.toString().length == 1 ? '0' + widget.campanha.dataini.day.toString() : widget.campanha.dataini.day}/${widget.campanha.dataini.month.toString().length == 1 ? '0' + widget.campanha.dataini.month.toString() : widget.campanha.dataini.month}/${widget.campanha.dataini.year} ${widget.campanha.dataini.hour.toString().length == 1?'0'+widget.campanha.dataini.hour.toString():widget.campanha.dataini.hour.toString() }:${widget.campanha.dataini.minute.toString().length == 1?'0'+widget.campanha.dataini.minute.toString():widget.campanha.dataini.minute.toString() }');
+                '${widget.campanha.dataini.day.toString().length == 1 ? '0' + widget.campanha.dataini.day.toString() : widget.campanha.dataini.day}/${widget.campanha.dataini.month.toString().length == 1 ? '0' + widget.campanha.dataini.month.toString() : widget.campanha.dataini.month}/${widget.campanha.dataini.year} ${widget.campanha.dataini.hour.toString().length == 1 ? '0' + widget.campanha.dataini.hour.toString() : widget.campanha.dataini.hour.toString()}:${widget.campanha.dataini.minute.toString().length == 1 ? '0' + widget.campanha.dataini.minute.toString() : widget.campanha.dataini.minute.toString()}');
       }
 
       if (widget.campanha.datafim != null) {
-        
         datafim = widget.campanha.datafim;
         datafimField = BasicDateTimeField(
             label: 'Data de Fim',
             icon: FontAwesomeIcons.solidCalendarPlus,
             startingdate:
-            '${widget.campanha.datafim.day.toString().length == 1 ? '0' + widget.campanha.datafim.day.toString() : widget.campanha.datafim.day}/${widget.campanha.datafim.month.toString().length == 1 ? '0' + widget.campanha.datafim.month.toString() : widget.campanha.datafim.month}/${widget.campanha.datafim.year} ${widget.campanha.datafim.hour.toString().length == 1?'0'+widget.campanha.datafim.hour.toString():widget.campanha.datafim.hour.toString() }:${widget.campanha.datafim.minute.toString().length == 1?'0'+widget.campanha.datafim.minute.toString():widget.campanha.datafim.minute.toString() }');
+                '${widget.campanha.datafim.day.toString().length == 1 ? '0' + widget.campanha.datafim.day.toString() : widget.campanha.datafim.day}/${widget.campanha.datafim.month.toString().length == 1 ? '0' + widget.campanha.datafim.month.toString() : widget.campanha.datafim.month}/${widget.campanha.datafim.year} ${widget.campanha.datafim.hour.toString().length == 1 ? '0' + widget.campanha.datafim.hour.toString() : widget.campanha.datafim.hour.toString()}:${widget.campanha.datafim.minute.toString().length == 1 ? '0' + widget.campanha.datafim.minute.toString() : widget.campanha.datafim.minute.toString()}');
       }
-      
+
       campanha = widget.campanha;
       campanhaController.inCampanha.add(campanha);
-
     }
 
     // TODO: implement build
@@ -120,30 +114,28 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     builder: (context, AsyncSnapshot snap) {
                       Campanha campanha = snap.data;
 
-                      if(campanha == null){
+                      if (campanha == null) {
                         campanha = new Campanha();
                       }
 
-                      if(campanha.final_de_semana == null){
+                      if (campanha.final_de_semana == null) {
                         campanha.final_de_semana = false;
                       }
 
-                      if(campanha.atende_festas == null){
+                      if (campanha.atende_festas == null) {
                         campanha.atende_festas = false;
                       }
 
-                      if(campanha.tarde == null){
+                      if (campanha.tarde == null) {
                         campanha.tarde = false;
                       }
-                        if(campanha.manha == null){
-                          campanha.manha = false;
-                        }
+                      if (campanha.manha == null) {
+                        campanha.manha = false;
+                      }
 
-                        if(campanha.noite == null){
-                          campanha.noite = false;
-                        }
-
-
+                      if (campanha.noite == null) {
+                        campanha.noite = false;
+                      }
 
                       return Form(
                         key: _formKey,
@@ -176,7 +168,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                                                     .fitHeight,
                                                                 width: 300)
                                                             : Image.file(
-                                                                File(campanha 
+                                                                File(campanha
                                                                         .fotos[
                                                                     index]),
                                                                 height: 200,
@@ -290,10 +282,10 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.number,
                                   onSubmited: (s) {}),
-
                               DefaultField(
                                   controller: controllerSobre,
-                                  hint: 'Texto destinado a explicar como funciona a campanha, quem você representa e etc',
+                                  hint:
+                                      'Texto destinado a explicar como funciona a campanha, quem você representa e etc',
                                   context: context,
                                   label: 'Sobre',
                                   icon: MdiIcons.accountEdit,
@@ -308,7 +300,6 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.text,
                                   onSubmited: (s) {}),
-
                               DefaultField(
                                   controller: controllerLimite,
                                   hint: '50',
@@ -354,7 +345,6 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.number,
                                   onSubmited: (s) {}),
-
                               DefaultField(
                                   controller: controllerDuracaoMinima,
                                   hint: '40',
@@ -370,74 +360,56 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   },
                                   keyboardType: TextInputType.number,
                                   onSubmited: (s) {}),
-
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-
-                                  defaultCheckBox(
-                                         campanha.final_de_semana
-                                         ,
-                                      'Atende aos finais de semana',
-                                      context, () {
-                                    campanha.final_de_semana =
-                                    ! campanha.final_de_semana;
-                                    campanhaController.campanha = campanha
-                                        ;
-                                    campanhaController.inCampanha
-                                        .add(campanhaController.campanha);
-                                  }), sb,
-                                  defaultCheckBox(
-                                      campanha.atende_festas
-                                      ,
-                                      'Atende em festas',
-                                      context, () {
-                                    campanha.atende_festas =
-                                    ! campanha.atende_festas;
-                                    campanhaController.campanha = campanha
-                                    ;
-                                    campanhaController.inCampanha
-                                        .add(campanhaController.campanha);
-                                  }),sb,
-
-
-                                  defaultCheckBox(
-                                      campanha.tarde
-                                      ,
-                                      'Atende à tarde',
-                                      context, () {
-                                    campanha.tarde =
-                                    ! campanha.tarde;
-                                    campanhaController.campanha = campanha
-                                    ;
-                                    campanhaController.inCampanha
-                                        .add(campanhaController.campanha);
-                                  }),  sb,
-                                  defaultCheckBox(
-                                      campanha.manha
-                                      ,
-                                      'Atende de manhã',
-                                      context, () {
-                                    campanha.manha =
-                                    ! campanha.manha;
-                                    campanhaController.campanha = campanha
-                                    ;
-                                    campanhaController.inCampanha
-                                        .add(campanhaController.campanha);
-                                  }),   sb,
-                                  defaultCheckBox(
-                                      campanha.noite
-                                      ,
-                                      'Atende à noite',
-                                      context, () {
-                                    campanha.noite =
-                                    ! campanha.noite;
-                                    campanhaController.campanha = campanha
-                                    ;
-                                    campanhaController.inCampanha
-                                        .add(campanhaController.campanha);
-                                  }),
-                                ],),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    defaultCheckBox(
+                                        campanha.final_de_semana,
+                                        'Atende aos finais de semana',
+                                        context, () {
+                                      campanha.final_de_semana =
+                                          !campanha.final_de_semana;
+                                      campanhaController.campanha = campanha;
+                                      campanhaController.inCampanha
+                                          .add(campanhaController.campanha);
+                                    }),
+                                    sb,
+                                    defaultCheckBox(campanha.atende_festas,
+                                        'Atende em festas', context, () {
+                                      campanha.atende_festas =
+                                          !campanha.atende_festas;
+                                      campanhaController.campanha = campanha;
+                                      campanhaController.inCampanha
+                                          .add(campanhaController.campanha);
+                                    }),
+                                    sb,
+                                    defaultCheckBox(campanha.tarde,
+                                        'Atende à tarde', context, () {
+                                      campanha.tarde = !campanha.tarde;
+                                      campanhaController.campanha = campanha;
+                                      campanhaController.inCampanha
+                                          .add(campanhaController.campanha);
+                                    }),
+                                    sb,
+                                    defaultCheckBox(campanha.manha,
+                                        'Atende de manhã', context, () {
+                                      campanha.manha = !campanha.manha;
+                                      campanhaController.campanha = campanha;
+                                      campanhaController.inCampanha
+                                          .add(campanhaController.campanha);
+                                    }),
+                                    sb,
+                                    defaultCheckBox(campanha.noite,
+                                        'Atende à noite', context, () {
+                                      campanha.noite = !campanha.noite;
+                                      campanhaController.campanha = campanha;
+                                      campanhaController.inCampanha
+                                          .add(campanhaController.campanha);
+                                    }),
+                                  ],
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(28.0),
@@ -447,11 +419,21 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                   ),
                                 ),
                               ),
-                              sb,Divider(color: corPrimaria,),sb,
+                              sb,
+                              Divider(
+                                color: corPrimaria,
+                              ),
+                              sb,
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: hText('Zonas da Campanha', context, textaling: TextAlign.center),
-                              ),sb,Divider(color: corPrimaria,),sb,
+                                child: hText('Zonas da Campanha', context,
+                                    textaling: TextAlign.center),
+                              ),
+                              sb,
+                              Divider(
+                                color: corPrimaria,
+                              ),
+                              sb,
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
@@ -493,12 +475,10 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                     if (!contains) {
                                       c.zonas.add(value);
                                     }
-                                     campanhaController.inCampanha.add(c);
+                                    campanhaController.inCampanha.add(c);
                                   },
                                 ),
                               ),
-
-
                               snap.data == null
                                   ? Container()
                                   : snap.data.zonas == null
@@ -514,7 +494,6 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 itemBuilder: (context, index) {
-
                                                   return Padding(
                                                     padding: const EdgeInsets
                                                             .symmetric(
@@ -569,11 +548,22 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                             )
                                           : Container(),
                               sb,
-                              sb,Divider(color: corPrimaria,),sb,
+                              sb,
+                              Divider(
+                                color: corPrimaria,
+                              ),
+                              sb,
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: hText('Data Inicial e Data Final da Campanha', context),
-                              ),sb,Divider(color: corPrimaria,),sb,
+                                child: hText(
+                                    'Data Inicial e Data Final da Campanha',
+                                    context),
+                              ),
+                              sb,
+                              Divider(
+                                color: corPrimaria,
+                              ),
+                              sb,
                               datainiField,
                               datafimField,
                               Row(
@@ -589,28 +579,52 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                         campanha = new Campanha();
                                       }
 
-                                      campanha.atende_festas == null? false: campanha.atende_festas;
-                                      campanha.manha == null? false: campanha.manha;
-                                      campanha.tarde == null? false: campanha.tarde;
-                                      campanha.noite == null? false: campanha.noite;
-                                      campanha.precomes = double.parse(controllerPrecoMes.text);
-                                      campanha.kmMinima = double.parse(controllerKmMinimo.text);
-                                      campanha.duracaoMinima = double.parse(controllerDuracaoMinima.text);
+                                      campanha.atende_festas == null
+                                          ? false
+                                          : campanha.atende_festas;
+                                      campanha.manha == null
+                                          ? false
+                                          : campanha.manha;
+                                      campanha.tarde == null
+                                          ? false
+                                          : campanha.tarde;
+                                      campanha.noite == null
+                                          ? false
+                                          : campanha.noite;
+                                      campanha.precomes =
+                                          double.parse(controllerPrecoMes.text);
+                                      campanha.kmMinima =
+                                          double.parse(controllerKmMinimo.text);
+                                      campanha.duracaoMinima = double.parse(
+                                          controllerDuracaoMinima.text);
 
-
-                                      campanha.anuncio_bancos == null? false: campanha.anuncio_bancos;
-                                      campanha.anuncio_laterais == null? false: campanha.anuncio_laterais;
-                                      campanha.anuncio_traseira_completa == null? false: campanha.anuncio_traseira_completa;
-                                      campanha.anuncio_vidro_traseiro == null? false: campanha.anuncio_vidro_traseiro;
+                                      campanha.anuncio_bancos == null
+                                          ? false
+                                          : campanha.anuncio_bancos;
+                                      campanha.anuncio_laterais == null
+                                          ? false
+                                          : campanha.anuncio_laterais;
+                                      campanha.anuncio_traseira_completa == null
+                                          ? false
+                                          : campanha.anuncio_traseira_completa;
+                                      campanha.anuncio_vidro_traseiro == null
+                                          ? false
+                                          : campanha.anuncio_vidro_traseiro;
 
                                       campanha.sobre = controllerSobre.text;
-                                      campanha.final_de_semana == null? false: campanha.final_de_semana;
+                                      campanha.final_de_semana == null
+                                          ? false
+                                          : campanha.final_de_semana;
                                       campanha.empresa = controllerEmpresa.text;
                                       campanha.cnpj = controllerCNPJ.text;
-                                      campanha.limite = int.parse(controllerLimite.text);
-                                        print('aqui data ${datafimField.selectedDate}');
-                                      campanha.dataini = datainiField.selectedDate;
-                                      campanha.datafim = datafimField.selectedDate;
+                                      campanha.limite =
+                                          int.parse(controllerLimite.text);
+                                      print(
+                                          'aqui data ${datafimField.selectedDate}');
+                                      campanha.dataini =
+                                          datainiField.selectedDate;
+                                      campanha.datafim =
+                                          datafimField.selectedDate;
 
                                       campanha.nome = controllerNome.text;
                                       campanha.updated_at = DateTime.now();
@@ -619,15 +633,12 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       }
 
                                       if (widget.campanha != null) {
-
-                                        if(campanha.dataini == null){
+                                        if (campanha.dataini == null) {
                                           campanha.dataini = dataini;
                                         }
-                                        if(campanha.datafim == null){
+                                        if (campanha.datafim == null) {
                                           campanha.datafim = datafim;
                                         }
-
-
 
                                         campanhaController.EditarCampanha(
                                                 campanha)
@@ -660,6 +671,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                       );
                     }))));
   }
+
   Widget seletorAnunciosCampanhas() {
     return StreamBuilder<Campanha>(
       stream: campanhaController.outCampanha,
@@ -687,9 +699,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
           child: Column(
             children: <Widget>[
               Container(
-                child: hText(
-                    'Prioridade de Anúncios',
-                    context,
+                child: hText('Prioridade de Anúncios', context,
                     textaling: TextAlign.center),
               ),
               sb,
@@ -702,8 +712,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/bancos.png'),
+                          image: AssetImage('assets/bancos.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_bancos == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -720,16 +729,16 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                         children: <Widget>[
                           Padding(
                             padding:
-                            const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: defaultCheckBox(campanha.anuncio_bancos,
                                 'Bancos Traseiros', context, () {
-                                  campanha.anuncio_bancos =
+                              campanha.anuncio_bancos =
                                   !campanha.anuncio_bancos;
-                                  campanhaController.campanha = campanha;
-                                  campanhaController.inCampanha
-                                      .add(campanhaController.campanha);
-                                  print('anuncio ${campanha.anuncio_bancos}');
-                                }, size: 10),
+                              campanhaController.campanha = campanha;
+                              campanhaController.inCampanha
+                                  .add(campanhaController.campanha);
+                              print('anuncio ${campanha.anuncio_bancos}');
+                            }, size: 10),
                           ),
                         ],
                       ),
@@ -747,8 +756,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/lateral.png'),
+                          image: AssetImage('assets/lateral.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_laterais == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -780,8 +788,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/traseira_completa.png'),
+                          image: AssetImage('assets/traseira_completa.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_traseira_completa == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -794,12 +801,12 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
                       child: defaultCheckBox(campanha.anuncio_traseira_completa,
                           'Traseira Completa', context, () {
-                            campanha.anuncio_traseira_completa =
+                        campanha.anuncio_traseira_completa =
                             !campanha.anuncio_traseira_completa;
-                            campanhaController.campanha = campanha;
-                            campanhaController.inCampanha
-                                .add(campanhaController.campanha);
-                          }, size: 10),
+                        campanhaController.campanha = campanha;
+                        campanhaController.inCampanha
+                            .add(campanhaController.campanha);
+                      }, size: 10),
                     ),
                   ),
                 ],
@@ -814,8 +821,7 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/vidro_traseiro.png'),
+                          image: AssetImage('assets/vidro_traseiro.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_vidro_traseiro == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -828,24 +834,23 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                       padding: const EdgeInsets.only(left: 8.0, top: 30.0),
                       child: defaultCheckBox(campanha.anuncio_vidro_traseiro,
                           'Vidro traseira', context, () {
-                            campanha.anuncio_vidro_traseiro =
+                        campanha.anuncio_vidro_traseiro =
                             !campanha.anuncio_vidro_traseiro;
-                            campanhaController.campanha = campanha;
-                            campanhaController.inCampanha
-                                .add(campanhaController.campanha);
-                          }, size: 10),
+                        campanhaController.campanha = campanha;
+                        campanhaController.inCampanha
+                            .add(campanhaController.campanha);
+                      }, size: 10),
                     ),
                   ),
-
                 ],
               )
-
             ],
           ),
         );
       },
     );
   }
+
   Future getImage(Campanha e) async {
     if (e == null) {
       e = new Campanha.Empty();
@@ -866,7 +871,6 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                   ImagePicker.pickImage(
                     source: ImageSource.camera,
                   ).timeout(Duration(seconds: 30)).then((image) async {
-
                     if (image != null) {
                       if (image.path != null) {
                         e.fotos.add(await uploadPicture(
@@ -884,7 +888,6 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                   ImagePicker.pickImage(
                     source: ImageSource.gallery,
                   ).timeout(Duration(seconds: 30)).then((image) async {
-
                     if (image != null) {
                       if (image.path != null) {
                         e.fotos.add(await uploadPicture(
@@ -894,18 +897,14 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                         dToast('Salvando Foto!');
                       }
                     }
-                  }
-                  ).catchError((err) {
+                  }).catchError((err) {
                     print('ERRO NO IMAGE PICKER ${err.toString()}');
-                  }
-                  );
+                  });
                 }, icon: Icons.photo),
               ],
             ),
           );
-        }
-        );
-
+        });
   }
 
   List<DropdownMenuItem<Zona>> getDropDownMenuItemsCampanha() {

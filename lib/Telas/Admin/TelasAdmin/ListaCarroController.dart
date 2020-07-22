@@ -42,6 +42,10 @@ class ListaCarroController extends BlocBase {
   Sink<Carro> get inCarroSelecionado => carroSelecionadoController.sink;
   Carro carroSelecionado;
 
+  BehaviorSubject<String> _controllerSearchText = new BehaviorSubject<String>();
+  Stream<String> get outSearchText => _controllerSearchText.stream;
+  Sink<String> get inSearchText => _controllerSearchText.sink;
+
   ListaCarroController({Carro carro, Campanha campanha}) {
     if (listc == null) {
       listc = new ListaCampanhaController();
@@ -210,5 +214,24 @@ class ListaCarroController extends BlocBase {
     carros = carrosFiltrados;
     inCarros.add(carros);
     return;
+  }
+
+
+  void FilterByNome(String s) {
+    List<Carro> userFiltrados = new List();
+    if(s == '0'|| s=='') {
+      userFiltrados = carrosmain;
+      carros = userFiltrados;
+      inCarros.add(carros);
+    }else{
+      for(Carro c in carrosmain) {
+        if(c.toString().contains(s)){
+          userFiltrados.add(c);
+        }
+      }
+      carros = userFiltrados;
+      inCarros.add(carros);
+    }
+
   }
 }

@@ -806,6 +806,7 @@ List<Zona> zonas = [
     ],
     nome: 'REGIÃO LESTE',
   ),
+  aparecida,
 ];
 
 

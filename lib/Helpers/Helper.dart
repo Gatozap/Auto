@@ -42,6 +42,10 @@ FormatarHora(DateTime d) {
   return ('${d.day < 10 ? '0${d.day}' : d.day}/${d.month < 10 ? '0${d.month}' : d.month} ${d.hour < 10 ? '0${d.hour}' : d.hour}:${d.minute < 10 ? '0${d.minute}' : d.minute} ');
 }
 
+
+RoundedRectangleBorder dialogShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(32.0)));
+
 Future<String> uploadPicture(String filepath,
     {String filename, String ref}) async {
   File imageFile = File(filepath);

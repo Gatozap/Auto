@@ -79,7 +79,7 @@ class _AtivosPageState extends State<AtivosPage> {
             position['longitude'],
           ),
           infoWindow: InfoWindow(
-              title: '${ativo.carro.placa}', snippet: '${ativo.campanha.nome}'),
+              title:'${ativo.campanha.nome}',  snippet: '${ativo.carro.placa}',),
           icon: sourceIcon,
         ));
       } catch (err) {

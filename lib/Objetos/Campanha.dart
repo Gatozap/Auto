@@ -33,6 +33,7 @@ class Campanha {
   DateTime created_at;
   DateTime updated_at;
   DateTime deleted_at;
+  List anunciantes;
   Campanha.Empty();
 
   Campanha(
@@ -47,6 +48,7 @@ class Campanha {
       this.dias,
       this.limite,
       this.fotos,
+        this.anunciantes,
       this.created_at,
       this.updated_at,
       this.anuncio_bancos,
@@ -91,6 +93,7 @@ class Campanha {
       kmMinima:
           j['kmMinima'] == null ? 0.0 : double.parse(j["kmMinima"].toString()),
       manha: j['manha'] == null ? false : j["manha"],
+      anunciantes: j['anunciantes'] == null ? null : j["anunciantes"],
       noite: j['noite'] == null ? false : j["noite"],
       tarde: j['noite'] == null ? false : j["noite"],
       sobre: j['sobre'] == null ? null : j["sobre"],
@@ -145,6 +148,7 @@ class Campanha {
       'tarde': this.tarde == null ? false : this.tarde,
       'noite': this.noite == null ? false : this.noite,
       'manha': this.manha == null ? false : this.manha,
+      'anunciantes': this.anunciantes == null ? null : this.anunciantes,
       'anuncio_bancos':
           this.anuncio_bancos == null ? false : this.anuncio_bancos,
       'anuncio_vidro_traseiro': this.anuncio_vidro_traseiro == null

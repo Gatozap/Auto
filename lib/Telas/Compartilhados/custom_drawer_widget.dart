@@ -30,18 +30,20 @@ class CustomDrawerWidget extends StatefulWidget {
   CustomDrawerWidgetState createState() {
     return new CustomDrawerWidgetState();
   }
-    User user;
+
+  User user;
   Carro carro;
   Campanha campanha;
   Distancia distancia;
   Corrida corrida;
-  CustomDrawerWidget({this.user, this.carro, this.campanha, this.corrida, this.distancia});
-
+  CustomDrawerWidget(
+      {this.user, this.carro, this.campanha, this.corrida, this.distancia});
 }
-PerfilController pfcontroller;
-  User u;
-class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
 
+PerfilController pfcontroller;
+User u;
+
+class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
   @override
   Widget build(BuildContext context) {
     if (pfcontroller == null) {
@@ -58,16 +60,11 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
       ),
     );
     return Drawer(
-
-      child:
-      Stack(children: <Widget>[
+        child: Stack(children: <Widget>[
       Scrollbar(
-        child:
-
-       Container(
+        child: Container(
           decoration: linearGradient,
-
-         height: getAltura(context),
+          height: getAltura(context),
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .1, left: 10),
@@ -77,12 +74,16 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 GestureDetector(
-
                   child: Row(
                     children: <Widget>[
-                     Container(width: 100, height: 100, child:  Helper
-                         .localUser.foto !=
-                         null ? Image(image: CachedNetworkImageProvider(Helper.localUser.foto )): Image.asset('assets/foto_perfil.png')),
+                      Container(
+                          width: 100,
+                          height: 100,
+                          child: Helper.localUser.foto != null
+                              ? Image(
+                                  image: CachedNetworkImageProvider(
+                                      Helper.localUser.foto))
+                              : Image.asset('assets/foto_perfil.png')),
                       /*CircleAvatar(
                         radius: 30,
                         backgroundImage: CachedNetworkImageProvider(Helper
@@ -113,7 +114,8 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                               style: TextStyle(
                                   color: Colors.yellowAccent,
                                   fontSize: 24,
-                                  fontStyle: FontStyle.normal, fontWeight: FontWeight.bold),
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 5,
@@ -135,25 +137,32 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                       )
                     ],
                   ),
-                ),sb,sb,
-
-                menuButton(context, 'Editar Perfil', FontAwesomeIcons.user, true, () {
+                ),
+                sb,
+                sb,
+                menuButton(
+                    context, 'Editar Perfil', FontAwesomeIcons.user, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => EditarPerfilPage(
                             user: Helper.localUser,
                           )));
                 }),
-                menuButton(context, 'Editar Meu Carro', FontAwesomeIcons.carSide, true, () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ListaCarroPage(
-                       carro: widget.carro
-                      )));
-                }),
-                Helper.localUser.permissao == 10 ?menuButton(context, 'Meus Percursos', FontAwesomeIcons.route, true, () {
+                menuButton(
+                    context, 'Editar Meu Carro', FontAwesomeIcons.carSide, true,
+                    () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
-                          EstatisticaPage(user: Helper.localUser)));
-                }):Container(),
+                          ListaCarroPage(carro: widget.carro)));
+                }),
+                Helper.localUser.permissao == 10
+                    ? menuButton(
+                        context, 'Meus Percursos', FontAwesomeIcons.route, true,
+                        () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                EstatisticaPage(user: Helper.localUser)));
+                      })
+                    : Container(),
                 /*menuButton(context, 'Cadastrar Novos Carros', Icons.directions_car, true, () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CadastrarNovoCarroPage(
@@ -161,15 +170,19 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                       )));
                 }),*/
 
-                Helper.localUser.permissao == 10 ?menuButton(context, 'Painel do Administrador', FontAwesomeIcons.wrench, true, () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AdminPage(
-                        user: widget.user, campanha: widget.campanha, carro: widget.carro, corrida: widget.corrida, distancia: widget.distancia,
-                      )));
-                }): Container(),
-
-
-
+                Helper.localUser.permissao >= 5
+                    ? menuButton(context, 'Painel do Administrador',
+                        FontAwesomeIcons.wrench, true, () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AdminPage(
+                                  user: widget.user,
+                                  campanha: widget.campanha,
+                                  carro: widget.carro,
+                                  corrida: widget.corrida,
+                                  distancia: widget.distancia,
+                                )));
+                      })
+                    : Container(),
                 menuButton(context, 'Sair', Icons.exit_to_app, true, () {
                   doLogout(context);
                 }),
@@ -186,14 +199,12 @@ class CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-              
               ],
             ),
           ),
         ),
       ),
-      ])
-    );
+    ]));
   }
 
   separator(context) {

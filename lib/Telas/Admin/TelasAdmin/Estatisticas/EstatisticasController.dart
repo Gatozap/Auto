@@ -29,20 +29,43 @@ class EstatisticaController extends BlocBase {
     if (user == null) {
       if (carro == null) {
         if (campanha == null) {
-          corridasRef.getDocuments().then((v) {
+          if (Helper.localUser.permissao == 5) {
             corridas = new List();
             corridasOriginais = new List();
+            if(Helper.localUser.campanhas != null) {
+              for (String s in Helper.localUser.campanhas) {
+                corridasRef
+                    .where('campanha', isEqualTo: s)
+                    .getDocuments()
+                    .then((v) {
+                  for (var i in v.documents) {
+                    Corrida p = Corrida.fromJsonFirestore(i.data);
+                    p.id = i.documentID;
 
-            for (var i in v.documents) {
-              Corrida p = Corrida.fromJsonFirestore(i.data);
-              p.id = i.documentID;
-  
-              corridas.add(p);
+                    corridas.add(p);
+                  }
+                  corridasOriginais = corridas;
+
+                  FilterCorridas(dataini, datafim);
+                });
+              }
             }
-            corridasOriginais = corridas;
+          } else {
+            corridasRef.getDocuments().then((v) {
+              corridas = new List();
+              corridasOriginais = new List();
 
-            FilterCorridas(dataini, datafim);
-          });
+              for (var i in v.documents) {
+                Corrida p = Corrida.fromJsonFirestore(i.data);
+                p.id = i.documentID;
+
+                corridas.add(p);
+              }
+              corridasOriginais = corridas;
+
+              FilterCorridas(dataini, datafim);
+            });
+          }
         } else {
           corridasRef
               .where('campanha', isEqualTo: campanha.id)
@@ -126,7 +149,7 @@ class EstatisticaController extends BlocBase {
     }
     corridas = corridasTemp;
     print('COrridas ${corridas.length}');
-    if(corridas.length == 0){
+    if (corridas.length == 0) {
       dToast('Sem corridas neste periodo');
     }
     corridas.sort((Corrida a, Corrida b) => b.id.compareTo(a.id));

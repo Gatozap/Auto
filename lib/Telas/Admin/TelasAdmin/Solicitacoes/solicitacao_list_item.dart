@@ -35,7 +35,6 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
     );
     return Container(
       decoration: linearGradient,
-      height: getAltura(context),
       child: GestureDetector(
         onTap: () {
           if (widget.isUser) {
@@ -111,7 +110,7 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
                     Row(
                       children: <Widget>[
                         Icon(FontAwesomeIcons.user, color: corPrimaria),sb,
-                        hText('Usuario:${widget.s.nome_usuario}', context),
+                        Expanded(child: hText('Usuario:${widget.s.nome_usuario}', context)),
                       ],
                     ),
                     Row(

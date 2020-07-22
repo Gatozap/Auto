@@ -308,7 +308,9 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: 40, right: 8, top: 10),
-                                child: hText(' ${FormatarHora(campanha.dataini)}', context),
+                                child: hText(
+                                    ' ${FormatarHora(campanha.dataini)}',
+                                    context),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -326,7 +328,9 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: 40, right: 8, top: 10),
-                                child: hText(' ${FormatarHora(campanha.datafim)}', context),
+                                child: hText(
+                                    ' ${FormatarHora(campanha.datafim)}',
+                                    context),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -338,7 +342,9 @@ class _VisualizarCampanhaUserPageState
                                     sb,
                                     hText('Mínimo Mensal: ', context,
                                         color: corPrimaria),
-                                    hText('${campanha.kmMinima == null? 0:campanha.kmMinima.toStringAsFixed(0)} Km', context)
+                                    hText(
+                                        '${campanha.kmMinima == null ? 0 : campanha.kmMinima.toStringAsFixed(0)} Km',
+                                        context)
                                   ],
                                 ),
                               ),
@@ -352,7 +358,9 @@ class _VisualizarCampanhaUserPageState
                                     sb,
                                     hText('Valor: ', context,
                                         color: corPrimaria),
-                                    hText('R\$${campanha.precomes==null? 0:campanha.precomes.toStringAsFixed(2)}', context)
+                                    hText(
+                                        'R\$${campanha.precomes == null ? 0 : campanha.precomes.toStringAsFixed(2)}',
+                                        context)
                                   ],
                                 ),
                               ),
@@ -395,7 +403,8 @@ class _VisualizarCampanhaUserPageState
                                             : Icon(MdiIcons.close,
                                                 color: Colors.red),
                                         sb,
-                                        hText('Atende aos finais de semana', context,
+                                        hText('Atende aos finais de semana',
+                                            context,
                                             color: corPrimaria)
                                       ],
                                     ),
@@ -460,8 +469,7 @@ class _VisualizarCampanhaUserPageState
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: hText(
-                                    'Preferências para campanha',
-                                    context),
+                                    'Preferências para campanha', context),
                               ),
                               sb,
                               Divider(color: corPrimaria),
@@ -505,7 +513,7 @@ class _VisualizarCampanhaUserPageState
                                                             .symmetric(
                                                         horizontal: 8.0),
                                                     child: MaterialButton(
-                                                      onLongPress: () { 
+                                                      onLongPress: () {
                                                         String s = 'Zonas: ';
                                                         for (Bairro b in snap
                                                             .data
@@ -560,36 +568,64 @@ class _VisualizarCampanhaUserPageState
                                   Container(
                                     child: defaultActionButton(
                                         'Solicitar participação', context, () {
-                                          carrosRef.where("dono",isEqualTo: Helper.localUser.id).getDocuments().then((carro){
-                                            Carro c = Carro.fromJson(carro.documents[0].data);
+                                      carrosRef
+                                          .where("dono",
+                                              isEqualTo: Helper.localUser.id)
+                                          .getDocuments()
+                                          .then((carro) {
+                                        Carro c = Carro.fromJson(
+                                            carro.documents[0].data);
 
-                                      Solicitacao s = Solicitacao(
-                                        updated_at: DateTime.now(),
-                                        created_at: DateTime.now(),
-                                        usuario: Helper.localUser.id,
-                                        nome_campanha: widget.campanha.nome,
-                                        nome_usuario: Helper.localUser.nome,
-                                        campanha: widget.campanha.id,
-                                        carro: c,
-                                        isAprovado: null,
-                                      );
-                                      solicitacoesRef.add(s.toJson()).then((v) {
-                                        s.id = v.documentID;
+                                        Solicitacao s = Solicitacao(
+                                          updated_at: DateTime.now(),
+                                          created_at: DateTime.now(),
+                                          usuario: Helper.localUser.id,
+                                          nome_campanha: widget.campanha.nome,
+                                          nome_usuario: Helper.localUser.nome,
+                                          campanha: widget.campanha.id,
+                                          carro: c,
+                                          isAprovado: null,
+                                        );
                                         solicitacoesRef
-                                            .document(s.id)
-                                            .updateData(s.toJson())
-                                            .then((v) {
-                                          sendNotificationUsuario(
-                                              '${Helper.localUser.nome} quer participar da campanha',
-                                              '${widget.campanha.nome}',
-                                              null,
-                                              'Administrador',
-                                              widget.campanha.id,
-                                              s.id);
-                                          dToast(
-                                              'Solicitação enviada com Sucesso! Um Administrador irá analisar e entrará em contato');
-                                          Navigator.of(context).pop();
-                                        });
+                                            .where('usuario',
+                                                isEqualTo: Helper.localUser.id)
+                                            .where('isAprovado',
+                                                isEqualTo: null)
+                                            .getDocuments()
+                                            .then((solicitacoes) {
+                                              bool shouldSolicitar = false;
+                                              if(solicitacoes.documents == null){
+                                                shouldSolicitar = true;
+                                              }else{
+                                                shouldSolicitar = solicitacoes.documents.length ==0;
+                                              }
+
+                                              if(shouldSolicitar) {
+                                                solicitacoesRef
+                                                    .add(s.toJson())
+                                                    .then((v) {
+                                                  s.id = v.documentID;
+                                                  solicitacoesRef
+                                                      .document(s.id)
+                                                      .updateData(s.toJson())
+                                                      .then((v) {
+                                                    sendNotificationUsuario(
+                                                        '${Helper.localUser
+                                                            .nome} quer participar da campanha',
+                                                        '${widget.campanha
+                                                            .nome}',
+                                                        null,
+                                                        'Administrador',
+                                                        widget.campanha.id,
+                                                        s.id);
+                                                    dToast(
+                                                        'Solicitação enviada com Sucesso! Um Administrador irá analisar e entrará em contato');
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                              }else{
+                                                dToast('Você ja fez uma solicitação, aguarde ela ser resolvida!');
+                                              }
                                         });
                                       });
                                     }, icon: null, size: 60),
@@ -639,8 +675,7 @@ class _VisualizarCampanhaUserPageState
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/bancos.png'),
+                          image: AssetImage('assets/bancos.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_bancos == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -687,8 +722,7 @@ class _VisualizarCampanhaUserPageState
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/lateral.png'),
+                          image: AssetImage('assets/lateral.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_laterais == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -725,8 +759,7 @@ class _VisualizarCampanhaUserPageState
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/traseira_completa.png'),
+                          image: AssetImage('assets/traseira_completa.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_traseira_completa == false
                           ? Border.all(color: Colors.black, width: 3)
@@ -763,8 +796,7 @@ class _VisualizarCampanhaUserPageState
                     width: getLargura(context) * .30,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              'assets/vidro_traseiro.png'),
+                          image: AssetImage('assets/vidro_traseiro.png'),
                           fit: BoxFit.cover),
                       border: campanha.anuncio_vidro_traseiro == false
                           ? Border.all(color: Colors.black, width: 3)

@@ -234,16 +234,22 @@ class NavigationBloc extends BlocBase {
       });
       print('CORRIDA ${corrida.carro.toString()}');
       if (corrida.carro.anuncio_vidro_traseiro != null) {
-        await gravarCorridaFirestore(corrida.carro.anuncio_vidro_traseiro);
+        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_vidro_traseiro.id).get()).data);
+        await gravarCorridaFirestore(c);
       }
       if (corrida.carro.anuncio_bancos != null) {
-        await gravarCorridaFirestore(corrida.carro.anuncio_bancos);
+        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_bancos.id).get()).data);
+
+        await gravarCorridaFirestore(c);
       }
       if (corrida.carro.anuncio_laterais != null) {
-        await gravarCorridaFirestore(corrida.carro.anuncio_laterais);
+        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_laterais.id).get()).data);
+
+        await gravarCorridaFirestore(c);
       }
       if (corrida.carro.anuncio_traseira_completa != null) {
-        await gravarCorridaFirestore(corrida.carro.anuncio_traseira_completa);
+        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_traseira_completa.id).get()).data);
+        await gravarCorridaFirestore(c);
       }
 
       Future.delayed(Duration(seconds: 10)).then((v) {
@@ -275,9 +281,12 @@ class NavigationBloc extends BlocBase {
     print('ENDEREÇOS ${enderecos}');
 
     int duracao = 0;
+    print("ZONAS ANUNCIO ${anuncio.zonas}");
     for (Zona z in anuncio.zonas) {
+      print("AQUI ZONA ${z.toString()}");
       if (z != null) {
         for (int i = 0; i < points.length; i++) {
+          print('AQUI POINTS ${points[i].toString()}');
           bool contains = false;
           contains = z.nome.toLowerCase().contains('CENTRAL'.toLowerCase()) ||
               (enderecos[i].toLowerCase().contains('CENTRAL'.toLowerCase())) ||
@@ -296,10 +305,14 @@ class NavigationBloc extends BlocBase {
             points[i].zona = z.nome;
             localizacoes.add(points[i]);
             if (i != 0) {
-              duracao += localizacoes[i]
-                  .timestamp
-                  .difference(localizacoes[i - 1].timestamp)
-                  .inSeconds;
+              try {
+                duracao += localizacoes[i]
+                    .timestamp
+                    .difference(localizacoes[i - 1].timestamp)
+                    .inSeconds;
+              }catch(err){
+                print('Erro: ${err.toString()}');
+              }
             }
           }
         }

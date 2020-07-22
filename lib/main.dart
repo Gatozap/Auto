@@ -244,8 +244,7 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 
-  Future onDidRecieveLocalNotification(
-      int id, String title, String body, String payload) async {
+  Future onDidRecieveLocalNotification(int id, String title, String body, String payload) async {
     dToast('Aqui push ${payload.toString()}');
     NotificacoesHelper().showNotification(json.decode(payload), context);
     SharedPreferences.getInstance().then((sp) {

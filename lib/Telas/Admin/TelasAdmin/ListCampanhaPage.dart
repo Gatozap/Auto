@@ -18,6 +18,7 @@ import 'EstatisticaPage.dart';
 import 'ListCampanhaController.dart';
 import 'ListaCarroController.dart';
 import 'VisualizarCarroPage.dart';
+import 'Anunciantes/anunciantes_page.dart';
 
 class ListaCampanhaPage extends StatefulWidget {
   Carro carro;
@@ -148,7 +149,10 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => EstatisticaPage(campanha: p)));
                     break;
-
+                  case 'anunciantes':
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AnunciantesPage(p)));
+                    break;
                 }
               },
                 itemBuilder: (context) {
@@ -156,6 +160,10 @@ class ListaCampanhaPageState extends State<ListaCampanhaPage> {
                   itens.add(PopupMenuItem(
                     child: hText('Estatisticas', context),
                     value: 'estatisticas',
+                  ));
+                  itens.add(PopupMenuItem(
+                    child: hText('Anunciantes', context),
+                    value: 'anunciantes',
                   ));
                   itens.add(PopupMenuItem(
                     child: hText('Editar', context),
