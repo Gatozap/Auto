@@ -163,7 +163,7 @@ class PerfilController extends BlocBase {
       inUsers.add(users);
     }else{
       for(User c in usersmain) {
-        if(c.toString().contains(s)){
+        if(c.toString().toLowerCase().contains(s.toLowerCase())){
           userFiltrados.add(c);
         }
       }

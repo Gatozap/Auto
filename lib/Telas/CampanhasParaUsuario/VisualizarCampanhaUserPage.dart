@@ -589,43 +589,48 @@ class _VisualizarCampanhaUserPageState
                                         solicitacoesRef
                                             .where('usuario',
                                                 isEqualTo: Helper.localUser.id)
-                                            .where('isAprovado',
-                                                isEqualTo: null)
                                             .getDocuments()
                                             .then((solicitacoes) {
-                                              bool shouldSolicitar = false;
-                                              if(solicitacoes.documents == null){
-                                                shouldSolicitar = true;
-                                              }else{
-                                                shouldSolicitar = solicitacoes.documents.length ==0;
+                                          bool shouldSolicitar = true;
+                                          if (solicitacoes.documents == null) {
+                                            shouldSolicitar = true;
+                                          } else {
+                                            for (var d
+                                                in solicitacoes.documents) {
+                                              Solicitacao s =
+                                                  Solicitacao.fromJson(d.data);
+                                              print("AQUI SOLICITAÇÂO ${s.toJson()}");
+                                              if (s.isAprovado == null) {
+                                                shouldSolicitar = false;
                                               }
+                                            }
+                                          }
 
-                                              if(shouldSolicitar) {
-                                                solicitacoesRef
-                                                    .add(s.toJson())
-                                                    .then((v) {
-                                                  s.id = v.documentID;
-                                                  solicitacoesRef
-                                                      .document(s.id)
-                                                      .updateData(s.toJson())
-                                                      .then((v) {
-                                                    sendNotificationUsuario(
-                                                        '${Helper.localUser
-                                                            .nome} quer participar da campanha',
-                                                        '${widget.campanha
-                                                            .nome}',
-                                                        null,
-                                                        'Administrador',
-                                                        widget.campanha.id,
-                                                        s.id);
-                                                    dToast(
-                                                        'Solicitação enviada com Sucesso! Um Administrador irá analisar e entrará em contato');
-                                                    Navigator.of(context).pop();
-                                                  });
-                                                });
-                                              }else{
-                                                dToast('Você ja fez uma solicitação, aguarde ela ser resolvida!');
-                                              }
+                                          if (shouldSolicitar) {
+                                            solicitacoesRef
+                                                .add(s.toJson())
+                                                .then((v) {
+                                              s.id = v.documentID;
+                                              solicitacoesRef
+                                                  .document(s.id)
+                                                  .updateData(s.toJson())
+                                                  .then((v) {
+                                                sendNotificationUsuario(
+                                                    '${Helper.localUser.nome} quer participar da campanha',
+                                                    '${widget.campanha.nome}',
+                                                    null,
+                                                    'Administrador',
+                                                    widget.campanha.id,
+                                                    s.id);
+                                                dToast(
+                                                    'Solicitação enviada com Sucesso! Um Administrador irá analisar e entrará em contato');
+                                                Navigator.of(context).pop();
+                                              });
+                                            });
+                                          } else {
+                                            dToast(
+                                                'Você ja fez uma solicitação, aguarde ela ser resolvida!');
+                                          }
                                         });
                                       });
                                     }, icon: null, size: 60),

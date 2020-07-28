@@ -225,7 +225,7 @@ class ListaCarroController extends BlocBase {
       inCarros.add(carros);
     }else{
       for(Carro c in carrosmain) {
-        if(c.toString().contains(s)){
+        if(c.toString().toLowerCase().contains(s.toLowerCase())){
           userFiltrados.add(c);
         }
       }

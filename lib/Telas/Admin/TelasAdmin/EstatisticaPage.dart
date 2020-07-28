@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:autooh/Objetos/Relatorio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:native_screenshot/native_screenshot.dart';
 import 'package:screenshot/screenshot.dart';
@@ -30,7 +33,6 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'dart:ui' as ui;
 import 'package:permission/permission.dart';
 
-
 class EstatisticaPage extends StatefulWidget {
   Carro carro;
   User user;
@@ -57,7 +59,8 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
 
   GlobalKey _globalKey = new GlobalKey();
   Future<Uint8List> _capturePng() async {
-    RenderRepaintBoundary boundary = _globalKey.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary =
+        _globalKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
@@ -121,28 +124,29 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                   ProgressDialog pr = ProgressDialog(context);
                   pr.show();
 
-                //  pr.hide();
+                  //  pr.hide();
                   final Directory appDocDir =
-                  await getApplicationDocumentsDirectory();
+                      await getApplicationDocumentsDirectory();
                   final String appDocPath = appDocDir.path;
                   final File file = File(appDocPath + '/' + 'relatorio.png');
                   print('Save as file ${file.path} ...');
                   await file.writeAsBytes((await _controller.takeSnapshot()));
 
                   GeradorPDF()
-                      .GerarPDF(corridas,file, dataini.millisecondsSinceEpoch,
-                      datafim.millisecondsSinceEpoch)
+                      .GerarPDF(corridas, file, dataini.millisecondsSinceEpoch,
+                          datafim.millisecondsSinceEpoch)
                       .then((v) async {
                     pr.hide();
                     print("AQUI VOLTOU ${v}");
                     final Directory appDocDir =
-                    await getApplicationDocumentsDirectory();
+                        await getApplicationDocumentsDirectory();
                     final String appDocPath = appDocDir.path;
                     final File file = File(appDocPath + '/' + 'relatorio.pdf');
                     print('Save as file ${file.path} ...');
                     await file.writeAsBytes(v);
                     ShareExtend.share(file.path, "file");
-                  });/*.catchError((err) {
+                  });
+                  /*.catchError((err) {
                     print('Erro ao gerar relatorio ${err}');
                     dToast('Erro ao gerar relatorio ${err}');
                     pr.hide();
@@ -152,6 +156,17 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
             ),
           );
         });
+  }
+
+  Future uploadRelatorio(File file, Campanha c) async {
+    StorageReference storageReference = FirebaseStorage.instance.ref().child(
+        'Relatorios/${c == null ? '' : c.id}.${file.path.split('.')[1]}');
+    StorageUploadTask uploadTask = storageReference.putFile(file);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    return storageReference.getDownloadURL().then((fileURL) {
+      return fileURL;
+    });
   }
 
   @override
@@ -166,6 +181,56 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
           '${widget.campanha != null ? widget.campanha.nome : widget.carro != null ? widget.carro.placa : widget.user == null ? 'Estatisticas Gerais' : widget.user.nome}',
           context,
           actions: [
+            IconButton(
+              icon: Icon(Icons.send, color: Colors.yellowAccent),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title:
+                            hText('Enviar Relatorio para Anunciantes', context),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            defaultActionButton('Selecionar Arquivo', context,
+                                () async {
+                              File file = await FilePicker.getFile();
+                              if (file != null) {
+                                Relatorio r = Relatorio(
+                                    nome: widget.campanha == null
+                                        ? ''
+                                        : widget.campanha.nome +
+                                            ' ' +
+                                            FormatarHora(DateTime.now()),
+                                    url: await uploadRelatorio(
+                                        file, widget.campanha),
+                                    campanha: widget.campanha == null
+                                        ? ''
+                                        : widget.campanha.id,
+                                    sender: Helper.localUser.id,
+                                    updated_at: DateTime.now(),
+                                    created_at: DateTime.now());
+                                relatoriosRef.add(r.toJson()).then((value) {
+                                  dToast('Relatorio enviado com sucesso!');
+                                  sendNotificationUsuario(
+                                      'Um novo Relatorio está disponivel!',
+                                      '${widget.campanha == null ? '' : widget.campanha.nome}',
+                                      null,
+                                      'Anunciante${widget.campanha == null? '': widget.campanha.id}',
+                                      widget.campanha.id,
+                                      '');
+                                  Navigator.of(context).pop();
+                                });
+                              }
+                            }, icon: null, size: 35),
+                          ],
+                        ),
+                      );
+                    });
+              },
+              color: Colors.yellowAccent,
+            ),
             IconButton(
                 color: Colors.yellowAccent,
                 onPressed: () {
@@ -244,61 +309,67 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
         campanhas.add(c.campanha);
       }
     }
-    if (campanhasList == null) {
-      List<Campanha> campanhasList = new List();
-      for (String s in campanhas) {
-        print('BUSCANDO CAMPANHA LALAL');
-        Campanha c =
+
+      if (campanhasList == null) {
+        List<Campanha> campanhasList = new List();
+        if (widget.campanha == null) {
+          for (String s in campanhas) {
+            print('BUSCANDO CAMPANHA LALAL');
+            Campanha c =
             Campanha.fromJson((await campanhasRef.document(s).get()).data);
-        campanhasList.add(c);
-        print('AQUI CAMPANHAS ${campanhasList.length}');
-      }
-      for (Campanha c in campanhasList) {
-        double dist = 0;
-        double valorTemp = 0;
-        for (Corrida cor in corridas) {
-          if (c.id == cor.campanha) {
-            dist += cor.dist == null ? 0 : cor.dist;
+            campanhasList.add(c);
+            print('AQUI CAMPANHAS ${campanhasList.length}');
           }
+        }else{
+          campanhasList = new List();
         }
-        if (c.precomes != null && c.kmMinima != null) {
-          if (c.kmMinima != 0) {
-            valorTemp += ((dist / 1000) / c.kmMinima);
-            print('AQUI LOL $valorTemp e ${dist / 1000} e ${c.kmMinima} ');
+        for (Campanha c in campanhasList) {
+          double dist = 0;
+          double valorTemp = 0;
+          for (Corrida cor in corridas) {
+            if (c.id == cor.campanha) {
+              print("AQUI DISTANCIA CORRIDA ${cor.dist}");
+              dist += cor.dist == null ? 0 : cor.dist;
+            }
           }
+          if (c.precomes != null && c.kmMinima != null) {
+            if (c.kmMinima != 0) {
+              valorTemp += ((dist / 1000) / c.kmMinima);
+              print('AQUI LOL $valorTemp e ${dist / 1000} e ${c.kmMinima} ');
+            }
+          }
+          print('Porcentagem ${valorTemp}');
+          if (valorTemp > 100) {
+            valorTemp = c.precomes;
+          } else {
+            valorTemp = c.precomes * valorTemp;
+          }
+          if (valorTemp > c.precomes) {
+            valorTemp = c.precomes;
+          }
+          valor += valorTemp;
         }
-        print('Porcentagem ${valorTemp}');
-        if (valorTemp > 100) {
-          valorTemp = c.precomes;
-        } else {
-          valorTemp = c.precomes * valorTemp;
-        }
-        if (valorTemp > c.precomes) {
-          valorTemp = c.precomes;
-        }
-        valor += valorTemp;
+
+        print('AQUI CAMPANHAS ${campanhasList} ${campanhasList.length}');
+        print("AQUI LOLOLOLO ${valor}");
+
+        return Padding(
+          padding: EdgeInsets.only(left: 15.0),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.moneyCheck,
+                color: corPrimaria,
+              ),
+              sb,
+              hText('Valor: R\$: ${valor.toStringAsFixed(2)}', context),
+            ],
+          ),
+        );
+      } else {
+        return Container();
       }
-
-      print('AQUI CAMPANHAS ${campanhasList} ${campanhasList.length}');
-      print("AQUI LOLOLOLO ${valor}");
-
-      return Padding(
-        padding: EdgeInsets.only(left: 15.0),
-        child: Row(
-          children: <Widget>[
-            Icon(
-              FontAwesomeIcons.moneyCheck,
-              color: corPrimaria,
-            ),
-            sb,
-            hText('Valor: R\$: ${valor.toStringAsFixed(2)}', context),
-          ],
-        ),
-      );
-    } else {
-      return Container();
     }
-  }
 
   bool isMapOpen = false;
   ExpandableController expController = ExpandableController();
@@ -335,10 +406,10 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
           containsCarro = true;
         }
       }
+
       for (Localizacao p in c.points) {
         if (zonas[p.zona] == null) {
           zonas[p.zona] = new List();
-          ;
         }
         zonas[p.zona].add(p);
       }
@@ -366,38 +437,37 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
         _addHeatmap(localizacoes);
       }
     }
-    if(map == null){
+    if (map == null) {
       map = Container(
         height: getAltura(context) * .5,
         child: widget.user != null
-            ? GoogleMap(buildingsEnabled: true,
-          //heatmaps: _heatmaps,
-          mapType: MapType.normal,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(-16.68045, -49.2686895),
-            zoom: 11,
-          ),
-          zoomGesturesEnabled: true,
-          polylines: getPolyLines(corridas).toSet(),
-          onMapCreated:
-              (GoogleMapController controller) {
-            _controller = controller;
-          },
-        )
+            ? GoogleMap(
+                buildingsEnabled: true,
+                //heatmaps: _heatmaps,
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(-16.68045, -49.2686895),
+                  zoom: 11,
+                ),
+                zoomGesturesEnabled: true,
+                polylines: getPolyLines(corridas).toSet(),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller = controller;
+                },
+              )
             : GoogleMap(
-          heatmaps: _heatmaps,
-          mapType: MapType.normal,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(-16.68045, -49.2686895),
-            zoom: 11,
-          ),
-          zoomGesturesEnabled: true,
-          //polylines: getPolyLines(corridas).toSet(),
-          onMapCreated:
-              (GoogleMapController controller) {
-            _controller = controller;
-          },
-        ),
+                heatmaps: _heatmaps,
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(-16.68045, -49.2686895),
+                  zoom: 11,
+                ),
+                zoomGesturesEnabled: true,
+                //polylines: getPolyLines(corridas).toSet(),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller = controller;
+                },
+              ),
       );
     }
     return RepaintBoundary(
@@ -438,9 +508,8 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                         ),
                         expanded: Center(
                             child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: map
-                        ))),
+                                padding: const EdgeInsets.all(8.0),
+                                child: map))),
                   ),
                   sb, sb,
                   Padding(
@@ -492,16 +561,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                       ),
                     ),
                     collapsed: Container(),
-                    expanded: FutureBuilder(
-                      future: ZonasWidget(zonas, context),
-                      builder: (context, snap) {
-                        if (snap.data == null) {
-                          return LoadingWidget(
-                              'Erro Ao Calcular', 'Carregando dados');
-                        }
-                        return snap.data;
-                      },
-                    ),
+                    expanded: ZonasWidget(zonas, context,(dist / 1000))
                   ),
 
                   sb, sb,
@@ -815,13 +875,18 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
   //Create an instance of ScreenshotController
   ScreenshotController screenshotController = ScreenshotController();
 
-  Future<Widget> ZonasWidget(
-      Map<String, List<Localizacao>> zonas, BuildContext context) async {
+ Widget ZonasWidget(
+      Map<String, List<Localizacao>> zonas, BuildContext context, double d) {
     var textos = <Widget>[];
 
-    zonas.forEach((k, v) async {
+    List<List> txts = new List();
+    double total = 0;
+    zonas.forEach((k, v) {
       Localizacao lastPoint;
       double dist = 0;
+      List<Localizacao> localizacoes = v;
+      localizacoes.sort((a,b)=> a.timestamp.compareTo(b.timestamp));
+      print("AQUI POINTS ${v.length}");
       for (Localizacao p in v) {
         if (lastPoint != null) {
           var distTemp = calculateDistance(
@@ -830,27 +895,30 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
             lastPoint.latitude,
             lastPoint.longitude,
           );
-          if (distTemp < 300) {
             dist += distTemp;
-          }
         }
         lastPoint = p;
       }
-
+      total+= (dist/10);
+      txts.add(['Zona: ${k[0].toUpperCase()}${k.substring(1).toLowerCase()}', (dist / 10)]);
+    });
+    double sobra = 0;
+    if(total<d){
+      sobra = (d-total)/txts.length;
+    }
+    for(List l in txts){
       textos.add(
-        hText('Zona: ${k[0].toUpperCase()}${k.substring(1).toLowerCase()}',
-            context),
+        hText(l[0],
+        context),
       );
-
       textos.add(
-        hText('Distancia Percorrida: ${(dist / 1000).toStringAsFixed(2)}Km',
+        hText('Distancia Percorrida: ${(l[1]+sobra).toStringAsFixed(2)}Km',
             context),
       );
       textos.add(
         Divider(),
       );
-    });
-    return Future.delayed(Duration(seconds: 5)).then((v) {
+    }
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -860,6 +928,5 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
           children: textos,
         ),
       );
-    });
   }
 }

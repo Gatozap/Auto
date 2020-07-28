@@ -96,6 +96,14 @@ class _HomePageState extends State<HomePage> {
     if (Helper.localUser.permissao == 10) {
       Helper.fbmsg.subscribeToTopic('Administrador');
     }
+    if(Helper.localUser.permissao == 5 ){
+      Helper.fbmsg.subscribeToTopic('Anunciante');
+      if(Helper.localUser.campanhas != null){
+        for(String s in Helper.localUser.campanhas){
+          Helper.fbmsg.subscribeToTopic('Anunciante${s}');
+        }
+      }
+    }
     carrosRef
         .where('dono', isEqualTo: Helper.localUser.id)
         .getDocuments()
@@ -409,11 +417,15 @@ class _HomePageState extends State<HomePage> {
                             if (v.documents.length != 0) {
                               Carro c = Carro.fromJson(v.documents[0].data);
                               if (!isAprovado(c)) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        ListaCampanhasUsuarioPage(
-                                          user: Helper.localUser,
-                                        )));
+                                if(!hasExpired(c)) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          ListaCampanhasUsuarioPage(
+                                            user: Helper.localUser,
+                                          )));
+                                } else {
+                                  dToast('Você ja possui uma campanha ativa!');
+                                }
                               } else {
                                 dToast('Você ja possui uma campanha ativa!');
                               }

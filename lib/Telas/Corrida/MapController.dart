@@ -60,6 +60,7 @@ class MapController extends BlocBase{
   BehaviorSubject<
       double> controllerDistanciaPercorridaEmMetros = BehaviorSubject();
   Future<void> updateMarker() async {
+    print("ATUALIZANDO MARKER");
     sourceIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 4.5),
       "assets/marker.png",
@@ -121,8 +122,12 @@ class MapController extends BlocBase{
     pointsRef =
         corridaRef.child('points');
     corridaRef.onValue.listen((v) {
-      c = Corrida.fromJson(v.snapshot.value);
-      inCorrida.add(c);
+      if(v.snapshot != null) {
+        if(v.snapshot.value != null) {
+          c = Corrida.fromJson(v.snapshot.value);
+          inCorrida.add(c);
+        }
+      }
       //distanciaPercorridaEmMetros = c.distancia;
     });
 

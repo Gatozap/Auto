@@ -13,6 +13,7 @@ import 'package:autooh/Objetos/Localizacao.dart';
 import 'package:autooh/Objetos/Zona.dart';
 
 import 'package:firebase_database/firebase_database.dart';
+
 import 'package:geocoder/geocoder.dart';
 //import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,7 +27,7 @@ class NavigationBloc extends BlocBase {
   Stream<Corrida> get outCorrida => corridaController.stream;
   Sink<Corrida> get inCorrida => corridaController.sink;
   Corrida corrida;
-
+  var geolocator = Geolocator();
   DatabaseReference corridaRef;
   DatabaseReference pointsRef;
   BehaviorSubject<List> pointsController = BehaviorSubject<List>();
@@ -50,7 +51,6 @@ class NavigationBloc extends BlocBase {
   void dispose() {}
 
   Future<String> start(Carro carroSelecionado, {String id}) async {
-
     FirebaseDatabase.instance.reference().child('Corridas').remove();
     if (id == null) {
       corrida = Corrida(
@@ -91,14 +91,16 @@ class NavigationBloc extends BlocBase {
 
       if (v.snapshot.value != 'null') {
         Map<dynamic, dynamic> pts = v.snapshot.value;
-        pts.forEach((k, v) {
-          if (v != null) {
-            points.add(Localizacao.fromJson(v));
-          }
-        });
-        points.sort((var a, var b) {
-          return a.timestamp.compareTo(b.timestamp);
-        });
+        if (pts != null) {
+          pts.forEach((k, v) {
+            if (v != null) {
+              points.add(Localizacao.fromJson(v));
+            }
+          });
+          points.sort((var a, var b) {
+            return a.timestamp.compareTo(b.timestamp);
+          });
+        }
       }
     });
 
@@ -147,6 +149,7 @@ class NavigationBloc extends BlocBase {
     if (corrida != null) {
       if (corrida.isRunning) {
         bool hasMoved = false;
+        print('RODANDO START RACING ${hasMoved}');
         Localizacao loc = Localizacao(
             latitude: location.latitude,
             longitude: location.longitude,
@@ -194,7 +197,6 @@ class NavigationBloc extends BlocBase {
           var addresses = await Geocoder.local.findAddressesFromCoordinates(
               Coordinates(location.latitude, location.longitude));
           var first = addresses.first;
-
           inUltimoEndereco.add('${first.subLocality}');
           corrida.dist = dist;
           print('CORRIDA ${corrida.id}');
@@ -228,27 +230,40 @@ class NavigationBloc extends BlocBase {
     Future.delayed(Duration(seconds: 5)).then((vo) async {
       corrida.hora_fim = DateTime.now();
       corrida.last_seen = DateTime.now();
-      ativosRef.document(corrida.id).updateData(
-          {'dataFim': DateTime.now().millisecondsSinceEpoch, 'isActive': false}).catchError((err) {
+      ativosRef.document(corrida.id).updateData({
+        'dataFim': DateTime.now().millisecondsSinceEpoch,
+        'isActive': false
+      }).catchError((err) {
         print('Erro ao salvar Ativo');
       });
       print('CORRIDA ${corrida.carro.toString()}');
       if (corrida.carro.anuncio_vidro_traseiro != null) {
-        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_vidro_traseiro.id).get()).data);
+        Campanha c = Campanha.fromJson((await campanhasRef
+                .document(corrida.carro.anuncio_vidro_traseiro.id)
+                .get())
+            .data);
         await gravarCorridaFirestore(c);
       }
       if (corrida.carro.anuncio_bancos != null) {
-        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_bancos.id).get()).data);
+        Campanha c = Campanha.fromJson(
+            (await campanhasRef.document(corrida.carro.anuncio_bancos.id).get())
+                .data);
 
         await gravarCorridaFirestore(c);
       }
       if (corrida.carro.anuncio_laterais != null) {
-        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_laterais.id).get()).data);
+        Campanha c = Campanha.fromJson((await campanhasRef
+                .document(corrida.carro.anuncio_laterais.id)
+                .get())
+            .data);
 
         await gravarCorridaFirestore(c);
       }
       if (corrida.carro.anuncio_traseira_completa != null) {
-        Campanha c = Campanha.fromJson((await campanhasRef.document(corrida.carro.anuncio_traseira_completa.id).get()).data);
+        Campanha c = Campanha.fromJson((await campanhasRef
+                .document(corrida.carro.anuncio_traseira_completa.id)
+                .get())
+            .data);
         await gravarCorridaFirestore(c);
       }
 
@@ -266,6 +281,8 @@ class NavigationBloc extends BlocBase {
         });
         inCorrida.add(corrida);
       });
+    }).catchError((err) {
+      print('Error ${err.toString()}');
     });
   }
 
@@ -310,7 +327,7 @@ class NavigationBloc extends BlocBase {
                     .timestamp
                     .difference(localizacoes[i - 1].timestamp)
                     .inSeconds;
-              }catch(err){
+              } catch (err) {
                 print('Erro: ${err.toString()}');
               }
             }
@@ -372,6 +389,13 @@ class NavigationBloc extends BlocBase {
     }).catchError((err) {
       print('ERRO AO SALVAR CORRIDA ${err.toString()}');
     });
+  }
+
+  void getLocation() {
+    print("AQUI GET LOCATION");
+
+
+
   }
 }
 

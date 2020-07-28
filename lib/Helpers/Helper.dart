@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
+import 'package:autooh/Objetos/Campanha.dart';
+import 'package:autooh/Objetos/Carro.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:autooh/Objetos/Notificacao.dart';
@@ -42,6 +44,30 @@ FormatarHora(DateTime d) {
   return ('${d.day < 10 ? '0${d.day}' : d.day}/${d.month < 10 ? '0${d.month}' : d.month} ${d.hour < 10 ? '0${d.hour}' : d.hour}:${d.minute < 10 ? '0${d.minute}' : d.minute} ');
 }
 
+bool hasExpired(Carro c){
+  if(c.anuncio_vidro_traseiro != null){
+    if(c.anuncio_vidro_traseiro.datafim.isAfter(DateTime.now())){
+      return true;
+    }
+  }
+  if(c.anuncio_traseira_completa != null){
+    if(c.anuncio_traseira_completa.datafim.isAfter(DateTime.now())){
+      return true;
+    }
+  }
+  if(c.anuncio_laterais != null){
+    if(c.anuncio_laterais.datafim.isAfter(DateTime.now())){
+      return true;
+    }
+  }
+  if(c.anuncio_bancos != null){
+    if(c.anuncio_bancos.datafim.isAfter(DateTime.now())){
+      return true;
+    }
+  }
+  return false;
+
+}
 
 RoundedRectangleBorder dialogShape = RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(32.0)));

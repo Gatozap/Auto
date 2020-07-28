@@ -24,9 +24,9 @@ class ListaCampanhasUsuarioPage extends StatefulWidget {
     return ListaCampanhasUsuarioPageState();
   }
 }
-ListaCampanhaController pc;
-class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
 
+class ListaCampanhasUsuarioPageState extends State<ListaCampanhasUsuarioPage> {
+  ListaCampanhaController pc;
   @override
   void initState() {
     super.initState();

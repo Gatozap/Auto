@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:autooh/Telas/Corrida/foreground.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,15 +12,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Home/Home.dart';
 import 'package:autooh/Telas/Login/Login.dart';
 import 'package:autooh/Helpers/Bairros.dart';
-import 'package:autooh/Telas/Login/LoginEmail/CadastroEmail/cadastroemail.dart';
-import 'package:autooh/Telas/Login/LoginEmail/EsqueceuSenha/EsqueceuSenha.dart';
-import 'package:autooh/Telas/Login/LoginEmail/LoginEmail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Helpers/Bairros.dart';
 import 'Helpers/Cielo/src/Environment.dart';
@@ -33,10 +32,13 @@ import 'Objetos/Zona.dart';
 import 'Telas/Cadastro/CadastroPage.dart';
 import 'Telas/Compartilhados/WaitScreen.dart';
 
-FirebaseDatabase database;
-
 Future main() async {
   runApp(MyApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+      );
   CieloEcommerce cielo = CieloEcommerce(
       environment: Environment.SANDBOX, // ambiente de desenvolvimento
       merchant: Merchant(
@@ -244,7 +246,8 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 
-  Future onDidRecieveLocalNotification(int id, String title, String body, String payload) async {
+  Future onDidRecieveLocalNotification(
+      int id, String title, String body, String payload) async {
     dToast('Aqui push ${payload.toString()}');
     NotificacoesHelper().showNotification(json.decode(payload), context);
     SharedPreferences.getInstance().then((sp) {

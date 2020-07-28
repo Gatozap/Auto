@@ -21,6 +21,7 @@ import 'TelasAdmin/CriarCampanhaPage.dart';
 import 'TelasAdmin/ListCampanhaPage.dart';
 import 'TelasAdmin/Parceiros/ParceirosListPage.dart';
 import 'Ativos/ativos_page.dart';
+import 'TelasAdmin/Relatorios/relatoriospage.dart';
 
 class AdminPage extends StatefulWidget {
   User user;
@@ -132,7 +133,7 @@ class _AdminPageState extends State<AdminPage> {
             ):Container(),
             Row(
               children: <Widget>[
-                GestureDetector(
+                Helper.localUser.permissao == 5? Container(): GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ListaCarroUserPage(
@@ -169,6 +170,40 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                   ),
                 ),
+                Helper.localUser.permissao == 5? GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RelatoriosPage(
+                        )));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(0, 125, 190, 100),
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    height: getAltura(context) * .2,
+                    width: getLargura(context) * .4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                          height: 60,
+                          child: Icon(FontAwesomeIcons.file,
+                              color: Colors.yellowAccent, size: 40),
+                        ),
+                        hText('Relatorios', context,
+                            color: Colors.white, textaling: TextAlign.center)
+                      ],
+                    ),
+                  ),
+                ):Container(),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -199,7 +234,7 @@ class _AdminPageState extends State<AdminPage> {
                           child: Image.asset('assets/Campanhas.png',
                               fit: BoxFit.fill),
                         ),
-                        hText('Editar\nCampanha', context,
+                        hText(Helper.localUser.permissao == 5? 'Minhas campanhas': 'Editar\nCampanha', context,
                             color: Colors.white, textaling: TextAlign.center)
                       ],
                     ),
@@ -454,7 +489,46 @@ class _AdminPageState extends State<AdminPage> {
                   ),
                 ):Container(),
               ],
-            )
+            ),
+
+            Row(
+              children: [
+                Helper.localUser.permissao == 5? Container():GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RelatoriosPage(
+                        )));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(0, 125, 190, 100),
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    height: getAltura(context) * .2,
+                    width: getLargura(context) * .4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                          height: 60,
+                          child: Icon(FontAwesomeIcons.file,
+                              color: Colors.yellowAccent, size: 40),
+                        ),
+                        hText('Relatorios', context,
+                            color: Colors.white, textaling: TextAlign.center)
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ]),
         ),
       ),

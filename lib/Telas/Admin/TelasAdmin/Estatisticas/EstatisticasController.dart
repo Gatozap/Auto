@@ -137,8 +137,10 @@ class EstatisticaController extends BlocBase {
       }
       if (datafim != null && dataini != null) {
         if (!contains) {
-          if (dataini.isBefore(c.hora_ini) && datafim.isAfter(c.hora_fim)) {
-            corridasTemp.add(c);
+          if(dataini != null && datafim != null && c.hora_fim != null && c.hora_ini != null) {
+            if (dataini.isBefore(c.hora_ini) && datafim.isAfter(c.hora_fim)) {
+              corridasTemp.add(c);
+            }
           }
         }
       } else {

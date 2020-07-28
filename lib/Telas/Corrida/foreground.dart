@@ -7,6 +7,7 @@ import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Corrida.dart';
 import 'package:autooh/Objetos/Localizacao.dart';
+import 'package:autooh/main.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -170,6 +171,7 @@ class _MyAppState extends State<Racing> {
         child: started ? Text("Parar") : Text("Iniciar"),
         onPressed: () async {
           if (started) {
+            dToast('Finalizando Corrida!');
             await FlutterForegroundPlugin.stopForegroundService();
             Wakelock.disable();
             nb.stopFGS();
@@ -179,10 +181,10 @@ class _MyAppState extends State<Racing> {
             });
             dToast('Corrida Finalizada');
           } else {
+            dToast('Iniciando Corrida!');
             carroSelecionado = (await getDropdownCarros())[0];
             if (carroSelecionado != null) {
               startForegroundService(carroSelecionado).then((v) {
-
                 if (v != null) {
                   mapController.updateCorridaId(v);
                   setState(() {
