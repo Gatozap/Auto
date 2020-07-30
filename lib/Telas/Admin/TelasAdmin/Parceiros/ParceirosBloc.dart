@@ -2,6 +2,7 @@
 
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
+import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
 import 'package:autooh/Telas/Card/bloc_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,32 +59,66 @@ class ParceirosBloc extends BlocBase {
 
 
   }
-  ParceirosBloc({Parceiro parceiro}){
-    parceiroSelecionado = parceiro;
-    inParceiroSelecionado.add(parceiroSelecionado);
-    parceirosRef
-       
-        .snapshots()
-        .listen((QuerySnapshot snap) {
-      parceiros = new List();
+  ParceirosBloc(Campanha campanha, {Parceiro parceiro}){
+    if(campanha == null) {
+      parceiroSelecionado = parceiro;
+      inParceiroSelecionado.add(parceiroSelecionado);
+      parceirosRef
 
-      if (snap.documents != null) {
-        for (DocumentSnapshot ds in snap.documents) {
+          .snapshots()
+          .listen((QuerySnapshot snap) {
+        parceiros = new List();
 
-          Parceiro p = Parceiro.fromJson(ds.data);
-          p.id = ds.documentID;
-          parceiros.add(p);
+        if (snap.documents != null) {
+          for (DocumentSnapshot ds in snap.documents) {
+            Parceiro p = Parceiro.fromJson(ds.data);
+            p.id = ds.documentID;
+            parceiros.add(p);
+          }
+          parceiros.sort(
+                  (Parceiro a, Parceiro b) => b.id.compareTo(a.id));
+          parceirosmain = parceiros;
+          inParceiros.add(parceiros);
+        } else {
+          inParceiros.add(parceiros);
         }
+      }).onError((err) {
+        print('Erro: ${err.toString()}');
+      });
+    }else{
+      if(campanha.parceiros == null){
+        parceiroSelecionado = parceiro;
+        inParceiroSelecionado.add(parceiroSelecionado);
+        parceirosRef
+
+            .snapshots()
+            .listen((QuerySnapshot snap) {
+          parceiros = new List();
+
+          if (snap.documents != null) {
+            for (DocumentSnapshot ds in snap.documents) {
+              Parceiro p = Parceiro.fromJson(ds.data);
+              p.id = ds.documentID;
+              parceiros.add(p);
+            }
+            parceiros.sort(
+                    (Parceiro a, Parceiro b) => b.id.compareTo(a.id));
+            parceirosmain = parceiros;
+            inParceiros.add(parceiros);
+          } else {
+            inParceiros.add(parceiros);
+          }
+        }).onError((err) {
+          print('Erro: ${err.toString()}');
+        });
+      }else {
+        parceiros = campanha.parceiros;
         parceiros.sort(
                 (Parceiro a, Parceiro b) => b.id.compareTo(a.id));
         parceirosmain = parceiros;
         inParceiros.add(parceiros);
-      } else {
-        inParceiros.add(parceiros);
       }
-    }).onError((err) {
-      print('Erro: ${err.toString()}');
-    });
+    }
   }
   @override
   void dispose() {

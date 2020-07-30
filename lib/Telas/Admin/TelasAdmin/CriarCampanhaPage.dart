@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:autooh/Helpers/DateSelector.dart';
 import 'package:autooh/Helpers/Helper.dart';
+import 'package:autooh/Helpers/References.dart';
 
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Bairro.dart';
 import 'package:autooh/Objetos/Zona.dart';
+import 'package:autooh/Objetos/Parceiro.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -547,11 +549,126 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                               ),
                                             )
                                           : Container(),
+                              FutureBuilder<Object>(
+                                  future: getInstaladores(),
+                                  builder: (context, snapshot) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: DropdownButton(
+                                        hint: Row(
+                                          children: <Widget>[
+                                            Icon(Icons.map, color: corPrimaria),
+                                            sb,
+                                            hText(
+                                              'Instaladores',
+                                              context,
+                                              size: 40,
+                                              color: corPrimaria,
+                                            ),
+                                          ],
+                                        ),
+                                        style: TextStyle(
+                                            color: corPrimaria,
+                                            fontSize: ScreenUtil.getInstance()
+                                                .setSp(40),
+                                            fontWeight: FontWeight.bold),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: corPrimaria),
+                                        items: snapshot.data,
+                                        onChanged: (value) {
+                                          Campanha c = snap.data;
+                                          if (c == null) {
+                                            c = Campanha();
+                                          }
+                                          if (c.parceiros == null) {
+                                            c.parceiros = new List();
+                                          }
+                                          bool contains = false;
+                                          for (Parceiro z in c.parceiros) {
+                                            if (z.nome == value.nome) {
+                                              contains = true;
+                                            }
+                                          }
+                                          if (!contains) {
+                                            c.parceiros.add(value);
+                                          }
+                                          campanhaController.inCampanha.add(c);
+                                        },
+                                      ),
+                                    );
+                                  }),
+                              snap.data == null
+                                  ? Container()
+                                  : snap.data.parceiros == null
+                                      ? Container()
+                                      : snap.data.parceiros.length > 0
+                                          ? Container(
+                                              width: getLargura(context),
+                                              height: 100,
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    snap.data.parceiros.length,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: MaterialButton(
+                                                      onPressed: () {
+                                                        Campanha c = snap.data;
+                                                        List<Parceiro>
+                                                            zonasTemp =
+                                                            new List();
+                                                        for (Parceiro z
+                                                            in c.parceiros) {
+                                                          if (z.nome !=
+                                                              c.parceiros[index]
+                                                                  .nome) {
+                                                            zonasTemp.add(z);
+                                                          }
+                                                        }
+                                                        c.parceiros = zonasTemp;
+                                                        campanhaController
+                                                            .inCampanha
+                                                            .add(c);
+                                                      },
+                                                      child: Chip(
+                                                        label: hText(
+                                                            capitalize(campanha
+                                                                .parceiros[
+                                                                    index]
+                                                                .nome),
+                                                            context,
+                                                            color:
+                                                                Colors.white),
+                                                        backgroundColor:
+                                                            corPrimaria,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : Container(),
                               sb,
                               sb,
                               Divider(
                                 color: corPrimaria,
                               ),
+                              sb,
+                              defaultCheckBox(
+                                  snap.data.isVisibile,
+                                  'Usuarios podem requisitar participação?',
+                                  context, () {
+                                Campanha c = snap.data;
+                                c.isVisibile = !c.isVisibile;
+                                campanhasRef.document(c.id).setData(c.toJson());
+                                campanhaController.inCampanha.add(c);
+                              }),
                               sb,
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -905,6 +1022,26 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
             ),
           );
         });
+  }
+
+  Future<List<DropdownMenuItem<Parceiro>>> getInstaladores() async {
+    List<DropdownMenuItem<Parceiro>> items = List();
+
+    List<Parceiro> parceiros = new List();
+    var value = await parceirosRef.getDocuments();
+    if (value.documents != null) {
+      if (value.documents.length != 0) {
+        for (var d in value.documents) {
+          parceiros.add(Parceiro.fromJson(d.data));
+        }
+      }
+    }
+    print('Parceiros ${parceiros.length}');
+    for (Parceiro z in parceiros) {
+      items.add(DropdownMenuItem(value: z, child: Text('${z.nome}')));
+    }
+
+    return items;
   }
 
   List<DropdownMenuItem<Zona>> getDropDownMenuItemsCampanha() {

@@ -10,8 +10,6 @@ CollectionReference personagensRef =
 
 CollectionReference ativosRef =
 Firestore.instance.collection('Ativos').reference();
-CollectionReference parceiroRef =
-Firestore.instance.collection('Parceiro').reference();
 CollectionReference carrosRef =
 Firestore.instance.collection('Carro').reference();
 CollectionReference relatoriosRef =

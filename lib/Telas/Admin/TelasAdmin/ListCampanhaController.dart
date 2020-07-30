@@ -35,7 +35,6 @@ class ListaCampanhaController extends BlocBase {
             .document(s)
             .get().then((snap) {
           campanhas = new List();
-
           if (snap.data != null) {
             Campanha p = Campanha.fromJson(snap.data);
             p.id = snap.documentID;
@@ -58,8 +57,10 @@ class ListaCampanhaController extends BlocBase {
         if (snap.documents.length > 0) {
           for (DocumentSnapshot ds in snap.documents) {
             Campanha p = Campanha.fromJson(ds.data);
-            p.id = ds.documentID;
-            campanhas.add(p);
+            if(p.isVisibile) {
+              p.id = ds.documentID;
+              campanhas.add(p);
+            }
           }
           campanhas.sort(
                   (Campanha a, Campanha b) => b.dataini.compareTo(a.dataini));

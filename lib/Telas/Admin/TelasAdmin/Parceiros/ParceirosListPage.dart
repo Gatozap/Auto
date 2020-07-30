@@ -34,7 +34,7 @@ class ParceirosListPageState extends State<ParceirosListPage> {
   void initState() {
     super.initState();
     if (pc == null) {
-      pc = new ParceirosBloc();
+      pc = new ParceirosBloc(widget.campanha);
     }
   }
 
@@ -59,14 +59,6 @@ class ParceirosListPageState extends State<ParceirosListPage> {
                 if (snapshot.data.length == 0) {
                   return Loading(completed: Text('Nenhum Parceiro encontrado'));
                 }
-
-                /* List<Campanha> campanhasItens = new List();
-                for (Campanha p in snapshot.data) {
-                  if(p.deleted_at == null) {
-                    campanhasItens.add(p);
-                  }
-                }*/
-
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,

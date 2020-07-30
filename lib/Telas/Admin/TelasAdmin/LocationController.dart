@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:autooh/Objetos/Endereco.dart';
 import 'package:autooh/Objetos/location.dart';
 import 'package:autooh/Telas/Card/bloc_provider.dart';
@@ -14,7 +10,6 @@ class LocationController extends BlocBase {
   BehaviorSubject<LatLng> controllerUserLocation =
   new BehaviorSubject<LatLng>();
   LatLng userLocation;
-
   BehaviorSubject<Endereco> _controllerEndereco =
   new BehaviorSubject<Endereco>();
   Stream<Endereco> get outEndereco => _controllerEndereco.stream;
@@ -28,8 +23,6 @@ class LocationController extends BlocBase {
       bool enable = await location.serviceEnabled();
       if (enable) {
         location.onLocationChanged().listen((LocationData currentLocation) {
-          print('AQUI USER LOCATION ${currentLocation.latitude}');
-          print('AQUI USER LOCATION ${currentLocation.longitude}');
           userLocation =
           new LatLng(currentLocation.latitude, currentLocation.longitude);
           inUserLocation.add(userLocation);

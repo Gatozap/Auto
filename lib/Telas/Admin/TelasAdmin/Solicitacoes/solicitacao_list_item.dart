@@ -64,7 +64,14 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
                             mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           defaultActionButton('Não', context, () {
-                            Navigator.of(context).pop();
+                            widget.s.isAprovado = false;
+                            solicitacoesRef.document(widget.s.id).updateData(widget.s.toJson()).then((v){
+                              sendNotificationUsuario('Sua Solicitação para ${widget.s.nome_campanha} não foi aprovada', 'Agora é só agendar um horario', null, 'user${widget.s.usuario}',widget.s.campanha, widget.s.id);
+                              dToast('Solicitação Negada');
+
+                              Navigator.of(context).pop();
+
+                            });
                           }, icon: null),
                           defaultActionButton('Sim', context, () {
                             widget.s.isAprovado = true;

@@ -33,7 +33,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
   void initState() {
     super.initState();
     if (pc == null) {
-      pc = ParceirosBloc(parceiro: widget.parceiro);
+      pc = ParceirosBloc(null,parceiro: widget.parceiro);
     }
     if (aec == null) {
       aec = AddEnderecoController(ue);

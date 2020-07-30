@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Objetos/Zona.dart';
+import 'package:autooh/Objetos/Parceiro.dart';
 
 import 'Carro.dart';
 
 class Campanha {
   String id;
   String empresa;
+  bool isVisibile;
   String cnpj;
   DateTime dataini;
   DateTime datafim;
@@ -34,6 +36,8 @@ class Campanha {
   DateTime updated_at;
   DateTime deleted_at;
   List anunciantes;
+
+  List parceiros;
   Campanha.Empty();
 
   Campanha(
@@ -48,6 +52,7 @@ class Campanha {
       this.dias,
       this.limite,
       this.fotos,
+        this.isVisibile,
         this.anunciantes,
       this.created_at,
       this.updated_at,
@@ -64,6 +69,7 @@ class Campanha {
       this.atende_festas,
       this.final_de_semana,
       this.manha,
+        this.parceiros,
       this.noite,
       this.sobre,
       this.tarde});
@@ -88,6 +94,7 @@ class Campanha {
       duracaoMinima: j['duracaoMinima'] == null
           ? 0.0
           : double.parse(j["duracaoMinima"].toString()),
+      isVisibile: j['isVisible'] == null? true: j['isVisible'],
       precomes:
           j['precomes'] == null ? 0.0 : double.parse(j["precomes"].toString()),
       kmMinima:
@@ -118,6 +125,7 @@ class Campanha {
       limite: j['limite'] == null ? 5000000 : j["limite"],
       fotos: j['fotos'] == null ? null : Helper().jsonToList(j["fotos"]),
       carros: j['carros'] == null ? null : getCarros(json.decode(j['carros'])),
+      parceiros: j['parceiros'] == null? null: getParceiros(json.decode(j['parceiros'])),
       created_at: j['created_at'] == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(j['created_at']),
@@ -149,6 +157,7 @@ class Campanha {
       'noite': this.noite == null ? false : this.noite,
       'manha': this.manha == null ? false : this.manha,
       'anunciantes': this.anunciantes == null ? null : this.anunciantes,
+      'isVisible': this.isVisibile == null? true: this.isVisibile,
       'anuncio_bancos':
           this.anuncio_bancos == null ? false : this.anuncio_bancos,
       'anuncio_vidro_traseiro': this.anuncio_vidro_traseiro == null
@@ -179,7 +188,20 @@ class Campanha {
       "fotos": this.fotos == null ? null : this.fotos,
       'carros':
           this.carros == null ? null : json.encode(EncodeCarros(this.carros)),
+      'parceiros':
+          this.parceiros == null ? null : json.encode(EncodeParceiros(this.parceiros)),
     };
+  }
+
+  static getParceiros(decoded) {
+    List<Parceiro> parceiros = new List();
+    if (decoded == null) {
+      return null;
+    }
+    for (var i in decoded) {
+      parceiros.add(Parceiro.fromJson(i));
+    }
+    return parceiros;
   }
 
   static getCarros(decoded) {
@@ -208,6 +230,13 @@ class Campanha {
     List encoded = new List();
     for (Carro c in carros) {
       encoded.add(c.toJsonSemCampanha());
+    }
+    return encoded;
+  }
+  EncodeParceiros(List<Parceiro> parceiros) {
+    List encoded = new List();
+    for (Parceiro c in parceiros) {
+      encoded.add(c.toJson());
     }
     return encoded;
   }
