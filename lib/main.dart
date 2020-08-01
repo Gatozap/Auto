@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/User.dart';
@@ -20,6 +21,7 @@ import 'package:autooh/Telas/Home/Home.dart';
 import 'package:autooh/Telas/Login/Login.dart';
 import 'package:autooh/Helpers/Bairros.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wakelock/wakelock.dart';
 import 'Helpers/Bairros.dart';
 import 'Helpers/Cielo/src/Environment.dart';
 import 'Helpers/Cielo/src/Merchant.dart';
@@ -31,9 +33,55 @@ import 'Objetos/Notificacao.dart';
 import 'Objetos/Zona.dart';
 import 'Telas/Cadastro/CadastroPage.dart';
 import 'Telas/Compartilhados/WaitScreen.dart';
+import 'Telas/Corrida/NavigationBloc2.dart';
+
+class LifecycleWatcher extends StatefulWidget {
+  @override
+  _LifecycleWatcherState createState() => _LifecycleWatcherState();
+}
+
+class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBindingObserver {
+  AppLifecycleState _lastLifecycleState;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    print("AQUI LIFECYCLE CHANGE ${state}");
+    print("AQUI LIFECYCLE CHANGE ${state}");
+    if(state == 3){
+      if(started) {
+        dToast('Finalizando Corrida!');
+        FlutterForegroundPlugin.stopForegroundService();
+        Wakelock.disable();
+        nb.stopFGS();
+        Wakelock.disable();
+        started = !started;
+        dToast('Corrida Finalizada');
+      }
+    }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+      return MyApp();
+  }
+}
+
 
 Future main() async {
-  runApp(MyApp());
+  runApp(LifecycleWatcher());
 
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(
@@ -181,7 +229,7 @@ class _MyAppState extends State<MyApp> {
     Helper.analytics.logAppOpen();
 
     //registrarZonas();
-    return MaterialApp(
+      return MaterialApp(
         navigatorKey: MyApp.navKey,
         title: 'Autooh',
         debugShowCheckedModeBanner: false,

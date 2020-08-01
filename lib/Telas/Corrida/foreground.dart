@@ -289,9 +289,14 @@ Future<String> startForegroundService(Carro carroSelecionado) async {
       });
 // serviço de primeiro plano iniciado
     },
-    onStopped: () {
-      // quando o serviço de primeiro plano termina, as atualizações de local são canceladas
-      subscription.cancel();
+    onStopped: () async {
+      dToast('Finalizando Corrida!');
+      await FlutterForegroundPlugin.stopForegroundService();
+      Wakelock.disable();
+      nb.stopFGS();
+        Wakelock.disable();
+        started = !started;
+      dToast('Corrida Finalizada');
     },
     // título, conteúdo e nome do ícone da notificação do serviço
     title: "Location Service",
