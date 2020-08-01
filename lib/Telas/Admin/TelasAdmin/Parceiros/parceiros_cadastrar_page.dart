@@ -33,6 +33,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
   void initState() {
     super.initState();
     if (pc == null) {
+      
       pc = ParceirosBloc(null,parceiro: widget.parceiro);
     }
     if (aec == null) {

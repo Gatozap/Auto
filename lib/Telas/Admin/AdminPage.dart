@@ -10,6 +10,7 @@ import 'package:autooh/Telas/Admin/TelasAdmin/ListaCarroUserPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/ListaUsuarioPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/Parceiros/parceiros_cadastrar_page.dart';
+import 'package:autooh/Chat/ChatList/ChatListPage.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Versao/VersaoPage.dart';
 import 'package:flutter/material.dart';
@@ -527,6 +528,41 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                   ),
                 ),
+
+                Helper.localUser.permissao == 10? GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChatListPage(
+                        )));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(0, 125, 190, 100),
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    height: getAltura(context) * .2,
+                    width: getLargura(context) * .4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                          height: 60,
+                          child: Icon(MdiIcons.chat,
+                              color: Colors.yellowAccent, size: 40),
+                        ),
+                        hText('Suporte', context,
+                            color: Colors.white, textaling: TextAlign.center)
+                      ],
+                    ),
+                  ),
+                ):Container(),
               ],
             ),
           ]),

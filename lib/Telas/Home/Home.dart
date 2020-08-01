@@ -24,6 +24,7 @@ import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Grupo.dart';
 import 'package:autooh/Telas/Compartilhados/custom_drawer_widget.dart';
 import 'package:autooh/Telas/Home/GruposController.dart';
+import 'package:autooh/Chat/ChatScreen/ChatPage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -96,10 +97,10 @@ class _HomePageState extends State<HomePage> {
     if (Helper.localUser.permissao == 10) {
       Helper.fbmsg.subscribeToTopic('Administrador');
     }
-    if(Helper.localUser.permissao == 5 ){
+    if (Helper.localUser.permissao == 5) {
       Helper.fbmsg.subscribeToTopic('Anunciante');
-      if(Helper.localUser.campanhas != null){
-        for(String s in Helper.localUser.campanhas){
+      if (Helper.localUser.campanhas != null) {
+        for (String s in Helper.localUser.campanhas) {
           Helper.fbmsg.subscribeToTopic('Anunciante${s}');
         }
       }
@@ -163,356 +164,380 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            // return object of type Dialog
-            return AlertDialog(
-              shape: dialogShape,
-              title: new Text('Deseja Sair?'),
-              content: Text('Tem Certeza? finalize sua corrida antes de sair'),
-              actions: <Widget>[
-                MaterialButton(
-                  child: Text(
-                    'Cancelar',
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                MaterialButton(
-                  child: Text(
-                    'Sair',
-                  ),
-                  onPressed: () {
-                    SystemNavigator.pop();
-                  },
-                )
-              ],
-            );
-          });
-    },
-    child: Scaffold(
-      drawer: CustomDrawerWidget(),
-      appBar: myAppBar('Bem-vindo, ${Helper.localUser.nome}', context),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              sb,
-              sb,
-              sb,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Card(
-                      margin: EdgeInsets.zero,
-                      color: Colors.yellowAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                return AlertDialog(
+                  shape: dialogShape,
+                  title: new Text('Deseja Sair?'),
+                  content:
+                      Text('Tem Certeza? finalize sua corrida antes de sair'),
+                  actions: <Widget>[
+                    MaterialButton(
+                      child: Text(
+                        'Cancelar',
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            hText('Saldo Atual', context, color: Colors.black),
-                            SizedBox(height: 5),
-                            StreamBuilder(
-                                stream: ec.outCorridas,
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return hText('R\$0.00', context,
-                                        color: corPrimaria,
-                                        style: FontStyle.normal,
-                                        weight: FontWeight.bold);
-                                  }
-                                  return FutureBuilder(
-                                    builder: (context, snap) {
-                                      if (snap.data == null) {
-                                        return hText('Saldo atual', context,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    MaterialButton(
+                      child: Text(
+                        'Sair',
+                      ),
+                      onPressed: () {
+                        SystemNavigator.pop();
+                      },
+                    )
+                  ],
+                );
+              });
+        },
+        child: Scaffold(
+          drawer: CustomDrawerWidget(),
+          appBar: myAppBar('Bem-vindo, ${Helper.localUser.nome}', context),
+          body: SingleChildScrollView(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  sb,
+                  sb,
+                  sb,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Card(
+                          margin: EdgeInsets.zero,
+                          color: Colors.yellowAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                hText('Saldo Atual', context,
+                                    color: Colors.black),
+                                SizedBox(height: 5),
+                                StreamBuilder(
+                                    stream: ec.outCorridas,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.data == null) {
+                                        return hText('R\$0.00', context,
                                             color: corPrimaria,
                                             style: FontStyle.normal,
                                             weight: FontWeight.bold);
                                       }
-                                      return snap.data;
-                                    },
-                                    future: ganhosWidget(snapshot.data),
-                                  );
-                                }),
-                          ],
-                        ),
-                      )),
-                  Card(
-                      margin: EdgeInsets.zero,
-                      color: Colors.yellowAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            hText('Quilômetros atuais', context,
-                                color: Colors.black),
-                            SizedBox(height: 5),
-                            StreamBuilder(
-                                stream: ec.outCorridas,
-                                builder: (context, snapshot) {
-                                  if (snapshot.data == null) {
-                                    return hText(
-                                        'Quilômetros atuais\nsem corridas',
-                                        context,
-                                        color: corPrimaria,
-                                        style: FontStyle.normal,
-                                        weight: FontWeight.bold);
-                                  }
-                                  return estatisticasWidget(snapshot.data);
-                                }),
-                          ],
-                        ),
-                      )),
-                ],
-              ),
-              sb,
-              Divider(
-                color: Colors.blue,
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                      child: Column(
-                    children: <Widget>[
-                      hText('Atividades', context,
-                          color: Colors.blue,
-                          size: 100,
-                          weight: FontWeight.bold)
-                    ],
-                  )),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Racing()));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 125, 190, 100),
-                          border: Border.all(
-                            color: Colors.transparent,
-                            width: 5,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        height: getAltura(context) * .2,
-                        width: getLargura(context) * .4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                              width: 60,
-                              height: 60,
-                              child: Image.asset('assets/iniciar_percurso.png',
-                                  fit: BoxFit.fill),
+                                      return FutureBuilder(
+                                        builder: (context, snap) {
+                                          if (snap.data == null) {
+                                            return hText('Saldo atual', context,
+                                                color: corPrimaria,
+                                                style: FontStyle.normal,
+                                                weight: FontWeight.bold);
+                                          }
+                                          return snap.data;
+                                        },
+                                        future: ganhosWidget(snapshot.data),
+                                      );
+                                    }),
+                              ],
                             ),
-                            hText('Iniciar\nPercurso', context,
-                                color: Colors.white,
-                                textaling: TextAlign.center)
-                          ],
-                        ),
-                      ),
+                          )),
+                      Card(
+                          margin: EdgeInsets.zero,
+                          color: Colors.yellowAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                hText('Quilômetros atuais', context,
+                                    color: Colors.black),
+                                SizedBox(height: 5),
+                                StreamBuilder(
+                                    stream: ec.outCorridas,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.data == null) {
+                                        return hText(
+                                            'Quilômetros atuais\nsem corridas',
+                                            context,
+                                            color: corPrimaria,
+                                            style: FontStyle.normal,
+                                            weight: FontWeight.bold);
+                                      }
+                                      return estatisticasWidget(snapshot.data);
+                                    }),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                  sb,
+                  Divider(
+                    color: Colors.blue,
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                          child: Column(
+                        children: <Widget>[
+                          hText('Atividades', context,
+                              color: Colors.blue,
+                              size: 100,
+                              weight: FontWeight.bold)
+                        ],
+                      )),
                     ),
-                    StreamBuilder<QuerySnapshot>(
-                        stream: carrosRef
-                            .where('dono', isEqualTo: Helper.localUser.id)
-                            .snapshots(),
-                        builder:
-                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                          Carro c;
-                          if (snapshot.data != null) {
-                            if (snapshot.data.documents != null) {
-                              if (snapshot.data.documents.length != 0) {
-                                c = Carro.fromJson(
-                                    snapshot.data.documents[0].data);
-                              }
-                            }
-                          }
-                          return GestureDetector(
-                            onTap: () {
-                              getImageCamera(c, isConfirmacao: true);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromRGBO(0, 125, 190, 100),
-                                border: Border.all(
-                                  color: Colors.transparent,
-                                  width: 5,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    child: Row(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Racing()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(0, 125, 190, 100),
+                              border: Border.all(
+                                color: Colors.transparent,
+                                width: 5,
                               ),
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              height: getAltura(context) * .2,
-                              width: getLargura(context) * .4,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: <Widget>[
-                                  Container(
-                                      width: 60,
-                                      height: 60,
-                                      child: c == null
-                                          ? Icon(FontAwesomeIcons.camera,
-                                              color: Colors.yellowAccent,
-                                              size: 50)
-                                          : c.confirmacao == null
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            height: getAltura(context) * .2,
+                            width: getLargura(context) * .4,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  child: Image.asset(
+                                      'assets/iniciar_percurso.png',
+                                      fit: BoxFit.fill),
+                                ),
+                                hText('Iniciar\nPercurso', context,
+                                    color: Colors.white,
+                                    textaling: TextAlign.center)
+                              ],
+                            ),
+                          ),
+                        ),
+                        StreamBuilder<QuerySnapshot>(
+                            stream: carrosRef
+                                .where('dono', isEqualTo: Helper.localUser.id)
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              Carro c;
+                              if (snapshot.data != null) {
+                                if (snapshot.data.documents != null) {
+                                  if (snapshot.data.documents.length != 0) {
+                                    c = Carro.fromJson(
+                                        snapshot.data.documents[0].data);
+                                  }
+                                }
+                              }
+                              return GestureDetector(
+                                onTap: () {
+                                  getImageCamera(c, isConfirmacao: true);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(0, 125, 190, 100),
+                                    border: Border.all(
+                                      color: Colors.transparent,
+                                      width: 5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  height: getAltura(context) * .2,
+                                  width: getLargura(context) * .4,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 60,
+                                          height: 60,
+                                          child: c == null
                                               ? Icon(FontAwesomeIcons.camera,
                                                   color: Colors.yellowAccent,
                                                   size: 50)
-                                              : c.ultima_confirmacao.isBefore(
-                                                      DateTime.now().subtract(
-                                                          Duration(days: 7)))
+                                              : c.confirmacao == null
                                                   ? Icon(
                                                       FontAwesomeIcons.camera,
-                                                      color:
-                                                          Colors.yellowAccent,
+                                                      color: Colors
+                                                          .yellowAccent,
                                                       size: 50)
-                                                  : CachedNetworkImage(
-                                                      imageUrl: c.confirmacao,
-                                                    )),
-                                  hText('Foto', context,
-                                      color: Colors.white,
-                                      textaling: TextAlign.center)
-                                ],
-                              ),
-                            ),
-                          );
-                        })
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        carrosRef
-                            .where('dono', isEqualTo: Helper.localUser.id)
-                            .getDocuments()
-                            .then((v) {
-                          if (v.documents != null) {
-                            if (v.documents.length != 0) {
-                              Carro c = Carro.fromJson(v.documents[0].data);
-                              if (!isAprovado(c)) {
-                                if(!hasExpired(c)) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          ListaCampanhasUsuarioPage(
-                                            user: Helper.localUser,
-                                          )));
+                                                  : c.ultima_confirmacao
+                                                          .isBefore(DateTime
+                                                                  .now()
+                                                              .subtract(
+                                                                  Duration(
+                                                                      days: 7)))
+                                                      ? Icon(
+                                                          FontAwesomeIcons
+                                                              .camera,
+                                                          color: Colors
+                                                              .yellowAccent,
+                                                          size: 50)
+                                                      : CachedNetworkImage(
+                                                          imageUrl:
+                                                              c.confirmacao,
+                                                        )),
+                                      hText('Foto', context,
+                                          color: Colors.white,
+                                          textaling: TextAlign.center)
+                                    ],
+                                  ),
+                                ),
+                              );
+                            })
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            carrosRef
+                                .where('dono', isEqualTo: Helper.localUser.id)
+                                .getDocuments()
+                                .then((v) {
+                              if (v.documents != null) {
+                                if (v.documents.length != 0) {
+                                  Carro c = Carro.fromJson(v.documents[0].data);
+                                  if (!isAprovado(c)) {
+                                    if (!hasExpired(c)) {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ListaCampanhasUsuarioPage(
+                                                    user: Helper.localUser,
+                                                  )));
+                                    } else {
+                                      dToast(
+                                          'Você ja possui uma campanha ativa!');
+                                    }
+                                  } else {
+                                    dToast(
+                                        'Você ja possui uma campanha ativa!');
+                                  }
                                 } else {
-                                  dToast('Você ja possui uma campanha ativa!');
+                                  print('Carro não encontrado');
                                 }
                               } else {
-                                dToast('Você ja possui uma campanha ativa!');
+                                print('Carro não encontrado');
                               }
-                            } else {
-                              print('Carro não encontrado');
-                            }
-                          } else {
-                            print('Carro não encontrado');
-                          }
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 125, 190, 100),
-                          border: Border.all(
-                            color: Colors.transparent,
-                            width: 5,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        height: getAltura(context) * .2,
-                        width: getLargura(context) * .4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                              width: 60,
-                              height: 60,
-                              child: Image.asset('assets/Campanhas.png',
-                                  fit: BoxFit.fill),
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(0, 125, 190, 100),
+                              border: Border.all(
+                                color: Colors.transparent,
+                                width: 5,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            hText('Campanhas', context,
-                                color: Colors.white,
-                                textaling: TextAlign.center)
-                          ],
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            height: getAltura(context) * .2,
+                            width: getLargura(context) * .4,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  child: Image.asset('assets/Campanhas.png',
+                                      fit: BoxFit.fill),
+                                ),
+                                hText('Campanhas', context,
+                                    color: Colors.white,
+                                    textaling: TextAlign.center)
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SolicitacoesListPage(
+                                      user: Helper.localUser,
+                                      isUser: true,
+                                    )));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(0, 125, 190, 100),
+                              border: Border.all(
+                                color: Colors.transparent,
+                                width: 5,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            height: getAltura(context) * .2,
+                            width: getLargura(context) * .4,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  child: Icon(MdiIcons.redhat,
+                                      color: Colors.yellowAccent, size: 40),
+                                ),
+                                hText('Solicitações', context,
+                                    color: Colors.white,
+                                    textaling: TextAlign.center)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    GestureDetector(
+                  ),
+                  sb,
+                  GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SolicitacoesListPage(
-                                  user: Helper.localUser,
-                                  isUser: true,
-                                )));
+                            builder: (context) => ChatPage(isFromHome:true)));
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 125, 190, 100),
-                          border: Border.all(
-                            color: Colors.transparent,
-                            width: 5,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        height: getAltura(context) * .2,
-                        width: getLargura(context) * .4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                              width: 60,
-                              height: 60,
-                              child: Icon(MdiIcons.redhat,
-                                  color: Colors.yellowAccent, size: 40),
-                            ),
-                            hText('Solicitações', context,
-                                color: Colors.white,
-                                textaling: TextAlign.center)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      child: hText('Fale Conosco!', context,
+                          size: 70,
+                          color: Colors.blueAccent,
+                          weight: FontWeight.bold)),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 
   Widget estatisticasWidget(corridas) {

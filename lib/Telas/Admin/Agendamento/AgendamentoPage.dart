@@ -50,6 +50,7 @@ class _AgendamentoPageState extends State<AgendamentoPage> {
       ac = AgendamentoController(instalacao: widget.instalacao);
     }
     if (pc == null) {
+
       pc = new ParceirosBloc(null,parceiro: widget.parceiro);
     }
   }
