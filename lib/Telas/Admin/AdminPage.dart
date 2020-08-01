@@ -356,7 +356,7 @@ class _AdminPageState extends State<AdminPage> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SolicitacoesListPage()));
+                        builder: (context) => SolicitacoesListPage(user: widget.user,)));
                   },
                   child: Container(
                     decoration: BoxDecoration(

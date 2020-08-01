@@ -31,6 +31,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:random_color/random_color.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'dart:ui' as ui;
+import 'package:autooh/Telas/Admin/TelasAdmin/VisualizarCarroPage.dart';
 import 'package:permission/permission.dart';
 
 class EstatisticaPage extends StatefulWidget {
@@ -742,6 +743,26 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
                                         ],
                                       ),
                                       sb,
+                                      sb,
+
+                                      GestureDetector(
+                                        onTap: (){
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                              builder: (context) => VisualizarCarroPage(carro: carroIds[i],)));
+                                        } ,
+                                        child: Row(
+                                          children: <Widget>[
+                                            Icon(
+                                              FontAwesomeIcons.car,
+                                              color: corPrimaria,
+                                            ),
+                                            sb,
+                                            hText(
+                                                'Visualizar carro',
+                                                context),
+                                          ],
+                                        ),
+                                      ),sb,
                                     ],
                                   ),
                                 ),

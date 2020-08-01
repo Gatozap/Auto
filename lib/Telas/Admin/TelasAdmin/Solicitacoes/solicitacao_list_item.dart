@@ -3,26 +3,36 @@ import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Helpers/Styles.dart';
 import 'package:autooh/Objetos/Campanha.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
+import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Objetos/Solicitacao.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:autooh/Telas/Perfil/PerfilController.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:autooh/Telas/Admin/TelasAdmin/VisualizarUserPage.dart';
 import '../Parceiros/ParceirosListPage.dart';
 
 class SolicitacaoListItem extends StatefulWidget {
   Solicitacao s;
   bool isUser;
+  User user;
   Parceiro parceiro;
-  SolicitacaoListItem(this.s, {this.isUser = false, this.parceiro});
+  SolicitacaoListItem(this.s,{ this.user,this.isUser = false, this.parceiro, });
 
   @override
   _SolicitacaoListItemState createState() => _SolicitacaoListItemState();
 }
 
 class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
+  PerfilController pc;
   @override
   Widget build(BuildContext context) {
+         if(widget.user == null){                  
+           widget.user = User();
+         }
+    if (pc == null) {
+      pc = new PerfilController(widget.user);
+    }
     var linearGradient = const BoxDecoration(
       gradient: const LinearGradient(
         begin: FractionalOffset.centerRight,
@@ -150,9 +160,29 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
 
                         hText('Placa: ${widget.s.carro.placa}', context),
                         hText(Helper().readTimestamp(widget.s.created_at), context,
-                            color: Colors.grey, size: 30),
+                            color: Colors.grey, size: 35),
                       ],
-                    ),
+                    ),sb,
+                     StreamBuilder<User>(
+                       stream: pc.outUser,
+                       builder: (context, snapshot) {
+                         return GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => VisualizarUserPage(user: snapshot.data)));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                    Icon(Icons.remove_red_eye, color: Colors.blue, size: 30,),sb,
+                                  hText('Visualizar perfil do usuário', context),
+
+                                ],
+                              ),
+                            );
+                       }
+                     ),
+
                   ],
                 ),
               ),

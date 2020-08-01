@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:autooh/Telas/Perfil/PerfilController.dart';
 
 class VisualizarUserPage extends StatefulWidget {
   User user;
@@ -18,6 +19,7 @@ class VisualizarUserPage extends StatefulWidget {
 }
 
 class _VisualizarUserPageState extends State<VisualizarUserPage> {
+  PerfilController pc;
   @override
   void initState() {
     super.initState();
@@ -30,6 +32,9 @@ class _VisualizarUserPageState extends State<VisualizarUserPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (pc == null) {
+      pc = new PerfilController(widget.user);
+    }
     String initials = '';
     try {
       var words = widget.user.nome.split(' ');

@@ -70,6 +70,7 @@ class UsuarioItem extends StatelessWidget {
                       child: hText('NOME: ${p.nome}', context,
                           size: 44, weight: FontWeight.bold),
                     ),
+                     hText('email: ${p.email}', context, size: 44),
                     hText('${p.celular}', context, size: 44),
                     hText(
                       'Banco: ${p.conta_bancaria}',

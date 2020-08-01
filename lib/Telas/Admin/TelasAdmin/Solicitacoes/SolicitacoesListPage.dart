@@ -45,7 +45,7 @@ class _SolicitacoesListPageState extends State<SolicitacoesListPage> {
               return LoadingWidget('Nenhuma solicitação encontrada!', 'Procurando Solicitacoes');
             }
             return ListView.builder(itemBuilder: (context,i){
-              return SolicitacaoListItem(snap.data[i],isUser:widget.isUser);
+              return SolicitacaoListItem(snap.data[i],isUser:widget.isUser, user: widget.user,);
             },itemCount: snap.data.length,);
           },
         ));
