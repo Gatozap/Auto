@@ -80,6 +80,20 @@ class _HomePageState extends State<HomePage> {
           context, MaterialPageRoute(builder: (context) => IntroPage()));*/
     });
 
+
+    print("AQUI SUBSCRIBE");
+    Helper.fbmsg.subscribeToTopic('user${Helper.localUser.id}');
+    if (Helper.localUser.permissao == 10) {
+      Helper.fbmsg.subscribeToTopic('Administrador');
+    }
+    if (Helper.localUser.permissao == 5) {
+      Helper.fbmsg.subscribeToTopic('Anunciante');
+      if (Helper.localUser.campanhas != null) {
+        for (String s in Helper.localUser.campanhas) {
+          Helper.fbmsg.subscribeToTopic('Anunciante${s}');
+        }
+      }
+    }
     NotificacoesHelper().agendarNotificacao(
       Time(7, 0, 0),
     );
@@ -93,18 +107,7 @@ class _HomePageState extends State<HomePage> {
       ec = EstatisticaController(null, null, Helper.localUser,
           DateTime.now().subtract(Duration(days: 30)), DateTime.now());
     }
-    Helper.fbmsg.subscribeToTopic('user${Helper.localUser.id}');
-    if (Helper.localUser.permissao == 10) {
-      Helper.fbmsg.subscribeToTopic('Administrador');
-    }
-    if (Helper.localUser.permissao == 5) {
-      Helper.fbmsg.subscribeToTopic('Anunciante');
-      if (Helper.localUser.campanhas != null) {
-        for (String s in Helper.localUser.campanhas) {
-          Helper.fbmsg.subscribeToTopic('Anunciante${s}');
-        }
-      }
-    }
+
     carrosRef
         .where('dono', isEqualTo: Helper.localUser.id)
         .getDocuments()

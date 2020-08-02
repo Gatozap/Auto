@@ -252,7 +252,7 @@ class ChatController extends BlocBase {
         behaivior: 1,
         sended_at: DateTime.now(),
         sender: 'user${Helper.localUser.id.toString()}',
-        topic: usuario,
+        topic: !isFromHome? 'user${usuario}':'Administrador',
         data: json.encode({
           'campanha': '',
           'solicitacao': '',

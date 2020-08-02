@@ -57,8 +57,6 @@ class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBinding
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    print("AQUI LIFECYCLE CHANGE ${state}");
-    print("AQUI LIFECYCLE CHANGE ${state}");
     if(state == 3){
       if(started) {
         dToast('Finalizando Corrida!');
