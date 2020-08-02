@@ -180,6 +180,10 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                   ),
                   sb,sb,sb,
                   sb,Divider(color: corPrimaria,),sb,
+                  Center(child:Container(child: defaultActionButton('Chamar no whats', context, () async {
+                    User u = User.fromJson((await userRef.document(widget.carro.dono).get()).data);
+                    whatsAppOpen(u.celular);
+                  },icon: null),)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -213,6 +217,7 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                     ],
                   ),
                   sb,
+
                   Center(
                     child: Container(
                       child: defaultActionButton('Cadastrar Anúncios', context,

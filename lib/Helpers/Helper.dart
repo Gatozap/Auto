@@ -44,29 +44,28 @@ FormatarHora(DateTime d) {
   return ('${d.day < 10 ? '0${d.day}' : d.day}/${d.month < 10 ? '0${d.month}' : d.month} ${d.hour < 10 ? '0${d.hour}' : d.hour}:${d.minute < 10 ? '0${d.minute}' : d.minute} ');
 }
 
-bool hasExpired(Carro c){
-  if(c.anuncio_vidro_traseiro != null){
-    if(c.anuncio_vidro_traseiro.datafim.isAfter(DateTime.now())){
+bool hasExpired(Carro c) {
+  if (c.anuncio_vidro_traseiro != null) {
+    if (c.anuncio_vidro_traseiro.datafim.isAfter(DateTime.now())) {
       return true;
     }
   }
-  if(c.anuncio_traseira_completa != null){
-    if(c.anuncio_traseira_completa.datafim.isAfter(DateTime.now())){
+  if (c.anuncio_traseira_completa != null) {
+    if (c.anuncio_traseira_completa.datafim.isAfter(DateTime.now())) {
       return true;
     }
   }
-  if(c.anuncio_laterais != null){
-    if(c.anuncio_laterais.datafim.isAfter(DateTime.now())){
+  if (c.anuncio_laterais != null) {
+    if (c.anuncio_laterais.datafim.isAfter(DateTime.now())) {
       return true;
     }
   }
-  if(c.anuncio_bancos != null){
-    if(c.anuncio_bancos.datafim.isAfter(DateTime.now())){
+  if (c.anuncio_bancos != null) {
+    if (c.anuncio_bancos.datafim.isAfter(DateTime.now())) {
       return true;
     }
   }
   return false;
-
 }
 
 RoundedRectangleBorder dialogShape = RoundedRectangleBorder(
@@ -172,16 +171,17 @@ void developing(context) {
                     ),
                     hText('Gostaria de Ajudar?', context, size: 44),
                     defaultActionButton('Entrar em contato', context, () {
-                      whatsAppOpen();
+                      whatsAppOpen('42999319375');
                     }),
                   ],
                 )));
       });
 }
 
-void whatsAppOpen() async {
+void whatsAppOpen(String telefone) async {
   //print('ENTROU AQUI');
-  var whatsappUrl = "whatsapp://send?phone=5542999319375&text=Ola";
+  var whatsappUrl =
+      "whatsapp://send?phone=55${telefone.replaceAll('(', '').replaceAll(')', '').replaceAll('-', '').replaceAll(' ', '')}&text=Ola";
   if (await canLaunch(whatsappUrl)) {
     await launch(whatsappUrl, forceSafariVC: false, forceWebView: false);
   } else {
@@ -189,8 +189,15 @@ void whatsAppOpen() async {
   }
 }
 
-Widget defaultCheckBox(bool isChecked, text, context, onTap,
-    {color: corPrimaria, size,textColor: corPrimaria,}) {
+Widget defaultCheckBox(
+  bool isChecked,
+  text,
+  context,
+  onTap, {
+  color: corPrimaria,
+  size,
+  textColor: corPrimaria,
+}) {
   return GestureDetector(
     onTap: onTap,
     child: Row(
@@ -701,11 +708,10 @@ InputDecoration DefaultInputDecoration(
   context, {
   var icon,
   var hintText = corPrimaria,
-      iconColor,
+  iconColor,
   hintColor = corPrimaria,
   error,
-      var labelColor = corPrimaria,
-
+  var labelColor = corPrimaria,
   var labelText,
   borderColor = corPrimaria,
 }) {
@@ -760,7 +766,7 @@ InputDecoration DefaultInputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         icon: Icon(
           icon,
-          color: iconColor == null? corPrimaria:iconColor,
+          color: iconColor == null ? corPrimaria : iconColor,
         ),
         labelText: labelText,
         focusColor: borderColor,
@@ -771,7 +777,7 @@ InputDecoration DefaultInputDecoration(
   return InputDecoration(
       icon: Icon(
         icon,
-        color: iconColor == null? corPrimaria:iconColor,
+        color: iconColor == null ? corPrimaria : iconColor,
       ),
       hintText: hintText,
       contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -1717,79 +1723,78 @@ final defaultDiacriticsRemovalap = [
 ];
 final diacriticsMap = {};
 
-double calculateDistance(lat1, lon1, lat2, lon2){
+double calculateDistance(lat1, lon1, lat2, lon2) {
   var p = 0.017453292519943295;
   var c = cos;
-  var a = 0.5 - c((lat2 - lat1) * p)/2 +
-      c(lat1 * p) * c(lat2 * p) *
-          (1 - c((lon2 - lon1) * p))/2;
+  var a = 0.5 -
+      c((lat2 - lat1) * p) / 2 +
+      c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
   return 12742 * asin(sqrt(a));
 }
+
 final diacriticsRegExp = new RegExp('[^\u0000-\u007E]', multiLine: true);
 
 //extension StringExtension on String {
-  validarDocumento(String s) {
-    if (s.toLowerCase().contains('CNH'.toLowerCase()) ||
-        s
-            .toLowerCase()
-            .contains('CARTEIRA NACIONAL DE HABILITAÇÃO'.toLowerCase()) ||
-        s
-            .toLowerCase()
-            .contains('CARTEIRA NACIONAL DE HABILITACAO'.toLowerCase())) {
-      return documentos.CNH;
-    }
-    if (s.toLowerCase().contains('REGISTRO GERAL'.toLowerCase())) {
-      return documentos.RG;
-    }
-    if (s
-            .toLowerCase()
-            .contains('Cadastro de Pessoas Fisicas'.toLowerCase()) ||
-        s.toLowerCase().contains('CPF'.toLowerCase())) {
-      List<String> list = s.split(' ');
-      bool isValid = false;
-      for (String s in list) {
-        if (CPFValidator.isValid(s.replaceAll('.', '').replaceAll('-', ''))) {
-          isValid = true;
-        }
-      }
-      print("AQUI TIPO: CPF > Valido? ${isValid}");
-      if (isValid) {
-        return documentos.CPF;
-      } else {
-        return null;
-      }
-    }
-    if (s.toLowerCase().contains('PASSAPORTE'.toLowerCase()) ||
-        s.toLowerCase().contains('PASSPORT'.toLowerCase()) ||
-        s.toLowerCase().contains('PASAPORT'.toLowerCase())) {
-      return documentos.PASSAPORTE;
-    }
+validarDocumento(String s) {
+  if (s.toLowerCase().contains('CNH'.toLowerCase()) ||
+      s
+          .toLowerCase()
+          .contains('CARTEIRA NACIONAL DE HABILITAÇÃO'.toLowerCase()) ||
+      s
+          .toLowerCase()
+          .contains('CARTEIRA NACIONAL DE HABILITACAO'.toLowerCase())) {
+    return documentos.CNH;
   }
-
-  String getCPF(String s) {
+  if (s.toLowerCase().contains('REGISTRO GERAL'.toLowerCase())) {
+    return documentos.RG;
+  }
+  if (s.toLowerCase().contains('Cadastro de Pessoas Fisicas'.toLowerCase()) ||
+      s.toLowerCase().contains('CPF'.toLowerCase())) {
     List<String> list = s.split(' ');
-    String cpf = null;
+    bool isValid = false;
     for (String s in list) {
       if (CPFValidator.isValid(s.replaceAll('.', '').replaceAll('-', ''))) {
-        cpf = s;
+        isValid = true;
       }
     }
-    return cpf;
+    print("AQUI TIPO: CPF > Valido? ${isValid}");
+    if (isValid) {
+      return documentos.CPF;
+    } else {
+      return null;
+    }
   }
+  if (s.toLowerCase().contains('PASSAPORTE'.toLowerCase()) ||
+      s.toLowerCase().contains('PASSPORT'.toLowerCase()) ||
+      s.toLowerCase().contains('PASAPORT'.toLowerCase())) {
+    return documentos.PASSAPORTE;
+  }
+}
 
-  String removerAcentos(String s) {
-    if (diacriticsMap.isEmpty) {
-      for (var i = 0; i < defaultDiacriticsRemovalap.length; i++) {
-        var letters = defaultDiacriticsRemovalap[i]['letters'];
-        for (var j = 0; j < letters.length; j++) {
-          diacriticsMap[letters[j]] = defaultDiacriticsRemovalap[i]['base'];
-        }
+String getCPF(String s) {
+  List<String> list = s.split(' ');
+  String cpf = null;
+  for (String s in list) {
+    if (CPFValidator.isValid(s.replaceAll('.', '').replaceAll('-', ''))) {
+      cpf = s;
+    }
+  }
+  return cpf;
+}
+
+String removerAcentos(String s) {
+  if (diacriticsMap.isEmpty) {
+    for (var i = 0; i < defaultDiacriticsRemovalap.length; i++) {
+      var letters = defaultDiacriticsRemovalap[i]['letters'];
+      for (var j = 0; j < letters.length; j++) {
+        diacriticsMap[letters[j]] = defaultDiacriticsRemovalap[i]['base'];
       }
     }
-    // "what?" version ... http://jsperf.com/diacritics/12
-    return s.replaceAllMapped(diacriticsRegExp, (a) {
-      return diacriticsMap[a.group(0)] != null
-          ? diacriticsMap[a.group(0)]
-          : a.group(0);
-    });
   }
+  // "what?" version ... http://jsperf.com/diacritics/12
+  return s.replaceAllMapped(diacriticsRegExp, (a) {
+    return diacriticsMap[a.group(0)] != null
+        ? diacriticsMap[a.group(0)]
+        : a.group(0);
+  });
+}
