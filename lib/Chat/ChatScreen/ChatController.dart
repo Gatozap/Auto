@@ -30,7 +30,7 @@ class ChatController extends BlocBase {
 
   ChatController(
 
-    this.sala, {this. isFromHome = false}
+    this.sala, {this. isFromHome = false, User user}
 
   ) {
     inHide.add(false);
@@ -170,12 +170,147 @@ class ChatController extends BlocBase {
       });
     } else {
 
+      if(user != null){
+        chatRef
+            .where('membros', arrayContains: '${user.id}')
+            .where('isPrivate', isEqualTo: isIndividual)
+            .getDocuments()
+            .then((v) {
+          print('CHEGOU AQUI SALALALALAL');
+          if (v.documents.length != 0) {
+            bool contains = false;
+            for (var j in v.documents) {
+              Sala s = new Sala.fromJson(j.data);
+              print('SALA LOOPANDO ${s.toString()}');
+              for (var m in s.membros) {
+                print('AQUI MEMBRO ${m}');
+                if ('${m.toString()}' == '${user.id.toString()}') {
+                  //print('ACHOU AQUI ${s.membros.toString()}');
+                  contains = true;
+                  // print('AQUI SALA ${s.toString()}');
 
-               reference = FirebaseDatabase.instance
-                   .reference()
-                   .child('Chats')
-                   .child('${sala.sala}');
-               inSala.add(sala);
+                  sala = s;
+                  inSala.add(sala);
+                  chatRef
+                      .document(sala.id)
+                      .updateData(sala.toJson())
+                      .then((v) {
+                    // print('Atualizou NonReads');
+                  });
+                  // print('Sala Encontrada ${sala.toString()}');
+                  if (reference == null) {
+                    reference = FirebaseDatabase.instance
+                        .reference()
+                        .child('Chats')
+                        .child('${sala.sala}');
+                  }
+                }
+              }
+            }
+            if (!contains) {
+              String salaid = randomAlpha(20);
+              //TODO Criar SALA
+              sala = new Sala(
+                  created_at: DateTime.now(),
+                  updated_at: DateTime.now(),
+                  isPrivate: isIndividual,
+                  membros: ['suporte', user.id],
+                  lastMessage: null,
+                  sala: salaid,
+                  meta: {
+                    user.id: {
+                      'foto':user.foto == null
+                          ? 'https://scontent.fxap1-1.fna.fbcdn.net/v/t39.2081-0/64919246_399068487366637_7025924647753351168_n.png?_nc_cat=111&_nc_oc=AQmDYUVdstWP8Bj-dw1oUlqrsFIl9ZsHa01otbUpuqDyMmbqL3nS2JYnTUyCA48EMaY&_nc_ht=scontent.fxap1-1.fna&oh=4c532bf6d3e14d1f295f82d73aea05bd&oe=5DB5D8D7'
+                          : user.foto,
+                      'NonRead': 0,
+                      'partnerName': user.nome,
+                    },
+                    'suporte': {
+                      'foto':
+                      'https://autooh.com.br/wp-content/uploads/2020/05/logotipo.png',
+                      'NonRead': 0,
+                      'partnerName': 'Suporte',
+                    }
+                  },
+                  deleted_at: null,
+                  id: null);
+              chatRef.add(sala.toJson()).then((v) {
+                sala.id = v.documentID;
+                chatRef
+                    .document(sala.id)
+                    .updateData(sala.toJson())
+                    .then((vv) {
+                  //print('Sala Criada ${sala.toString()}');
+
+                  inSala.add(sala);
+                  if (reference == null) {
+                    reference = FirebaseDatabase.instance
+                        .reference()
+                        .child('Chats')
+                        .child('${sala.sala}');
+                  }
+                }).catchError((err) {
+                  print('Error:${err.toString()}');
+                });
+              }).catchError((err) {
+                print('Error:${err.toString()}');
+              });
+            }
+          } else {
+            String salaid = randomAlpha(20);
+            //TODO Criar SALA
+            sala = new Sala(
+                created_at: DateTime.now(),
+                updated_at: DateTime.now(),
+                isPrivate: isIndividual,
+                membros: ['suporte', Helper.localUser.id],
+                lastMessage: null,
+                sala: salaid,
+                meta: {
+                  Helper.localUser.id: {
+                    'foto': Helper.localUser.foto == null
+                        ? 'https://scontent.fxap1-1.fna.fbcdn.net/v/t39.2081-0/64919246_399068487366637_7025924647753351168_n.png?_nc_cat=111&_nc_oc=AQmDYUVdstWP8Bj-dw1oUlqrsFIl9ZsHa01otbUpuqDyMmbqL3nS2JYnTUyCA48EMaY&_nc_ht=scontent.fxap1-1.fna&oh=4c532bf6d3e14d1f295f82d73aea05bd&oe=5DB5D8D7'
+                        : Helper.localUser.foto,
+                    'NonRead': 0,
+                    'partnerName': Helper.localUser.nome,
+                  },
+                  'suporte': {
+                    'foto':
+                    'https://autooh.com.br/wp-content/uploads/2020/05/logotipo.png',
+                    'NonRead': 0,
+                    'partnerName': 'Suporte',
+                  }
+                },
+                deleted_at: null,
+                id: null);
+            chatRef.add(sala.toJson()).then((v) {
+              sala.id = v.documentID;
+              chatRef.document(sala.id).updateData(sala.toJson()).then((
+                  vv) {
+                // print('Sala Criada');
+
+                inSala.add(sala);
+                if (reference == null) {
+                  reference = FirebaseDatabase.instance
+                      .reference()
+                      .child('Chats')
+                      .child('${sala.sala}');
+                }
+              }).catchError((err) {
+                print('Error:${err.toString()}');
+              });
+            }).catchError((err) {
+              print('Error:${err.toString()}');
+            });
+          }
+        });
+      }else {
+        reference = FirebaseDatabase.instance
+            .reference()
+            .child('Chats')
+            .child('${sala.sala}');
+        inSala.add(sala);
+      }
     }
   }
 

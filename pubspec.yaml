@@ -133,4 +133,34 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/autooh.png
+    - assets/bancos.jpeg
+    - assets/bancos.png
+    - assets/bg2.jpg
+    - assets/campanha_sem_foto.png
+    - assets/Campanhas.png
+    - assets/car.png
+    - assets/carro_foto.png
+    - assets/cor_autooh.png
+    - assets/driving_pin.png
+    - assets/duvidas_icone.png
+    - assets/editar_perfil.png
+    - assets/facebook_logo.png
+    - assets/foto_perfil.png
+    - assets/icone_campanha.png
+    - assets/icone_google.png
+    - assets/iniciar_percurso.png
+    - assets/lateral.jpg
+    - assets/lateral.png
+    - assets/logo.png
+    - assets/Logo_Auto.png
+    - assets/marker.png
+    - assets/meus_percursos.png
+    - assets/ping.png
+    - assets/placa_veiculo.png
+    - assets/point.png
+    - assets/traseira_completa.png
+    - assets/velocimetro_fast.png
+    - assets/velocimetro_low.png
+    - assets/vidro_traseiro.jpg
+    - assets/vidro_traseiro.png

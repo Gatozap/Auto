@@ -163,13 +163,11 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
                             color: Colors.grey, size: 35),
                       ],
                     ),sb,
-                     StreamBuilder<User>(
-                       stream: pc.outUser,
-                       builder: (context, snapshot) {
-                         return GestureDetector(
-                              onTap: (){
+                     GestureDetector(
+                              onTap: () async {
+                                User u = User.fromJson((await userRef.document(widget.s.usuario).get()).data);
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => VisualizarUserPage(user: snapshot.data)));
+                                    builder: (context) => VisualizarUserPage(user: u)));
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -179,9 +177,7 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
 
                                 ],
                               ),
-                            );
-                       }
-                     ),
+                            ),
 
                   ],
                 ),
@@ -193,4 +189,6 @@ class _SolicitacaoListItemState extends State<SolicitacaoListItem> {
       ),
     );
   }
+
+
 }

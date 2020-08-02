@@ -2,7 +2,7 @@ import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Objetos/Ativo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
 import 'AtivosController.dart';
 
 class AtivosPage extends StatefulWidget {
@@ -78,8 +78,10 @@ class _AtivosPageState extends State<AtivosPage> {
             position['latitude'],
             position['longitude'],
           ),
-          infoWindow: InfoWindow(
-              title:'${ativo.campanha.nome}',  snippet: '${ativo.carro.placa}',),
+          infoWindow: InfoWindow(onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>EstatisticaPage(carro: ativo.carro,)));
+          },
+              title:'${ativo.campanha.nome}',  snippet: '${ativo.carro.placa.substring(0,5)}...',),
           icon: sourceIcon,
         ));
       } catch (err) {

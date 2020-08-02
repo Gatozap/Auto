@@ -80,7 +80,6 @@ class _HomePageState extends State<HomePage> {
           context, MaterialPageRoute(builder: (context) => IntroPage()));*/
     });
 
-
     print("AQUI SUBSCRIBE");
     Helper.fbmsg.subscribeToTopic('user${Helper.localUser.id}');
     if (Helper.localUser.permissao == 10) {
@@ -286,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                   Divider(
                     color: Colors.blue,
                   ),
-                  Container(
+                  /* Container(
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Center(
@@ -299,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       )),
                     ),
-                  ),
+                  ),*/
                   Container(
                     margin: EdgeInsets.all(10),
                     child: Row(
@@ -527,15 +526,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   sb,
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatPage(isFromHome:true)));
-                      },
-                      child: hText('Fale Conosco!', context,
-                          size: 70,
-                          color: Colors.blueAccent,
-                          weight: FontWeight.bold)),
+                  defaultActionButton(
+                    'Fale Conosco!',
+                    context,
+                    () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ChatPage(isFromHome: true)));
+                    },
+                    icon: null,
+                  )
                 ],
               ),
             ),

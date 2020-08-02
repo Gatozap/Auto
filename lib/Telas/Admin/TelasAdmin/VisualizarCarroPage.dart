@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Helpers/Styles.dart';
@@ -6,9 +8,13 @@ import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Carro/CarroController.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class VisualizarCarroPage extends StatefulWidget {
   Carro carro;
@@ -38,6 +44,13 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
   CarroController carroController;
   Carro carro;
 
+
+  Future<String> _findLocalPath() async {
+    final directory = !isIOS
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -129,11 +142,34 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       widget.carro.confirmacao != null
-                          ? CircleAvatar(
-                              radius: ScreenUtil.getInstance().setSp(200),
-                              backgroundColor: Colors.transparent,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  widget.carro.confirmacao))
+                          ? GestureDetector(onTap: () async {
+                        Map<Permission, PermissionStatus> statuses = await [
+                        Permission.storage,
+                        ].request();
+                        if (statuses[Permission.storage] == PermissionStatus.granted) {
+                        // code of read or write file in external storage (SD card)
+
+                        dToast('Baixando Foto');
+                        String _localPath = (await _findLocalPath()) + Platform.pathSeparator;
+
+                        await FlutterDownloader.enqueue(
+                        url:  widget.carro.confirmacao,
+                        savedDir: _localPath,
+                        showNotification: true,
+                        openFileFromNotification: true,
+                        );
+
+                        dToast('Foto Salva em ${_localPath}');
+                        } else {
+                        dToast('o App não tem permissão para gravar arquivos =/');
+                        }
+                      },
+                            child: CircleAvatar(
+                                radius: ScreenUtil.getInstance().setSp(200),
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    widget.carro.confirmacao)),
+                          )
                           : Column(
                             children: <Widget>[
                               Container(width: 200,height: 200,child: Image.asset('assets/carro_foto.png')),sb,

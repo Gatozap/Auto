@@ -1,3 +1,4 @@
+import 'package:autooh/Chat/ChatScreen/ChatPage.dart';
 import 'package:autooh/Helpers/Helper.dart';
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Campanha.dart';
@@ -95,6 +96,11 @@ class UsuarioItem extends StatelessWidget {
                                 builder: (context) =>
                                     EstatisticaPage(user: p)));
                             break;
+                          case 'chat':
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    ChatPage(user: p,isFromHome: false,)));
+                            break;
                           case 'alterar':
                             showDialog(
                                 context: context,
@@ -156,6 +162,10 @@ class UsuarioItem extends StatelessWidget {
                         itens.add(PopupMenuItem(
                           child: hText('Alterar Permissão', context),
                           value: 'alterar',
+                        ));
+                        itens.add(PopupMenuItem(
+                          child: hText('Conversar', context),
+                          value: 'chat',
                         ));
                         return itens;
                       },

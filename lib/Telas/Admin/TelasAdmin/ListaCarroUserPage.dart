@@ -222,9 +222,12 @@ class ListaCarroUserPageState extends State<ListaCarroUserPage> {
   }
 
   Widget CarroListItem(Carro p, {User pp}) {
-    for (User u in pc.users) {
-      if (u.id == p.dono) {
-        pp = u;
+
+    if(pc.users != null) {
+      for (User u in pc.users) {
+        if (u.id == p.dono) {
+          pp = u;
+        }
       }
     }
     return Stack(children: <Widget>[

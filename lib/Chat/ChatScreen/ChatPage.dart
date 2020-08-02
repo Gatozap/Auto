@@ -102,30 +102,40 @@ class _ChatPageState extends State<ChatPage> {
       if (widget.sala != null) {
         cc = new ChatController(widget.sala);
       } else {
-        cc = new ChatController(null, isFromHome: widget.isFromHome);
+        cc = new ChatController(null, isFromHome: widget.isFromHome,user:widget.user);
       }
     }
     int NonReads = 0;
     String avatarPic;
     var partnerName = '';
-    if (!widget.isFromHome) {
-      if (widget.sala.meta['suporte'] != null) {
-        // print('AQUI META  >>>> ${i[Helper.localUser.id]}');
-        partnerName = widget.sala.meta['suporte']['partnerName'];
-        avatarPic = widget.sala.meta['suporte']['foto'];
-        NonReads = widget.sala.meta['suporte']['NonRead'];
-      }
-      double radius = ((MediaQuery.of(context).size.width * .05) +
-              (MediaQuery.of(context).size.height * .05)) /
-          2;
-      String otherUserId;
-      for (var i in widget.sala.membros) {
-        if (i != 'suporte') {
-          otherUserId = i;
-          partnerName = widget.sala.meta[otherUserId]['partnerName'];
-          avatarPic = widget.sala.meta[otherUserId]['foto'];
-          NonReads = widget.sala.meta[otherUserId]['NonRead'];
+    if (!widget.isFromHome ) {
+      if(widget.sala != null) {
+        if (widget.sala.meta['suporte'] != null) {
+          // print('AQUI META  >>>> ${i[Helper.localUser.id]}');
+          partnerName = widget.sala.meta['suporte']['partnerName'];
+          avatarPic = widget.sala.meta['suporte']['foto'];
+          NonReads = widget.sala.meta['suporte']['NonRead'];
         }
+        double radius = ((MediaQuery
+            .of(context)
+            .size
+            .width * .05) +
+            (MediaQuery
+                .of(context)
+                .size
+                .height * .05)) /
+            2;
+        String otherUserId;
+        for (var i in widget.sala.membros) {
+          if (i != 'suporte') {
+            otherUserId = i;
+            partnerName = widget.sala.meta[otherUserId]['partnerName'];
+            avatarPic = widget.sala.meta[otherUserId]['foto'];
+            NonReads = widget.sala.meta[otherUserId]['NonRead'];
+          }
+        }
+      }else{
+        partnerName = widget.user.nome;
       }
     }
     return Scaffold(
@@ -164,7 +174,7 @@ class _ChatPageState extends State<ChatPage> {
                                         //  print('AQUI SNAP' + snapshot.toString());
                                         return MessageBubble(cc, widget.user,
                                             snapshot: snapshot,
-                                            animation: animation);
+                                            animation: animation,isFromHome: widget.isFromHome,);
                                       },
                                     )
                                   : Container(),
@@ -192,7 +202,7 @@ class _ChatPageState extends State<ChatPage> {
           margin: const EdgeInsets.symmetric(horizontal: 8.0),
           child: new Row(children: <Widget>[
             new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 4.0),
+              margin: new EdgeInsets.symmetric(horizontal: 4.0  ),
               child: new IconButton(
                   icon: new Icon(Icons.photo_camera),
                   onPressed: () async {
@@ -263,7 +273,8 @@ class _ChatPageState extends State<ChatPage> {
 }
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble(this.cc, this.user, {this.snapshot, this.animation});
+  bool isFromHome;
+  MessageBubble(this.cc, this.user, {this.isFromHome = false,this.snapshot, this.animation});
   ChatController cc;
   User user;
   final DataSnapshot snapshot;
@@ -275,7 +286,9 @@ class MessageBubble extends StatelessWidget {
     if (user == null) {
       user = User();
     }
-    bool isMe = user.nome == snapshot.value['senderName'];
+    print("AQUI ${snapshot.value['senderName']}");
+    print("AQUI ${isFromHome}");
+    bool isMe = isFromHome?  snapshot.value['senderName'] != 'Suporte Autooh': snapshot.value['senderName'] == 'Suporte Autooh';
     Message m = Message.fromJson(snapshot.value);
     String initials = '';
     var words = snapshot.value['senderName'].split(' ');
@@ -303,8 +316,8 @@ class MessageBubble extends StatelessWidget {
                             child: hText(initials, context,
                                 size: 30, color: Colors.white))
                         : new Container(
-                            width: 30.0,
-                            height: 30.0,
+                            width: 45.0,
+                            height: 45.0,
                             decoration: new BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: new DecorationImage(
@@ -315,26 +328,19 @@ class MessageBubble extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Column(
-                    crossAxisAlignment: isMe
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       hText(snapshot.value['senderName'], context,
                           color: Colors.black54, size: 45),
                       sb,
                       Material(
-                        borderRadius: isMe
-                            ? BorderRadius.only(
-                                topLeft: Radius.circular(30.0),
-                                bottomLeft: Radius.circular(30.0),
-                                bottomRight: Radius.circular(30.0))
-                            : BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(30.0),
                                 bottomRight: Radius.circular(30.0),
                                 topRight: Radius.circular(30.0),
                               ),
                         elevation: 5.0,
-                        color: isMe ? vermelho : Colors.green,
+                        color:  Colors.red,
                         child: Row(
                           children: <Widget>[
                             LimitedBox(
@@ -383,25 +389,17 @@ class MessageBubble extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Column(
-                      crossAxisAlignment: isMe
-                          ? CrossAxisAlignment.center
-                          : CrossAxisAlignment.start,
+                      crossAxisAlignment:  CrossAxisAlignment.end,
                       children: <Widget>[
                         hText(snapshot.value['senderName'], context,
                             color: Colors.black54, size: 45),
                         Material(
-                          borderRadius: isMe
-                              ? BorderRadius.only(
+                          borderRadius:  BorderRadius.only(
                                   topLeft: Radius.circular(30.0),
-                                  bottomLeft: Radius.circular(30.0),
-                                  bottomRight: Radius.circular(30.0))
-                              : BorderRadius.only(
-                                  bottomLeft: Radius.circular(30.0),
-                                  bottomRight: Radius.circular(30.0),
-                                  topRight: Radius.circular(30.0),
-                                ),
+                                  bottomLeft: Radius.circular(30.0),),
+
                           elevation: 5.0,
-                          color: isMe ? vermelho : Colors.green,
+                          color: Colors.green,
                           child: Row(
                             children: <Widget>[
                               LimitedBox(
@@ -437,10 +435,21 @@ class MessageBubble extends StatelessWidget {
                   new Padding(
                       padding: EdgeInsets.only(
                           bottom: 10.00, right: 10.0, top: 20.0, left: 5.0),
-                      child: CircleAvatar(
+                      child: snapshot.value['senderFoto'] == ''
+                          ? CircleAvatar(
                           radius: ScreenUtil.getInstance().setSp(60),
                           backgroundColor: Colors.purple,
-                          backgroundImage: AssetImage('assets/autooh.png'))),
+                          child: hText(initials, context,
+                              size: 30, color: Colors.white))
+                          : new Container(
+                          width: 45.0,
+                          height: 45.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new CachedNetworkImageProvider(
+                                      snapshot.value['senderFoto']))))),
                 ],
               ),
             ));
