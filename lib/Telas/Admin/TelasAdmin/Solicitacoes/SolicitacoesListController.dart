@@ -1,7 +1,7 @@
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Solicitacao.dart';
-import 'package:autooh/Telas/Card/bloc_provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
 
 class SolicitacoesListController extends BlocBase {
   BehaviorSubject<List<Solicitacao>> controllerSolicitacoes =

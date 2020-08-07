@@ -741,7 +741,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
       image.path,
     );
     pc.updateParceiro(parceiro);
-    pr.dismiss();
+    pr.hide();
     dToast('Salvando Foto!');
   }
 
@@ -765,7 +765,7 @@ class _ParceirosCadastrarPageState extends State<ParceirosCadastrarPage> {
       image.path,
     );
     pc.updateParceiro(parceiro);
-    pr.dismiss();
+    pr.hide();
     dToast('Salvando Foto!');
   }
 }

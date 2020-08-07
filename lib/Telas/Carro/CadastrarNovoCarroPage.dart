@@ -685,7 +685,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
       image.path,
     );
     carroController.inCarroSelecionado.add(c);
-    pr.dismiss();
+    pr.hide();
     dToast('Salvando Foto!');
   }
 
@@ -713,7 +713,7 @@ class _CadastrarNovoCarroPageState extends State<CadastrarNovoCarroPage> {
       image.path,
     );
     carroController.inCarroSelecionado.add(c);
-    pr.dismiss();
+    pr.hide();
     dToast('Salvando Foto!');
   }
 }

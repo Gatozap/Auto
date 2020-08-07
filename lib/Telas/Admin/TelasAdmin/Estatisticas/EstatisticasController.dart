@@ -5,12 +5,12 @@ import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Corrida.dart';
 import 'package:autooh/Objetos/Localizacao.dart';
 import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Card/bloc_provider.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:bloc_pattern/bloc_pattern.dart';
 class EstatisticaController extends BlocBase {
   BehaviorSubject<List<Corrida>> corridasController =
       BehaviorSubject<List<Corrida>>();
@@ -32,7 +32,7 @@ class EstatisticaController extends BlocBase {
           if (Helper.localUser.permissao == 5) {
             corridas = new List();
             corridasOriginais = new List();
-            if(Helper.localUser.campanhas != null) {
+            if (Helper.localUser.campanhas != null) {
               for (String s in Helper.localUser.campanhas) {
                 corridasRef
                     .where('campanha', isEqualTo: s)
@@ -88,6 +88,7 @@ class EstatisticaController extends BlocBase {
       } else {
         corridasRef
             .where('carro.id', isEqualTo: carro.id)
+            .where('hora_ini', isLessThan: dataini.millisecondsSinceEpoch)
             .getDocuments()
             .then((v) {
           corridas = new List();
@@ -104,17 +105,21 @@ class EstatisticaController extends BlocBase {
         });
       }
     } else {
-      corridasRef.where('user', isEqualTo: user.id).snapshots().listen((v) {
+      corridasRef
+          .where('user', isEqualTo: user.id)
+          .limit(20)
+          .orderBy('hora_ini', descending: true)
+          .where('hora_ini', isGreaterThan: dataini.millisecondsSinceEpoch)
+          .snapshots()
+          .listen((v) {
         corridas = new List();
         corridasOriginais = new List();
         for (var i in v.documents) {
           Corrida p = Corrida.fromJsonFirestore(i.data);
           p.id = i.documentID;
-
           corridas.add(p);
         }
-
-        corridasOriginais = corridas;
+        //corridasOriginais = corridas;
         FilterCorridas(dataini, datafim);
       });
     }
@@ -127,8 +132,9 @@ class EstatisticaController extends BlocBase {
   }
 
   void FilterCorridas(DateTime dataini, DateTime datafim) {
+    print("INICOU AQUI");
     List<Corrida> corridasTemp = new List();
-    for (Corrida c in corridasOriginais) {
+    for (Corrida c in corridas) {
       bool contains = false;
       for (Corrida c1 in corridasTemp) {
         if (c.id == c1.id) {
@@ -137,7 +143,10 @@ class EstatisticaController extends BlocBase {
       }
       if (datafim != null && dataini != null) {
         if (!contains) {
-          if(dataini != null && datafim != null && c.hora_fim != null && c.hora_ini != null) {
+          if (dataini != null &&
+              datafim != null &&
+              c.hora_fim != null &&
+              c.hora_ini != null) {
             if (dataini.isBefore(c.hora_ini) && datafim.isAfter(c.hora_fim)) {
               corridasTemp.add(c);
             }

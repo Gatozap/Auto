@@ -34,6 +34,11 @@ import 'Telas/Cadastro/CadastroPage.dart';
 import 'Telas/Compartilhados/WaitScreen.dart';
 import 'Telas/Corrida/NavigationBloc2.dart';
 
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+
 class LifecycleWatcher extends StatefulWidget {
   @override
   _LifecycleWatcherState createState() => _LifecycleWatcherState();
@@ -80,26 +85,27 @@ class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBinding
 
 
 Future main() async {
-  runApp(LifecycleWatcher());
+
 
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(
       debug: true // optional: set false to disable printing logs to console
       );
-  CieloEcommerce cielo = CieloEcommerce(
-      environment: Environment.SANDBOX, // ambiente de desenvolvimento
-      merchant: Merchant(
-        merchantId: "bd42d8ba-8462-4fe2-907b-286427c31fef",
-        merchantKey: "haGf1RSXlfV39vlUecd29NC9ocmG0G7cRsmCalMU",
-      ));
 
-  //1. Integração
-  //Faça integração conforme manual do desenvolvedor incluindo suas credenciais de acesso
-  //Merchant ID: bd42d8ba-8462-4fe2-907b-286427c31fef
-  //Merchant Key: haGf1RSXlfV39vlUecd29NC9ocmG0G7cRsmCalMU
-  //As instruções para integração estão no Manual do Desenvolvedor no link abaixo:
-  //https://developercielo.github.io/Webservice-3.0/#integração-webservice-3.0
-  Helper.cielo = cielo;
+  SharedPreferences.getInstance().then((SharedPreferences prefs) {
+    String appName = prefs.getString("app");
+
+    // Sanitize old-style registration system that only required username.
+    // If we find a valid username but null orgname, reverse them.
+    String orgname = prefs.getString("orgname");
+    String username = prefs.getString("username");
+
+    if (orgname == null && username != null) {
+      prefs.setString("orgname", username);
+      prefs.remove("username");
+    }
+    runApp(LifecycleWatcher());
+  });
   final FirebaseApp app = await FirebaseApp.configure(
     name: 'db2',
     options: new FirebaseOptions(

@@ -5,7 +5,6 @@ import 'package:autooh/Objetos/Distancia.dart';
 import 'package:autooh/Objetos/User.dart';
 import 'package:autooh/Telas/Admin/AdminPage.dart';
 import 'package:autooh/Telas/Admin/TelasAdmin/EstatisticaPage.dart';
-import 'package:autooh/Telas/Card/cartoes_page.dart';
 import 'package:autooh/Telas/Carro/CadastrarNovoCarroPage.dart';
 import 'package:autooh/Telas/Carro/EditarCarroPage.dart';
 import 'package:autooh/Telas/Perfil/EditarPerfilPage.dart';

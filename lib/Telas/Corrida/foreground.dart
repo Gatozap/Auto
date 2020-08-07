@@ -178,6 +178,7 @@ class _MyAppState extends State<Racing> {
             setState(() {
               Wakelock.disable();
               started = !started;
+              subscription.cancel();
             });
             dToast('Corrida Finalizada');
           } else {
@@ -265,10 +266,10 @@ class _MyAppState extends State<Racing> {
 }
 
 MapController mapController;
-
+StreamSubscription subscription;
 //função que inicializa o serviço em primeiro plano
 Future<String> startForegroundService(Carro carroSelecionado) async {
-  StreamSubscription subscription;
+
   String s = await nb.start(carroSelecionado);
   Wakelock.enable();
   await FlutterForegroundPlugin.setServiceMethod(globalForegroundService);
@@ -290,16 +291,9 @@ Future<String> startForegroundService(Carro carroSelecionado) async {
 // serviço de primeiro plano iniciado
     },
     onStopped: () async {
-      dToast('Finalizando Corrida!');
-      await FlutterForegroundPlugin.stopForegroundService();
-      Wakelock.disable();
-      nb.stopFGS();
-        Wakelock.disable();
-        started = !started;
-      dToast('Corrida Finalizada');
     },
     // título, conteúdo e nome do ícone da notificação do serviço
-    title: "Location Service",
+    title: "Autooh",
     content: "Você está Ganhando Dinheiro",
     iconName: "",
   );

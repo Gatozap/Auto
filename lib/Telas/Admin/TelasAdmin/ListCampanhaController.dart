@@ -53,11 +53,10 @@ class ListaCampanhaController extends BlocBase {
           .snapshots()
           .listen((QuerySnapshot snap) {
         campanhas = new List();
-
         if (snap.documents.length > 0) {
           for (DocumentSnapshot ds in snap.documents) {
             Campanha p = Campanha.fromJson(ds.data);
-            if(p.isVisibile) {
+            if(p.isVisibile || Helper.localUser.permissao == 10) {
               p.id = ds.documentID;
               campanhas.add(p);
             }

@@ -11,9 +11,7 @@ import 'package:autooh/Objetos/Carro.dart';
 import 'package:autooh/Objetos/Corrida.dart';
 import 'package:autooh/Objetos/Localizacao.dart';
 import 'package:autooh/Objetos/Zona.dart';
-
 import 'package:firebase_database/firebase_database.dart';
-
 import 'package:geocoder/geocoder.dart';
 //import 'package:flutter_foreground_plugin/flutter_foreground_plugin.dart';
 import 'package:geolocator/geolocator.dart';
@@ -51,8 +49,9 @@ class NavigationBloc extends BlocBase {
   void dispose() {}
 
   Future<String> start(Carro carroSelecionado, {String id}) async {
-    FirebaseDatabase.instance.reference().child('Corridas').remove();
+    print('INICIANDO CORRIDA');
     if (id == null) {
+      print('INICIANDO CORRIDA 2');
       corrida = Corrida(
           id: idcorrida,
           // distancia: 0,
@@ -67,10 +66,12 @@ class NavigationBloc extends BlocBase {
           .child('Corridas')
           .reference()
           .push();
+      print("AQUI CAPETA${corridaRef.key}");
       corridaRef.set(corrida.toJson());
       corrida.id = corridaRef.key;
       pointsRef = corridaRef.child('points');
     } else {
+      print('INICIANDO CORRIDA 3');
       corridaRef = FirebaseDatabase.instance
           .reference()
           .child('Corridas')
@@ -79,7 +80,7 @@ class NavigationBloc extends BlocBase {
       pointsRef = corridaRef.child('points');
       corrida = Corrida.fromJson((await corridaRef.once()).value);
     }
-
+    print('INICIANDO CORRIDA 4');
     corridaRef.onValue.listen((v) async {
       if (v.snapshot.value != null) {
         corrida = Corrida.fromJson(v.snapshot.value);
@@ -150,6 +151,7 @@ class NavigationBloc extends BlocBase {
       if (corrida.isRunning) {
         bool hasMoved = false;
         print('RODANDO START RACING ${hasMoved}');
+        print('Corrida ${corrida.id}');
         Localizacao loc = Localizacao(
             latitude: location.latitude,
             longitude: location.longitude,

@@ -661,7 +661,11 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                               ),
                               sb,
                               defaultCheckBox(
-                                  snap.data == null? true:snap.data.isVisibile != null? true:snap.data.isVisible,
+                                  snap.data == null
+                                      ? true
+                                      : snap.data.isVisibile == null
+                                          ? true
+                                          : snap.data.isVisibile,
                                   'Usuarios podem requisitar participação?',
                                   context, () {
                                 Campanha c = snap.data;
@@ -702,7 +706,9 @@ class _CriarCampanhaPageState extends State<CriarCampanhaPage> {
                                       campanha.manha == null
                                           ? false
                                           : campanha.manha;
-                                      campanha.isVisibile == null? true:campanha.isVisibile;
+                                      campanha.isVisibile == null
+                                          ? true
+                                          : campanha.isVisibile;
                                       campanha.tarde == null
                                           ? false
                                           : campanha.tarde;

@@ -1,7 +1,7 @@
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Instalacao.dart';
 import 'package:autooh/Objetos/Solicitacao.dart';
-import 'package:autooh/Telas/Card/bloc_provider.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 

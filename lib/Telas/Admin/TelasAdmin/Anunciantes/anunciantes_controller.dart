@@ -1,6 +1,6 @@
 import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/User.dart';
-import 'package:autooh/Telas/Card/bloc_provider.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AnunciantesController extends BlocBase {

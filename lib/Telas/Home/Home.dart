@@ -14,6 +14,7 @@ import 'package:autooh/Telas/Admin/TelasAdmin/Estatisticas/EstatisticasControlle
 import 'package:autooh/Telas/Admin/TelasAdmin/Solicitacoes/SolicitacoesListPage.dart';
 import 'package:autooh/Telas/CampanhasParaUsuario/ListaCampanhasUsuario.dart';
 import 'package:autooh/Telas/Corrida/foreground.dart';
+import 'package:autooh/Telas/CorridaBackground/corrida_page.dart';
 import 'package:autooh/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -534,7 +535,17 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => ChatPage(isFromHome: true)));
                     },
                     icon: null,
-                  )
+                  ),
+
+                  /*defaultActionButton(
+                    'Teste Background',
+                    context,
+                        () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CorridaPage()));
+                    },
+                    icon: null,
+                  )*/
                 ],
               ),
             ),

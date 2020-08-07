@@ -2,7 +2,7 @@ import 'package:autooh/Helpers/References.dart';
 import 'package:autooh/Objetos/Agendamento.dart';
 import 'package:autooh/Objetos/Instalacao.dart';
 import 'package:autooh/Objetos/Parceiro.dart';
-import 'package:autooh/Telas/Card/bloc_provider.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AgendamentoListController extends BlocBase {

@@ -143,6 +143,7 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                     children: <Widget>[
                       widget.carro.confirmacao != null
                           ? GestureDetector(onTap: () async {
+                            try{
                         Map<Permission, PermissionStatus> statuses = await [
                         Permission.storage,
                         ].request();
@@ -162,7 +163,24 @@ class _VisualizarCarroPageState extends State<VisualizarCarroPage> {
                         dToast('Foto Salva em ${_localPath}');
                         } else {
                         dToast('o App não tem permissão para gravar arquivos =/');
-                        }
+                        }}catch(err){
+                              try{
+                                dToast('Baixando Foto');
+                                String _localPath = (await _findLocalPath()) + Platform.pathSeparator;
+
+                                await FlutterDownloader.enqueue(
+                                  url:  widget.carro.confirmacao,
+                                  savedDir: _localPath,
+                                  showNotification: true,
+                                  openFileFromNotification: true,
+                                );
+
+                                dToast('Foto Salva em ${_localPath}');
+                              }catch(err){
+                                dToast('Erro ao salvar Arquivo ${err.toString()}');
+                              }
+
+                            }
                       },
                             child: CircleAvatar(
                                 radius: ScreenUtil.getInstance().setSp(200),

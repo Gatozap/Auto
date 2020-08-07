@@ -186,18 +186,18 @@ class _LoginState extends State<Login> {
                             lc.LoginGoogle().then((r) {
                               if (r == 0) {
                                 if (pr.isShowing()) {
-                                  pr.dismiss();
+                                  pr.hide();
                                 }
                                 pushHome(context);
                               } else {
                                 if (pr.isShowing()) {
-                                  pr.dismiss();
+                                  pr.hide();
                                 }
                                 print(r.toString());
                               }
                             }).catchError((onError) {
                               if (pr.isShowing()) {
-                                pr.dismiss();
+                                pr.hide();
                               }
                               print('Erro: ${onError.toString()}');
                             });
@@ -251,7 +251,7 @@ class _LoginState extends State<Login> {
                                       password: controllerSenha.text)
                                   .then((v) {
                                 if (pr.isShowing()) {
-                                  pr.dismiss();
+                                  pr.hide();
                                 }
                                 if (v) {
                                   pushHome(context);
@@ -261,7 +261,7 @@ class _LoginState extends State<Login> {
                                 }
                               }).catchError((err) {
                                 if (pr.isShowing()) {
-                                  pr.dismiss();
+                                  pr.hide();
                                 }
                               });
                             },
@@ -340,7 +340,7 @@ class _LoginState extends State<Login> {
   pushHome(context) {
     logedIn = true;
     if (pr.isShowing()) {
-      pr.dismiss();
+      pr.hide();
     }
     if (Helper.localUser.isPrestador == null) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(context)=>Cadastro()));
